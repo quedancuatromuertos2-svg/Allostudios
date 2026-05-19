@@ -1,6 +1,5 @@
 {
   "framework": "nextjs",
-  "buildCommand": "rm -rf .next/cache && next build",
-  "installCommand": "npm install",
-  "outputDirectory": ".next"
+  "buildCommand": "npx tailwindcss -i ./src/app/globals.css -o ./src/app/globals.css && next build",
+  "installCommand": "npm install"
 }

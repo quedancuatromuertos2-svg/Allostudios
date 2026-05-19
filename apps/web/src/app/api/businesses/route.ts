@@ -139,9 +139,11 @@ export async function POST(req: Request) {
   }
 
   const services = defaultServices[niche] || defaultServices.DEFAULT
-  await supabaseAdmin.from("services").insert(
-    services.map((s) => ({ ...s, business_id: business.id, currency: "EUR" }))
-  )
+  try {
+    await supabaseAdmin.from("services").insert(
+      services.map((s) => ({ ...s, business_id: business.id, currency: "EUR" }))
+    )
+  } catch {}
 
   return NextResponse.json(business, { status: 201 })
 }

@@ -8,13 +8,20 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 
   const { data, error } = await supabaseAdmin
     .from("businesses")
-    .select("*, subscription:subscriptions(*), services(*)")
+    .select("*, subscription:subscriptions(*)")
     .eq("id", params.id)
     .eq("owner_clerk_id", userId)
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 404 })
-  return NextResponse.json(data)
+
+  // Services table may not exist yet — fail gracefully
+  const { data: services } = await supabaseAdmin
+    .from("services")
+    .select("*")
+    .eq("business_id", params.id)
+
+  return NextResponse.json({ ...data, services: services ?? [] })
 }
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
