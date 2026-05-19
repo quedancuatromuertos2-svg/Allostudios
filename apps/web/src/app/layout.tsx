@@ -7,12 +7,12 @@ import { Providers } from "@/components/providers"
 const inter = Inter({ subsets: ["latin"], variable: "--font-geist-sans" })
 
 export const metadata: Metadata = {
-  title: "VoiceFlow AI — Recepcionista con IA para tu negocio",
+  title: "alloStudios — Recepcionista con IA para tu negocio",
   description:
     "Plataforma de agentes de voz con inteligencia artificial. Atiende llamadas, reserva citas y gestiona leads automáticamente 24/7.",
   keywords: "IA, voz, recepcionista virtual, agenda, citas, barbería, salón",
   openGraph: {
-    title: "VoiceFlow AI",
+    title: "alloStudios",
     description: "Tu recepcionista virtual con IA",
     type: "website",
   },

@@ -78,10 +78,12 @@ export function DashboardSidebar() {
       {/* Logo */}
       <div className="px-6 h-16 flex items-center border-b border-gray-100 dark:border-gray-800">
         <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-          <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center">
-            <Phone className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ background: "#d41f1f" }}>
+            <span style={{ fontFamily: "Georgia, serif", fontWeight: 900, color: "#fff", fontSize: "0.9rem", fontStyle: "italic" }}>a</span>
           </div>
-          <span className="text-gray-900 dark:text-white">VoiceFlow AI</span>
+          <span style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: "1.1rem", color: "#1a1614" }}>
+            <span style={{ color: "#d41f1f" }}>allo</span>Studios
+          </span>
         </Link>
       </div>
 
