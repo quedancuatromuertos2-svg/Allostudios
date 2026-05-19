@@ -1,0 +1,536 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum BusinessNiche {
+  BARBER_SHOP
+  HAIR_SALON
+  RESTAURANT
+  DENTAL_CLINIC
+  REAL_ESTATE
+  GYM
+  CAR_WORKSHOP
+  BEAUTY_CENTER
+  HOTEL
+  OTHER
+}
+
+enum SubscriptionPlan {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+enum CallStatus {
+  RINGING
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  FAILED
+  TRANSFERRED
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELED
+  NO_SHOW
+  RESCHEDULED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  LOST
+}
+
+enum LeadScore {
+  HOT
+  WARM
+  COLD
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum AutomationType {
+  APPOINTMENT_CONFIRMATION
+  APPOINTMENT_REMINDER
+  MISSED_CALL_FOLLOWUP
+  LEAD_NURTURE
+  POST_CALL_SUMMARY
+}
+
+// ============================================
+// BUSINESS (TENANT)
+// ============================================
+
+model Business {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  niche       BusinessNiche
+  phone       String?
+  email       String?
+  website     String?
+  address     String?
+  city        String?
+  country     String        @default("ES")
+  timezone    String        @default("Europe/Madrid")
+  logoUrl     String?
+  description String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  users            BusinessUser[]
+  phoneNumbers     PhoneNumber[]
+  services         Service[]
+  staff            Staff[]
+  calls            Call[]
+  appointments     Appointment[]
+  leads            Lead[]
+  aiConfig         AIConfig?
+  schedule         BusinessSchedule[]
+  subscription     Subscription?
+  analytics        CallAnalytics[]
+  automations      Automation[]
+  integrations     Integration[]
+  notificationPrefs NotificationPreference?
+
+  @@map("businesses")
+}
+
+// ============================================
+// USERS & AUTH
+// ============================================
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businesses BusinessUser[]
+
+  @@map("users")
+}
+
+model BusinessUser {
+  id         String   @id @default(cuid())
+  userId     String
+  businessId String
+  role       UserRole @default(STAFF)
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, businessId])
+  @@map("business_users")
+}
+
+// ============================================
+// PHONE NUMBERS
+// ============================================
+
+model PhoneNumber {
+  id           String   @id @default(cuid())
+  businessId   String
+  number       String   @unique
+  friendlyName String?
+  twilioSid    String?  @unique
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  calls    Call[]
+
+  @@map("phone_numbers")
+}
+
+// ============================================
+// SERVICES
+// ============================================
+
+model Service {
+  id           String   @id @default(cuid())
+  businessId   String
+  name         String
+  description  String?
+  duration     Int      // minutes
+  price        Decimal  @db.Decimal(10, 2)
+  currency     String   @default("EUR")
+  color        String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  business     Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  staffServices StaffService[]
+
+  @@map("services")
+}
+
+// ============================================
+// STAFF
+// ============================================
+
+model Staff {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  email      String?
+  phone      String?
+  role       String?
+  avatarUrl  String?
+  bio        String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  business      Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointments  Appointment[]
+  schedule      StaffSchedule[]
+  services      StaffService[]
+
+  @@map("staff")
+}
+
+model StaffService {
+  staffId   String
+  serviceId String
+
+  staff   Staff   @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([staffId, serviceId])
+  @@map("staff_services")
+}
+
+model StaffSchedule {
+  id          String    @id @default(cuid())
+  staffId     String
+  dayOfWeek   DayOfWeek
+  startTime   String    // "09:00"
+  endTime     String    // "18:00"
+  isAvailable Boolean   @default(true)
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, dayOfWeek])
+  @@map("staff_schedules")
+}
+
+// ============================================
+// BUSINESS SCHEDULE
+// ============================================
+
+model BusinessSchedule {
+  id          String    @id @default(cuid())
+  businessId  String
+  dayOfWeek   DayOfWeek
+  startTime   String
+  endTime     String
+  isOpen      Boolean   @default(true)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, dayOfWeek])
+  @@map("business_schedules")
+}
+
+// ============================================
+// CALLS
+// ============================================
+
+model Call {
+  id              String        @id @default(cuid())
+  businessId      String
+  phoneNumberId   String?
+  twilioCallSid   String?       @unique
+  direction       CallDirection @default(INBOUND)
+  status          CallStatus    @default(RINGING)
+  callerNumber    String?
+  callerName      String?
+  duration        Int?          // seconds
+  recordingUrl    String?
+  recordingSid    String?
+  transcript      String?       @db.Text
+  aiSummary       String?       @db.Text
+  sentiment       String?
+  transferredTo   String?
+  startedAt       DateTime?
+  endedAt         DateTime?
+  createdAt       DateTime      @default(now())
+
+  business      Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  phoneNumber   PhoneNumber? @relation(fields: [phoneNumberId], references: [id])
+  appointment   Appointment?
+  lead          Lead?
+  callEvents    CallEvent[]
+
+  @@map("calls")
+}
+
+model CallEvent {
+  id        String   @id @default(cuid())
+  callId    String
+  type      String   // "user_speech", "agent_response", "intent_detected", etc.
+  content   String?  @db.Text
+  metadata  Json?
+  timestamp DateTime @default(now())
+
+  call Call @relation(fields: [callId], references: [id], onDelete: Cascade)
+
+  @@map("call_events")
+}
+
+// ============================================
+// APPOINTMENTS
+// ============================================
+
+model Appointment {
+  id              String            @id @default(cuid())
+  businessId      String
+  serviceId       String?
+  staffId         String?
+  callId          String?           @unique
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  notes           String?
+  status          AppointmentStatus @default(PENDING)
+  scheduledAt     DateTime
+  endsAt          DateTime
+  googleEventId   String?
+  reminderSent    Boolean           @default(false)
+  confirmationSent Boolean          @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  service  Service?  @relation(fields: [serviceId], references: [id])
+  staff    Staff?    @relation(fields: [staffId], references: [id])
+  call     Call?     @relation(fields: [callId], references: [id])
+
+  @@map("appointments")
+}
+
+// ============================================
+// LEADS
+// ============================================
+
+model Lead {
+  id          String     @id @default(cuid())
+  businessId  String
+  callId      String?    @unique
+  name        String?
+  phone       String
+  email       String?
+  source      String     @default("phone_call")
+  status      LeadStatus @default(NEW)
+  score       LeadScore  @default(COLD)
+  notes       String?    @db.Text
+  interest    String?
+  budget      String?
+  timeline    String?
+  convertedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  call     Call?    @relation(fields: [callId], references: [id])
+
+  @@map("leads")
+}
+
+// ============================================
+// AI CONFIGURATION
+// ============================================
+
+model AIConfig {
+  id              String   @id @default(cuid())
+  businessId      String   @unique
+  agentName       String   @default("Sofia")
+  systemPrompt    String   @db.Text
+  greetingMessage String
+  language        String   @default("es")
+  voice           String   @default("eleven_multilingual_v2")
+  voiceId         String?
+  temperature     Float    @default(0.7)
+  maxTokens       Int      @default(200)
+  enableTransfer  Boolean  @default(true)
+  transferNumber  String?
+  enableBooking   Boolean  @default(true)
+  enableLeadCapture Boolean @default(true)
+  faqs            Json     @default("[]")
+  customInstructions String? @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("ai_configs")
+}
+
+// ============================================
+// SUBSCRIPTIONS & BILLING
+// ============================================
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  businessId           String             @unique
+  stripeCustomerId     String?            @unique
+  stripeSubscriptionId String?            @unique
+  plan                 SubscriptionPlan   @default(STARTER)
+  status               SubscriptionStatus @default(TRIALING)
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  trialEndsAt          DateTime?
+  callsUsed            Int                @default(0)
+  callsLimit           Int                @default(100)
+  minutesUsed          Int                @default(0)
+  minutesLimit         Int                @default(300)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ============================================
+// ANALYTICS
+// ============================================
+
+model CallAnalytics {
+  id                 String   @id @default(cuid())
+  businessId         String
+  date               DateTime @db.Date
+  totalCalls         Int      @default(0)
+  answeredCalls      Int      @default(0)
+  missedCalls        Int      @default(0)
+  totalDuration      Int      @default(0) // seconds
+  appointmentsBooked Int      @default(0)
+  leadsGenerated     Int      @default(0)
+  transferredCalls   Int      @default(0)
+  avgDuration        Float    @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, date])
+  @@map("call_analytics")
+}
+
+// ============================================
+// AUTOMATIONS
+// ============================================
+
+model Automation {
+  id         String         @id @default(cuid())
+  businessId String
+  type       AutomationType
+  name       String
+  isActive   Boolean        @default(true)
+  config     Json           @default("{}")
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("automations")
+}
+
+// ============================================
+// INTEGRATIONS
+// ============================================
+
+model Integration {
+  id           String   @id @default(cuid())
+  businessId   String
+  provider     String   // "google_calendar", "whatsapp", "crm", etc.
+  accessToken  String?  @db.Text
+  refreshToken String?  @db.Text
+  expiresAt    DateTime?
+  config       Json     @default("{}")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, provider])
+  @@map("integrations")
+}
+
+// ============================================
+// NOTIFICATION PREFERENCES
+// ============================================
+
+model NotificationPreference {
+  id                    String   @id @default(cuid())
+  businessId            String   @unique
+  emailOnNewCall        Boolean  @default(true)
+  emailOnNewAppointment Boolean  @default(true)
+  emailOnNewLead        Boolean  @default(true)
+  smsOnNewAppointment   Boolean  @default(false)
+  whatsappOnNewLead     Boolean  @default(false)
+  dailyReport           Boolean  @default(true)
+  weeklyReport          Boolean  @default(true)
+  notificationEmail     String?
+  notificationPhone     String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
