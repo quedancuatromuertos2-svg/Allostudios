@@ -67,9 +67,9 @@ export default function HomePage() {
         <p style={{ color: "#7a6f68", marginBottom: "3rem", fontFamily: "system-ui, sans-serif" }}>7 días gratis, sin necesidad de tarjeta.</p>
         <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap", maxWidth: 900, margin: "0 auto" }}>
           {[
-            { name: "Starter", price: "49", calls: "300 llamadas/mes", features: ["1 agente de voz", "Reservas automáticas", "Dashboard básico", "Soporte por email"] },
-            { name: "Professional", price: "99", calls: "1.000 llamadas/mes", features: ["3 agentes de voz", "Analytics avanzado", "Integraciones CRM", "Soporte prioritario"], highlight: true },
-            { name: "Enterprise", price: "249", calls: "Ilimitadas", features: ["Agentes ilimitados", "Marca blanca", "API acceso completo", "Account manager dedicado"] },
+            { name: "Starter", price: "99", calls: "300 llamadas/mes", features: ["1 agente de voz", "Reservas automáticas", "Dashboard básico", "Soporte por email"] },
+            { name: "Professional", price: "199", calls: "1.000 llamadas/mes", features: ["3 agentes de voz", "Analytics avanzado", "Integraciones CRM", "Soporte prioritario"], highlight: true },
+            { name: "Enterprise", price: "499", calls: "Ilimitadas", features: ["Agentes ilimitados", "Marca blanca", "API acceso completo", "Account manager dedicado"] },
           ].map(({ name, price, calls, features, highlight }) => (
             <div key={name} style={{ background: highlight ? "#d41f1f" : "#f5f2ec", borderRadius: 20, padding: "2rem 1.75rem", minWidth: 240, flex: 1, maxWidth: 280, border: highlight ? "none" : "1.5px solid #ede7df" }}>
               <h3 style={{ color: highlight ? "#fff" : "#1a1614", fontWeight: 700, fontSize: "1.1rem", marginBottom: "0.25rem" }}>{name}</h3>

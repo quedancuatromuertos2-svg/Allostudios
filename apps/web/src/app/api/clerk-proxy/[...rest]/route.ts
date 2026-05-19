@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 
-const CLERK_FAPI = "https://clerk.allostudios.net"
+const CLERK_FAPI = "https://funky-raptor-17.clerk.accounts.dev"
 
 async function handler(req: NextRequest) {
   const { pathname, search } = new URL(req.url)
