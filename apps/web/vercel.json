@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npx tailwindcss -i ./src/app/globals.css -o ./src/app/globals.css && next build",
+  "buildCommand": "./node_modules/.bin/tailwindcss -i ./src/app/globals.css -o ./src/app/globals.css && next build",
   "installCommand": "npm install"
 }
