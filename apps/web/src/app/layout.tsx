@@ -25,7 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-      proxyUrl={process.env.NODE_ENV === "production" ? "https://allostudios.net/api/clerk-proxy" : undefined}
       signInUrl="/login"
       signUpUrl="/register"
       afterSignInUrl="/dashboard"

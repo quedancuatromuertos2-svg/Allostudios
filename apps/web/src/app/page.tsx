@@ -51,7 +51,7 @@ export default function HomePage() {
           { icon: "🎯", title: "Captura de leads", desc: "Recoge datos de clientes, clasifica intenciones y te avisa de los más calientes." },
           { icon: "📊", title: "Dashboard en tiempo real", desc: "Ve todas las llamadas, citas y métricas de tu negocio en un solo lugar." },
           { icon: "🔧", title: "Configura sin código", desc: "Personaliza el nombre, voz, horarios y respuestas de tu agente en minutos." },
-          { icon: "💳", title: "Precios claros", desc: "Planes desde 49€/mes. Sin sorpresas. Sin contratos largos." },
+          { icon: "💳", title: "Precios claros", desc: "Planes desde 99€/mes. Sin sorpresas. Sin contratos largos." },
         ].map(({ icon, title, desc }) => (
           <div key={title} style={{ background: "#fff", borderRadius: 16, padding: "1.75rem", border: "1px solid #ede7df" }}>
             <div style={{ fontSize: "1.8rem", marginBottom: "0.75rem" }}>{icon}</div>
@@ -63,18 +63,30 @@ export default function HomePage() {
 
       {/* Pricing */}
       <section style={{ background: "#fff", padding: "5rem 1.5rem", textAlign: "center" }}>
+        <div style={{ display: "inline-block", background: "#fff3f3", color: "#d41f1f", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "0.35rem 1rem", borderRadius: "99px", marginBottom: "1rem", fontFamily: "system-ui, sans-serif" }}>
+          Oferta de lanzamiento — 25% de descuento
+        </div>
         <h2 style={{ fontSize: "2rem", fontWeight: 700, color: "#1a1614", marginBottom: "0.75rem" }}>Precios sencillos</h2>
         <p style={{ color: "#7a6f68", marginBottom: "3rem", fontFamily: "system-ui, sans-serif" }}>7 días gratis, sin necesidad de tarjeta.</p>
         <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap", maxWidth: 900, margin: "0 auto" }}>
           {[
-            { name: "Starter", price: "99", calls: "300 llamadas/mes", features: ["1 agente de voz", "Reservas automáticas", "Dashboard básico", "Soporte por email"] },
-            { name: "Professional", price: "199", calls: "1.000 llamadas/mes", features: ["3 agentes de voz", "Analytics avanzado", "Integraciones CRM", "Soporte prioritario"], highlight: true },
-            { name: "Enterprise", price: "499", calls: "Ilimitadas", features: ["Agentes ilimitados", "Marca blanca", "API acceso completo", "Account manager dedicado"] },
-          ].map(({ name, price, calls, features, highlight }) => (
-            <div key={name} style={{ background: highlight ? "#d41f1f" : "#f5f2ec", borderRadius: 20, padding: "2rem 1.75rem", minWidth: 240, flex: 1, maxWidth: 280, border: highlight ? "none" : "1.5px solid #ede7df" }}>
+            { name: "Starter", price: "99", original: "132", calls: "300 llamadas/mes", features: ["1 agente de voz", "Reservas automáticas", "Dashboard básico", "Soporte por email"] },
+            { name: "Professional", price: "199", original: "265", calls: "1.000 llamadas/mes", features: ["3 agentes de voz", "Analytics avanzado", "Integraciones CRM", "Soporte prioritario"], highlight: true },
+            { name: "Enterprise", price: "499", original: "665", calls: "Ilimitadas", features: ["Agentes ilimitados", "Marca blanca", "API acceso completo", "Account manager dedicado"] },
+          ].map(({ name, price, original, calls, features, highlight }) => (
+            <div key={name} style={{ background: highlight ? "#d41f1f" : "#f5f2ec", borderRadius: 20, padding: "2rem 1.75rem", minWidth: 240, flex: 1, maxWidth: 280, border: highlight ? "none" : "1.5px solid #ede7df", position: "relative" }}>
+              {highlight && (
+                <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: "#1a1614", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "0.3rem 1rem", borderRadius: "99px", whiteSpace: "nowrap", fontFamily: "system-ui, sans-serif" }}>
+                  MÁS POPULAR
+                </div>
+              )}
               <h3 style={{ color: highlight ? "#fff" : "#1a1614", fontWeight: 700, fontSize: "1.1rem", marginBottom: "0.25rem" }}>{name}</h3>
-              <p style={{ color: highlight ? "#ffb3b3" : "#7a6f68", fontSize: "0.8rem", marginBottom: "1.25rem", fontFamily: "system-ui, sans-serif" }}>{calls}</p>
-              <p style={{ color: highlight ? "#fff" : "#1a1614", fontSize: "2.5rem", fontWeight: 900, marginBottom: "1.5rem" }}>{price}<span style={{ fontSize: "1rem", fontWeight: 400 }}>€/mes</span></p>
+              <p style={{ color: highlight ? "#ffb3b3" : "#7a6f68", fontSize: "0.8rem", marginBottom: "1rem", fontFamily: "system-ui, sans-serif" }}>{calls}</p>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <span style={{ color: highlight ? "#ffb3b3" : "#b0a89e", fontSize: "1rem", fontFamily: "system-ui, sans-serif", textDecoration: "line-through", marginRight: "0.5rem" }}>{original}€</span>
+                <span style={{ color: highlight ? "#ffe0e0" : "#d41f1f", fontSize: "0.75rem", fontWeight: 700, background: highlight ? "rgba(255,255,255,0.2)" : "#fff3f3", padding: "0.15rem 0.5rem", borderRadius: "99px", fontFamily: "system-ui, sans-serif" }}>-25%</span>
+                <p style={{ color: highlight ? "#fff" : "#1a1614", fontSize: "2.5rem", fontWeight: 900, margin: "0.25rem 0 0" }}>{price}<span style={{ fontSize: "1rem", fontWeight: 400 }}>€/mes</span></p>
+              </div>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.75rem", textAlign: "left" }}>
                 {features.map(f => (
                   <li key={f} style={{ color: highlight ? "#ffe0e0" : "#5a4f48", fontSize: "0.85rem", padding: "0.3rem 0", fontFamily: "system-ui, sans-serif" }}>✓ {f}</li>
