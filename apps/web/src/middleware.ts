@@ -8,6 +8,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/clerk-proxy(.*)",
   "/api/voice/webhook(.*)",
   "/api/billing/webhook(.*)",
+  "/api/google/callback(.*)",
 ])
 
 export default clerkMiddleware(async (auth, req) => {

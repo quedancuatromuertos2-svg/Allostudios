@@ -13,16 +13,30 @@ import {
   Volume2,
   MessageSquare,
   Settings,
+  Play,
+  Square,
 } from "lucide-react"
 
 const BUSINESS_ID = "demo-business-id"
 
 const VOICES = [
-  { id: "es-ES-Lucia", label: "Lucía (Español, mujer)" },
-  { id: "es-ES-Alvaro", label: "Álvaro (Español, hombre)" },
-  { id: "es-LA-Valentina", label: "Valentina (Latam, mujer)" },
-  { id: "eleven_monolingual_v1", label: "ElevenLabs Premium (ES)" },
+  { id: "es-ES-Lucia", label: "Lucía (Español, mujer)", lang: "es-ES", pitch: 1.15 },
+  { id: "es-ES-Alvaro", label: "Álvaro (Español, hombre)", lang: "es-ES", pitch: 0.85 },
+  { id: "es-LA-Valentina", label: "Valentina (Latam, mujer)", lang: "es-MX", pitch: 1.1 },
+  { id: "eleven_monolingual_v1", label: "ElevenLabs Premium (ES)", lang: "es-ES", pitch: 1.0 },
 ]
+
+function playVoicePreview(voice: (typeof VOICES)[0]) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const utterance = new SpeechSynthesisUtterance(
+    "Hola, soy tu asistente de voz. ¿En qué puedo ayudarte hoy?"
+  )
+  utterance.lang = voice.lang
+  utterance.pitch = voice.pitch
+  utterance.rate = 0.95
+  window.speechSynthesis.speak(utterance)
+}
 
 const TABS = [
   { id: "prompt", label: "Prompt & Voz", icon: Brain },
@@ -152,22 +166,40 @@ export default function AIConfigPage() {
                 <Volume2 className="w-4 h-4 text-violet-600" />
                 Voz
               </h2>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {VOICES.map((voice) => (
-                  <label key={voice.id} className="flex items-center gap-3 cursor-pointer">
+                  <label
+                    key={voice.id}
+                    className="flex items-center gap-3 cursor-pointer group py-1"
+                  >
                     <input
                       type="radio"
                       name="voice"
                       value={voice.id}
                       checked={form.voice === voice.id}
                       onChange={() => setForm((f) => ({ ...f, voice: voice.id }))}
-                      className="accent-violet-600"
+                      className="accent-violet-600 flex-shrink-0"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">
                       {voice.label}
                     </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        playVoicePreview(voice)
+                      }}
+                      title="Escuchar preview"
+                      className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-900/60 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    >
+                      <Play className="w-3 h-3" />
+                      Escuchar
+                    </button>
                   </label>
                 ))}
+                <p className="text-xs text-gray-400 dark:text-gray-600 pt-1">
+                  Pasa el cursor sobre una voz para escuchar el preview.
+                </p>
               </div>
             </div>
           </div>
