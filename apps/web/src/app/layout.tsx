@@ -24,7 +24,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider proxyUrl={process.env.NODE_ENV === "production" ? "https://allostudios.net/api/clerk-proxy" : undefined}>
+    <ClerkProvider
+      proxyUrl={process.env.NODE_ENV === "production" ? "https://allostudios.net/api/clerk-proxy" : undefined}
+      signInUrl="/login"
+      signUpUrl="/register"
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/onboarding"
+    >
       <html lang="es" suppressHydrationWarning>
         <body className={`${inter.variable} font-sans antialiased`}>
           <Providers>{children}</Providers>
