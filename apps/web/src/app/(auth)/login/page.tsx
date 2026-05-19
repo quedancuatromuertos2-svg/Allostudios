@@ -2,23 +2,25 @@ import { SignIn } from "@clerk/nextjs"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ background: "#f5f2ec" }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 font-bold text-2xl mb-2">
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white text-sm">
-              V
+          <div className="inline-flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style={{ background: "#d41f1f" }}>
+              <span style={{ fontFamily: "Georgia, serif", fontWeight: 900, color: "#fff", fontSize: "1rem", fontStyle: "italic" }}>a</span>
             </div>
-            VoiceFlow AI
+            <span style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: "1.3rem", color: "#1a1614" }}>
+              <span style={{ color: "#d41f1f" }}>allo</span>Studios
+            </span>
           </div>
-          <p className="text-gray-500 text-sm">Accede a tu panel de control</p>
+          <p style={{ color: "#7a6f68", fontSize: ".9rem" }}>Accede a tu panel de control</p>
         </div>
         <SignIn
           appearance={{
             elements: {
               rootBox: "w-full",
-              card: "w-full shadow-none border border-gray-100 dark:border-gray-800 rounded-2xl",
-              formButtonPrimary: "bg-violet-600 hover:bg-violet-700",
+              card: "w-full shadow-none rounded-2xl",
+              formButtonPrimary: "bg-red-600 hover:bg-red-700",
             },
           }}
         />
