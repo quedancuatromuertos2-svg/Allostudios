@@ -12,7 +12,6 @@ import {
   Settings,
   CreditCard,
   Brain,
-  Phone,
   ChevronDown,
   LogOut,
   Plus,
