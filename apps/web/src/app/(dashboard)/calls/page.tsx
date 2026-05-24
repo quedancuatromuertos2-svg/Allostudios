@@ -17,15 +17,22 @@ import { api } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
-
-const BUSINESS_ID = "demo-business-id"
+import { useBusinessStore } from "@/store/business.store"
 
 const STATUS_MAP: Record<string, { label: string; class: string }> = {
   COMPLETED: {
     label: "Completada",
     class: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
   },
+  ended: {
+    label: "Completada",
+    class: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  },
   MISSED: {
+    label: "Perdida",
+    class: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+  },
+  "no-answer": {
     label: "Perdida",
     class: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   },
@@ -50,18 +57,27 @@ const SENTIMENT_MAP: Record<string, string> = {
 }
 
 export default function CallsPage() {
+  const { currentBusinessId: bizId } = useBusinessStore()
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [selectedCall, setSelectedCall] = useState<any>(null)
 
   const { data, isLoading } = useQuery({
-    queryKey: ["calls", BUSINESS_ID, page],
+    queryKey: ["calls", bizId, page, search],
     queryFn: () =>
-      api.get(`/businesses/${BUSINESS_ID}/calls?page=${page}&limit=15`).then((r) => r.data),
+      api
+        .get(`/api/businesses/${bizId}/calls?page=${page}&limit=15${search ? `&search=${encodeURIComponent(search)}` : ""}`)
+        .then((r) => r.data),
+    enabled: !!bizId,
   })
 
   const calls = data?.data || []
   const totalPages = data?.pages || 1
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+    setPage(1)
+  }
 
   return (
     <div className="space-y-6">
@@ -77,7 +93,7 @@ export default function CallsPage() {
           <Search className="w-4 h-4 text-gray-400" />
           <input
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Buscar por número o resumen..."
             className="bg-transparent text-sm outline-none flex-1"
           />
@@ -103,7 +119,9 @@ export default function CallsPage() {
             ) : calls.length === 0 ? (
               <div className="px-6 py-16 text-center">
                 <Phone className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-400 text-sm">No hay llamadas todavía</p>
+                <p className="text-gray-400 text-sm">
+                  {search ? "No hay llamadas que coincidan con la búsqueda" : "No hay llamadas todavía"}
+                </p>
               </div>
             ) : (
               calls.map((call: any) => {
@@ -117,13 +135,13 @@ export default function CallsPage() {
                     }`}
                   >
                     <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                        call.status === "MISSED"
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        call.status === "MISSED" || call.status === "no-answer"
                           ? "bg-red-50 dark:bg-red-900/20"
                           : "bg-violet-50 dark:bg-violet-900/20"
                       }`}
                     >
-                      {call.status === "MISSED" ? (
+                      {call.status === "MISSED" || call.status === "no-answer" ? (
                         <PhoneMissed className="w-4 h-4 text-red-500" />
                       ) : (
                         <PhoneCall className="w-4 h-4 text-violet-600" />
@@ -132,29 +150,29 @@ export default function CallsPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {call.callerName || call.callerNumber || "Desconocido"}
+                          {call.caller_name || call.caller_number || "Desconocido"}
                         </p>
                         {call.sentiment && (
                           <span className="text-sm">{SENTIMENT_MAP[call.sentiment]}</span>
                         )}
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                        {call.aiSummary
-                          ? call.aiSummary.substring(0, 50) + "..."
+                        {call.ai_summary
+                          ? call.ai_summary.substring(0, 50) + "..."
                           : "Sin resumen"}
                       </p>
                     </div>
                     <div className="flex-shrink-0 text-right">
                       <p className="text-xs text-gray-400 mb-1">
-                        {call.createdAt &&
-                          format(parseISO(call.createdAt), "d MMM · HH:mm", {
-                            locale: es,
-                          })}
+                        {call.created_at &&
+                          format(parseISO(call.created_at), "d MMM · HH:mm", { locale: es })}
                       </p>
                       <span
-                        className={`text-xs px-2 py-0.5 rounded-full font-medium ${status?.class}`}
+                        className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          status?.class || "bg-gray-100 text-gray-500"
+                        }`}
                       >
-                        {status?.label}
+                        {status?.label || call.status}
                       </span>
                     </div>
                   </button>
@@ -201,11 +219,11 @@ export default function CallsPage() {
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-white">
-                    {selectedCall.callerName || selectedCall.callerNumber}
+                    {selectedCall.caller_name || selectedCall.caller_number || "Desconocido"}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {selectedCall.createdAt &&
-                      format(parseISO(selectedCall.createdAt), "d MMMM yyyy · HH:mm", {
+                    {selectedCall.created_at &&
+                      format(parseISO(selectedCall.created_at), "d MMMM yyyy · HH:mm", {
                         locale: es,
                       })}
                   </p>
@@ -215,7 +233,7 @@ export default function CallsPage() {
                 )}
               </div>
 
-              {selectedCall.recordingUrl && (
+              {selectedCall.recording_url && (
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mb-4 flex items-center gap-3">
                   <button className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center">
                     <Play className="w-3 h-3 text-white ml-0.5" />
@@ -224,20 +242,20 @@ export default function CallsPage() {
                     <div className="h-1.5 w-1/3 bg-violet-600 rounded-full" />
                   </div>
                   <span className="text-xs text-gray-400">
-                    {selectedCall.duration
-                      ? `${Math.floor(selectedCall.duration / 60)}:${String(selectedCall.duration % 60).padStart(2, "0")}`
+                    {selectedCall.duration_seconds
+                      ? `${Math.floor(selectedCall.duration_seconds / 60)}:${String(selectedCall.duration_seconds % 60).padStart(2, "0")}`
                       : "--:--"}
                   </span>
                 </div>
               )}
 
-              {selectedCall.aiSummary && (
+              {selectedCall.ai_summary && (
                 <div className="mb-4">
                   <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
                     Resumen IA
                   </p>
                   <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {selectedCall.aiSummary}
+                    {selectedCall.ai_summary}
                   </p>
                 </div>
               )}

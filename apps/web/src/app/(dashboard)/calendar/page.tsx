@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 import { api } from "@/lib/api"
 import { useBusinessStore } from "@/store/business.store"
 import {
@@ -29,13 +30,33 @@ import {
   ExternalLink,
   CheckCircle2,
   AlertCircle,
+  Copy,
+  Check,
 } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [copied, setCopied] = useState(false)
   const { currentBusinessId } = useBusinessStore()
+  const searchParams = useSearchParams()
+  const urlError = searchParams.get("error")
+  const urlConnected = searchParams.get("connected")
+
+  const { data: googleCheck } = useQuery({
+    queryKey: ["google-check"],
+    queryFn: () => api.get("/api/google/check").then((r) => r.data),
+    staleTime: 60_000,
+  })
+
+  const redirectUri = googleCheck?.redirectUri ?? "https://allostudios.net/api/google/callback"
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(redirectUri)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const { data: appointmentsRes, isLoading } = useQuery({
     queryKey: ["appointments", currentBusinessId],
@@ -305,17 +326,37 @@ export default function CalendarPage() {
           </div>
 
           {!googleStatus?.connected && (
-            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-              <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl">
-                <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-xs font-medium text-amber-700 dark:text-amber-500">
-                    Google Calendar no conectado
-                  </p>
-                  <p className="text-xs text-amber-600/70 dark:text-amber-600 mt-0.5">
-                    Conecta tu cuenta para sincronizar citas automáticamente.
-                  </p>
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
+              {urlError === "db_column_missing" && (
+                <div className="p-3 bg-red-50 rounded-xl text-xs text-red-700">
+                  Falta la columna <code>google_calendar_token</code> en la tabla <code>businesses</code> de Supabase. Ejecuta: <code>ALTER TABLE businesses ADD COLUMN IF NOT EXISTS google_calendar_token jsonb;</code>
                 </div>
+              )}
+              {urlError && urlError !== "db_column_missing" && (
+                <div className="p-3 bg-red-50 rounded-xl text-xs text-red-700">
+                  Error: {urlError === "google_denied" ? "Acceso denegado por Google" : urlError === "token_exchange" ? "Error al intercambiar el código con Google" : urlError}
+                </div>
+              )}
+              {urlConnected && (
+                <div className="p-3 bg-emerald-50 rounded-xl text-xs text-emerald-700 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  ¡Google Calendar conectado correctamente!
+                </div>
+              )}
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl space-y-2">
+                <p className="text-xs font-semibold text-blue-800 dark:text-blue-300">
+                  Paso 1 — Registra esta URI en Google Cloud Console
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-400">
+                  Ve a console.cloud.google.com → APIs &amp; Services → Credentials → tu OAuth 2.0 Client ID → Authorized redirect URIs → Add URI:
+                </p>
+                <div className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-blue-200 rounded-lg px-3 py-2">
+                  <code className="text-xs text-gray-700 dark:text-gray-300 flex-1 truncate">{redirectUri}</code>
+                  <button onClick={handleCopy} className="flex-shrink-0 text-blue-600 hover:text-blue-700 transition-colors">
+                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+                <p className="text-xs text-blue-500">Paso 2 — Haz clic en &quot;Conectar Google Calendar&quot; arriba</p>
               </div>
             </div>
           )}

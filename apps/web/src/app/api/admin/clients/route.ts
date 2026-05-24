@@ -1,10 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { requireAdmin } from "@/lib/admin"
 
 export async function GET(req: Request) {
   const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const denied = requireAdmin(userId)
+  if (denied) return denied
 
   const url = new URL(req.url)
   const page = parseInt(url.searchParams.get("page") || "1")

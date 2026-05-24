@@ -21,29 +21,50 @@ export default async function DashboardLayout({
 
   if (!businesses?.length) redirect("/onboarding")
 
-  const { data: subscription } = await supabaseAdmin
+  const businessId = businesses[0].id
+
+  let { data: subscription } = await supabaseAdmin
     .from("subscriptions")
     .select("status, trial_ends_at")
-    .eq("business_id", businesses[0].id)
+    .eq("business_id", businessId)
     .single()
 
+  // Auto-create 7-day trial for businesses that pre-date the onboarding fix
+  if (!subscription) {
+    const { data: created } = await supabaseAdmin
+      .from("subscriptions")
+      .insert({
+        business_id: businessId,
+        plan: "STARTER",
+        status: "trialing",
+        calls_limit: 50,
+        calls_used: 0,
+        trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      })
+      .select("status, trial_ends_at")
+      .single()
+    subscription = created
+  }
+
+  const status = subscription?.status?.toLowerCase()
+
   const trialExpired =
-    subscription?.status === "TRIALING" &&
-    subscription.trial_ends_at &&
+    status === "trialing" &&
+    subscription?.trial_ends_at != null &&
     new Date(subscription.trial_ends_at) < new Date()
 
   const needsBilling =
-    !subscription ||
     trialExpired ||
-    subscription.status === "cancelled" ||
-    subscription.status === "past_due"
+    status === "cancelled" ||
+    status === "canceled" ||
+    status === "past_due"
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <DashboardHeader />
-        <BillingGate required={!!needsBilling}>
+        <BillingGate required={!!needsBilling} hasSubscription={!!subscription}>
           <main className="flex-1 overflow-y-auto p-6">{children}</main>
         </BillingGate>
       </div>

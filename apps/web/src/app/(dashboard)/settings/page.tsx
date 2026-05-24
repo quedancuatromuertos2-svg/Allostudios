@@ -1,12 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
+import { useState, useEffect } from "react"
+import { useQuery, useMutation } from "@tanstack/react-query"
 import { api } from "@/lib/api"
 import { Button } from "@/components/ui/button"
-import { Save, Building2, Globe, Clock } from "lucide-react"
-
-const BUSINESS_ID = "demo-business-id"
+import { Save, Building2, Globe, Clock, CheckCircle2 } from "lucide-react"
+import { useBusinessStore } from "@/store/business.store"
 
 const TIMEZONES = [
   "Europe/Madrid",
@@ -34,6 +33,9 @@ const NICHES = [
 ]
 
 export default function SettingsPage() {
+  const { currentBusinessId: bizId } = useBusinessStore()
+  const [saved, setSaved] = useState(false)
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -46,9 +48,35 @@ export default function SettingsPage() {
     niche: "BARBER_SHOP",
   })
 
+  const { data: business } = useQuery({
+    queryKey: ["business", bizId],
+    queryFn: () => api.get(`/api/businesses/${bizId}`).then((r) => r.data),
+    enabled: !!bizId,
+  })
+
+  useEffect(() => {
+    if (business) {
+      setForm({
+        name: business.name || "",
+        email: business.email || "",
+        phone: business.phone || "",
+        address: business.address || "",
+        city: business.city || "",
+        website: business.website || "",
+        description: business.description || "",
+        timezone: business.timezone || "Europe/Madrid",
+        niche: business.niche || "BARBER_SHOP",
+      })
+    }
+  }, [business])
+
   const mutation = useMutation({
     mutationFn: (data: typeof form) =>
-      api.patch(`/businesses/${BUSINESS_ID}`, data),
+      api.patch(`/api/businesses/${bizId}`, data),
+    onSuccess: () => {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    },
   })
 
   const updateField = (key: keyof typeof form, value: string) => {
@@ -106,7 +134,7 @@ export default function SettingsPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 block flex items-center gap-1.5">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5" />
               Sector
             </label>
@@ -124,7 +152,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 block flex items-center gap-1.5">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" />
               Zona horaria
             </label>
@@ -146,11 +174,24 @@ export default function SettingsPage() {
       <div className="flex justify-end">
         <Button
           onClick={() => mutation.mutate(form)}
-          disabled={mutation.isPending}
-          className="bg-violet-600 hover:bg-violet-700 text-white gap-2"
+          disabled={mutation.isPending || !bizId}
+          className={`gap-2 transition-all ${
+            saved
+              ? "bg-emerald-600 hover:bg-emerald-600 text-white"
+              : "bg-violet-600 hover:bg-violet-700 text-white"
+          }`}
         >
-          <Save className="w-4 h-4" />
-          {mutation.isPending ? "Guardando..." : "Guardar cambios"}
+          {saved ? (
+            <>
+              <CheckCircle2 className="w-4 h-4" />
+              Guardado
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              {mutation.isPending ? "Guardando..." : "Guardar cambios"}
+            </>
+          )}
         </Button>
       </div>
     </div>

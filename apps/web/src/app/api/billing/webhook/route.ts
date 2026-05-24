@@ -35,6 +35,9 @@ export async function POST(req: Request) {
         status: sub.status,
         current_period_start: new Date((sub as any).current_period_start * 1000).toISOString(),
         current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
+        trial_ends_at: (sub as any).trial_end
+          ? new Date((sub as any).trial_end * 1000).toISOString()
+          : null,
         calls_limit: getPlanCalls(planKey),
         calls_used: 0,
       }, { onConflict: "business_id" })

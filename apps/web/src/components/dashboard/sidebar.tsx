@@ -15,6 +15,7 @@ import {
   ChevronDown,
   LogOut,
   Plus,
+  Users,
 } from "lucide-react"
 import { useClerk, useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
@@ -28,10 +29,9 @@ const navItems = [
   { href: "/analytics", icon: BarChart3, label: "Analytics" },
   { href: "/calendar", icon: Calendar, label: "Calendario" },
   { href: "/ai-config", icon: Brain, label: "Config. IA" },
+  { href: "/team", icon: Users, label: "Equipo" },
   { href: "/billing", icon: CreditCard, label: "Facturación" },
   { href: "/settings", icon: Settings, label: "Ajustes" },
-  { href: "/manual", icon: null, label: "📖 Manual" },
-  { href: "/admin", icon: null, label: "🔧 Admin" },
 ]
 
 const NICHE_ICONS: Record<string, string> = {
@@ -61,13 +61,17 @@ export function DashboardSidebar() {
 
   useEffect(() => {
     if (fetchedBusinesses?.data?.length) {
-      setBusinesses(fetchedBusinesses.data)
-      if (!currentBusinessId) {
-        setCurrentBusiness(fetchedBusinesses.data[0])
+      const list = fetchedBusinesses.data
+      setBusinesses(list)
+      // Auto-select first business if none selected or if stored ID no longer exists
+      const currentStillValid = list.some((b: { id: string }) => b.id === currentBusinessId)
+      if (!currentBusinessId || !currentStillValid) {
+        setCurrentBusiness(list[0])
       }
-    } else if (fetchedBusinesses?.data?.length === 0) {
+    } else if (fetchedBusinesses?.data !== undefined && fetchedBusinesses.data.length === 0) {
       router.push("/onboarding")
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchedBusinesses])
 
   const currentBusiness = businesses.find((b) => b.id === currentBusinessId)
@@ -77,11 +81,11 @@ export function DashboardSidebar() {
       {/* Logo */}
       <div className="px-6 h-16 flex items-center border-b border-gray-100 dark:border-gray-800">
         <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ background: "#d41f1f" }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ background: "#7c3aed" }}>
             <span style={{ fontFamily: "Georgia, serif", fontWeight: 900, color: "#fff", fontSize: "0.9rem", fontStyle: "italic" }}>a</span>
           </div>
           <span style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: "1.1rem", color: "#1a1614" }}>
-            <span style={{ color: "#d41f1f" }}>allo</span>Studios
+            <span style={{ color: "#7c3aed" }}>allo</span>Studios
           </span>
         </Link>
       </div>

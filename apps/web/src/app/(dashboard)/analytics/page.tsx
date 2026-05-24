@@ -1,8 +1,8 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { motion } from "framer-motion"
 import { api } from "@/lib/api"
+import { useBusinessStore } from "@/store/business.store"
 import {
   AreaChart,
   Area,
@@ -20,26 +20,30 @@ import {
 import { format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 
-const BUSINESS_ID = "demo-business-id"
 const COLORS = ["#8b5cf6", "#10b981", "#f59e0b", "#ef4444"]
 
 export default function AnalyticsPage() {
+  const { currentBusinessId: bizId } = useBusinessStore()
+
   const { data: stats } = useQuery({
-    queryKey: ["analytics", "dashboard", BUSINESS_ID],
+    queryKey: ["analytics", "dashboard", bizId],
     queryFn: () =>
-      api.get(`/businesses/${BUSINESS_ID}/analytics/dashboard`).then((r) => r.data),
+      api.get(`/api/businesses/${bizId}/analytics?type=dashboard`).then((r) => r.data),
+    enabled: !!bizId,
   })
 
   const { data: callVolume } = useQuery({
-    queryKey: ["analytics", "callVolume", BUSINESS_ID],
+    queryKey: ["analytics", "callVolume", bizId],
     queryFn: () =>
-      api.get(`/businesses/${BUSINESS_ID}/analytics/call-volume?days=30`).then((r) => r.data),
+      api.get(`/api/businesses/${bizId}/analytics?type=volume&days=30`).then((r) => r.data),
+    enabled: !!bizId,
   })
 
   const { data: hourly } = useQuery({
-    queryKey: ["analytics", "hourly", BUSINESS_ID],
+    queryKey: ["analytics", "hourly", bizId],
     queryFn: () =>
-      api.get(`/businesses/${BUSINESS_ID}/analytics/hourly`).then((r) => r.data),
+      api.get(`/api/businesses/${bizId}/analytics?type=hourly`).then((r) => r.data),
+    enabled: !!bizId,
   })
 
   const pieData = stats
@@ -123,7 +127,7 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Hourly heatmap */}
+        {/* Hourly */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
           <h2 className="font-semibold text-gray-900 dark:text-white mb-6">
             Horas de mayor actividad
@@ -153,7 +157,7 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Pie chart */}
+        {/* Pie */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
           <h2 className="font-semibold text-gray-900 dark:text-white mb-6">
             Distribución de resultados
@@ -162,7 +166,7 @@ export default function AnalyticsPage() {
             <ResponsiveContainer width={160} height={160}>
               <PieChart>
                 <Pie
-                  data={pieData}
+                  data={pieData.filter((d) => d.value > 0)}
                   cx="50%"
                   cy="50%"
                   innerRadius={45}
@@ -187,7 +191,7 @@ export default function AnalyticsPage() {
                     {item.name}
                   </span>
                   <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {item.value}
+                    {item.value ?? "—"}
                   </span>
                 </div>
               ))}

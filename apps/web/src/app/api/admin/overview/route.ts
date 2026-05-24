@@ -1,10 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { requireAdmin } from "@/lib/admin"
 
 export async function GET() {
   const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const denied = requireAdmin(userId)
+  if (denied) return denied
 
   const since30 = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
 

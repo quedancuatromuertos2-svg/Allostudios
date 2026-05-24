@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { createCalendarEvent } from "@/lib/google-calendar"
 import { addMinutes } from "date-fns"
 
 export async function POST(req: Request) {
@@ -124,10 +125,14 @@ async function handleFunctionCall(
     if (!businessId) return { success: false, message: "Business not found" }
 
     let duration = 60
+    let serviceName = "Cita"
     if (service_id) {
       const { data: svc } = await supabaseAdmin
-        .from("services").select("duration").eq("id", service_id).single()
-      if (svc) duration = svc.duration
+        .from("services").select("duration, name").eq("id", service_id).single()
+      if (svc) {
+        duration = svc.duration
+        serviceName = svc.name
+      }
     }
 
     const scheduledDate = new Date(scheduled_at)
@@ -146,6 +151,33 @@ async function handleFunctionCall(
     }).select().single()
 
     if (error) return { success: false, message: error.message }
+
+    // Create Google Calendar event if the business has connected Google Calendar
+    const { data: biz } = await supabaseAdmin
+      .from("businesses")
+      .select("name, google_calendar_token")
+      .eq("id", businessId)
+      .single()
+
+    if (biz?.google_calendar_token) {
+      try {
+        await createCalendarEvent(biz.google_calendar_token as Parameters<typeof createCalendarEvent>[0], {
+          summary: `${serviceName} — ${customer_name}`,
+          description: [
+            `Cliente: ${customer_name}`,
+            customer_phone ? `Teléfono: ${customer_phone}` : null,
+            customer_email ? `Email: ${customer_email}` : null,
+            notes ? `Notas: ${notes}` : null,
+          ].filter(Boolean).join("\n"),
+          startDateTime: scheduledDate.toISOString(),
+          endDateTime: endsAt.toISOString(),
+          attendeeEmail: customer_email || undefined,
+        })
+      } catch (e) {
+        console.error("Google Calendar event creation failed:", e)
+      }
+    }
+
     return { success: true, appointment_id: data.id, message: `Cita confirmada para ${customer_name}` }
   }
 

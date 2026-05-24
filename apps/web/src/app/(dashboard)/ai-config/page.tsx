@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { motion } from "framer-motion"
 import { api } from "@/lib/api"
 import { Button } from "@/components/ui/button"
+import { useBusinessStore } from "@/store/business.store"
 import {
   Brain,
   Save,
@@ -14,16 +15,14 @@ import {
   MessageSquare,
   Settings,
   Play,
-  Square,
+  CheckCircle2,
 } from "lucide-react"
 
-const BUSINESS_ID = "demo-business-id"
-
 const VOICES = [
-  { id: "es-ES-Lucia", label: "Lucía (Español, mujer)", lang: "es-ES", pitch: 1.15 },
-  { id: "es-ES-Alvaro", label: "Álvaro (Español, hombre)", lang: "es-ES", pitch: 0.85 },
-  { id: "es-LA-Valentina", label: "Valentina (Latam, mujer)", lang: "es-MX", pitch: 1.1 },
-  { id: "eleven_monolingual_v1", label: "ElevenLabs Premium (ES)", lang: "es-ES", pitch: 1.0 },
+  { id: "ErXwobaYiN019PkySvjV", label: "Lucía", desc: "Cálida y profesional · Mujer", lang: "es-ES", pitch: 1.15, provider: "11labs" },
+  { id: "VR6AewLTigWG4xSOukaG", label: "Álvaro", desc: "Seguro y cercano · Hombre", lang: "es-ES", pitch: 0.85, provider: "11labs" },
+  { id: "EXAVITQu4vr4xnSDxMaL", label: "Sofía", desc: "Amable y clara · Mujer", lang: "es-ES", pitch: 1.0, provider: "11labs" },
+  { id: "onwK4e9ZLuTAKqWW03F9", label: "Daniel", desc: "Formal y confiable · Hombre", lang: "es-ES", pitch: 0.9, provider: "11labs" },
 ]
 
 function playVoicePreview(voice: (typeof VOICES)[0]) {
@@ -44,33 +43,76 @@ const TABS = [
   { id: "advanced", label: "Avanzado", icon: Settings },
 ]
 
+const DEFAULT_FORM = {
+  agentName: "Sofía",
+  greetingMessage: "",
+  systemPrompt: "",
+  voice: VOICES[0].id,
+  temperature: 0.7,
+  enableBooking: true,
+  enableLeadCapture: true,
+  enableTransfer: false,
+  transferNumber: "",
+  faqs: [] as { id: string; question: string; answer: string }[],
+}
+
 export default function AIConfigPage() {
+  const { currentBusinessId: bizId } = useBusinessStore()
   const [activeTab, setActiveTab] = useState("prompt")
+  const [saved, setSaved] = useState(false)
   const queryClient = useQueryClient()
+  const [form, setForm] = useState(DEFAULT_FORM)
 
-  const { data: config, isLoading } = useQuery({
-    queryKey: ["aiConfig", BUSINESS_ID],
+  const { data: config } = useQuery({
+    queryKey: ["aiConfig", bizId],
     queryFn: () =>
-      api.get(`/businesses/${BUSINESS_ID}`).then((r) => r.data.aiConfig),
+      api.get(`/api/businesses/${bizId}/ai-config`).then((r) => r.data),
+    enabled: !!bizId,
   })
 
-  const [form, setForm] = useState({
-    agentName: config?.agentName || "Sofía",
-    greetingMessage: config?.greetingMessage || "",
-    systemPrompt: config?.systemPrompt || "",
-    voice: config?.voice || "es-ES-Lucia",
-    temperature: config?.temperature || 0.7,
-    enableBooking: config?.enableBooking ?? true,
-    enableLeadCapture: config?.enableLeadCapture ?? true,
-    enableTransfer: config?.enableTransfer ?? false,
-    transferNumber: config?.transferNumber || "",
-    faqs: config?.faqs || [],
-  })
+  useEffect(() => {
+    if (config?.ai_config) {
+      const c = config.ai_config
+      const settings = c.settings || {}
+      setForm({
+        agentName: settings.agentName || "Sofía",
+        greetingMessage: c.first_message || "",
+        systemPrompt: c.system_prompt || "",
+        voice: c.voice_id || VOICES[0].id,
+        temperature: settings.temperature ?? 0.7,
+        enableBooking: settings.enableBooking ?? true,
+        enableLeadCapture: settings.enableLeadCapture ?? true,
+        enableTransfer: settings.enableTransfer ?? false,
+        transferNumber: settings.transferNumber || "",
+        faqs: c.faqs || [],
+      })
+    }
+  }, [config])
 
   const mutation = useMutation({
-    mutationFn: (data: typeof form) =>
-      api.patch(`/businesses/${BUSINESS_ID}/ai-config`, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["aiConfig"] }),
+    mutationFn: (data: typeof form) => {
+      const voice = VOICES.find((v) => v.id === data.voice) || VOICES[0]
+      return api.patch(`/api/businesses/${bizId}/ai-config`, {
+        system_prompt: data.systemPrompt,
+        first_message: data.greetingMessage,
+        voice_id: data.voice,
+        voice_provider: voice.provider,
+        faqs: data.faqs,
+        settings: {
+          agentName: data.agentName,
+          temperature: data.temperature,
+          enableBooking: data.enableBooking,
+          enableLeadCapture: data.enableLeadCapture,
+          enableTransfer: data.enableTransfer,
+          transferNumber: data.transferNumber,
+        },
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["aiConfig", bizId] })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    },
   })
 
   const addFAQ = () => {
@@ -83,14 +125,12 @@ export default function AIConfigPage() {
   const updateFAQ = (id: string, field: "question" | "answer", value: string) => {
     setForm((f) => ({
       ...f,
-      faqs: f.faqs.map((faq: any) =>
-        faq.id === id ? { ...faq, [field]: value } : faq,
-      ),
+      faqs: f.faqs.map((faq) => (faq.id === id ? { ...faq, [field]: value } : faq)),
     }))
   }
 
   const removeFAQ = (id: string) => {
-    setForm((f) => ({ ...f, faqs: f.faqs.filter((faq: any) => faq.id !== id) }))
+    setForm((f) => ({ ...f, faqs: f.faqs.filter((faq) => faq.id !== id) }))
   }
 
   return (
@@ -113,7 +153,7 @@ export default function AIConfigPage() {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.id
                 ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
+                : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -128,7 +168,6 @@ export default function AIConfigPage() {
           animate={{ opacity: 1, y: 0 }}
           className="grid md:grid-cols-2 gap-6"
         >
-          {/* Left column */}
           <div className="space-y-5">
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
               <h2 className="font-semibold text-gray-900 dark:text-white mb-4">
@@ -164,13 +203,13 @@ export default function AIConfigPage() {
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
               <h2 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Volume2 className="w-4 h-4 text-violet-600" />
-                Voz
+                Voz del agente
               </h2>
               <div className="space-y-2">
                 {VOICES.map((voice) => (
                   <label
                     key={voice.id}
-                    className="flex items-center gap-3 cursor-pointer group py-1"
+                    className="flex items-center gap-3 cursor-pointer py-1"
                   >
                     <input
                       type="radio"
@@ -180,38 +219,36 @@ export default function AIConfigPage() {
                       onChange={() => setForm((f) => ({ ...f, voice: voice.id }))}
                       className="accent-violet-600 flex-shrink-0"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">
-                      {voice.label}
-                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{voice.label}</p>
+                      <p className="text-xs text-gray-400">{voice.desc}</p>
+                    </div>
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault()
                         playVoicePreview(voice)
                       }}
-                      title="Escuchar preview"
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-900/60 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                      className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-900/60 transition-colors"
                     >
                       <Play className="w-3 h-3" />
-                      Escuchar
+                      Preview
                     </button>
                   </label>
                 ))}
-                <p className="text-xs text-gray-400 dark:text-gray-600 pt-1">
-                  Pasa el cursor sobre una voz para escuchar el preview.
+                <p className="text-xs text-gray-400 pt-1">
+                  Preview usa la voz del navegador; la llamada real usará ElevenLabs.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right column */}
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">
-              System Prompt
-            </h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-2">System Prompt</h2>
             <p className="text-xs text-gray-500 mb-3">
-              Define el comportamiento, tono y capacidades del agente. Usa variables como{" "}
-              <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{"{{business_name}}"}</code>.
+              Define el comportamiento y tono del agente. Usa{" "}
+              <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{"{{business_name}}"}</code>{" "}
+              para referencias dinámicas.
             </p>
             <textarea
               value={form.systemPrompt}
@@ -237,7 +274,7 @@ export default function AIConfigPage() {
                   Preguntas frecuentes
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
-                  El agente usará estas respuestas cuando un cliente pregunte algo similar.
+                  El agente usará estas respuestas automáticamente.
                 </p>
               </div>
               <Button
@@ -251,7 +288,7 @@ export default function AIConfigPage() {
             </div>
 
             <div className="space-y-4">
-              {form.faqs.map((faq: any, index: number) => (
+              {form.faqs.map((faq, index) => (
                 <div
                   key={faq.id}
                   className="border border-gray-100 dark:border-gray-800 rounded-xl p-4 space-y-3"
@@ -283,7 +320,7 @@ export default function AIConfigPage() {
               {form.faqs.length === 0 && (
                 <div className="text-center py-12 text-gray-400">
                   <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                  <p className="text-sm">No hay FAQs. Añade la primera.</p>
+                  <p className="text-sm">No hay FAQs todavía. Añade la primera.</p>
                 </div>
               )}
             </div>
@@ -300,17 +337,34 @@ export default function AIConfigPage() {
           <h2 className="font-semibold text-gray-900 dark:text-white">Configuración avanzada</h2>
 
           {[
-            { key: "enableBooking", label: "Reservas automáticas", description: "El agente puede crear citas en el calendario" },
-            { key: "enableLeadCapture", label: "Captura de leads", description: "Registra nombre y teléfono de clientes interesados" },
-            { key: "enableTransfer", label: "Transferencia de llamadas", description: "Transfiere llamadas al equipo humano si es necesario" },
+            {
+              key: "enableBooking",
+              label: "Reservas automáticas",
+              description: "El agente puede crear citas en el calendario",
+            },
+            {
+              key: "enableLeadCapture",
+              label: "Captura de leads",
+              description: "Registra nombre y teléfono de clientes interesados",
+            },
+            {
+              key: "enableTransfer",
+              label: "Transferencia de llamadas",
+              description: "Transfiere llamadas al equipo humano si es necesario",
+            },
           ].map((toggle) => (
-            <div key={toggle.key} className="flex items-center justify-between py-4 border-b border-gray-50 dark:border-gray-800 last:border-0">
+            <div
+              key={toggle.key}
+              className="flex items-center justify-between py-4 border-b border-gray-50 dark:border-gray-800 last:border-0"
+            >
               <div>
                 <p className="font-medium text-gray-900 dark:text-white text-sm">{toggle.label}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{toggle.description}</p>
               </div>
               <button
-                onClick={() => setForm((f) => ({ ...f, [toggle.key]: !f[toggle.key as keyof typeof f] }))}
+                onClick={() =>
+                  setForm((f) => ({ ...f, [toggle.key]: !f[toggle.key as keyof typeof f] }))
+                }
                 className={`relative w-11 h-6 rounded-full transition-colors ${
                   form[toggle.key as keyof typeof form]
                     ? "bg-violet-600"
@@ -350,25 +404,37 @@ export default function AIConfigPage() {
               max="1"
               step="0.1"
               value={form.temperature}
-              onChange={(e) => setForm((f) => ({ ...f, temperature: parseFloat(e.target.value) }))}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, temperature: parseFloat(e.target.value) }))
+              }
               className="w-full max-w-xs accent-violet-600"
             />
-            <p className="text-xs text-gray-400 mt-1">
-              0 = muy consistente · 1 = más creativo
-            </p>
+            <p className="text-xs text-gray-400 mt-1">0 = muy consistente · 1 = más creativo</p>
           </div>
         </motion.div>
       )}
 
-      {/* Save button */}
       <div className="flex justify-end">
         <Button
           onClick={() => mutation.mutate(form)}
-          disabled={mutation.isPending}
-          className="bg-violet-600 hover:bg-violet-700 text-white gap-2"
+          disabled={mutation.isPending || !bizId}
+          className={`gap-2 transition-all ${
+            saved
+              ? "bg-emerald-600 hover:bg-emerald-600 text-white"
+              : "bg-violet-600 hover:bg-violet-700 text-white"
+          }`}
         >
-          <Save className="w-4 h-4" />
-          {mutation.isPending ? "Guardando..." : "Guardar configuración"}
+          {saved ? (
+            <>
+              <CheckCircle2 className="w-4 h-4" />
+              Guardado
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              {mutation.isPending ? "Guardando..." : "Guardar configuración"}
+            </>
+          )}
         </Button>
       </div>
     </div>

@@ -49,7 +49,10 @@ export async function POST(req: Request) {
     success_url: `${origin}/dashboard?billing=success`,
     cancel_url: `${origin}/billing?cancelled=true`,
     metadata: { businessId, planKey },
-    subscription_data: { metadata: { businessId, planKey } },
+    subscription_data: {
+      trial_period_days: planKey !== "ENTERPRISE" ? 7 : undefined,
+      metadata: { businessId, planKey },
+    },
   })
 
   return NextResponse.json({ url: session.url })

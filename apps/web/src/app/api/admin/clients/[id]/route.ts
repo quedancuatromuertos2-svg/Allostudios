@@ -1,10 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
+import { requireAdmin } from "@/lib/admin"
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const denied = requireAdmin(userId)
+  if (denied) return denied
 
   const [bizRes, callsRes, apptRes, leadsRes] = await Promise.all([
     supabaseAdmin
@@ -44,7 +46,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  const denied2 = requireAdmin(userId)
+  if (denied2) return denied2
 
   const body = await req.json()
 

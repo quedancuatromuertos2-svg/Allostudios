@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 
+function clean(s: string) {
+  return s.replace(/^﻿/, "").trim()
+}
+
 export async function GET(req: NextRequest) {
   const { userId } = await auth()
   if (!userId) return NextResponse.redirect(new URL("/login", req.url))
@@ -9,15 +13,18 @@ export async function GET(req: NextRequest) {
   if (!businessId)
     return NextResponse.json({ error: "Missing businessId" }, { status: 400 })
 
-  const clientId = process.env.GOOGLE_CLIENT_ID
+  const clientId = clean(process.env.GOOGLE_CLIENT_ID || "")
   if (!clientId) {
     return NextResponse.redirect(
       new URL("/calendar?error=google_not_configured", req.url)
     )
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://allostudios.net"
+  const appUrl = clean(
+    process.env.NEXT_PUBLIC_APP_URL || "https://allostudios.net"
+  ).replace(/\/$/, "")
   const redirectUri = `${appUrl}/api/google/callback`
+
   const state = Buffer.from(JSON.stringify({ businessId, userId })).toString(
     "base64url"
   )
