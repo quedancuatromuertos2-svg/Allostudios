@@ -27,7 +27,7 @@ async function refreshAccessToken(tokens: GoogleTokens): Promise<string> {
   return data.access_token
 }
 
-async function getValidAccessToken(tokens: GoogleTokens): Promise<string> {
+export async function getValidAccessToken(tokens: GoogleTokens): Promise<string> {
   const isExpired = tokens.expiry_date
     ? tokens.expiry_date < Date.now() + 60_000
     : false

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { api } from "@/lib/api"
@@ -29,11 +29,37 @@ import {
   Phone,
   ExternalLink,
   CheckCircle2,
-  AlertCircle,
   Copy,
   Check,
 } from "lucide-react"
 import { motion } from "framer-motion"
+
+type DisplayEvent = {
+  id: string
+  scheduled_at: string
+  ends_at?: string
+  customer_name?: string
+  customer_phone?: string
+  service?: { name: string; price: number }
+  notes?: string
+  status?: string
+  source: "ai" | "google"
+  googleDescription?: string
+}
+
+function normalizeGoogleEvent(e: any): DisplayEvent {
+  const startRaw = e.start?.dateTime ?? `${e.start?.date}T00:00:00`
+  const endRaw = e.end?.dateTime ?? `${e.end?.date}T00:00:00`
+  return {
+    id: `gcal-${e.id}`,
+    scheduled_at: startRaw,
+    ends_at: endRaw,
+    customer_name: e.summary || "Evento",
+    source: "google",
+    googleDescription: e.description,
+    status: e.status,
+  }
+}
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -43,6 +69,12 @@ export default function CalendarPage() {
   const searchParams = useSearchParams()
   const urlError = searchParams.get("error")
   const urlConnected = searchParams.get("connected")
+
+  const monthStart = startOfMonth(currentDate)
+  const monthEnd = endOfMonth(currentDate)
+  const calStart = startOfWeek(monthStart, { weekStartsOn: 1 })
+  const calEnd = endOfWeek(monthEnd, { weekStartsOn: 1 })
+  const calDays = eachDayOfInterval({ start: calStart, end: calEnd })
 
   const { data: googleCheck } = useQuery({
     queryKey: ["google-check"],
@@ -76,23 +108,40 @@ export default function CalendarPage() {
     enabled: !!currentBusinessId,
   })
 
-  const appointments: any[] = appointmentsRes || []
+  const { data: googleEventsRes } = useQuery({
+    queryKey: ["google-events", currentBusinessId, format(currentDate, "yyyy-MM")],
+    queryFn: () =>
+      api
+        .get(
+          `/api/google/events?businessId=${currentBusinessId}&timeMin=${calStart.toISOString()}&timeMax=${calEnd.toISOString()}`
+        )
+        .then((r) => r.data?.events || []),
+    enabled: !!currentBusinessId && !!googleStatus?.connected,
+    staleTime: 60_000,
+  })
 
-  const monthStart = startOfMonth(currentDate)
-  const monthEnd = endOfMonth(currentDate)
-  const calStart = startOfWeek(monthStart, { weekStartsOn: 1 })
-  const calEnd = endOfWeek(monthEnd, { weekStartsOn: 1 })
-  const calDays = eachDayOfInterval({ start: calStart, end: calEnd })
+  const aiAppointments: DisplayEvent[] = (appointmentsRes || []).map((a: any) => ({
+    ...a,
+    source: "ai" as const,
+  }))
 
-  const getForDay = (day: Date) =>
-    appointments.filter(
+  const googleEvents: DisplayEvent[] = (googleEventsRes || []).map(normalizeGoogleEvent)
+
+  const getForDay = (day: Date): DisplayEvent[] => {
+    const ai = aiAppointments.filter(
       (a) => a.scheduled_at && isSameDay(parseISO(a.scheduled_at), day)
     )
+    const gcal = googleEvents.filter(
+      (e) => e.scheduled_at && isSameDay(parseISO(e.scheduled_at), day)
+    )
+    return [...ai, ...gcal].sort((a, b) =>
+      a.scheduled_at.localeCompare(b.scheduled_at)
+    )
+  }
 
   const selectedAppts = getForDay(selectedDate)
-  const totalThisMonth = appointments.filter(
-    (a) =>
-      a.scheduled_at && isSameMonth(parseISO(a.scheduled_at), currentDate)
+  const totalThisMonth = [...aiAppointments, ...googleEvents].filter(
+    (a) => a.scheduled_at && isSameMonth(parseISO(a.scheduled_at), currentDate)
   ).length
 
   return (
@@ -108,7 +157,6 @@ export default function CalendarPage() {
           </p>
         </div>
 
-        {/* Google Calendar button */}
         {googleStatus?.connected ? (
           <div className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border border-emerald-200 bg-emerald-50 text-emerald-700">
             <CheckCircle2 className="w-4 h-4" />
@@ -176,7 +224,7 @@ export default function CalendarPage() {
           {/* Days */}
           <div className="grid grid-cols-7 gap-1">
             {calDays.map((day) => {
-              const dayAppts = getForDay(day)
+              const dayEvts = getForDay(day)
               const isSelected = isSameDay(day, selectedDate)
               const inMonth = isSameMonth(day, currentDate)
               const today = isToday(day)
@@ -207,26 +255,28 @@ export default function CalendarPage() {
                     {format(day, "d")}
                   </span>
                   <div className="space-y-0.5">
-                    {dayAppts.slice(0, 2).map((apt: any) => (
+                    {dayEvts.slice(0, 2).map((evt) => (
                       <div
-                        key={apt.id}
+                        key={evt.id}
                         className={`text-xs truncate rounded px-1 py-0.5 leading-tight ${
                           isSelected
                             ? "bg-white/20 text-white"
+                            : evt.source === "google"
+                            ? "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300"
                             : "bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300"
                         }`}
                       >
-                        {format(parseISO(apt.scheduled_at), "HH:mm")}{" "}
-                        {apt.customer_name?.split(" ")[0]}
+                        {format(parseISO(evt.scheduled_at), "HH:mm")}{" "}
+                        {evt.customer_name?.split(" ")[0]}
                       </div>
                     ))}
-                    {dayAppts.length > 2 && (
+                    {dayEvts.length > 2 && (
                       <div
                         className={`text-xs font-medium ${
                           isSelected ? "text-white/70" : "text-gray-400"
                         }`}
                       >
-                        +{dayAppts.length - 2}
+                        +{dayEvts.length - 2}
                       </div>
                     )}
                   </div>
@@ -234,6 +284,20 @@ export default function CalendarPage() {
               )
             })}
           </div>
+
+          {/* Legend */}
+          {googleStatus?.connected && (
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-violet-200 dark:bg-violet-900" />
+                Reservas IA
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-blue-200 dark:bg-blue-900" />
+                Google Calendar
+              </div>
+            </div>
+          )}
         </motion.div>
 
         {/* Day detail */}
@@ -249,67 +313,82 @@ export default function CalendarPage() {
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
               {selectedAppts.length > 0
-                ? `${selectedAppts.length} cita${selectedAppts.length !== 1 ? "s" : ""}`
-                : "Sin citas"}
+                ? `${selectedAppts.length} evento${selectedAppts.length !== 1 ? "s" : ""}`
+                : "Sin eventos"}
             </p>
           </div>
 
           <div className="space-y-3 max-h-[420px] overflow-y-auto">
-            {selectedAppts.map((apt: any) => (
+            {selectedAppts.map((evt) => (
               <div
-                key={apt.id}
-                className="border border-gray-100 dark:border-gray-800 rounded-xl p-3.5 space-y-2.5"
+                key={evt.id}
+                className={`border rounded-xl p-3.5 space-y-2.5 ${
+                  evt.source === "google"
+                    ? "border-blue-100 dark:border-blue-900/50 bg-blue-50/40 dark:bg-blue-950/20"
+                    : "border-gray-100 dark:border-gray-800"
+                }`}
               >
                 <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-violet-600 flex-shrink-0" />
+                  <Clock className={`w-3.5 h-3.5 flex-shrink-0 ${evt.source === "google" ? "text-blue-500" : "text-violet-600"}`} />
                   <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">
-                    {format(parseISO(apt.scheduled_at), "HH:mm")}
-                    {apt.ends_at &&
-                      ` — ${format(parseISO(apt.ends_at), "HH:mm")}`}
+                    {format(parseISO(evt.scheduled_at), "HH:mm")}
+                    {evt.ends_at && ` — ${format(parseISO(evt.ends_at), "HH:mm")}`}
                   </span>
-                  <span
-                    className={`ml-auto text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
-                      apt.status === "confirmed"
-                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                        : apt.status === "cancelled"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
-                  >
-                    {apt.status === "confirmed"
-                      ? "Confirmada"
-                      : apt.status === "cancelled"
-                      ? "Cancelada"
-                      : apt.status}
-                  </span>
+                  {evt.source === "google" ? (
+                    <span className="ml-auto text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                      Google Cal
+                    </span>
+                  ) : (
+                    <span
+                      className={`ml-auto text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
+                        evt.status === "confirmed"
+                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                          : evt.status === "cancelled"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {evt.status === "confirmed"
+                        ? "Confirmada"
+                        : evt.status === "cancelled"
+                        ? "Cancelada"
+                        : evt.status}
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2">
                   <User className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
-                    {apt.customer_name || "Cliente"}
+                    {evt.customer_name || "Cliente"}
                   </span>
                 </div>
 
-                {apt.customer_phone && (
+                {evt.customer_phone && (
                   <div className="flex items-center gap-2">
                     <Phone className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {apt.customer_phone}
+                      {evt.customer_phone}
                     </span>
                   </div>
                 )}
 
-                {apt.service?.name && (
+                {evt.source === "ai" && evt.service?.name && (
                   <p className="text-xs text-gray-500 dark:text-gray-400 pl-5">
-                    {apt.service.name}
-                    {apt.service.price > 0 && ` · ${apt.service.price}€`}
+                    {evt.service.name}
+                    {evt.service.price > 0 && ` · ${evt.service.price}€`}
                   </p>
                 )}
 
-                {apt.notes && (
+                {evt.source === "google" && evt.googleDescription && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 pl-5 italic">
+                    {evt.googleDescription}
+                  </p>
+                )}
+
+                {evt.source === "ai" && evt.notes && (
                   <p className="text-xs text-gray-400 italic pl-5 border-l-2 border-gray-100 dark:border-gray-700">
-                    {apt.notes}
+                    {evt.notes}
                   </p>
                 )}
               </div>
@@ -319,7 +398,7 @@ export default function CalendarPage() {
               <div className="text-center py-10">
                 <CalendarDays className="w-8 h-8 mx-auto text-gray-200 dark:text-gray-700 mb-3" />
                 <p className="text-sm text-gray-400 dark:text-gray-600">
-                  Sin citas este día
+                  Sin eventos este día
                 </p>
               </div>
             )}
@@ -329,7 +408,7 @@ export default function CalendarPage() {
             <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
               {urlError === "db_column_missing" && (
                 <div className="p-3 bg-red-50 rounded-xl text-xs text-red-700">
-                  Falta la columna <code>google_calendar_token</code> en la tabla <code>businesses</code> de Supabase. Ejecuta: <code>ALTER TABLE businesses ADD COLUMN IF NOT EXISTS google_calendar_token jsonb;</code>
+                  Falta la columna <code>google_calendar_token</code> en Supabase.
                 </div>
               )}
               {urlError && urlError !== "db_column_missing" && (
@@ -345,10 +424,7 @@ export default function CalendarPage() {
               )}
               <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl space-y-2">
                 <p className="text-xs font-semibold text-blue-800 dark:text-blue-300">
-                  Paso 1 — Registra esta URI en Google Cloud Console
-                </p>
-                <p className="text-xs text-blue-600 dark:text-blue-400">
-                  Ve a console.cloud.google.com → APIs &amp; Services → Credentials → tu OAuth 2.0 Client ID → Authorized redirect URIs → Add URI:
+                  Registra esta URI en Google Cloud Console
                 </p>
                 <div className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-blue-200 rounded-lg px-3 py-2">
                   <code className="text-xs text-gray-700 dark:text-gray-300 flex-1 truncate">{redirectUri}</code>
@@ -356,7 +432,6 @@ export default function CalendarPage() {
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
-                <p className="text-xs text-blue-500">Paso 2 — Haz clic en &quot;Conectar Google Calendar&quot; arriba</p>
               </div>
             </div>
           )}
