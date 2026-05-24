@@ -116,7 +116,7 @@ export default function CalendarPage() {
           `/api/google/events?businessId=${currentBusinessId}&timeMin=${calStart.toISOString()}&timeMax=${calEnd.toISOString()}`
         )
         .then((r) => r.data?.events || []),
-    enabled: !!currentBusinessId && !!googleStatus?.connected,
+    enabled: !!currentBusinessId,
     staleTime: 60_000,
   })
 
