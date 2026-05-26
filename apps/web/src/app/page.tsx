@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, useInView, AnimatePresence } from "framer-motion"
-import { ArrowRight, CheckCircle, Star, Phone, Calendar, BarChart3, Users, Zap, Shield } from "lucide-react"
+import { ArrowRight, CheckCircle, Star, Phone, Calendar, BarChart3, Users, Zap, Shield, Globe } from "lucide-react"
 
 // ── Voice demo data ────────────────────────────────────────────────────────────
 
@@ -325,30 +325,71 @@ function FloatingWhatsApp() {
   )
 }
 
-const PLANS = [
+const PACKS = [
   {
-    n: "Starter",
-    pm: "99",   om: "132",
-    pa: "79",   oa: "105",
-    c: "300 llamadas/mes",
-    f: ["1 agente de voz", "Reservas automáticas", "Google Calendar", "Dashboard analítico", "Soporte email"],
-    h: false, b: undefined as string | undefined,
+    id: "ia",
+    tag: "IA DE VOZ",
+    name: "Pack IA",
+    badge: undefined as string | undefined,
+    desc: "Recepcionista IA que atiende llamadas y reserva citas 24/7.",
+    highlight: false,
+    priceType: "sub" as "sub" | "once",
+    priceMonthly: "99", priceAnnual: "79",
+    price: undefined as string | undefined,
+    features: [
+      "1 agente IA de voz",
+      "300 llamadas/mes",
+      "Reservas automáticas 24/7",
+      "Google Calendar",
+      "Dashboard analítico",
+      "Soporte por email",
+    ],
+    cta: "Empezar 7 días gratis",
+    ctaWhatsApp: false,
   },
   {
-    n: "Professional",
-    pm: "199",  om: "265",
-    pa: "159",  oa: "212",
-    c: "1.000 llamadas/mes",
-    f: ["3 agentes IA", "Multi-sede (hasta 3)", "Analytics avanzado", "Soporte prioritario", "Onboarding guiado"],
-    h: true, b: "MÁS POPULAR",
+    id: "completo",
+    tag: "TODO INCLUIDO",
+    name: "Pack Completo",
+    badge: "LA MÁS PREMIUM" as string | undefined,
+    desc: "Web premium + IA de voz + automatizaciones. La solución definitiva.",
+    highlight: true,
+    priceType: "sub" as "sub" | "once",
+    priceMonthly: "199", priceAnnual: "159",
+    price: undefined as string | undefined,
+    features: [
+      "Web premium incluida",
+      "3 agentes IA de voz",
+      "1.000 llamadas/mes",
+      "WhatsApp + Google Calendar",
+      "Automatizaciones avanzadas",
+      "Analytics en tiempo real",
+      "Soporte prioritario 24/7",
+    ],
+    cta: "Empezar 7 días gratis",
+    ctaWhatsApp: false,
   },
   {
-    n: "Enterprise",
-    pm: "799",  om: "1.065",
-    pa: "639",  oa: "852",
-    c: "Llamadas ilimitadas",
-    f: ["Agentes ilimitados", "API completa + webhooks", "Marca blanca", "SLA 99.9% garantizado", "Account manager dedicado"],
-    h: false, b: undefined,
+    id: "web",
+    tag: "PÁGINAS WEB",
+    name: "Pack Web",
+    badge: undefined as string | undefined,
+    desc: "Web profesional diseñada para convertir visitas en clientes.",
+    highlight: false,
+    priceType: "once" as "sub" | "once",
+    priceMonthly: undefined as string | undefined,
+    priceAnnual: undefined as string | undefined,
+    price: "799",
+    features: [
+      "Diseño premium a medida",
+      "Velocidad 99+ PageSpeed",
+      "SEO técnico desde el inicio",
+      "Integración con WhatsApp",
+      "Entrega en 7–10 días",
+      "12 meses de soporte",
+    ],
+    cta: "Solicitar presupuesto",
+    ctaWhatsApp: true,
   },
 ]
 
@@ -389,33 +430,45 @@ export default function HomePage() {
         <HeroAmbient />
         <div className="relative max-w-[700px] mx-auto">
 
+          {/* Two service pills */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease }}
-            className="inline-flex items-center gap-2 border border-gray-200/80 text-[12px] font-medium text-gray-500 px-4 py-[6px] rounded-full mb-9 tracking-wide"
+            className="flex flex-wrap items-center justify-center gap-2 mb-8"
           >
-            <span className="w-[6px] h-[6px] rounded-full bg-emerald-500" />
-            Más de 500 negocios confían en alloStudios
+            <div className="inline-flex items-center gap-2 bg-violet-50 border border-violet-200/80 text-[12.5px] font-semibold text-[#7c3aed] px-4 py-[7px] rounded-full">
+              <span className="w-[5px] h-[5px] rounded-full bg-[#7c3aed] animate-pulse" />
+              IA de Voz para Negocios
+            </div>
+            <div className="inline-flex items-center gap-2 border border-gray-200 bg-white text-[12.5px] font-medium text-gray-500 px-4 py-[7px] rounded-full">
+              <span className="w-[5px] h-[5px] rounded-full bg-gray-400" />
+              Páginas Web Premium
+            </div>
+            <div className="inline-flex items-center gap-1.5 text-[11.5px] text-gray-400">
+              <span className="w-[5px] h-[5px] rounded-full bg-emerald-500" />
+              +500 negocios activos
+            </div>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.07, ease }}
-            className="text-[3.8rem] sm:text-[5rem] lg:text-[6rem] font-bold text-gray-900 leading-[1.02] tracking-[-0.03em] mb-7"
+            className="text-[3.4rem] sm:text-[4.5rem] lg:text-[5.5rem] font-bold text-gray-900 leading-[1.04] tracking-[-0.03em] mb-7"
           >
-            La recepcionista<br />
-            <span style={{ color: "#7c3aed" }}>que nunca descansa.</span>
+            Automatiza tu negocio.<br />
+            <span style={{ color: "#7c3aed" }}>Domina internet.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.16, ease }}
-            className="text-[1.1rem] text-gray-500 leading-[1.8] mb-9 max-w-[460px] mx-auto"
+            className="text-[1.1rem] text-gray-500 leading-[1.8] mb-9 max-w-[500px] mx-auto"
           >
-            Responde llamadas, reserva citas y automatiza tu negocio con IA. También creamos páginas web premium que convierten.
+            Asistentes IA de voz que atienden llamadas y reservan citas 24/7.
+            Páginas web premium diseñadas para convertir visitas en clientes.
           </motion.p>
 
           <motion.div
@@ -425,15 +478,28 @@ export default function HomePage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-5"
           >
             <Link href="/register" className="inline-flex items-center gap-2 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-[14px] px-8 py-3.5 rounded-xl transition-colors duration-200">
-              Prueba gratis 7 días <ArrowRight className="w-4 h-4" />
+              Automatizar mi negocio <ArrowRight className="w-4 h-4" />
             </Link>
+            <a
+              href="#webs"
+              className="inline-flex items-center gap-2 border border-gray-200 hover:border-gray-400 bg-white text-[14px] font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 px-6 py-3.5 rounded-xl"
+            >
+              Crear mi web
+            </a>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3, ease }}
+            className="flex items-center justify-center gap-1.5 mb-1"
+          >
             <a
               href="https://wa.me/34611430660?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20alloStudios"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-gray-200 hover:border-gray-400 text-[14px] font-medium text-gray-500 hover:text-gray-900 transition-colors duration-200 px-6 py-3.5 rounded-xl"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gray-400 hover:text-[#7c3aed] transition-colors duration-200"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="#22c55e">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.122 1.524 5.855L.057 23.943l6.088-1.467C7.878 23.44 9.9 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.988c-1.954 0-3.775-.526-5.332-1.44l-.381-.227-3.949.954.975-3.853-.249-.395C2.031 15.449 1.5 13.787 1.5 12 1.5 6.201 6.201 1.5 12 1.5c5.8 0 10.5 4.701 10.5 10.5 0 5.8-4.7 10.488-10.5 10.488z"/>
               </svg>
               Hablar por WhatsApp
@@ -600,6 +666,102 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+
+      {/* ── SERVICES SPLIT ─────────────────────────────────────────── */}
+      <section className="relative py-24 px-6 border-t border-gray-100">
+        <SectionGlow side="right" />
+        <div className="max-w-[1100px] mx-auto">
+          <Reveal className="text-center mb-14">
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.16em] mb-4">QUÉ HACEMOS</p>
+            <h2 className="text-[2.75rem] font-bold text-gray-900 tracking-[-0.025em]">
+              Dos soluciones.<br />Un solo lugar.
+            </h2>
+            <p className="text-[14px] text-gray-500 mt-4 max-w-[440px] mx-auto leading-[1.72]">
+              IA de voz para no perder ni una llamada. Webs premium para que te encuentren y te elijan.
+            </p>
+          </Reveal>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* IA de Voz */}
+            <Reveal delay={0.06}>
+              <div className="rounded-2xl bg-[#FAFAFE] border border-violet-200/60 p-8 h-full flex flex-col">
+                <div className="w-12 h-12 bg-[#7c3aed] rounded-2xl flex items-center justify-center mb-6">
+                  <Phone className="w-5 h-5 text-white" />
+                </div>
+                <p className="text-[11px] font-semibold text-[#7c3aed] uppercase tracking-[0.14em] mb-2">IA DE VOZ</p>
+                <h3 className="text-[1.55rem] font-bold text-gray-900 tracking-tight mb-3">Recepcionista IA 24/7</h3>
+                <p className="text-[14px] text-gray-500 leading-[1.72] mb-7">
+                  Atiende llamadas, gestiona citas y automatiza comunicaciones. Nunca ocupado, nunca ausente, siempre perfecto.
+                </p>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {[
+                    "Atiende el 100% de las llamadas",
+                    "Reservas automáticas + Google Calendar",
+                    "Funciona los 365 días, sin pausas",
+                    "Dashboard con analíticas en tiempo real",
+                    "Configurable en menos de 20 minutos",
+                  ].map(f => (
+                    <li key={f} className="flex items-center gap-3 text-[13.5px] text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-[#7c3aed] flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-6 border-t border-violet-100">
+                  <p className="text-[12px] text-gray-400 mb-1">Desde</p>
+                  <p className="text-[2rem] font-bold text-gray-900 mb-5">99€<span className="text-[14px] font-normal text-gray-400">/mes</span></p>
+                  <Link
+                    href="/register"
+                    className="inline-flex items-center gap-2 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-[14px] px-7 py-3.5 rounded-xl transition-colors duration-200 w-full justify-center"
+                  >
+                    Automatizar mi negocio <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Páginas Web Premium */}
+            <Reveal delay={0.12}>
+              <div className="rounded-2xl bg-white border border-gray-200 shadow-sm p-8 h-full flex flex-col">
+                <div className="w-12 h-12 bg-gray-900 rounded-2xl flex items-center justify-center mb-6">
+                  <Globe className="w-5 h-5 text-white" />
+                </div>
+                <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-[0.14em] mb-2">PÁGINAS WEB</p>
+                <h3 className="text-[1.55rem] font-bold text-gray-900 tracking-tight mb-3">Web Premium que convierte</h3>
+                <p className="text-[14px] text-gray-500 leading-[1.72] mb-7">
+                  Diseñada para que te encuentren en Google y conviertan visitas en clientes desde el primer día.
+                </p>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {[
+                    "Diseño premium a medida, sin plantillas",
+                    "Velocidad 99+ en PageSpeed",
+                    "SEO técnico optimizado desde el inicio",
+                    "Integración WhatsApp y formularios",
+                    "Entrega garantizada en 7–10 días",
+                  ].map(f => (
+                    <li key={f} className="flex items-center gap-3 text-[13.5px] text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-6 border-t border-gray-100">
+                  <p className="text-[12px] text-gray-400 mb-1">Desde</p>
+                  <p className="text-[2rem] font-bold text-gray-900 mb-5">799€<span className="text-[14px] font-normal text-gray-400"> pago único</span></p>
+                  <a
+                    href="https://wa.me/34611430660?text=Hola%2C%20me%20interesa%20una%20p%C3%A1gina%20web%20premium"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-semibold text-[14px] px-7 py-3.5 rounded-xl transition-colors duration-200 w-full justify-center"
+                  >
+                    Pedir presupuesto <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       {/* ── HOW IT WORKS ───────────────────────────────────────────── */}
       <section id="como-funciona" className="relative py-28 px-6">
@@ -939,13 +1101,11 @@ export default function HomePage() {
         </div>
         <div className="relative max-w-[940px] mx-auto">
           <Reveal className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 text-[#7c3aed] bg-violet-50 text-[11px] font-semibold px-4 py-[6px] rounded-full border border-violet-100/80 mb-5">
-              OFERTA DE LANZAMIENTO — 25% DESCUENTO
-            </div>
-            <h2 className="text-[2.75rem] font-bold text-gray-900 tracking-[-0.025em] mb-3">Precios que tienen sentido.</h2>
-            <p className="text-[14px] text-gray-500 mb-8">7 días gratis. Sin tarjeta. Una sola cita recuperada ya paga el plan.</p>
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.16em] mb-5">PLANES Y PRECIOS</p>
+            <h2 className="text-[2.75rem] font-bold text-gray-900 tracking-[-0.025em] mb-3">Elige tu plan.</h2>
+            <p className="text-[14px] text-gray-500 mb-8">7 días gratis en los planes IA. Sin tarjeta. Cancela cuando quieras.</p>
 
-            {/* Billing toggle */}
+            {/* Billing toggle — subscription plans only */}
             <div className="inline-flex items-center gap-1 bg-gray-100 rounded-full p-1">
               <button
                 onClick={() => setAnnual(false)}
@@ -963,70 +1123,86 @@ export default function HomePage() {
               >
                 Anual
                 <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
-                  2 meses gratis
+                  −20%
                 </span>
               </button>
             </div>
           </Reveal>
 
           <div className="grid md:grid-cols-3 gap-4">
-            {PLANS.map(({ n, pm, pa, om, oa, c, f, h, b }, i) => {
-              const price = annual ? pa : pm
-              const original = annual ? oa : om
-              return (
-                <Reveal key={n} delay={i * 0.1}>
-                  <div className={`relative rounded-2xl p-8 border h-full flex flex-col ${
-                    h
-                      ? "border-[#7c3aed]/25 shadow-[0_0_0_1px_rgba(124,58,237,0.1),0_8px_40px_rgba(124,58,237,0.08)] bg-white"
-                      : "border-gray-200 bg-white"
-                  }`}>
-                    {b && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7c3aed] text-white text-[10px] font-bold px-4 py-[5px] rounded-full tracking-wide whitespace-nowrap">
-                        {b}
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <p className="text-[15px] font-bold text-gray-900 mb-0.5">{n}</p>
-                      <p className="text-[12px] text-gray-400 mb-5">{c}</p>
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[13px] text-gray-400 line-through">{original}€</span>
-                          <span className="text-[11px] font-semibold text-[#7c3aed] bg-violet-50 px-2 py-0.5 rounded-full">-25%</span>
-                        </div>
-                        <motion.p
-                          key={price}
-                          initial={{ opacity: 0, y: -6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.22, ease }}
-                          className="text-[2.5rem] font-bold text-gray-900 tracking-tight leading-none"
-                        >
-                          {price}<span className="text-[15px] font-normal text-gray-400"> €/mes</span>
-                        </motion.p>
-                        {annual && (
-                          <p className="text-[11px] text-gray-400 mt-1.5">Facturado anualmente</p>
-                        )}
-                      </div>
-                      <ul className="space-y-2.5 mb-8">
-                        {f.map((feat) => (
-                          <li key={feat} className="flex items-center gap-2.5 text-[13.5px] text-gray-600">
-                            <CheckCircle className="w-3.5 h-3.5 text-[#7c3aed] flex-shrink-0" />
-                            {feat}
-                          </li>
-                        ))}
-                      </ul>
+            {PACKS.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.1}>
+                <div className={`relative rounded-2xl p-8 border h-full flex flex-col ${
+                  p.highlight
+                    ? "border-[#7c3aed]/25 shadow-[0_0_0_1px_rgba(124,58,237,0.1),0_8px_40px_rgba(124,58,237,0.08)] bg-white"
+                    : "border-gray-200 bg-white"
+                }`}>
+                  {p.badge && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7c3aed] text-white text-[10px] font-bold px-4 py-[5px] rounded-full tracking-wide whitespace-nowrap">
+                      {p.badge}
                     </div>
+                  )}
+                  <div className="flex-1">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.14em] mb-3">{p.tag}</p>
+                    <p className="text-[17px] font-bold text-gray-900 mb-1">{p.name}</p>
+                    <p className="text-[12.5px] text-gray-400 mb-5 leading-relaxed">{p.desc}</p>
+                    <div className="mb-6">
+                      {p.priceType === "once" ? (
+                        <>
+                          <p className="text-[12px] text-gray-400 mb-1">Desde</p>
+                          <p className="text-[2.5rem] font-bold text-gray-900 tracking-tight leading-none">
+                            {p.price}<span className="text-[15px] font-normal text-gray-400"> € pago único</span>
+                          </p>
+                          <p className="text-[11px] text-gray-400 mt-1.5">Precio orientativo · presupuesto personalizado</p>
+                        </>
+                      ) : (
+                        <>
+                          <motion.p
+                            key={annual ? "a" : "m"}
+                            initial={{ opacity: 0, y: -6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.22, ease }}
+                            className="text-[2.5rem] font-bold text-gray-900 tracking-tight leading-none"
+                          >
+                            {annual ? p.priceAnnual : p.priceMonthly}<span className="text-[15px] font-normal text-gray-400"> €/mes</span>
+                          </motion.p>
+                          {annual && <p className="text-[11px] text-gray-400 mt-1.5">Facturado anualmente</p>}
+                        </>
+                      )}
+                    </div>
+                    <ul className="space-y-2.5 mb-8">
+                      {p.features.map(f => (
+                        <li key={f} className="flex items-center gap-2.5 text-[13.5px] text-gray-600">
+                          <CheckCircle className={`w-3.5 h-3.5 flex-shrink-0 ${p.highlight ? "text-[#7c3aed]" : "text-gray-400"}`} />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {p.ctaWhatsApp ? (
+                    <a
+                      href="https://wa.me/34611430660?text=Hola%2C%20me%20interesa%20una%20p%C3%A1gina%20web%20premium"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block text-center text-[13.5px] font-semibold py-3 rounded-xl transition-colors duration-200 ${
+                        p.highlight ? "bg-[#7c3aed] text-white hover:bg-[#6d28d9]" : "bg-gray-900 text-white hover:bg-gray-800"
+                      }`}
+                    >
+                      {p.cta}
+                    </a>
+                  ) : (
                     <Link
                       href="/register"
                       className={`block text-center text-[13.5px] font-semibold py-3 rounded-xl transition-colors duration-200 ${
-                        h ? "bg-[#7c3aed] text-white hover:bg-[#6d28d9]" : "bg-gray-900 text-white hover:bg-gray-800"
+                        p.highlight ? "bg-[#7c3aed] text-white hover:bg-[#6d28d9]" : "bg-gray-900 text-white hover:bg-gray-800"
                       }`}
                     >
-                      {n === "Enterprise" ? "Contratar ahora" : "Empezar gratis 7 días"}
+                      {p.cta}
                     </Link>
-                  </div>
-                </Reveal>
-              )
-            })}
+                  )}
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
