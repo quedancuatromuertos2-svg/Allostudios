@@ -396,6 +396,7 @@ const PACKS = [
 export default function HomePage() {
   const [annual, setAnnual] = useState(false)
   return (
+    <>
     <div className="min-h-screen bg-white text-gray-900 antialiased">
 
       {/* ── NAV ────────────────────────────────────────────────────── */}
@@ -1325,5 +1326,6 @@ export default function HomePage() {
     </div>
 
     <FloatingWhatsApp />
+    </>
   )
 }
