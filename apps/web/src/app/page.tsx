@@ -991,6 +991,98 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── WEB PRESUPUESTO ────────────────────────────────────────── */}
+      <section id="web-presupuesto" className="relative py-24 px-6 bg-gray-50 border-t border-gray-100">
+        <SectionGlow side="left" />
+        <div className="max-w-[1100px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+
+            {/* Left: sales copy */}
+            <Reveal>
+              <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.16em] mb-4">SOLICITAR PRESUPUESTO</p>
+              <h2 className="text-[2.75rem] font-bold text-gray-900 tracking-[-0.025em] mb-5">
+                Tu web lista<br />en 7 días.
+              </h2>
+              <p className="text-[15px] text-gray-500 leading-[1.75] mb-10 max-w-[460px]">
+                Diseñamos webs que aparecen en Google, cargan en menos de 1 segundo y convierten visitas en clientes desde el primer día. Cada proyecto es único y hecho a medida.
+              </p>
+              <div className="space-y-5">
+                {[
+                  { n: "01", t: "Briefing gratuito",   d: "Nos cuentas tu negocio y objetivos en una llamada rápida o por WhatsApp." },
+                  { n: "02", t: "Propuesta a medida",  d: "En menos de 24 horas recibes diseño, precio y plazos detallados." },
+                  { n: "03", t: "Diseño y entrega",    d: "Tu web terminada y publicada en 7–10 días laborables." },
+                  { n: "04", t: "Soporte incluido",    d: "12 meses de mantenimiento y soporte técnico sin coste adicional." },
+                ].map(({ n, t, d }) => (
+                  <div key={n} className="flex gap-4">
+                    <div className="w-7 h-7 rounded-full bg-white border border-gray-200 flex-shrink-0 flex items-center justify-center text-[11px] font-bold text-gray-400 mt-0.5">{n}</div>
+                    <div>
+                      <p className="text-[14px] font-semibold text-gray-800">{t}</p>
+                      <p className="text-[13px] text-gray-400 mt-0.5 leading-relaxed">{d}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Right: WhatsApp contact card */}
+            <Reveal delay={0.1}>
+              <div className="rounded-2xl bg-white border border-gray-200 shadow-[0_8px_40px_rgba(0,0,0,0.06)] p-8">
+
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#25D366" }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.122 1.524 5.855L.057 23.943l6.088-1.467C7.878 23.44 9.9 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.988c-1.954 0-3.775-.526-5.332-1.44l-.381-.227-3.949.954.975-3.853-.249-.395C2.031 15.449 1.5 13.787 1.5 12 1.5 6.201 6.201 1.5 12 1.5c5.8 0 10.5 4.701 10.5 10.5 0 5.8-4.7 10.488-10.5 10.488z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[15px] font-bold text-gray-900">Habla con el equipo</p>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse" />
+                      <p className="text-[12px] text-gray-400">Disponible ahora · respuesta en &lt;24h</p>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-[14px] text-gray-500 leading-[1.72] mb-7">
+                  Cuéntanos tu proyecto y recibe un presupuesto personalizado sin ningún compromiso. Nuestro equipo te asesora gratis sobre la mejor solución para tu negocio.
+                </p>
+
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Presupuesto detallado sin compromiso",
+                    "Diseño adaptado a tu sector y objetivos",
+                    "Consultoría SEO incluida en el proceso",
+                    "Respuesta garantizada en menos de 24h",
+                  ].map(f => (
+                    <li key={f} className="flex items-center gap-2.5 text-[13.5px] text-gray-600">
+                      <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: "#25D366" }} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <motion.a
+                  href="https://wa.me/34611430660?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20una%20p%C3%A1gina%20web.%20Mi%20negocio%20es%3A%20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-semibold text-[15px] shadow-lg transition-shadow duration-200 hover:shadow-xl"
+                  style={{ backgroundColor: "#25D366" }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.122 1.524 5.855L.057 23.943l6.088-1.467C7.878 23.44 9.9 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.988c-1.954 0-3.775-.526-5.332-1.44l-.381-.227-3.949.954.975-3.853-.249-.395C2.031 15.449 1.5 13.787 1.5 12 1.5 6.201 6.201 1.5 12 1.5c5.8 0 10.5 4.701 10.5 10.5 0 5.8-4.7 10.488-10.5 10.488z"/>
+                  </svg>
+                  Pedir presupuesto por WhatsApp
+                </motion.a>
+
+                <p className="text-center text-[11.5px] text-gray-400 mt-4">Sin compromiso · Asesoramiento gratuito · Respuesta en 24h</p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* ── FEATURES ───────────────────────────────────────────────── */}
       <section id="producto" className="relative py-24 px-6 bg-gray-950">
         <SectionGlow side="right" dark />
