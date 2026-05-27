@@ -5,18 +5,45 @@ import { motion } from 'framer-motion'
 
 const packs = [
   {
-    id: 'bot',
-    tag: 'IA para Llamadas',
-    name: 'Bot IA',
+    id: 'web',
+    category: 'Páginas Web',
+    categoryColor: 'text-emerald-600 bg-emerald-50',
+    name: 'Pack Web',
+    tagline: 'Tu presencia digital premium.',
+    priceMonthly: 799,
+    priceAnnual: 799,
+    priceNote: 'pago único',
+    priceType: 'once',
+    highlight: false,
+    cta: 'Solicitar propuesta',
+    ctaAction: 'whatsapp',
+    features: [
+      'Diseño web premium a medida',
+      'Velocidad 99+ en PageSpeed',
+      'SEO técnico desde el inicio',
+      'Diseño 100% responsive',
+      'Formulario de reservas integrado',
+      'Integración con WhatsApp',
+      'Entrega en 7–10 días',
+      '12 meses de mantenimiento',
+    ],
+    callout: 'Precio orientativo. Contacta para presupuesto personalizado.',
+  },
+  {
+    id: 'ia',
+    category: 'IA y Automatización',
+    categoryColor: 'text-blue-600 bg-blue-50',
+    name: 'Pack IA',
+    tagline: 'Tu recepcionista trabaja 24/7.',
     priceMonthly: 99,
     priceAnnual: 79,
     priceNote: '/mes',
     priceType: 'sub',
-    desc: 'Ideal para negocios que quieren automatizar su atención telefónica desde hoy.',
     highlight: false,
     cta: 'Empezar 7 días gratis',
+    ctaAction: 'demo',
     features: [
-      'Asistente IA · 1 número',
+      'Asistente IA de voz · 1 número',
       '300 llamadas / mes',
       'Reservas automáticas 24/7',
       'Integración WhatsApp',
@@ -28,20 +55,22 @@ const packs = [
     callout: null,
   },
   {
-    id: 'premium',
-    tag: 'Todo incluido',
-    badge: 'Más popular',
-    name: 'Pack Premium',
+    id: 'completo',
+    category: 'Todo incluido',
+    categoryColor: 'text-white/60 bg-white/10',
+    badge: 'La opción más premium',
+    name: 'Pack Completo',
+    tagline: 'Web + IA + Automatizaciones.',
     priceMonthly: 199,
     priceAnnual: 159,
     priceNote: '/mes',
     priceType: 'sub',
-    desc: 'Web premium + IA para llamadas + automatizaciones. La solución completa para tu negocio.',
     highlight: true,
     cta: 'Empezar 7 días gratis',
+    ctaAction: 'demo',
     features: [
-      'Web premium incluida',
-      'Bot IA · 3 números',
+      'Web premium incluida (valor 799€)',
+      'Bot IA de voz · 3 números',
       '1.000 llamadas / mes',
       'WhatsApp + Google Calendar',
       'Automatizaciones completas',
@@ -51,36 +80,13 @@ const packs = [
     ],
     callout: null,
   },
-  {
-    id: 'web',
-    tag: 'Páginas Web',
-    name: 'Web Premium',
-    priceMonthly: 799,
-    priceAnnual: 799,
-    priceNote: 'pago único',
-    priceType: 'once',
-    desc: 'Una web profesional, rápida y diseñada para convertir visitas en clientes desde el día 1.',
-    highlight: false,
-    cta: 'Solicitar propuesta',
-    features: [
-      'Diseño premium a medida',
-      'Velocidad 99+ PageSpeed',
-      'SEO optimizado desde el inicio',
-      'Integración con WhatsApp',
-      'Formulario de reservas integrado',
-      'Diseño 100% responsive',
-      'Entrega en 7–10 días',
-      '12 meses de mantenimiento',
-    ],
-    callout: 'Precio orientativo. Contacta para presupuesto personalizado.',
-  },
 ]
 
-function CheckIcon({ accent }: { accent?: boolean }) {
+function CheckIcon({ dark }: { dark?: boolean }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-px" style={{ color: accent ? '#fff' : '#5B5BD6' }}>
-      <circle cx="8" cy="8" r="7" fill="currentColor" fillOpacity="0.12"/>
-      <path d="M5 8l2.2 2.2L11 5.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-px">
+      <circle cx="8" cy="8" r="7" fill={dark ? 'rgba(255,255,255,0.1)' : 'rgba(91,91,214,0.1)'}/>
+      <path d="M5 8l2.2 2.2L11 5.5" stroke={dark ? 'rgba(255,255,255,0.7)' : '#5B5BD6'} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -89,10 +95,10 @@ export default function PricingSection() {
   const [annual, setAnnual] = useState(false)
 
   const handleCta = (p: typeof packs[0]) => {
-    if (p.id === 'web') {
+    if (p.ctaAction === 'whatsapp') {
       window.open('https://wa.me/34611430660?text=Hola%2C%20me%20interesa%20una%20p%C3%A1gina%20web%20premium', '_blank')
     } else {
-      document.querySelector('#demo')?.scrollIntoView({ behavior: 'smooth' })
+      document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -113,14 +119,15 @@ export default function PricingSection() {
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="text-headline font-semibold text-ink text-balance"
           >
-            Elige tu plan.<br />Empieza a crecer hoy.
+            Elige cómo modernizar<br />tu negocio.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}
-            className="mt-4 text-dim font-light max-w-sm mx-auto"
+            className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            7 días de prueba incluidos. Cancela en cualquier momento.
+            Web premium, IA de voz, o todo junto.
+            7 días de prueba gratis en los planes de suscripción.
           </motion.p>
 
           {/* Toggle */}
@@ -154,34 +161,31 @@ export default function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative flex flex-col rounded-2xl ${
-                p.highlight
-                  ? 'md:-mt-4 md:mb-0'
-                  : ''
-              }`}
+              className={p.highlight ? 'md:-mt-4' : ''}
             >
               {p.highlight ? (
-                /* Featured plan — dark premium card */
-                <div className="relative flex flex-col h-full rounded-2xl bg-ink p-[1.5px] shadow-xl shadow-ink/10">
-                  {/* Gradient border */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/60 via-accent-mid/20 to-accent/40 pointer-events-none" style={{ padding: '1.5px' }}>
-                    <div className="w-full h-full rounded-2xl bg-ink" />
-                  </div>
+                /* ── PACK COMPLETO — dark premium ── */
+                <div className="relative flex flex-col rounded-2xl overflow-hidden" style={{
+                  background: 'linear-gradient(135deg, #18181b 0%, #1a1a2e 100%)',
+                  boxShadow: '0 0 0 1px rgba(91,91,214,0.3), 0 24px 80px rgba(91,91,214,0.15)',
+                }}>
+                  {/* Ambient glow */}
+                  <div className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(91,91,214,0.18) 0%, transparent 70%)' }} />
 
-                  <div className="relative z-10 flex flex-col h-full rounded-2xl bg-ink p-7">
+                  <div className="relative z-10 flex flex-col h-full p-7">
                     {/* Badge */}
                     {p.badge && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-white text-[10px] font-bold tracking-[0.12em] uppercase rounded-full shadow-glow whitespace-nowrap">
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-white text-[10px] font-bold tracking-[0.14em] uppercase rounded-full shadow-glow whitespace-nowrap">
                         {p.badge}
                       </div>
                     )}
 
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-[11px] font-semibold tracking-[0.1em] uppercase text-white/60 mb-5 w-fit">
-                      {p.tag}
+                    <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase mb-5 w-fit ${p.categoryColor}`}>
+                      {p.category}
                     </div>
-
-                    <div className="text-[20px] font-semibold text-white mb-1">{p.name}</div>
-                    <p className="text-[13px] text-white/50 font-light leading-relaxed mb-6">{p.desc}</p>
+                    <div className="text-[21px] font-semibold text-white mb-0.5">{p.name}</div>
+                    <p className="text-[13px] text-white/45 font-light mb-6">{p.tagline}</p>
 
                     {/* Price */}
                     <div className="mb-7">
@@ -189,10 +193,10 @@ export default function PricingSection() {
                         <span className="text-5xl font-semibold text-white tracking-[-0.04em] leading-none">
                           €{annual ? p.priceAnnual : p.priceMonthly}
                         </span>
-                        <span className="text-sm text-white/40 pb-1.5">{p.priceNote}</span>
+                        <span className="text-sm text-white/35 pb-1.5">{p.priceNote}</span>
                       </div>
-                      {annual && p.priceType === 'sub' && (
-                        <div className="text-[12px] text-white/40 mt-1.5">
+                      {annual && (
+                        <div className="text-[12px] text-white/35 mt-1.5">
                           Facturado anualmente · Ahorras €{(p.priceMonthly - p.priceAnnual) * 12}/año
                         </div>
                       )}
@@ -207,8 +211,8 @@ export default function PricingSection() {
 
                     <ul className="space-y-3 flex-1">
                       {p.features.map(f => (
-                        <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/70">
-                          <CheckIcon accent />
+                        <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/60">
+                          <CheckIcon dark />
                           {f}
                         </li>
                       ))}
@@ -216,14 +220,13 @@ export default function PricingSection() {
                   </div>
                 </div>
               ) : (
-                /* Regular plan — white card */
+                /* ── Regular plans ── */
                 <div className="flex flex-col h-full bg-white rounded-2xl border border-border shadow-sm p-7">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface text-[11px] font-semibold tracking-[0.1em] uppercase text-muted mb-5 w-fit">
-                    {p.tag}
+                  <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase mb-5 w-fit ${p.categoryColor}`}>
+                    {p.category}
                   </div>
-
-                  <div className="text-[20px] font-semibold text-ink mb-1">{p.name}</div>
-                  <p className="text-[13px] text-dim font-light leading-relaxed mb-6">{p.desc}</p>
+                  <div className="text-[21px] font-semibold text-ink mb-0.5">{p.name}</div>
+                  <p className="text-[13px] text-dim font-light mb-6">{p.tagline}</p>
 
                   {/* Price */}
                   <div className="mb-7">
@@ -277,13 +280,12 @@ export default function PricingSection() {
           ))}
         </div>
 
-        {/* Footer note */}
         <motion.p
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
           viewport={{ once: true }} transition={{ delay: 0.4 }}
           className="text-center mt-10 text-[12px] text-muted"
         >
-          Todos los planes de suscripción incluyen 7 días de prueba gratuita · Se requiere tarjeta de crédito · Cancela cuando quieras
+          Los planes de suscripción incluyen 7 días de prueba gratuita · Se requiere tarjeta · Cancela cuando quieras
         </motion.p>
       </div>
     </section>

@@ -3,7 +3,6 @@
 import Navigation from '@/components/Navigation'
 import HeroSection from '@/components/HeroSection'
 import LogoBand from '@/components/LogoBand'
-import VoiceDemoSection from '@/components/VoiceDemoSection'
 import SectoresSection from '@/components/SectoresSection'
 import WebsSection from '@/components/WebsSection'
 import ServicesSection from '@/components/ServicesSection'
@@ -22,7 +21,6 @@ export default function Home() {
       <main>
         <HeroSection />
         <LogoBand />
-        <VoiceDemoSection />
         <SectoresSection />
         <WebsSection />
         <ServicesSection />
