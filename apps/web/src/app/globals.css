@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -55,47 +55,119 @@
   html { scroll-behavior: smooth; }
   body { @apply bg-canvas text-ink antialiased overflow-x-hidden; }
   ::selection { background: rgba(91,91,214,0.15); color: #3D3DAB; }
-  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
+  ::-webkit-scrollbar-thumb { background: #D4D2CE; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A09D99; }
 }
 
 @layer components {
   .eyebrow {
-    @apply text-[11px] font-semibold tracking-[0.2em] uppercase text-accent;
+    @apply text-[11px] font-semibold tracking-[0.22em] uppercase text-accent;
   }
   .btn-primary {
     @apply inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ink text-white text-sm font-medium tracking-[-0.01em] transition-all duration-300 hover:bg-zinc-700 hover:shadow-lg hover:-translate-y-0.5;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-sm font-medium text-dim transition-all duration-300 hover:border-ink hover:text-ink hover:bg-surface;
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-sm font-medium text-dim transition-all duration-300 hover:border-ink/40 hover:text-ink hover:bg-surface;
   }
   .btn-accent {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent text-white text-sm font-medium tracking-[-0.01em] transition-all duration-300 hover:bg-accent-dark hover:shadow-glow hover:-translate-y-0.5;
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent text-white text-sm font-medium tracking-[-0.01em] transition-all duration-300 hover:bg-accent-dark hover:shadow-glow hover:-translate-y-0.5 active:scale-[0.98];
   }
   .card {
-    @apply bg-white rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow duration-300;
+    @apply bg-white rounded-2xl border border-border shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  /* Gradient border card via mask-composite trick */
+  .card-gradient-border {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+  }
+  .card-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(91,91,214,0.5) 0%, rgba(91,91,214,0.08) 50%, rgba(91,91,214,0.3) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
 
+/* ─── Ambient orb ─── */
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(72px);
+  filter: blur(80px);
   pointer-events: none;
 }
 
+/* ─── Dot / grid patterns ─── */
 .dot-grid {
   background-image: radial-gradient(circle, #D4D2CE 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
-.gradient-text {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600;
+.line-grid {
+  background-image:
+    linear-gradient(rgba(91,91,214,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,91,214,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-.glass-card {
-  @apply backdrop-blur-sm bg-white/80 border border-white/20;
+/* ─── Mesh hero gradient ─── */
+.mesh-hero {
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 0%, rgba(91,91,214,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 85% 10%, rgba(124,124,232,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(91,91,214,0.05) 0%, transparent 60%);
+}
+
+/* ─── Noise texture ─── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  opacity: 0.018;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── Text utilities ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #5B5BD6 0%, #7C7CE8 60%, #5B5BD6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* ─── Glass ─── */
+.glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255,255,255,0.82);
+}
+.glass-strong {
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  background: rgba(255,255,255,0.92);
+}
+
+/* ─── Focus ring ─── */
+*:focus-visible {
+  outline: 2px solid rgba(91,91,214,0.5);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 details summary { list-style: none; }
