@@ -1,204 +1,490 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 
-const services = [
-  {
-    id: 'llamadas',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-      </svg>
-    ),
-    tag: 'Principal',
-    tagColor: 'bg-accent-light text-accent',
-    name: 'IA para Llamadas',
-    headline: 'Tu recepcionista nunca descansa.',
-    desc: 'Un asistente de voz con IA responde cada llamada en menos de 2 segundos. Gestiona preguntas frecuentes, capta datos, agenda citas y filtra contactos — todo sin intervención humana.',
-    points: ['Respuesta en menos de 2 segundos', 'Reservas automáticas en tu calendario', 'Transcripciones de cada llamada', 'Múltiples idiomas y voces', 'Compatible con cualquier número'],
-    sectors: ['Restaurantes', 'Clínicas', 'Salones', 'Inmobiliarias', 'Gimnasios', 'Veterinarias'],
-  },
-  {
-    id: 'webs',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-      </svg>
-    ),
-    tag: 'Presencia',
-    tagColor: 'bg-emerald-50 text-emerald-600',
-    name: 'Páginas Web Premium',
-    headline: 'Tu web, rápida, bonita y que convierte.',
-    desc: 'Diseñamos y desarrollamos páginas web profesionales con la última tecnología. Rápidas, elegantes y optimizadas para aparecer en Google desde el primer día.',
-    points: ['Diseño premium a medida', 'Velocidad perfecta (99+ en PageSpeed)', 'SEO optimizado desde el inicio', 'Integración con IA y reservas', 'Entrega en 7-10 días'],
-    sectors: ['Todos los negocios'],
-  },
-  {
-    id: 'facturas',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-    ),
-    tag: 'Finanzas',
-    tagColor: 'bg-amber-50 text-amber-600',
-    name: 'Facturas Inteligentes',
-    headline: 'Sube tus facturas. La IA hace el resto.',
-    desc: 'Fotografía o sube tus facturas y la IA las clasifica, organiza y genera resúmenes automáticos. Sabe exactamente cuánto gastas, en qué y cuándo.',
-    points: ['Clasificación automática por categoría', 'Resúmenes mensuales inteligentes', 'Gráficas de gastos en tiempo real', 'Exportación a Excel o PDF', 'Alertas de facturas vencidas'],
-    sectors: ['Todos los negocios'],
-  },
-  {
-    id: 'analiticas',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
-      </svg>
-    ),
-    tag: 'Analíticas',
-    tagColor: 'bg-purple-50 text-purple-600',
-    name: 'Reportes y Analíticas',
-    headline: 'Entiende tu negocio sin esfuerzo.',
-    desc: 'Recibe cada semana un informe automático con todo lo que necesitas saber: llamadas, reservas, ingresos y tendencias. Tu negocio explicado en un vistazo.',
-    points: ['Informe semanal automático por email', 'Dashboard en tiempo real', 'Métricas de llamadas y reservas', 'Comparativa semana a semana', 'Insights accionables con IA'],
-    sectors: ['Todos los negocios'],
-  },
-  {
-    id: 'automatizaciones',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-    ),
-    tag: 'Automatización',
-    tagColor: 'bg-blue-50 text-blue-600',
-    name: 'Automatizaciones',
-    headline: 'Conecta todo. Automatiza todo.',
-    desc: 'Conecta tu IA con WhatsApp, Google Calendar, tu CRM y más. Configura flujos automáticos que gestionan clientes, envían recordatorios y hacen seguimiento sin que toques nada.',
-    points: ['Integración con Google Calendar', 'Mensajes automáticos por WhatsApp', 'CRM automático de clientes', 'Recordatorios de citas sin esfuerzo', 'Seguimiento post-visita automático'],
-    sectors: ['Todos los negocios'],
-  },
-]
+// ─── Voice Waveform — CSS-animated bars (performant, no JS per-frame) ───
+const waveProfile = [14, 26, 42, 60, 78, 92, 82, 64, 48, 70, 88, 96, 80, 58, 40, 62, 84, 94, 76, 54, 36, 56, 76, 88, 70, 48, 30, 50, 68, 82, 60, 38, 22, 44, 62, 75, 55, 34, 18, 32]
 
-export default function ServicesSection() {
-  const [active, setActive] = useState(0)
-  const s = services[active]
+function VoiceWave({ size = 'lg' }: { size?: 'sm' | 'lg' }) {
+  const h = size === 'lg' ? 'h-20' : 'h-5'
+  const w = size === 'lg' ? 3.5 : 2
+  const gap = size === 'lg' ? 3.5 : 2.5
+  const count = size === 'lg' ? waveProfile.length : 12
 
   return (
-    <section id="servicios" className="py-section bg-canvas">
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+    <div className={`flex items-center justify-center ${h}`} style={{ gap }}>
+      {waveProfile.slice(0, count).map((pct, i) => (
+        <div
+          key={i}
+          className="rounded-full animate-wave"
+          style={{
+            width: w,
+            height: `${pct}%`,
+            background: size === 'lg'
+              ? 'linear-gradient(to top, #5B5BD6 0%, rgba(91,91,214,0.18) 100%)'
+              : 'rgba(91,91,214,0.55)',
+            animationDuration: `${0.85 + (i % 7) * 0.18}s`,
+            animationDelay: `${(i * 0.042) % 1.1}s`,
+            transformOrigin: 'bottom',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
 
-        <div className="text-center mb-14">
-          <motion.span
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="eyebrow block mb-4"
-          >Todo lo que necesitas</motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ delay: 0.08 }}
-            className="text-headline font-semibold text-ink"
-          >
-            Un sistema.<br />Tu negocio entero.
-          </motion.h2>
+// ─── Live AI Call Card ───
+function LiveCallCard() {
+  return (
+    <div className="relative">
+      <div className="bg-white rounded-3xl border border-border/80 shadow-xl overflow-hidden" style={{ maxWidth: 320, boxShadow: '0 20px 60px rgba(91,91,214,0.12), 0 4px 16px rgba(0,0,0,0.06)' }}>
+
+        {/* Header bar */}
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-border/40 bg-white">
+          <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div className="flex-1">
+            <div className="text-[13px] font-semibold text-ink">Instagram · Mensaje directo</div>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <motion.div
+                className="w-1.5 h-1.5 rounded-full bg-green-500"
+                animate={{ opacity: [1, 0.2, 1] }}
+                transition={{ duration: 1.8, repeat: Infinity }}
+              />
+              <span className="text-[11px] text-green-600 font-medium">IA respondiendo…</span>
+            </div>
+          </div>
+          <span className="text-[10px] font-bold text-accent bg-accent-light px-2.5 py-1 rounded-full">IA</span>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {services.map((svc, i) => (
-            <button
-              key={svc.id}
-              onClick={() => setActive(i)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 ${
-                active === i
-                  ? 'bg-ink text-white shadow-md'
-                  : 'bg-white border border-border text-dim hover:text-ink hover:border-ink/30'
-              }`}
+        {/* Waveform */}
+        <div className="px-5 py-7" style={{ background: 'linear-gradient(180deg, rgba(238,239,255,0.5) 0%, transparent 100%)' }}>
+          <VoiceWave size="lg" />
+          <p className="text-[10.5px] text-center text-muted/60 mt-3 font-medium tracking-[0.04em]">
+            AlloStudios IA · Escribiendo respuesta
+          </p>
+        </div>
+
+        {/* Chat messages */}
+        <div className="px-5 space-y-2.5 pb-1">
+          <div className="bg-surface rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%]">
+            <div className="text-[10px] font-semibold text-muted mb-0.5 tracking-[0.06em] uppercase">Interesado</div>
+            <div className="text-[12px] text-ink leading-relaxed">¿Sigue disponible el ático de Chamberí?</div>
+          </div>
+          <div className="bg-accent-light rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[85%] ml-auto">
+            <div className="text-[10px] font-semibold text-accent mb-0.5 tracking-[0.06em] uppercase">IA</div>
+            <div className="text-[12px] text-ink leading-relaxed">Sí. ¿Le agendo una visita mañana a las 18:00?</div>
+          </div>
+        </div>
+
+        {/* Confirmation */}
+        <div className="mx-5 mt-3 mb-5 bg-surface rounded-xl px-3.5 py-3 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div className="flex-1">
+            <div className="text-[12px] font-semibold text-ink">Visita agendada</div>
+            <div className="text-[10.5px] text-muted">Mañana 18:00 · Lead enviado ✓</div>
+          </div>
+          <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5l2.2 2.2L8 2.5" stroke="#16a34a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Float badges */}
+      <motion.div
+        animate={{ y: [0, -7, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-5 -right-6 bg-white rounded-2xl border border-border shadow-md px-3.5 py-2.5"
+      >
+        <div className="text-[13px] font-bold text-ink">98%</div>
+        <div className="text-[10px] text-muted">mensajes atendidos</div>
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 4.1, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
+        className="absolute -bottom-5 -left-6 rounded-2xl px-3.5 py-2.5"
+        style={{ background: '#5B5BD6', boxShadow: '0 4px 20px rgba(91,91,214,0.4)' }}
+      >
+        <div className="text-[13px] font-bold text-white">&lt;2s</div>
+        <div className="text-[10px] text-white/65">respuesta IA</div>
+      </motion.div>
+    </div>
+  )
+}
+
+// ─── Automation Flow ───
+const flowNodes = [
+  { icon: '💬', label: 'Mensaje\nentrante',  bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
+  { icon: '🤖', label: 'IA cualifica\nel lead', bg: '#EEEFFF', border: 'rgba(91,91,214,0.3)', color: '#5B5BD6' },
+  { icon: '📅', label: 'Visita\nagendada',   bg: '#ECFDF5', border: '#A7F3D0', color: '#065F46' },
+  { icon: '💬', label: 'Aviso al\nagente',    bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' },
+  { icon: '⭐', label: 'Lead\ncaptado',       bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
+]
+
+function AutoFlow() {
+  return (
+    <>
+      {/* Desktop horizontal */}
+      <div className="hidden lg:flex items-center gap-0">
+        {flowNodes.map((node, i) => (
+          <div key={node.label} className="flex items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center gap-2 p-3.5 rounded-2xl border"
+              style={{ background: node.bg, borderColor: node.border, minWidth: 80 }}
             >
-              <span className={`w-4 h-4 ${active === i ? 'text-white' : 'text-muted'}`}>
-                {svc.icon}
+              <span className="text-xl leading-none">{node.icon}</span>
+              <span className="text-[10px] font-semibold text-center leading-tight whitespace-pre-line" style={{ color: node.color }}>
+                {node.label}
               </span>
-              {svc.name}
-            </button>
-          ))}
-        </div>
+            </motion.div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -24 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
-          >
-            <div>
-              <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.12em] uppercase mb-5 ${s.tagColor}`}>
-                <span className="w-3.5 h-3.5">{s.icon}</span>
-                {s.tag}
+            {i < flowNodes.length - 1 && (
+              <div className="relative mx-1.5 flex items-center" style={{ width: 28 }}>
+                <div className="w-full h-px bg-border" />
+                {/* Moving dot */}
+                <div className="absolute inset-0 overflow-hidden flex items-center">
+                  <motion.div
+                    className="absolute w-2 h-2 rounded-full bg-accent"
+                    animate={{ x: ['-50%', '200%'] }}
+                    transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.32, ease: 'linear' }}
+                  />
+                </div>
+                {/* Arrow tip */}
+                <div className="absolute right-0 flex items-center justify-center">
+                  <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
+                    <path d="M1 3.5h5M4 1.5l2 2-2 2" stroke="#A09D99" strokeWidth="1.1" strokeLinecap="round"/>
+                  </svg>
+                </div>
               </div>
-              <h3 className="text-[2rem] font-semibold text-ink leading-[1.15] tracking-[-0.02em] mb-4">{s.headline}</h3>
-              <p className="text-[16px] text-dim font-light leading-relaxed mb-8">{s.desc}</p>
+            )}
+          </div>
+        ))}
+      </div>
 
-              <ul className="space-y-3 mb-8">
-                {s.points.map(p => (
-                  <li key={p} className="flex items-center gap-3 text-[14px] text-dim">
+      {/* Mobile vertical */}
+      <div className="lg:hidden flex flex-col items-start gap-0">
+        {flowNodes.map((node, i) => (
+          <div key={node.label} className="flex flex-col items-center w-full">
+            <motion.div
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.09 }}
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl border w-full max-w-xs"
+              style={{ background: node.bg, borderColor: node.border }}
+            >
+              <span className="text-lg leading-none shrink-0">{node.icon}</span>
+              <span className="text-[12.5px] font-semibold leading-tight" style={{ color: node.color }}>
+                {node.label.replace('\n', ' ')}
+              </span>
+            </motion.div>
+            {i < flowNodes.length - 1 && (
+              <div className="relative h-7 w-px bg-border mx-auto overflow-hidden">
+                <motion.div
+                  className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-accent"
+                  animate={{ y: ['-100%', '400%'] }}
+                  transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.28, ease: 'linear' }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}
+
+// ─── Dashboard Card ───
+function DashboardCard() {
+  const bars = [38, 55, 44, 70, 62, 85, 76]
+  const metrics = [
+    { label: 'Alcance en redes', value: '34.2k', delta: '+18%' },
+    { label: 'Leads captados', value: '184', delta: '+24%' },
+    { label: 'Visitas agendadas', value: '96', delta: '+12%' },
+  ]
+
+  return (
+    <div className="bg-white rounded-2xl border border-border shadow-md overflow-hidden">
+      {/* Window chrome */}
+      <div className="flex items-center gap-1.5 px-4 py-3 border-b border-border bg-surface/60">
+        <div className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+        <div className="w-2.5 h-2.5 rounded-full bg-green-400/70" />
+        <span className="ml-3 text-[11px] text-muted font-mono">AlloStudios · Analytics</span>
+      </div>
+
+      <div className="p-5 space-y-4">
+        {metrics.map(m => (
+          <div key={m.label} className="flex items-center justify-between">
+            <div>
+              <div className="text-[11px] text-muted mb-0.5">{m.label}</div>
+              <div className="text-[19px] font-semibold text-ink tracking-[-0.025em] leading-none">{m.value}</div>
+            </div>
+            <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                <path d="M4.5 1.5L7.5 6H1.5L4.5 1.5Z" fill="#16a34a"/>
+              </svg>
+              <span className="text-[11px] font-bold text-emerald-700">{m.delta}</span>
+            </div>
+          </div>
+        ))}
+
+        {/* Micro bar chart */}
+        <div className="pt-3 border-t border-border">
+          <div className="text-[10.5px] text-muted mb-2.5 font-medium">Interacciones — últimos 7 días</div>
+          <div className="flex items-end gap-1.5 h-10">
+            {bars.map((h, i) => (
+              <motion.div
+                key={i}
+                className="flex-1 rounded-sm bg-accent/25"
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true }}
+                style={{ height: `${h}%`, transformOrigin: 'bottom' }}
+                transition={{ delay: 0.3 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── blur-fade stagger helpers ───
+const fadeSlide = (dir: 'left' | 'right', delay = 0) => ({
+  initial: { opacity: 0, x: dir === 'left' ? -28 : 28, filter: 'blur(6px)' },
+  whileInView: { opacity: 1, x: 0, filter: 'blur(0px)' },
+  viewport: { once: true, margin: '-60px' },
+  transition: { duration: 0.85, delay, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+})
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07 } },
+}
+const lineItem = {
+  hidden: { opacity: 0, x: -16 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+}
+
+export default function ServicesSection() {
+  const iaRef = useRef<HTMLDivElement>(null)
+  const autoRef = useRef<HTMLDivElement>(null)
+  const iaInView = useInView(iaRef, { once: true, margin: '-80px' })
+  const autoInView = useInView(autoRef, { once: true, margin: '-80px' })
+
+  return (
+    <section id="servicios" className="overflow-hidden">
+
+      {/* ════════════════════════════════════════════
+          BLOCK 1 — IA DE VOZ
+      ════════════════════════════════════════════ */}
+      <div className="relative py-[clamp(5rem,10vw,9rem)] bg-canvas">
+        {/* Ambient glow top-right */}
+        <div className="absolute top-[-10%] right-[-10%] w-[520px] h-[520px] rounded-full blur-[100px] opacity-[0.18] pointer-events-none"
+          style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 65%)' }} />
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 dot-grid opacity-[0.12] pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Copy — left */}
+            <div ref={iaRef}>
+              <motion.div {...fadeSlide('left')} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-light border border-accent/15 text-[11px] font-bold tracking-[0.13em] uppercase text-accent mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-slow" />
+                Asistente IA · DMs 24/7
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
+                animate={iaInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.85, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance mb-5"
+              >
+                Cada mensaje,<br />respondido al instante.
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={iaInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
+              >
+                Un asistente de IA responde tus DMs de Instagram y WhatsApp en segundos,
+                cualifica al interesado (compra o alquiler, presupuesto, zona), agenda la visita
+                y avisa al agente — mientras tú enseñas pisos, firmas o descansas.
+              </motion.p>
+
+              <motion.ul
+                variants={stagger} initial="hidden"
+                animate={iaInView ? 'show' : 'hidden'}
+                className="space-y-3.5 mb-10"
+              >
+                {[
+                  'Responde en segundos, 24/7',
+                  'Visitas agendadas en tu Google Calendar',
+                  'Cualificación del lead: compra/alquiler, presupuesto y zona',
+                  'Resumen de cada conversación enviado al agente',
+                  'Responde con el tono y la marca de tu agencia',
+                  'En Instagram, WhatsApp y tu web — sin cambiar nada',
+                ].map(f => (
+                  <motion.li key={f} variants={lineItem} className="flex items-center gap-3 text-[14px] text-dim">
                     <div className="w-5 h-5 rounded-full bg-accent-light flex items-center justify-center shrink-0">
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                         <path d="M2 5l2.5 2.5L8 2.5" stroke="#5B5BD6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    {p}
-                  </li>
+                    {f}
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
 
-              {s.sectors.length > 1 && (
-                <div>
-                  <div className="text-[11px] font-semibold text-muted tracking-[0.16em] uppercase mb-3">Sectores compatibles</div>
-                  <div className="flex flex-wrap gap-2">
-                    {s.sectors.map(sec => (
-                      <span key={sec} className="px-3 py-1.5 rounded-full bg-surface border border-border text-[12px] font-medium text-dim">{sec}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="relative">
-              <div className="bg-white rounded-3xl border border-border shadow-lg p-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-accent-light rounded-full blur-3xl opacity-40 -translate-y-1/2 translate-x-1/2" />
-
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${s.tagColor}`}>
-                  <span className="scale-125">{s.icon}</span>
-                </div>
-
-                <div className="text-[22px] font-semibold text-ink tracking-[-0.015em] mb-2">{s.name}</div>
-                <p className="text-[14px] text-dim font-light mb-8">{s.headline}</p>
-
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { n: active === 0 ? '98%' : active === 1 ? '99+' : active === 2 ? '3×' : active === 3 ? 'Semanal' : '5×', l: active === 0 ? 'llamadas respondidas' : active === 1 ? 'PageSpeed score' : active === 2 ? 'más rápido' : active === 3 ? 'informe auto' : 'tiempo ahorrado' },
-                    { n: active === 0 ? '<2s' : active === 1 ? '7 días' : active === 2 ? '100%' : active === 3 ? 'Tiempo real' : '24/7', l: active === 0 ? 'tiempo de respuesta' : active === 1 ? 'entrega' : active === 2 ? 'automático' : active === 3 ? 'dashboard' : 'activo' },
-                  ].map(stat => (
-                    <div key={stat.l} className="bg-surface rounded-xl px-4 py-3">
-                      <div className="text-xl font-semibold text-ink">{stat.n}</div>
-                      <div className="text-[11px] text-muted mt-0.5">{stat.l}</div>
-                    </div>
-                  ))}
-                </div>
-
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={iaInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.55 }}
+              >
                 <button
                   onClick={() => document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full mt-6 py-3 rounded-xl bg-ink text-white text-[13px] font-semibold hover:bg-zinc-700 transition-colors duration-300"
+                  className="btn-accent text-[14px] px-7 py-3.5 rounded-full"
                 >
-                  Empezar con {s.name}
+                  Ver planes
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
                 </button>
-              </div>
+              </motion.div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+
+            {/* Visual — right */}
+            <motion.div
+              initial={{ opacity: 0, x: 36, filter: 'blur(10px)' }}
+              animate={iaInView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
+              transition={{ duration: 1, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="hidden lg:flex items-center justify-center py-10 px-6"
+            >
+              <LiveCallCard />
+            </motion.div>
+          </div>
+        </div>
       </div>
+
+      {/* ════════════════════════════════════════════
+          BLOCK 2 — AUTOMATIZACIÓN
+      ════════════════════════════════════════════ */}
+      <div className="relative py-[clamp(5rem,10vw,9rem)] overflow-hidden" style={{ background: 'linear-gradient(180deg, #F4F3F1 0%, #FAFAF9 100%)' }}>
+        {/* Ambient glow bottom-left */}
+        <div className="absolute bottom-[-5%] left-[-8%] w-[420px] h-[420px] rounded-full blur-[80px] opacity-[0.15] pointer-events-none"
+          style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 70%)' }} />
+
+        <div className="relative max-w-6xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Visual — LEFT on desktop (order-1) */}
+            <motion.div
+              ref={autoRef}
+              initial={{ opacity: 0, x: -32, filter: 'blur(8px)' }}
+              animate={autoInView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="order-2 lg:order-1 space-y-6"
+            >
+              <div>
+                <p className="text-[11px] font-semibold text-muted tracking-[0.15em] uppercase mb-4">Flujo en tiempo real</p>
+                <AutoFlow />
+              </div>
+              <DashboardCard />
+            </motion.div>
+
+            {/* Copy — RIGHT on desktop (order-2) */}
+            <div className="order-1 lg:order-2">
+              <motion.div {...fadeSlide('right')}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200/60 text-[11px] font-bold tracking-[0.13em] uppercase text-orange-700 mb-6">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  Automatización total
+                </div>
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
+                animate={autoInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.85, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance mb-5"
+              >
+                Todo conectado.<br />Nada manual.
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={autoInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
+              >
+                Conecta tu IA con WhatsApp, Google Calendar y tu CRM inmobiliario.
+                Los flujos automáticos reparten leads entre agentes, envían fichas de inmuebles
+                y hacen seguimiento — sin que toques nada.
+              </motion.p>
+
+              <motion.div
+                variants={stagger} initial="hidden"
+                animate={autoInView ? 'show' : 'hidden'}
+                className="grid grid-cols-2 gap-2.5 mb-10"
+              >
+                {[
+                  { icon: '📅', name: 'Google Calendar' },
+                  { icon: '💬', name: 'WhatsApp' },
+                  { icon: '📊', name: 'Dashboard de leads' },
+                  { icon: '📧', name: 'Email y SMS' },
+                  { icon: '🔗', name: 'CRM inmobiliario' },
+                  { icon: '📈', name: 'Informes semanales' },
+                ].map(item => (
+                  <motion.div key={item.name} variants={lineItem}
+                    className="flex items-center gap-2.5 bg-white rounded-xl border border-border px-3.5 py-3 hover:shadow-sm transition-shadow duration-200"
+                  >
+                    <span className="text-[15px]">{item.icon}</span>
+                    <span className="text-[12.5px] font-medium text-ink">{item.name}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={autoInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.55 }}
+              >
+                <button
+                  onClick={() => document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="btn-accent text-[14px] px-7 py-3.5 rounded-full"
+                >
+                  Ver automatizaciones
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
   )
 }

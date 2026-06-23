@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { LogoFull } from './Logo'
 
 const links = [
-  { label: 'Demo IA', href: '#demo' },
+  { label: 'Servicios', href: '#catalogo' },
   { label: 'Páginas Web', href: '#webs' },
   { label: 'Precios', href: '#precios' },
   { label: 'FAQ', href: '#faq' },
@@ -74,15 +74,15 @@ export default function Navigation() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-2.5">
-            <button className="px-4 py-2 text-[13.5px] text-dim hover:text-ink transition-colors duration-200 font-medium rounded-xl hover:bg-surface/80">
+            <a href="/login" className="px-4 py-2 text-[13.5px] text-dim hover:text-ink transition-colors duration-200 font-medium rounded-xl hover:bg-surface/80">
               Iniciar sesión
-            </button>
-            <button
-              onClick={() => go('#precios')}
+            </a>
+            <a
+              href="#contratar"
               className="btn-accent text-[13px] px-5 py-2.5 rounded-full"
             >
-              Prueba gratis 7 días
-            </button>
+              Empezar ahora
+            </a>
           </div>
 
           {/* Mobile hamburger */}
@@ -131,15 +131,15 @@ export default function Navigation() {
                 </button>
               ))}
               <div className="pt-3 mt-1 border-t border-border/60 space-y-2">
-                <button className="w-full text-left px-4 py-3 text-[14px] text-dim font-medium">
+                <a href="/login" className="w-full text-left px-4 py-3 text-[14px] text-dim font-medium block">
                   Iniciar sesión
-                </button>
-                <button
-                  onClick={() => go('#precios')}
-                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5"
+                </a>
+                <a
+                  href="#contratar"
+                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center"
                 >
-                  Prueba gratis 7 días
-                </button>
+                  Empezar ahora
+                </a>
               </div>
             </div>
           </motion.div>

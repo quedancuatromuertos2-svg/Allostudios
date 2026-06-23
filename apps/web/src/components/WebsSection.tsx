@@ -103,7 +103,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'Diseño a medida',
-    desc: 'Sin plantillas. Cada web es un proyecto único diseñado desde cero para tu marca.',
+    desc: 'Sin plantillas. Cada web es un proyecto único diseñado desde cero para tu agencia.',
     accent: 'bg-violet-50 text-violet-600 border-violet-100',
   },
   {
@@ -143,7 +143,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'IA integrada',
-    desc: 'Tu recepcionista IA y tu web conectados. Reservas online y por voz en un solo sistema.',
+    desc: 'El asistente de IA y tu web conectados. Captas leads por la web y por tus DMs en un solo sistema.',
     accent: 'bg-purple-50 text-purple-600 border-purple-100',
   },
   {
@@ -153,7 +153,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'Diseño que convierte',
-    desc: 'CTAs, formularios y flujos pensados para convertir visitas en clientes reales.',
+    desc: 'Buscador de inmuebles, formularios y CTAs pensados para convertir visitas en leads.',
     accent: 'bg-rose-50 text-rose-600 border-rose-100',
   },
 ]
@@ -197,36 +197,32 @@ export default function WebsSection() {
           className="text-center mb-16 md:mb-20"
         >
           <motion.span variants={fadeUp} className="inline-block text-[11px] font-bold tracking-[0.22em] uppercase text-accent mb-5">
-            Diseño Web Premium
+            Webs Inmobiliarias Premium
           </motion.span>
           <motion.h2 variants={fadeUp}
             className="text-headline font-semibold text-white leading-[1.08] tracking-[-0.03em] text-balance"
           >
-            Tu negocio merece algo<br />mejor que una plantilla.
+            Tu inmobiliaria merece algo<br />mejor que una plantilla.
           </motion.h2>
           <motion.p variants={fadeUp}
             className="mt-5 text-[1.05rem] text-white/50 font-light max-w-xl mx-auto leading-relaxed text-pretty"
           >
-            Diseñamos experiencias digitales que transmiten confianza desde el primer segundo.
-            Webs rápidas, modernas y construidas para vender.
+            Diseñamos webs inmobiliarias que transmiten confianza desde el primer segundo.
+            Rápidas, modernas y construidas para captar leads.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <a
-              href="https://wa.me/34611430660?text=Hola%2C%20quiero%20información%20sobre%20páginas%20web%20premium"
+              href="https://wa.me/34613112671?text=Hola%2C%20quiero%20información%20sobre%20páginas%20web%20premium"
               target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-ink text-[13.5px] font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-ink text-[14px] font-semibold hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 active:scale-[0.98]"
+              style={{ boxShadow: '0 8px 28px rgba(255,255,255,0.15), 0 1px 0 rgba(255,255,255,0.9) inset' }}
             >
-              Solicitar propuesta
+              Solicitar presupuesto
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
                 <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
-            <button
-              onClick={() => document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 text-[13.5px] font-medium transition-all duration-300"
-            >
-              Ver precios
-            </button>
+            <span className="text-[12px] text-white/30">Respuesta en menos de 24h</span>
           </motion.div>
         </motion.div>
 
@@ -306,7 +302,7 @@ export default function WebsSection() {
           className="mt-14 text-center"
         >
           <p className="text-[13px] text-white/25 tracking-[0.12em] uppercase font-medium">
-            No solo automatizamos negocios — construimos su presencia digital
+            No solo captamos tus leads — construimos la presencia digital de tu inmobiliaria
           </p>
         </motion.div>
 

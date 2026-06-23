@@ -4,34 +4,34 @@ import { motion } from 'framer-motion'
 
 const testimonials = [
   {
-    quote: 'Antes perdíamos al menos el 30% de las llamadas. Desde que tenemos AlloStudios respondemos absolutamente todas, incluso a medianoche. Las reservas subieron un 40% en el primer mes.',
-    name: 'Carlos Martínez',
-    role: 'Clínica Dental Plus · Madrid',
-    initials: 'CM',
+    quote: 'Antes no teníamos tiempo para redes y la competencia nos comía terreno. Ahora AlloStudios nos lleva todo el Instagram y nos llegan contactos cada semana sin que toquemos nada.',
+    name: 'Javier R.',
+    role: 'Agencia inmobiliaria · Madrid',
+    initials: 'JR',
     color: 'bg-violet-50 text-violet-600',
     stars: 5,
   },
   {
-    quote: 'Configurarlo me llevó menos de 10 minutos. Ahora la IA gestiona todas las llamadas de citas y el calendario se llena solo. Por fin puedo centrarme en mis pacientes.',
-    name: 'Ana García',
-    role: 'Fisioterapeuta · Barcelona',
-    initials: 'AG',
+    quote: 'Trabajo sola y no llegaba a publicar. Ahora tengo un Instagram profesional y el asistente me responde los DMs y me manda los leads ya cualificados al WhatsApp.',
+    name: 'Lucía F.',
+    role: 'Agente independiente · Valencia',
+    initials: 'LF',
     color: 'bg-blue-50 text-blue-600',
     stars: 5,
   },
   {
-    quote: 'Los informes semanales son como tener un asistente que me dice exactamente qué funciona. Nunca había tenido tanta visibilidad sobre mi restaurante.',
-    name: 'Miguel Torres',
-    role: 'Restaurante Roma · Valencia',
-    initials: 'MT',
+    quote: 'Los interesados nos escriben a todas horas por Instagram. Ahora se atienden y filtran solos: compra o alquiler, presupuesto y zona. Llego a la oficina con los leads ya cualificados.',
+    name: 'Marco D.',
+    role: 'Inmobiliaria · Málaga',
+    initials: 'MD',
     color: 'bg-emerald-50 text-emerald-600',
     stars: 5,
   },
   {
-    quote: 'El organizador de facturas por sí solo me ahorra horas cada semana. Combinado con las llamadas IA, es como tener un empleado que nunca duerme.',
-    name: 'Sara Jiménez',
-    role: 'Salón de Belleza · Sevilla',
-    initials: 'SJ',
+    quote: 'El asistente responde en español e inglés a cualquier hora. Para el alquiler vacacional ha sido un antes y un después: cero mensajes sin contestar, cero reservas que se escapan.',
+    name: 'Elena P.',
+    role: 'Alquiler vacacional · Alicante',
+    initials: 'EP',
     color: 'bg-rose-50 text-rose-600',
     stars: 5,
   },
@@ -68,21 +68,21 @@ export default function TestimonialsSection() {
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} className="eyebrow block mb-4"
           >
-            Clientes reales
+            Primeros clientes
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="text-headline font-semibold text-ink text-balance"
           >
-            Negocios que eligieron crecer.
+            Inmobiliarias que no pierden un lead.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Más de 200 negocios confían en AlloStudios para automatizar su atención al cliente.
+            Las primeras agencias ya captan y cualifican cada contacto con AlloStudios.
           </motion.p>
         </div>
 
@@ -124,9 +124,9 @@ export default function TestimonialsSection() {
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 text-center"
         >
           {[
-            { n: '200+', l: 'negocios activos' },
-            { n: '4.9/5', l: 'valoración media' },
-            { n: '98%', l: 'satisfacción' },
+            { n: '24/7', l: 'atención en DMs' },
+            { n: '<2s', l: 'respuesta del asistente' },
+            { n: '+3×', l: 'alcance en redes' },
           ].map(s => (
             <div key={s.l} className="flex flex-col items-center gap-0.5">
               <span className="text-[1.5rem] font-semibold text-ink tracking-[-0.03em]">{s.n}</span>

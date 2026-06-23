@@ -5,30 +5,55 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const faqs = [
   {
-    q: '¿Cuánto tiempo tarda en estar activo?',
-    a: 'Puedes estar en marcha en menos de 10 minutos. Regístrate, configura tu IA con los datos de tu negocio, redirige tu número de teléfono y tu asistente empieza a atender llamadas de inmediato.',
+    q: '¿Qué hacéis exactamente con el Instagram de mi inmobiliaria?',
+    a: 'Lo llevamos entero: creamos el contenido (carruseles de propiedades, posts educativos, reels), escribimos los textos, lo diseñamos con tu marca y lo publicamos cada semana. Tú solo nos pasas las fotos de los pisos y das el visto bueno.',
+    tag: 'Instagram',
   },
   {
-    q: '¿Necesito cambiar mi número de teléfono actual?',
-    a: 'No. Simplemente redirigis tu número de negocio actual a AlloStudios. Tu número sigue siendo el mismo — los clientes llaman igual que siempre y tu IA responde.',
+    q: '¿En cuánto tiempo veo resultados?',
+    a: 'Empezamos a publicar la primera semana. El alcance y la imagen profesional mejoran desde el primer mes, y las captaciones van llegando a medida que tu cuenta gana constancia y autoridad. Si quieres acelerarlo, lo combinamos con campañas de anuncios.',
+    tag: 'Instagram',
   },
   {
-    q: '¿Puede la IA sonar como mi marca?',
-    a: 'Sí. Eliges la voz, el nombre, el estilo de saludo y la personalidad. La IA puede ser cálida, profesional, cercana o formal — lo que mejor se adapte a tu negocio.',
+    q: '¿Cómo funciona el asistente de IA en los DMs?',
+    a: 'Un asistente de IA responde tus mensajes directos de Instagram y WhatsApp 24/7: contesta dudas de los pisos, cualifica al interesado (compra o alquiler, presupuesto, zona), capta su contacto y agenda la visita. Cuando hace falta, te avisa para que entres tú.',
+    tag: 'Asistente IA',
   },
   {
-    q: '¿Qué pasa con las llamadas que la IA no puede resolver?',
-    a: 'Cualquier llamada que la IA no pueda resolver queda marcada para ti con transcripción completa y resumen. También puedes configurarla para transferir llamadas complejas directamente a tu móvil.',
+    q: '¿Hacéis también campañas de anuncios (Meta Ads)?',
+    a: 'Sí. Gestionamos tus campañas en Instagram y Facebook para captar más clientes. La inversión en anuncios la pones tú desde tu propia cuenta; nosotros nos encargamos de las creatividades, la segmentación y la optimización para que cada euro rinda.',
+    tag: 'Anuncios',
   },
   {
-    q: '¿Están seguros mis datos?',
-    a: 'Absolutamente. Todos los datos están cifrados en tránsito y en reposo. Somos compatibles con el RGPD y nunca compartimos ni vendemos tus datos. Tú eres el propietario de toda tu información.',
+    q: '¿Cuánto cuesta una web inmobiliaria y qué incluye?',
+    a: 'La Web Inmobiliaria parte de 790 € (pago único). Incluye diseño premium a medida, buscador de inmuebles integrado, velocidad 99+ en PageSpeed, SEO local de tu zona, diseño responsive, formulario de contacto + WhatsApp y 12 meses de mantenimiento. El precio final depende del alcance — contáctanos para un presupuesto sin compromiso.',
+    tag: 'Webs',
+  },
+  {
+    q: '¿Puedo juntar varios servicios en un solo plan?',
+    a: 'Sí, y es lo más rentable. El Pack Completo reúne la web, la gestión de Instagram, los anuncios y el asistente de IA en los DMs — todo con un único partner y un solo interlocutor.',
+    tag: 'Pack Completo',
+  },
+  {
+    q: '¿Tengo que daros acceso a mis cuentas?',
+    a: 'Para publicar y responder necesitamos acceso a tu Instagram (y a tu cuenta publicitaria si haces anuncios). Te guiamos en cada paso y tú mantienes siempre la propiedad de tus cuentas.',
+    tag: 'General',
   },
   {
     q: '¿Puedo cancelar cuando quiera?',
-    a: 'Sí, siempre. Sin contratos, sin permanencia. Cancela desde tu panel cuando lo desees y mantendrás el acceso hasta el final de tu período de facturación.',
+    a: 'Sí, siempre. Sin contratos, sin permanencia. Nos avisas y dejamos de facturarte al final del período en curso.',
+    tag: 'General',
   },
 ]
+
+const tagColors: Record<string, string> = {
+  'Instagram': 'bg-blue-50 text-blue-600',
+  'Asistente IA': 'bg-accent/8 text-accent',
+  'Anuncios': 'bg-orange-50 text-orange-600',
+  'Webs': 'bg-emerald-50 text-emerald-600',
+  'Pack Completo': 'bg-accent/8 text-accent',
+  'General': 'bg-surface text-muted',
+}
 
 function FAQItem({ faq, isOpen, onClick }: { faq: typeof faqs[0]; isOpen: boolean; onClick: () => void }) {
   return (
@@ -37,9 +62,14 @@ function FAQItem({ faq, isOpen, onClick }: { faq: typeof faqs[0]; isOpen: boolea
         onClick={onClick}
         className="w-full flex items-center justify-between py-5 text-left gap-4 group"
       >
-        <span className={`text-[15px] font-medium transition-colors duration-200 ${isOpen ? 'text-accent' : 'text-ink group-hover:text-accent'}`}>
-          {faq.q}
-        </span>
+        <div className="flex items-center gap-3 min-w-0">
+          <span className={`hidden sm:inline-flex shrink-0 text-[10px] font-semibold tracking-[0.1em] uppercase px-2.5 py-1 rounded-full ${tagColors[faq.tag]}`}>
+            {faq.tag}
+          </span>
+          <span className={`text-[15px] font-medium transition-colors duration-200 ${isOpen ? 'text-accent' : 'text-ink group-hover:text-accent'}`}>
+            {faq.q}
+          </span>
+        </div>
         <motion.div
           animate={{ rotate: isOpen ? 45 : 0 }}
           transition={{ duration: 0.25 }}
@@ -59,7 +89,7 @@ function FAQItem({ faq, isOpen, onClick }: { faq: typeof faqs[0]; isOpen: boolea
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="text-sm text-dim font-light leading-relaxed pb-5 max-w-2xl">
+            <p className="text-sm text-dim font-light leading-relaxed pb-5 max-w-2xl pl-0 sm:pl-[88px]">
               {faq.a}
             </p>
           </motion.div>
@@ -104,6 +134,21 @@ export default function FAQSection() {
             />
           ))}
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+          viewport={{ once: true }} transition={{ delay: 0.3 }}
+          className="text-center mt-8 text-[13px] text-muted"
+        >
+          ¿No encuentras tu respuesta?{' '}
+          <a
+            href="https://wa.me/34613112671?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20AlloStudios"
+            target="_blank" rel="noopener noreferrer"
+            className="text-accent font-medium hover:underline"
+          >
+            Escríbenos por WhatsApp
+          </a>
+        </motion.p>
       </div>
     </section>
   )

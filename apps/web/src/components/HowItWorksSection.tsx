@@ -6,30 +6,30 @@ import { motion, useInView } from 'framer-motion'
 const steps = [
   {
     n: '01',
-    title: 'Configura en 10 minutos',
-    desc: 'Regístrate, personaliza tu IA con los datos de tu negocio, horarios y preguntas frecuentes. Te guiamos paso a paso.',
+    title: 'Cuéntanos tu inmobiliaria',
+    desc: 'Nos pasas tu marca, tus pisos y tu zona. Preparamos tu estrategia de contenido y el calendario del primer mes. Te guiamos paso a paso.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
       </svg>
     ),
-    detail: 'Sin código. Sin técnicos. Solo configuración guiada.',
+    detail: 'Sin código. Sin técnicos. Lo montamos todo nosotros.',
   },
   {
     n: '02',
-    title: 'Activa tu recepcionista IA',
-    desc: 'Redirige tu número de negocio en segundos. Tu IA empieza a atender llamadas, gestionar reservas y capturar leads de forma inmediata.',
+    title: 'Publicamos y respondemos',
+    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tus DMs de Instagram y WhatsApp, cualifica interesados y agenda visitas.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
       </svg>
     ),
-    detail: 'Activa en cualquier momento. Pausa cuando quieras.',
+    detail: 'Tú solo apruebas. Del resto nos encargamos nosotros.',
   },
   {
     n: '03',
     title: 'Crece sin límites',
-    desc: 'Recibe informes semanales con IA, controla reservas e ingresos en tiempo real, y escala sin contratar personal.',
+    desc: 'Recibe un informe mensual, más visibilidad y más captaciones. Y cuando quieras, escalamos con campañas de anuncios en Meta.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
@@ -60,7 +60,7 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-headline font-semibold text-ink text-balance"
           >
-            En marcha en menos<br />de 10 minutos.
+            En marcha en<br />una semana.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -129,7 +129,7 @@ export default function HowItWorksSection() {
             onClick={() => document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })}
             className="btn-accent px-8 py-3.5"
           >
-            Empieza hoy — gratis
+            Empieza hoy
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
