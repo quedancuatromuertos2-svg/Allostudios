@@ -4,9 +4,9 @@ import { motion } from 'framer-motion'
 
 const testimonials = [
   {
-    quote: 'Antes no teníamos tiempo para redes y la competencia nos comía terreno. Ahora AlloStudios nos lleva todo el Instagram y nos llegan contactos cada semana sin que toquemos nada.',
+    quote: 'No teníamos web y la competencia salía primero en Google. AlloStudios nos hizo una que enamora, nos la enseñaron antes de pagar y ahora nos escriben cada semana. En una semana estaba online.',
     name: 'Javier R.',
-    role: 'Agencia inmobiliaria · Madrid',
+    role: 'Barbería · Valencia',
     initials: 'JR',
     color: 'bg-violet-50 text-violet-600',
     stars: 5,
@@ -14,23 +14,23 @@ const testimonials = [
   {
     quote: 'Trabajo sola y no llegaba a publicar. Ahora tengo un Instagram profesional y el asistente me responde los DMs y me manda los leads ya cualificados al WhatsApp.',
     name: 'Lucía F.',
-    role: 'Agente independiente · Valencia',
+    role: 'Peluquería · Valencia',
     initials: 'LF',
     color: 'bg-blue-50 text-blue-600',
     stars: 5,
   },
   {
-    quote: 'Los interesados nos escriben a todas horas por Instagram. Ahora se atienden y filtran solos: compra o alquiler, presupuesto y zona. Llego a la oficina con los leads ya cualificados.',
+    quote: 'Los clientes nos escriben a todas horas por Instagram. Ahora se atienden y filtran solos, y llego a la consulta con los leads ya cualificados y las citas puestas.',
     name: 'Marco D.',
-    role: 'Inmobiliaria · Málaga',
+    role: 'Clínica dental · Málaga',
     initials: 'MD',
     color: 'bg-emerald-50 text-emerald-600',
     stars: 5,
   },
   {
-    quote: 'El asistente responde en español e inglés a cualquier hora. Para el alquiler vacacional ha sido un antes y un después: cero mensajes sin contestar, cero reservas que se escapan.',
+    quote: 'El asistente responde a cualquier hora, hasta en inglés. Ha sido un antes y un después: cero mensajes sin contestar y cero reservas que se escapan.',
     name: 'Elena P.',
-    role: 'Alquiler vacacional · Alicante',
+    role: 'Restaurante · Alicante',
     initials: 'EP',
     color: 'bg-rose-50 text-rose-600',
     stars: 5,
@@ -59,7 +59,7 @@ const cardVariants = {
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-section bg-canvas overflow-hidden">
+    <section className="py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -73,16 +73,16 @@ export default function TestimonialsSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
-            className="text-headline font-semibold text-ink text-balance"
+            className="font-display text-headline font-semibold text-ink text-balance"
           >
-            Inmobiliarias que no pierden un lead.
+            Negocios que no pierden un lead.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Las primeras agencias ya captan y cualifican cada contacto con AlloStudios.
+            Los primeros negocios ya captan y cualifican cada contacto con AlloStudios.
           </motion.p>
         </div>
 
@@ -96,7 +96,7 @@ export default function TestimonialsSection() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="bg-white rounded-2xl border border-border p-7 flex flex-col gap-5 shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="lg rounded-2xl p-7 flex flex-col gap-5 transition-all duration-300"
             >
               <Stars />
 

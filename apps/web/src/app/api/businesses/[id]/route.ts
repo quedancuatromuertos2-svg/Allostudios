@@ -32,6 +32,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   const { name, phone, email, address, city, website, description, timezone, niche,
     agent_name, greeting_message, system_prompt, enable_booking, enable_transfer, transfer_number } = body
 
+  if (name !== undefined && (!name || typeof name !== "string" || name.trim().length < 1)) {
+    return NextResponse.json({ error: "El nombre del negocio no puede estar vacío" }, { status: 400 })
+  }
+
   const { data, error } = await supabaseAdmin
     .from("businesses")
     .update({

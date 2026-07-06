@@ -85,6 +85,7 @@ module.exports = {
         "orb2":       "orb2 15s ease-in-out infinite",
         "wave":       "wave 1.5s ease-in-out infinite",
         "marquee":    "marquee 28s linear infinite",
+        "bar-up":     "barUp 2s ease-in-out infinite alternate",
       },
       keyframes: {
         "fade-in": {
@@ -106,6 +107,7 @@ module.exports = {
         orb2:    { '0%,100%': { transform:'translate(0,0) scale(1)' }, '33%': { transform:'translate(-4%,-3%) scale(1.05)' }, '66%': { transform:'translate(3%,2%) scale(0.98)' } },
         wave:    { '0%,100%': { transform:'scaleY(0.5)' }, '50%': { transform:'scaleY(1)' } },
         marquee: { from: { transform:'translateX(0)' }, to: { transform:'translateX(-50%)' } },
+        barUp:   { from: { transform:'scaleY(1)', opacity:'0.45' }, to: { transform:'scaleY(0.2)', opacity:'0.9' } },
       },
       backgroundSize: {
         "300%": "300%",

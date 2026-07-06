@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const SERVICIOS = [
+  'Web profesional',
+  'Web Cinematográfica (efecto Apple)',
   'Gestión de Instagram',
-  'Anuncios Meta',
-  'Asistente IA en DMs',
-  'Web Inmobiliaria',
-  'SEO',
-  'Reseñas Google',
+  'Anuncios Meta / Google',
+  'Asistente IA (WhatsApp/DMs)',
+  'SEO local + Reseñas Google',
   'Pack Completo',
   'No estoy seguro',
 ]
@@ -71,7 +71,7 @@ export default function ContactFormSection() {
   }
 
   return (
-    <section id="contratar" className="py-section bg-canvas overflow-hidden">
+    <section id="contratar" className="py-section overflow-hidden">
       <div className="max-w-2xl mx-auto px-6 md:px-12">
 
         <div className="text-center mb-10">
@@ -84,7 +84,7 @@ export default function ContactFormSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
-            className="text-headline font-semibold text-ink text-balance"
+            className="font-display text-headline font-semibold text-ink text-balance"
           >
             Contrata o pide tu propuesta gratis.
           </motion.h2>
@@ -100,7 +100,7 @@ export default function ContactFormSection() {
         {sent ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl border border-border shadow-sm p-10 text-center"
+            className="lg rounded-2xl p-10 text-center"
           >
             <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-5">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -110,7 +110,7 @@ export default function ContactFormSection() {
             <h3 className="text-[20px] font-semibold text-ink mb-2">¡Solicitud recibida!</h3>
             <p className="text-dim font-light max-w-sm mx-auto">Te contactamos en menos de 24h. Si tienes prisa, escríbenos directamente por WhatsApp.</p>
             <a
-              href="https://wa.me/34613112671?text=Hola%2C%20acabo%20de%20enviar%20una%20solicitud%20en%20la%20web"
+              href="https://wa.me/34695868793?text=Hola%2C%20acabo%20de%20enviar%20una%20solicitud%20en%20la%20web"
               target="_blank" rel="noopener noreferrer"
               className="btn-accent inline-flex mt-7 px-7 py-3.5 rounded-full"
             >
@@ -121,11 +121,11 @@ export default function ContactFormSection() {
           <motion.form
             onSubmit={submit}
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="bg-white rounded-2xl border border-border shadow-sm p-7 md:p-9 space-y-4"
+            className="lg rounded-2xl p-7 md:p-9 space-y-4"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field name="nombre" label="Tu nombre *" required />
-              <Field name="inmobiliaria" label="Inmobiliaria" />
+              <Field name="inmobiliaria" label="Negocio / empresa" />
               <Field name="telefono" label="Teléfono / WhatsApp *" required type="tel" />
               <Field name="email" label="Email" type="email" />
             </div>

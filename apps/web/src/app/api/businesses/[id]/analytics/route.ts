@@ -25,10 +25,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
   if (type === "dashboard") {
     const [callsRes, appointmentsRes, leadsRes, subRes] = await Promise.all([
-      supabaseAdmin.from("calls").select("id, status, duration, started_at").eq("business_id", params.id).gte("created_at", since),
+      supabaseAdmin.from("calls").select("id, status, duration_seconds, started_at").eq("business_id", params.id).gte("created_at", since),
       supabaseAdmin.from("appointments").select("id, status").eq("business_id", params.id).gte("created_at", since),
       supabaseAdmin.from("leads").select("id, score").eq("business_id", params.id).gte("created_at", since),
-      supabaseAdmin.from("subscriptions").select("calls_used, calls_limit, minutes_used, minutes_limit, plan, status").eq("business_id", params.id).single(),
+      supabaseAdmin.from("subscriptions").select("calls_used, calls_limit, plan, status").eq("business_id", params.id).single(),
     ])
 
     const calls = callsRes.data || []
@@ -36,13 +36,16 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const leads = leadsRes.data || []
     const sub = subRes.data
 
+    const COMPLETED_STATUSES = ["completed", "ended", "assistant-ended-call", "customer-ended-call"]
+    const MISSED_STATUSES = ["no-answer", "busy", "missed"]
+
     const totalCalls = calls.length
-    const answeredCalls = calls.filter((c) => c.status === "ended").length
-    const missedCalls = calls.filter((c) => c.status === "no-answer" || c.status === "busy").length
-    const appointmentsBooked = appointments.filter((a) => a.status !== "canceled").length
+    const answeredCalls = calls.filter((c) => COMPLETED_STATUSES.includes(c.status)).length
+    const missedCalls = calls.filter((c) => MISSED_STATUSES.includes(c.status)).length
+    const appointmentsBooked = appointments.filter((a) => a.status !== "canceled" && a.status !== "cancelled").length
     const leadsGenerated = leads.length
     const hotLeads = leads.filter((l) => l.score === "hot").length
-    const totalDuration = calls.reduce((sum, c) => sum + (c.duration || 0), 0)
+    const totalDuration = calls.reduce((sum, c) => sum + (c.duration_seconds || 0), 0)
     const avgCallDuration = answeredCalls > 0 ? Math.round(totalDuration / answeredCalls) : 0
     const conversionRate = totalCalls > 0 ? Math.round((appointmentsBooked / totalCalls) * 100) : 0
 
@@ -102,7 +105,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   if (type === "recent") {
     const { data } = await supabaseAdmin
       .from("calls")
-      .select("id, caller_number, caller_name, status, duration, ai_summary, sentiment, started_at, created_at")
+      .select("id, caller_number, status, duration_seconds, summary, sentiment, started_at, created_at")
       .eq("business_id", params.id)
       .order("created_at", { ascending: false })
       .limit(10)

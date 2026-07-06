@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { auth } from "@clerk/nextjs/server"
 import { supabaseAdmin } from "@/lib/supabase"
 
 function clean(s: string) {
@@ -17,12 +18,25 @@ export async function GET(req: NextRequest) {
   }
 
   let businessId: string
+  let stateUserId: string
   try {
-    ;({ businessId } = JSON.parse(Buffer.from(state, "base64url").toString()))
+    ;({ businessId, userId: stateUserId } = JSON.parse(Buffer.from(state, "base64url").toString()))
+    if (!businessId || !stateUserId) throw new Error("missing fields")
   } catch {
-    return NextResponse.redirect(
-      new URL("/calendar?error=invalid_state", req.url)
-    )
+    return NextResponse.redirect(new URL("/calendar?error=invalid_state", req.url))
+  }
+
+  // Verify the userId in state matches the current session
+  const { userId } = await auth()
+  if (!userId || userId !== stateUserId) {
+    return NextResponse.redirect(new URL("/calendar?error=unauthorized", req.url))
+  }
+
+  // Verify businessId belongs to this user
+  const { data: bizCheck } = await supabaseAdmin
+    .from("businesses").select("id").eq("id", businessId).eq("owner_clerk_id", userId).single()
+  if (!bizCheck) {
+    return NextResponse.redirect(new URL("/calendar?error=unauthorized", req.url))
   }
 
   const appUrl = clean(

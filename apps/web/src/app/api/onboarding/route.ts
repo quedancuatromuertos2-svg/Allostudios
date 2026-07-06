@@ -1,7 +1,8 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
-import { createVapiAssistant } from "@/lib/vapi"
+import { createVapiAssistant, createVapiPhoneNumber } from "@/lib/vapi"
+import { buildSystemPrompt } from "@/lib/agent-prompts"
 
 const NICHE_PROMPTS: Record<string, { agentName: string; prompt: string; greeting: string }> = {
   BARBER_SHOP: {
@@ -25,9 +26,9 @@ const NICHE_PROMPTS: Record<string, { agentName: string; prompt: string; greetin
     greeting: "Clínica dental, le atiende Laura. ¿En qué puedo ayudarle?",
   },
   REAL_ESTATE: {
-    agentName: "Alex",
-    prompt: "Eres Alex, agente virtual inmobiliario. Califica leads: pregunta presupuesto, zona y tipo de operación. Agenda visitas. Tono profesional. Máximo 2 frases.",
-    greeting: "Inmobiliaria, le atiende Alex. ¿En qué puedo ayudarle?",
+    agentName: "Marta",
+    prompt: "Eres Marta, recepcionista virtual inmobiliaria. Cualifica leads de forma natural: operación (compra/alquiler), zona, presupuesto y habitaciones. Agenda visitas. Tono profesional y cálido, una pregunta cada vez. Máximo 2 frases. Si te preguntan si eres una persona o una IA, responde con sinceridad que eres un asistente virtual.",
+    greeting: "Hola, le atiende Marta, asistente virtual. Le informo de que esta llamada puede grabarse. ¿En qué puedo ayudarle?",
   },
   GYM: {
     agentName: "Diego",
@@ -45,7 +46,6 @@ const PLAN_BUSINESS_LIMITS: Record<string, number> = {
   STARTER: 1,
   PROFESSIONAL: 3,
   PRO: 3,
-  ENTERPRISE: 99,
 }
 
 export async function POST(req: Request) {
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
   if (currentCount >= planLimit) {
     const limitMsg = planLimit === 1
       ? "Tu plan solo permite 1 negocio. Actualiza a Professional para añadir más."
-      : `Tu plan permite máximo ${planLimit} negocios. Actualiza a Enterprise para más.`
+      : `Tu plan permite máximo ${planLimit} negocios. Actualiza a Professional para más.`
     return NextResponse.json({ error: limitMsg }, { status: 400 })
   }
 
@@ -97,9 +97,13 @@ export async function POST(req: Request) {
     await supabaseAdmin.from("users").insert({ clerk_id: userId, onboarding_completed: false })
   }
 
-  // Build niche-specific prompt
+  // Build niche-specific prompt.
+  // REAL_ESTATE uses the full pro recepcionista prompt (qualifies leads + books visits).
   const nicheConfig = NICHE_PROMPTS[niche] || NICHE_PROMPTS.DEFAULT
-  const systemPrompt = `${nicheConfig.prompt}\n\nNombre del negocio: ${name}${address ? `\nDirección: ${address}` : ""}${phone ? `\nTeléfono: ${phone}` : ""}${description ? `\nDescripción: ${description}` : ""}`
+  const basePrompt = niche === "REAL_ESTATE"
+    ? buildSystemPrompt(name, nicheConfig.agentName)
+    : nicheConfig.prompt
+  const systemPrompt = `${basePrompt}\n\nNombre del negocio: ${name}${address ? `\nDirección: ${address}` : ""}${phone ? `\nTeléfono: ${phone}` : ""}${description ? `\nDescripción: ${description}` : ""}`
 
   // Create Vapi assistant
   let vapiAssistantId: string | null = null
@@ -111,7 +115,7 @@ export async function POST(req: Request) {
     })
     vapiAssistantId = assistant.id
   } catch (e) {
-    console.error("Vapi assistant creation failed:", e)
+    console.error("Vapi assistant creation failed — provisioner will retry:", e)
   }
 
   // Create business
@@ -134,15 +138,51 @@ export async function POST(req: Request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Create 7-day trial subscription (50 calls, no card required)
-  await supabaseAdmin.from("subscriptions").insert({
-    business_id: business.id,
-    plan: "STARTER",
-    status: "trialing",
-    calls_limit: 50,
-    calls_used: 0,
-    trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-  })
+  // Buy Vapi native number and link to assistant
+  let vapiPhoneNumberId: string | null = null
+  let vapiPhoneNumber: string | null = null
+  if (vapiAssistantId) {
+    for (const areaCode of ["350", "341", "502", "212"]) {
+      try {
+        const { vapiRequest } = await import("@/lib/vapi")
+        const phoneResult = await vapiRequest("/phone-number", {
+          method: "POST",
+          body: JSON.stringify({
+            provider: "vapi",
+            numberDesiredAreaCode: areaCode,
+            assistantId: vapiAssistantId,
+            name: `biz-${business.id.slice(0, 8)}`,
+          }),
+        })
+        if (phoneResult?.id) {
+          vapiPhoneNumberId = phoneResult.id
+          vapiPhoneNumber = phoneResult.number
+          break
+        }
+      } catch { continue }
+    }
+  }
+
+  // Store ai_config
+  const aiConfig = {
+    system_prompt: systemPrompt,
+    first_message: nicheConfig.greeting,
+    voice_id: "ErXwobaYiN019PkySvjV",
+    voice_provider: "11labs",
+    faqs: [],
+    settings: {
+      agentName: nicheConfig.agentName,
+      temperature: 0.7,
+      enableBooking: true,
+      enableLeadCapture: true,
+      enableTransfer: false,
+      transferNumber: "",
+    },
+    vapi_phone_number_id: vapiPhoneNumberId,
+    vapi_phone_number: vapiPhoneNumber,
+  }
+
+  await supabaseAdmin.from("businesses").update({ ai_config: aiConfig }).eq("id", business.id)
 
   // Create default services by niche
   const defaultServices: Record<string, Array<{ name: string; duration: number; price: number }>> = {
@@ -171,19 +211,20 @@ export async function POST(req: Request) {
       { name: "Clase grupal", duration: 60, price: 10 },
       { name: "Entrenamiento personal", duration: 60, price: 45 },
     ],
-    DEFAULT: [
-      { name: "Servicio estándar", duration: 60, price: 50 },
+    REAL_ESTATE: [
+      { name: "Visita a inmueble", duration: 30, price: 0 },
+      { name: "Valoración de inmueble", duration: 45, price: 0 },
+      { name: "Asesoramiento personalizado", duration: 30, price: 0 },
     ],
+    DEFAULT: [{ name: "Visita a inmueble", duration: 30, price: 0 }],
   }
 
   const services = defaultServices[niche] || defaultServices.DEFAULT
-  try {
-    await supabaseAdmin.from("services").insert(
-      services.map((s) => ({ ...s, business_id: business.id, currency: "EUR" }))
-    )
-  } catch {}
+  await supabaseAdmin.from("services").insert(
+    services.map((s) => ({ ...s, business_id: business.id, currency: "EUR" }))
+  ).then(({ error: e }) => { if (e) console.error("Services insert failed:", e.message) })
 
   await supabaseAdmin.from("users").update({ onboarding_completed: true }).eq("clerk_id", userId)
 
-  return NextResponse.json(business, { status: 201 })
+  return NextResponse.json({ ...business, ai_config: aiConfig }, { status: 201 })
 }

@@ -3,8 +3,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { motion } from "framer-motion"
 import { api } from "@/lib/api"
-import { Button } from "@/components/ui/button"
-import { Check, CreditCard, Zap, Sparkles, Loader2 } from "lucide-react"
+import { CreditCard, Loader2, Check, Zap, Shield, ArrowRight, Clock, TrendingUp } from "lucide-react"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -17,38 +16,57 @@ type Subscription = {
   trial_ends_at: string | null
 } | null
 
+type UsageData = {
+  minutes_used: number
+  calls_count: number
+} | null
+
 const PLANS = [
   {
     id: "STARTER",
     name: "Starter",
-    price: 99,
-    features: ["200 llamadas/mes", "1 número", "Reservas automáticas"],
+    price: 399,
+    desc: "Para inmobiliarias que no quieren perder ni un lead",
+    minutes: "1.500 min/mes",
+    minutesCount: 1500,
+    features: [
+      "Recepcionista IA 24/7",
+      "1 número de teléfono",
+      "Cualifica leads y agenda visitas",
+      "Google Calendar",
+      "Resumen del lead por WhatsApp",
+      "Soporte por email",
+    ],
+    highlighted: false,
     trial: true,
   },
   {
     id: "PROFESSIONAL",
     name: "Professional",
-    price: 199,
-    features: ["1.000 llamadas/mes", "3 números", "WhatsApp/SMS", "Analytics avanzados"],
+    price: 599,
+    desc: "IA avanzada, más minutos, todo incluido.",
+    minutes: "2.250 min/mes",
+    minutesCount: 2250,
+    features: [
+      "Todo lo de Starter",
+      "2.250 minutos incluidos",
+      "IA avanzada · hasta 3 números",
+      "Atención en varios idiomas",
+      "Analytics e informes con IA",
+      "Soporte prioritario",
+    ],
     highlighted: true,
     trial: true,
   },
-  {
-    id: "ENTERPRISE",
-    name: "Enterprise",
-    price: 499,
-    features: ["Ilimitadas", "API", "Account manager", "SLA 99.9%"],
-    trial: false,
-  },
 ]
 
-function statusLabel(status: string) {
+function statusBadge(status: string) {
   const s = status.toLowerCase()
-  if (s === "trialing") return "Período de prueba"
-  if (s === "active") return "Activo"
-  if (s === "past_due") return "Pago pendiente"
-  if (s === "cancelled" || s === "canceled") return "Cancelado"
-  return status
+  if (s === "trialing") return { label: "Prueba activa", color: "#16a34a", bg: "rgba(34,197,94,0.08)", border: "rgba(34,197,94,0.2)" }
+  if (s === "active") return { label: "Activo", color: "#16a34a", bg: "rgba(34,197,94,0.08)", border: "rgba(34,197,94,0.2)" }
+  if (s === "past_due") return { label: "Pago pendiente", color: "#d97706", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.2)" }
+  if (s === "cancelled" || s === "canceled") return { label: "Cancelado", color: "#ef4444", bg: "rgba(239,68,68,0.08)", border: "rgba(239,68,68,0.2)" }
+  return { label: status, color: "#706D69", bg: "rgba(160,157,153,0.08)", border: "rgba(160,157,153,0.2)" }
 }
 
 function isActiveStatus(status: string) {
@@ -59,181 +77,268 @@ function isActiveStatus(status: string) {
 export function BillingClient({
   businessId,
   subscription,
+  usage,
 }: {
   businessId: string
   subscription: Subscription
+  usage: UsageData
 }) {
   const checkoutMutation = useMutation({
     mutationFn: (planKey: string) =>
       api.post("/api/billing/checkout", { planKey, businessId }).then((r) => r.data),
-    onSuccess: (data) => {
-      if (data.url) window.location.href = data.url
-    },
+    onSuccess: (data) => { if (data.url) window.location.href = data.url },
   })
 
   const portalMutation = useMutation({
     mutationFn: () =>
       api.post("/api/billing/portal", { businessId }).then((r) => r.data),
-    onSuccess: (data) => {
-      if (data.url) window.location.href = data.url
-    },
+    onSuccess: (data) => { if (data.url) window.location.href = data.url },
   })
 
-  const usagePercent = subscription
-    ? Math.min(100, (subscription.calls_used / subscription.calls_limit) * 100)
-    : 0
+  // minutes_limit = calls_limit (repurposed to store minutes)
+  const minutesIncluded = subscription?.calls_limit ?? 0
+  const minutesUsed = usage?.minutes_used ?? 0
+  const minutesRemaining = Math.max(0, minutesIncluded - minutesUsed)
+  const usagePercent = minutesIncluded > 0 ? Math.min(100, (minutesUsed / minutesIncluded) * 100) : 0
 
   const currentPlanId = subscription?.plan?.toUpperCase()
+  const badge = subscription ? statusBadge(subscription.status) : null
+  const isActive = subscription ? isActiveStatus(subscription.status) : false
+
+  const barColor = usagePercent >= 90 ? "#ef4444" : usagePercent >= 70 ? "#f59e0b" : "#5B5BD6"
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-3xl">
+      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Facturación</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-          Gestiona tu suscripción y método de pago
-        </p>
+        <h1 className="text-[1.3rem] font-semibold text-ink tracking-[-0.025em]">Facturación</h1>
+        <p className="text-muted text-[13px] mt-0.5">Gestiona tu suscripción y método de pago</p>
       </div>
 
+      {/* Current subscription card */}
       {subscription && (
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
-          <div className="flex items-start justify-between mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white border border-border rounded-2xl p-5 space-y-5"
+        >
+          {/* Plan header */}
+          <div className="flex items-start justify-between">
             <div>
-              <h2 className="font-semibold text-gray-900 dark:text-white mb-1">
-                Plan actual:{" "}
-                <span className="capitalize">{subscription.plan.toLowerCase()}</span>
-              </h2>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                    isActiveStatus(subscription.status)
-                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {statusLabel(subscription.status)}
+              <div className="text-[11px] font-semibold text-muted uppercase tracking-[0.1em] mb-1">Plan actual</div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[1.1rem] font-semibold text-ink capitalize">
+                  {subscription.plan.toLowerCase()}
                 </span>
-                {subscription.current_period_end && (
-                  <span className="text-xs text-gray-400">
-                    Renueva el{" "}
-                    {format(new Date(subscription.current_period_end), "d MMMM yyyy", {
-                      locale: es,
-                    })}
+                {badge && (
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
+                    style={{ color: badge.color, background: badge.bg, border: `1px solid ${badge.border}` }}>
+                    {badge.label}
                   </span>
                 )}
               </div>
+
+              {subscription.status.toLowerCase() === "trialing" && subscription.trial_ends_at && (
+                <p className="text-[12px] text-muted mt-1">
+                  Prueba termina el{" "}
+                  <span className="font-semibold text-dim">
+                    {format(new Date(subscription.trial_ends_at), "d 'de' MMMM yyyy", { locale: es })}
+                  </span>
+                </p>
+              )}
+
+              {subscription.current_period_end && subscription.status.toLowerCase() === "active" && (
+                <p className="text-[12px] text-muted mt-1">
+                  Próxima factura el{" "}
+                  <span className="font-semibold text-dim">
+                    {format(new Date(subscription.current_period_end), "d 'de' MMMM yyyy", { locale: es })}
+                  </span>
+                </p>
+              )}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
+
+            <button
               onClick={() => portalMutation.mutate()}
               disabled={portalMutation.isPending}
-              className="gap-2"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-border text-[12.5px] font-medium text-dim hover:text-ink hover:bg-surface transition-all"
             >
-              {portalMutation.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <CreditCard className="w-4 h-4" />
-              )}
+              {portalMutation.isPending
+                ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                : <CreditCard className="w-3.5 h-3.5" />
+              }
               Gestionar pago
-            </Button>
+            </button>
           </div>
 
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600 dark:text-gray-400">Llamadas usadas</span>
-              <span className="font-medium text-gray-900 dark:text-white">
-                {subscription.calls_used} /{" "}
-                {subscription.calls_limit >= 999999 ? "∞" : subscription.calls_limit}
-              </span>
+          {/* Minutes usage */}
+          <div className="bg-surface rounded-xl p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-muted" />
+                <span className="text-[13px] font-medium text-ink">Minutos este mes</span>
+              </div>
+              <div className="text-right">
+                <span className="text-[13px] font-semibold text-ink">{Math.round(minutesUsed)}</span>
+                <span className="text-[12px] text-muted"> / {minutesIncluded} min</span>
+              </div>
             </div>
-            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+
+            <div className="h-2 bg-border rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${usagePercent}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className={`h-full rounded-full ${
-                  usagePercent > 80 ? "bg-red-500" : "bg-violet-600"
-                }`}
+                className="h-full rounded-full transition-colors"
+                style={{ background: barColor }}
               />
             </div>
+
+            <div className="flex items-center justify-between text-[12px]">
+              <span style={{ color: barColor }} className="font-medium">
+                {Math.round(usagePercent)}% utilizado
+              </span>
+              <span className="text-muted">
+                {minutesRemaining} min restantes
+              </span>
+            </div>
+
+            {usagePercent >= 90 && (
+              <div className="pt-1 border-t border-border">
+                <p className="text-[12px] text-red-500 font-medium">
+                  Estás cerca del límite. Actualiza tu plan para evitar interrupciones.
+                </p>
+              </div>
+            )}
+            {usagePercent >= 70 && usagePercent < 90 && (
+              <div className="pt-1 border-t border-border">
+                <p className="text-[12px] font-medium" style={{ color: "#f59e0b" }}>
+                  Más del 70% usado. Tu asistente está optimizando respuestas para mayor eficiencia.
+                </p>
+              </div>
+            )}
           </div>
-        </div>
+
+          {/* Stats row */}
+          {usage && (
+            <div className="flex gap-4">
+              <div className="flex-1 bg-surface rounded-xl p-3 text-center">
+                <div className="text-[1.1rem] font-semibold text-ink">{usage.calls_count}</div>
+                <div className="text-[11px] text-muted mt-0.5">Llamadas</div>
+              </div>
+              <div className="flex-1 bg-surface rounded-xl p-3 text-center">
+                <div className="text-[1.1rem] font-semibold text-ink">{Math.round(minutesUsed)}</div>
+                <div className="text-[11px] text-muted mt-0.5">Minutos</div>
+              </div>
+              <div className="flex-1 bg-surface rounded-xl p-3 text-center">
+                <div className="text-[1.1rem] font-semibold text-ink">
+                  {usage.calls_count > 0 ? Math.round(minutesUsed / usage.calls_count) : 0}
+                </div>
+                <div className="text-[11px] text-muted mt-0.5">Min/llamada</div>
+              </div>
+            </div>
+          )}
+        </motion.div>
       )}
 
+      {/* Plans */}
       <div>
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-[13.5px] font-semibold text-ink mb-4">
           {subscription ? "Cambiar plan" : "Elige tu plan"}
         </h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {PLANS.map((plan) => {
+
+        <div className="grid sm:grid-cols-2 gap-4">
+          {PLANS.map((plan, idx) => {
             const isCurrent = currentPlanId === plan.id
             const isLoading = checkoutMutation.isPending && checkoutMutation.variables === plan.id
 
             return (
-              <div
+              <motion.div
                 key={plan.id}
-                className={`relative rounded-2xl border p-6 transition-all ${
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.06 }}
+                className={`relative rounded-2xl border p-5 flex flex-col transition-all duration-200 ${
                   plan.highlighted
-                    ? "border-violet-300 dark:border-violet-700 bg-violet-50 dark:bg-violet-900/20"
-                    : "border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900"
-                } ${!isCurrent && !checkoutMutation.isPending ? "hover:shadow-md" : ""}`}
+                    ? "border-accent shadow-glow ring-1 ring-accent/15"
+                    : "border-border"
+                } ${isCurrent ? "opacity-80" : ""}`}
               >
                 {plan.highlighted && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-violet-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                      <Zap className="w-3 h-3" />
-                      Popular
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-accent text-white text-[10.5px] font-semibold tracking-[0.06em] uppercase shadow-sm">
+                      <Zap className="w-2.5 h-2.5" />
+                      Recomendado
                     </span>
                   </div>
                 )}
 
                 {plan.trial && !isCurrent && (
-                  <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium mb-3">
-                    <Sparkles className="w-3 h-3" />
+                  <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold mb-3"
+                    style={{ color: "#16a34a" }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                     7 días gratis
                   </div>
                 )}
 
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1">{plan.name}</h3>
-                <div className="mb-4">
-                  <span className="text-3xl font-extrabold text-gray-900 dark:text-white">
-                    {plan.price}€
-                  </span>
-                  <span className="text-gray-400 text-sm">/mes</span>
+                <div className="mb-1">
+                  <div className="text-[11px] font-semibold text-muted uppercase tracking-[0.1em]">{plan.name}</div>
+                </div>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-[2rem] font-semibold text-ink tracking-[-0.04em]">{plan.price}€</span>
+                  <span className="text-muted text-[13px]">/mes</span>
+                </div>
+                <p className="text-[12px] text-muted leading-relaxed mb-3">{plan.desc}</p>
+
+                <div className="flex items-center gap-1.5 mb-4">
+                  <TrendingUp className="w-3.5 h-3.5 text-accent" />
+                  <span className="text-[12px] font-semibold text-accent">{plan.minutes}</span>
                 </div>
 
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-2 flex-1 mb-5">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <Check className="w-4 h-4 text-violet-600 flex-shrink-0" />
-                      <span className="text-gray-600 dark:text-gray-400">{f}</span>
+                    <li key={f} className="flex items-start gap-2 text-[12px] text-dim">
+                      <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                      {f}
                     </li>
                   ))}
                 </ul>
 
-                <Button
-                  className={`w-full gap-2 ${
-                    isCurrent
-                      ? "bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-default hover:bg-gray-100 dark:hover:bg-gray-800"
-                      : "bg-violet-600 hover:bg-violet-700 text-white"
-                  }`}
+                <button
                   disabled={isCurrent || checkoutMutation.isPending}
-                  onClick={() => {
-                    if (!isCurrent) checkoutMutation.mutate(plan.id)
-                  }}
+                  onClick={() => { if (!isCurrent) checkoutMutation.mutate(plan.id) }}
+                  className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all ${
+                    isCurrent
+                      ? "bg-surface text-muted cursor-default border border-border"
+                      : plan.highlighted
+                        ? "bg-accent text-white hover:bg-accent-dark"
+                        : "bg-ink text-white hover:bg-zinc-700"
+                  } disabled:opacity-50`}
                 >
-                  {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  {isCurrent
-                    ? "Plan actual"
-                    : isLoading
-                    ? "Redirigiendo..."
-                    : plan.trial
-                    ? "Empezar prueba gratis"
-                    : "Contratar ahora"}
-                </Button>
-              </div>
+                  {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  {isCurrent ? "Plan actual" : isLoading ? "Redirigiendo..." : (
+                    <>
+                      {plan.trial ? "Empezar prueba gratis" : "Contratar ahora"}
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </motion.div>
             )
           })}
+        </div>
+
+        {/* Trust row */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          {[
+            { icon: Shield, text: "7 días gratis, sin riesgo" },
+            { icon: CreditCard, text: "Se requiere tarjeta" },
+            { icon: Check, text: "Cancela cuando quieras" },
+          ].map(({ icon: Icon, text }) => (
+            <div key={text} className="flex items-center gap-1.5 text-[11.5px] text-muted">
+              <Icon className="w-3 h-3" />
+              {text}
+            </div>
+          ))}
         </div>
       </div>
     </div>

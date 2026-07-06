@@ -39,18 +39,18 @@ export async function POST(req: Request) {
       .eq("id", businessId)
   }
 
-  const origin = req.headers.get("origin") || "http://localhost:3000"
+  const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "https://allostudios.net"
 
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     mode: "subscription",
     payment_method_types: ["card"],
     line_items: [{ price: plan.priceId, quantity: 1 }],
-    success_url: `${origin}/dashboard?billing=success`,
+    success_url: `${origin}/billing/activating?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/billing?cancelled=true`,
     metadata: { businessId, planKey },
     subscription_data: {
-      trial_period_days: planKey !== "ENTERPRISE" ? 7 : undefined,
+      trial_period_days: 7,
       metadata: { businessId, planKey },
     },
   })

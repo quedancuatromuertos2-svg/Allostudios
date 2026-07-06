@@ -27,7 +27,7 @@ const item = {
 
 /* Two product chips shown in stats bar */
 const stats = [
-  { n: '+3×', l: 'alcance en redes' },
+  { n: '+3�', l: 'alcance en redes' },
   { n: '24/7', l: 'DMs respondidos' },
   { n: '16', l: 'posts al mes' },
   { n: '0', l: 'leads perdidos' },
@@ -39,7 +39,7 @@ function AICallMockup() {
       {/* Glow */}
       <div className="absolute inset-0 -m-4 rounded-[36px] bg-gradient-to-br from-accent/12 via-transparent to-accent-mid/8 blur-2xl pointer-events-none" />
 
-      {/* Card — liquid glass absorbs the vivid mesh from behind */}
+      {/* Card � liquid glass absorbs the vivid mesh from behind */}
       <div className="relative rounded-[28px] border overflow-hidden" style={{
         backdropFilter: 'blur(36px) saturate(200%) brightness(1.08)',
         WebkitBackdropFilter: 'blur(36px) saturate(200%) brightness(1.08)',
@@ -60,7 +60,7 @@ function AICallMockup() {
             <div className="text-[13px] font-semibold text-ink">Instagram · Mensaje directo</div>
             <div className="flex items-center gap-1.5 mt-0.5">
               <motion.div className="w-1.5 h-1.5 rounded-full bg-green-500" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.8, repeat: Infinity }} />
-              <span className="text-[11px] text-green-600 font-medium">IA respondiendo…</span>
+              <span className="text-[11px] text-green-600 font-medium">IA respondiendo⬦</span>
               <span className="ml-1"><LiveBars /></span>
             </div>
           </div>
@@ -71,11 +71,11 @@ function AICallMockup() {
         <div className="relative px-5 py-4 space-y-3">
           <div className="bg-surface rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[88%]">
             <div className="text-[10px] font-semibold text-muted mb-1 tracking-[0.06em] uppercase">Interesado</div>
-            <div className="text-[12.5px] text-ink leading-relaxed">¿El piso de Calle Goya sigue disponible?</div>
+            <div className="text-[12.5px] text-ink leading-relaxed">Hola, ¿tenéis cita disponible esta semana?</div>
           </div>
           <div className="bg-accent-light rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[88%] ml-auto">
             <div className="text-[10px] font-semibold text-accent mb-1 tracking-[0.06em] uppercase">IA · AlloStudios</div>
-            <div className="text-[12.5px] text-ink leading-relaxed">Sí, sigue disponible. ¿Le agendo una visita mañana a las 18:00?</div>
+            <div className="text-[12.5px] text-ink leading-relaxed">¡Claro! ¿Le agendo una cita mañana a las 18:00?</div>
           </div>
         </div>
 
@@ -88,7 +88,7 @@ function AICallMockup() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[12px] font-semibold text-ink leading-none mb-0.5">Visita agendada</div>
-            <div className="text-[10.5px] text-muted">Mañana 18:00 · Lead enviado al agente ✓</div>
+            <div className="text-[10.5px] text-muted">Mañana 18:00 · Lead enviado �S</div>
           </div>
           <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -98,7 +98,7 @@ function AICallMockup() {
         </div>
       </div>
 
-      {/* Float badge — web */}
+      {/* Float badge � web */}
       <motion.div
         animate={{ y: [0, -9, 0] }}
         transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
@@ -118,7 +118,7 @@ function AICallMockup() {
         </div>
       </motion.div>
 
-      {/* Float badge — uptime */}
+      {/* Float badge � uptime */}
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
@@ -145,17 +145,17 @@ export default function HeroSection() {
   const rawY = useTransform(scrollYProgress, [0, 1], [0, 55])
   const y = useSpring(rawY, { stiffness: 60, damping: 20 })
 
-  // Simplified scroll layers — only GPU-compositable transforms (no opacity changes on scroll)
+  // Simplified scroll layers � only GPU-compositable transforms (no opacity changes on scroll)
   const meshY = useTransform(scrollYProgress, [0, 1], [0, -80])
   const wavyY = useTransform(scrollYProgress, [0, 1], [0, -40])
 
-  // SVG wavy lines (image 3 style — white waves on lavender)
+  // SVG wavy lines (image 3 style � white waves on lavender)
   const wavySvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400' preserveAspectRatio='xMidYMid slice'%3E%3Cpath d='M-20 60 C80 20 160 100 280 60 S440 20 560 60 S720 100 820 60' stroke='rgba(147%2C112%2C219%2C0.22)' fill='none' stroke-width='2'/%3E%3Cpath d='M-20 120 C80 80 160 160 280 120 S440 80 560 120 S720 160 820 120' stroke='rgba(147%2C112%2C219%2C0.16)' fill='none' stroke-width='1.5'/%3E%3Cpath d='M-20 180 C80 140 160 220 280 180 S440 140 560 180 S720 220 820 180' stroke='rgba(91%2C91%2C214%2C0.13)' fill='none' stroke-width='1.5'/%3E%3Cpath d='M-20 240 C80 200 160 280 280 240 S440 200 560 240 S720 280 820 240' stroke='rgba(124%2C124%2C232%2C0.10)' fill='none' stroke-width='1'/%3E%3Cpath d='M-20 300 C80 260 160 340 280 300 S440 260 560 300 S720 340 820 300' stroke='rgba(147%2C112%2C219%2C0.08)' fill='none' stroke-width='1'/%3E%3Cpath d='M-20 360 C80 320 160 400 280 360 S440 320 560 360 S720 400 820 360' stroke='rgba(91%2C91%2C214%2C0.07)' fill='none' stroke-width='1'/%3E%3C/svg%3E")`
 
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 pb-12">
 
-      {/* ── LAYER A — Pixel mesh color map ── */}
+      {/* ���� LAYER A � Pixel mesh color map ���� */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -175,7 +175,7 @@ export default function HeroSection() {
         aria-hidden
       />
 
-      {/* ── LAYER B — Dense halftone pixel grid ── */}
+      {/* ���� LAYER B � Dense halftone pixel grid ���� */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -189,7 +189,7 @@ export default function HeroSection() {
         aria-hidden
       />
 
-      {/* ── LAYER C — Liquid glass frosted overlay (static — no scroll-driven opacity) ── */}
+      {/* ���� LAYER C � Liquid glass frosted overlay (static � no scroll-driven opacity) ���� */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -200,7 +200,7 @@ export default function HeroSection() {
         aria-hidden
       />
 
-      {/* ── LAYER D — Wavy organic lines for depth ── */}
+      {/* ���� LAYER D � Wavy organic lines for depth ���� */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -214,7 +214,7 @@ export default function HeroSection() {
         aria-hidden
       />
 
-      {/* ── READABILITY VEIL — static ── */}
+      {/* ���� READABILITY VEIL � static ���� */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -227,7 +227,7 @@ export default function HeroSection() {
       {/* Noise */}
       <div className="noise" aria-hidden />
 
-      {/* Mesh — animated (slow breath) */}
+      {/* Mesh � animated (slow breath) */}
       <div className="absolute inset-0 mesh-hero pointer-events-none" />
 
       {/* Orbs */}
@@ -240,10 +240,10 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-center">
 
-          {/* ── LEFT — Copy ── */}
+          {/* ���� LEFT � Copy ���� */}
           <motion.div variants={stagger} initial="hidden" animate="show" className="text-center lg:text-left">
 
-            {/* Product chips — clarity pills */}
+            {/* Product chips � clarity pills */}
             <motion.div variants={item} className="flex flex-wrap justify-center lg:justify-start gap-2 mb-7">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[12px] font-semibold text-accent" style={{
                 backdropFilter: 'blur(20px) saturate(180%)',
@@ -265,7 +265,7 @@ export default function HeroSection() {
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
                   <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/>
                 </svg>
-                Webs Inmobiliarias
+                Webs profesionales
               </div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[12px] font-semibold text-orange-700" style={{
                 backdropFilter: 'blur(20px) saturate(180%)',
@@ -293,32 +293,32 @@ export default function HeroSection() {
             <motion.h1 variants={item}
               className="text-display font-semibold text-ink leading-[1.05] tracking-[-0.035em] text-balance"
             >
-              Más captaciones.
+              Más clientes.
               <span className="block gradient-text">Sin tocar el marketing.</span>
             </motion.h1>
 
-            {/* Sub — both products crystal clear */}
+            {/* Sub � both products crystal clear */}
             <motion.p variants={item}
               className="mt-6 text-[1.05rem] text-dim font-light leading-[1.75] max-w-lg mx-auto lg:mx-0 text-pretty"
             >
-              Gestionamos el Instagram, los anuncios y la web de tu inmobiliaria.
+              Gestionamos el Instagram, los anuncios y la web de tu negocio.
               Y un asistente de IA responde tus DMs, cualifica al interesado
-              y agenda la visita — 24/7. Tú solo cierras.
+              y agenda la cita � 24/7. Tú solo cierras.
             </motion.p>
 
-            {/* CTAs — dual product */}
+            {/* CTAs � dual product */}
             <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 mt-9">
               <button
                 onClick={() => document.querySelector('#servicios')?.scrollIntoView({ behavior: 'smooth' })}
                 className="btn-accent text-[14px] px-8 py-4 rounded-full shadow-glow"
               >
-                Captar más leads
+                Pide tu demo gratis
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
               <a
-                href="https://wa.me/34613112671?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20AlloStudios"
+                href="https://wa.me/34695868793?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20AlloStudios"
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full border border-border text-[14px] text-dim hover:text-ink hover:border-ink/30 hover:bg-white/60 transition-all duration-300 font-medium"
               >
@@ -335,7 +335,7 @@ export default function HeroSection() {
             </motion.p>
           </motion.div>
 
-          {/* ── RIGHT — Mockup ── */}
+          {/* ���� RIGHT � Mockup ���� */}
           <motion.div
             style={{ y, willChange: 'transform' }}
             initial={{ opacity: 0, x: 50, y: 20 }}
@@ -348,7 +348,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ── Stats — covers both products ── */}
+      {/* ���� Stats � covers both products ���� */}
       <motion.div
         initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}

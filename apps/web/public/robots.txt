@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+Allow: /pricing
+Allow: /login
+Allow: /register
+Allow: /privacidad
+Allow: /terminos
+Allow: /cookies
+
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /onboarding/
+Disallow: /billing/
+Disallow: /settings/
+Disallow: /calls/
+Disallow: /calendar/
+Disallow: /ai-config/
+Disallow: /analytics/
+Disallow: /team/
+Disallow: /manual/
+Disallow: /widget/
+
+Sitemap: https://allostudios.net/sitemap.xml

@@ -1,4 +1,4 @@
-﻿import { auth } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
 import { createVapiAssistant } from "@/lib/vapi"
@@ -25,9 +25,9 @@ const NICHE_PROMPTS: Record<string, { agentName: string; prompt: string; greetin
     greeting: "Clínica dental, le atiende Laura. ¿En qué puedo ayudarle?",
   },
   REAL_ESTATE: {
-    agentName: "Alex",
-    prompt: "Eres Alex, agente virtual inmobiliario. Califica leads: pregunta presupuesto, zona y tipo de operación. Agenda visitas. Tono profesional. Máximo 2 frases.",
-    greeting: "Inmobiliaria, le atiende Alex. ¿En qué puedo ayudarle?",
+    agentName: "Marta",
+    prompt: "Eres Marta, recepcionista virtual inmobiliaria. Cualifica leads de forma natural: operación (compra/alquiler), zona, presupuesto y habitaciones. Agenda visitas. Habla cálida y cercana, una pregunta cada vez. Máximo 2 frases. Si te preguntan si eres una persona o una IA, responde con sinceridad que eres un asistente virtual.",
+    greeting: "Hola, le atiende Marta, asistente virtual. Le informo de que esta llamada puede grabarse. ¿En qué puedo ayudarle?",
   },
   GYM: {
     agentName: "Diego",

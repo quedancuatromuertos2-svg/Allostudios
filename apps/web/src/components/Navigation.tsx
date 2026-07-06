@@ -44,11 +44,8 @@ export default function Navigation() {
         }
       `}>
         <div className={`
-          flex items-center justify-between h-[60px] px-6 transition-all duration-500
-          ${scrolled
-            ? 'bg-white/90 backdrop-blur-2xl rounded-2xl border border-border/50 shadow-sm'
-            : 'bg-transparent'
-          }
+          lg flex items-center justify-between h-[60px] px-6 rounded-full transition-all duration-500
+          ${scrolled ? 'shadow-md' : ''}
         `}>
           {/* Logo */}
           <button
@@ -72,16 +69,14 @@ export default function Navigation() {
             ))}
           </nav>
 
-          {/* Desktop CTAs */}
+          {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-2.5">
-            <a href="/login" className="px-4 py-2 text-[13.5px] text-dim hover:text-ink transition-colors duration-200 font-medium rounded-xl hover:bg-surface/80">
-              Iniciar sesión
-            </a>
             <a
-              href="#contratar"
+              href="https://wa.me/34695868793?text=Hola%2C%20quiero%20mi%20demo%20gratis.%20Mi%20negocio%20es%3A%20"
+              target="_blank" rel="noopener noreferrer"
               className="btn-accent text-[13px] px-5 py-2.5 rounded-full"
             >
-              Empezar ahora
+              Pide tu demo gratis
             </a>
           </div>
 
@@ -118,7 +113,7 @@ export default function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden mx-4 mt-1 bg-white/95 backdrop-blur-xl rounded-2xl border border-border shadow-lg overflow-hidden"
+            className="lg md:hidden mx-4 mt-1 rounded-2xl overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
               {links.map(l => (
@@ -130,15 +125,13 @@ export default function Navigation() {
                   {l.label}
                 </button>
               ))}
-              <div className="pt-3 mt-1 border-t border-border/60 space-y-2">
-                <a href="/login" className="w-full text-left px-4 py-3 text-[14px] text-dim font-medium block">
-                  Iniciar sesión
-                </a>
+              <div className="pt-3 mt-1 border-t border-border/60">
                 <a
-                  href="#contratar"
-                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center"
+                  href="https://wa.me/34695868793?text=Hola%2C%20quiero%20mi%20demo%20gratis.%20Mi%20negocio%20es%3A%20"
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center block"
                 >
-                  Empezar ahora
+                  Pide tu demo gratis
                 </a>
               </div>
             </div>

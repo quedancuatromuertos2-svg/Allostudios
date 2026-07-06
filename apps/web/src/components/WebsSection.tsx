@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-/* ─── CSS Browser mockup ─── */
+/*  CSS Browser mockup — */
 function BrowserMockup() {
   return (
     <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
@@ -62,7 +62,7 @@ function BrowserMockup() {
   )
 }
 
-/* ─── Mobile mockup ─── */
+/*  Mobile mockup — */
 function PhoneMockup() {
   return (
     <div className="w-[90px] rounded-[22px] overflow-hidden border border-white/12 shadow-xl bg-[#0d0d1a]">
@@ -94,7 +94,7 @@ function PhoneMockup() {
   )
 }
 
-/* ─── Bento feature cards ─── */
+/*  Bento feature cards — */
 const bentoFeatures = [
   {
     icon: (
@@ -103,7 +103,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'Diseño a medida',
-    desc: 'Sin plantillas. Cada web es un proyecto único diseñado desde cero para tu agencia.',
+    desc: 'Sin plantillas. Cada web es un proyecto único diseñado desde cero para tu negocio.',
     accent: 'bg-violet-50 text-violet-600 border-violet-100',
   },
   {
@@ -153,7 +153,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'Diseño que convierte',
-    desc: 'Buscador de inmuebles, formularios y CTAs pensados para convertir visitas en leads.',
+    desc: 'Catálogo, formularios y CTAs pensados para convertir visitas en clientes.',
     accent: 'bg-rose-50 text-rose-600 border-rose-100',
   },
 ]
@@ -190,29 +190,29 @@ export default function WebsSection() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
 
-        {/* ── HEADER ── */}
+        {/* —★ HEADER —★ */}
         <motion.div
           variants={stagger} initial="hidden" whileInView="show"
           viewport={{ once: true }}
           className="text-center mb-16 md:mb-20"
         >
           <motion.span variants={fadeUp} className="inline-block text-[11px] font-bold tracking-[0.22em] uppercase text-accent mb-5">
-            Webs Inmobiliarias Premium
+            Webs Premium a medida
           </motion.span>
           <motion.h2 variants={fadeUp}
             className="text-headline font-semibold text-white leading-[1.08] tracking-[-0.03em] text-balance"
           >
-            Tu inmobiliaria merece algo<br />mejor que una plantilla.
+            Tu negocio merece algo<br />mejor que una plantilla.
           </motion.h2>
           <motion.p variants={fadeUp}
             className="mt-5 text-[1.05rem] text-white/50 font-light max-w-xl mx-auto leading-relaxed text-pretty"
           >
-            Diseñamos webs inmobiliarias que transmiten confianza desde el primer segundo.
+            Diseñamos webs profesionales que transmiten confianza desde el primer segundo.
             Rápidas, modernas y construidas para captar leads.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <a
-              href="https://wa.me/34613112671?text=Hola%2C%20quiero%20información%20sobre%20páginas%20web%20premium"
+              href="https://wa.me/34695868793?text=Hola%2C%20quiero%20información%20sobre%20páginas%20web%20premium"
               target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-ink text-[14px] font-semibold hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 active:scale-[0.98]"
               style={{ boxShadow: '0 8px 28px rgba(255,255,255,0.15), 0 1px 0 rgba(255,255,255,0.9) inset' }}
@@ -226,7 +226,7 @@ export default function WebsSection() {
           </motion.div>
         </motion.div>
 
-        {/* ── MOCKUP SHOWCASE ── */}
+        {/* —★ MOCKUP SHOWCASE —★ */}
         <div className="relative flex items-start justify-center gap-5 mb-16 md:mb-20">
           {/* Main browser */}
           <motion.div
@@ -274,7 +274,7 @@ export default function WebsSection() {
           </motion.div>
         </div>
 
-        {/* ── BENTO GRID ── */}
+        {/* —★ BENTO GRID —★ */}
         <motion.div
           variants={stagger} initial="hidden" whileInView="show"
           viewport={{ once: true }}
@@ -295,14 +295,14 @@ export default function WebsSection() {
           ))}
         </motion.div>
 
-        {/* ── BOTTOM STATEMENT ── */}
+        {/* —★ BOTTOM STATEMENT —★ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ delay: 0.3 }}
           className="mt-14 text-center"
         >
           <p className="text-[13px] text-white/25 tracking-[0.12em] uppercase font-medium">
-            No solo captamos tus leads — construimos la presencia digital de tu inmobiliaria
+            No solo captamos tus leads — construimos la presencia digital de tu negocio
           </p>
         </motion.div>
 

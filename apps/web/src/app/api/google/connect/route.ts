@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
+import { supabaseAdmin } from "@/lib/supabase"
 
 function clean(s: string) {
   return s.replace(/^﻿/, "").trim()
@@ -12,6 +13,11 @@ export async function GET(req: NextRequest) {
   const businessId = req.nextUrl.searchParams.get("businessId")
   if (!businessId)
     return NextResponse.json({ error: "Missing businessId" }, { status: 400 })
+
+  // Verify this business belongs to the authenticated user
+  const { data: biz } = await supabaseAdmin
+    .from("businesses").select("id").eq("id", businessId).eq("owner_clerk_id", userId).single()
+  if (!biz) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
   const clientId = clean(process.env.GOOGLE_CLIENT_ID || "")
   if (!clientId) {

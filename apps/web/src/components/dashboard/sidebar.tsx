@@ -22,16 +22,17 @@ import { useEffect, useState } from "react"
 import { useBusinessStore } from "@/store/business.store"
 import { api } from "@/lib/api"
 import { useQuery } from "@tanstack/react-query"
+import { LogoFull } from "@/components/Logo"
 
 const navItems = [
-  { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/calls", icon: PhoneCall, label: "Llamadas" },
-  { href: "/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/calendar", icon: Calendar, label: "Calendario" },
-  { href: "/ai-config", icon: Brain, label: "Config. IA" },
-  { href: "/team", icon: Users, label: "Equipo" },
-  { href: "/billing", icon: CreditCard, label: "Facturación" },
-  { href: "/settings", icon: Settings, label: "Ajustes" },
+  { href: "/dashboard",  icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/calls",      icon: PhoneCall,        label: "Llamadas" },
+  { href: "/analytics",  icon: BarChart3,         label: "Analytics" },
+  { href: "/calendar",   icon: Calendar,          label: "Calendario" },
+  { href: "/ai-config",  icon: Brain,             label: "Config. IA" },
+  { href: "/team",       icon: Users,             label: "Equipo" },
+  { href: "/billing",    icon: CreditCard,        label: "Facturación" },
+  { href: "/settings",   icon: Settings,          label: "Ajustes" },
 ]
 
 const NICHE_ICONS: Record<string, string> = {
@@ -45,13 +46,24 @@ const NICHE_ICONS: Record<string, string> = {
   VET_CLINIC: "🐾",
 }
 
-export function DashboardSidebar() {
+interface DashboardSidebarProps {
+  mobileOpen?: boolean
+  onClose?: () => void
+}
+
+export function DashboardSidebar({ mobileOpen = false, onClose }: DashboardSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { signOut } = useClerk()
   const { user } = useUser()
   const { currentBusinessId, businesses, setCurrentBusiness, setBusinesses } = useBusinessStore()
   const [selectorOpen, setSelectorOpen] = useState(false)
+
+  // Auto-close sidebar on route change (mobile)
+  useEffect(() => {
+    onClose?.()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   const { data: fetchedBusinesses } = useQuery({
     queryKey: ["businesses"],
@@ -63,7 +75,6 @@ export function DashboardSidebar() {
     if (fetchedBusinesses?.data?.length) {
       const list = fetchedBusinesses.data
       setBusinesses(list)
-      // Auto-select first business if none selected or if stored ID no longer exists
       const currentStillValid = list.some((b: { id: string }) => b.id === currentBusinessId)
       if (!currentBusinessId || !currentStillValid) {
         setCurrentBusiness(list[0])
@@ -77,62 +88,65 @@ export function DashboardSidebar() {
   const currentBusiness = businesses.find((b) => b.id === currentBusinessId)
 
   return (
-    <aside className="w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col">
+    <aside className={cn(
+      "w-60 h-screen bg-white border-r border-border flex flex-col shrink-0",
+      // Desktop: always visible
+      "md:relative md:translate-x-0",
+      // Mobile: fixed drawer, slides in/out
+      "fixed inset-y-0 left-0 z-40 transition-transform duration-300 ease-in-out md:transition-none",
+      mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+    )}>
       {/* Logo */}
-      <div className="px-6 h-16 flex items-center border-b border-gray-100 dark:border-gray-800">
-        <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ background: "#7c3aed" }}>
-            <span style={{ fontFamily: "Georgia, serif", fontWeight: 900, color: "#fff", fontSize: "0.9rem", fontStyle: "italic" }}>a</span>
-          </div>
-          <span style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: "1.1rem", color: "#1a1614" }}>
-            <span style={{ color: "#7c3aed" }}>allo</span>Studios
-          </span>
+      <div className="px-5 h-[60px] flex items-center border-b border-border">
+        <Link href="/dashboard">
+          <LogoFull size="sm" />
         </Link>
       </div>
 
       {/* Business selector */}
-      <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800 relative">
+      <div className="px-3 py-2.5 border-b border-border relative">
         <button
           onClick={() => setSelectorOpen((o) => !o)}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-surface transition-colors"
         >
-          <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-sm">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0"
+            style={{ background: "rgba(91,91,214,0.08)" }}>
             {currentBusiness ? NICHE_ICONS[currentBusiness.niche] || "🏢" : "🏢"}
           </div>
-          <div className="flex-1 text-left">
-            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+          <div className="flex-1 text-left min-w-0">
+            <p className="text-[13px] font-semibold text-ink truncate">
               {currentBusiness?.name || "Selecciona negocio"}
             </p>
-            <p className="text-xs text-gray-500 capitalize">
+            <p className="text-[11px] text-muted capitalize truncate">
               {currentBusiness?.niche?.replace(/_/g, " ").toLowerCase() || "—"}
             </p>
           </div>
-          <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform", selectorOpen && "rotate-180")} />
+          <ChevronDown className={cn("w-3.5 h-3.5 text-muted transition-transform shrink-0", selectorOpen && "rotate-180")} />
         </button>
 
         {selectorOpen && (
-          <div className="absolute top-full left-4 right-4 z-50 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden">
+          <div className="absolute top-full left-3 right-3 z-50 bg-white rounded-xl border border-border shadow-md overflow-hidden">
             {businesses.map((b) => (
               <button
                 key={b.id}
                 onClick={() => { setCurrentBusiness(b); setSelectorOpen(false) }}
                 className={cn(
-                  "w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left",
-                  b.id === currentBusinessId && "bg-violet-50 dark:bg-violet-900/30",
+                  "w-full flex items-center gap-3 px-4 py-2.5 hover:bg-surface transition-colors text-left",
+                  b.id === currentBusinessId && "bg-accent-light",
                 )}
               >
-                <span className="text-lg">{NICHE_ICONS[b.niche] || "🏢"}</span>
+                <span className="text-base">{NICHE_ICONS[b.niche] || "🏢"}</span>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{b.name}</p>
-                  <p className="text-xs text-gray-500">{b.niche?.replace(/_/g, " ").toLowerCase()}</p>
+                  <p className="text-[13px] font-semibold text-ink">{b.name}</p>
+                  <p className="text-[11px] text-muted capitalize">{b.niche?.replace(/_/g, " ").toLowerCase()}</p>
                 </div>
               </button>
             ))}
             <button
               onClick={() => { router.push("/onboarding"); setSelectorOpen(false) }}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 border-t border-gray-100 dark:border-gray-700 text-sm text-violet-600 dark:text-violet-400"
+              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-surface border-t border-border text-[13px] text-accent font-medium transition-colors"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
               Añadir negocio
             </button>
           </div>
@@ -140,7 +154,7 @@ export function DashboardSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
           return (
@@ -148,19 +162,19 @@ export function DashboardSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
+                "relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150",
                 isActive
-                  ? "bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white",
+                  ? "bg-accent-light text-accent"
+                  : "text-dim hover:bg-surface hover:text-ink",
               )}
             >
               {isActive && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute left-0 w-1 h-8 bg-violet-600 rounded-r-full"
+                  className="absolute left-0 w-0.5 h-5 bg-accent rounded-r-full"
                 />
               )}
-              {item.icon && <item.icon className={cn("w-4 h-4", isActive && "text-violet-600 dark:text-violet-400")} />}
+              <item.icon className={cn("w-[15px] h-[15px] shrink-0", isActive ? "text-accent" : "text-muted")} />
               {item.label}
             </Link>
           )
@@ -168,24 +182,26 @@ export function DashboardSidebar() {
       </nav>
 
       {/* User */}
-      <div className="px-4 py-4 border-t border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-sm font-bold text-violet-600">
-            {user?.firstName?.charAt(0) || "U"}
+      <div className="px-3 py-3 border-t border-border">
+        <div className="flex items-center gap-2.5 px-2">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white shrink-0"
+            style={{ background: "#5B5BD6" }}>
+            {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-              {user?.fullName || "Usuario"}
+            <p className="text-[13px] font-semibold text-ink truncate">
+              {user?.fullName || user?.firstName || "Usuario"}
             </p>
-            <p className="text-xs text-gray-500 truncate">
+            <p className="text-[11px] text-muted truncate">
               {user?.primaryEmailAddress?.emailAddress || ""}
             </p>
           </div>
           <button
             onClick={() => signOut()}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            className="text-muted hover:text-dim transition-colors p-1 rounded-lg hover:bg-surface"
+            title="Cerrar sesión"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

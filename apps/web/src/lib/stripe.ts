@@ -7,26 +7,19 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export const PLANS = {
   STARTER: {
     name: "Starter",
-    price: 99,
-    annualPrice: 990,
-    calls: 200,
+    price: 399,
+    minutes_included: 1500,
     priceId: process.env.STRIPE_STARTER_PRICE_ID || "",
-    annualPriceId: process.env.STRIPE_STARTER_ANNUAL_PRICE_ID || "",
   },
   PROFESSIONAL: {
     name: "Professional",
-    price: 199,
-    annualPrice: 1990,
-    calls: 1000,
+    price: 599,
+    minutes_included: 2250,
     priceId: process.env.STRIPE_PROFESSIONAL_PRICE_ID || "",
-    annualPriceId: process.env.STRIPE_PROFESSIONAL_ANNUAL_PRICE_ID || "",
-  },
-  ENTERPRISE: {
-    name: "Enterprise",
-    price: 499,
-    annualPrice: 4990,
-    calls: 999999,
-    priceId: process.env.STRIPE_ENTERPRISE_PRICE_ID || "",
-    annualPriceId: process.env.STRIPE_ENTERPRISE_ANNUAL_PRICE_ID || "",
   },
 }
+
+export type PlanKey = keyof typeof PLANS
+
+// Overage pricing: 0.25€ per extra minute. El servicio nunca se corta.
+export const OVERAGE_PRICE_PER_MINUTE_CENTS = 25

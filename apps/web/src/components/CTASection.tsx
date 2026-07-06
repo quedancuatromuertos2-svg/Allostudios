@@ -57,14 +57,14 @@ export default function CTASection() {
         <motion.h2 variants={item}
           className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance"
         >
-          Tu inmobiliaria, captando leads sola.
+          Tu negocio, captando clientes solo.
         </motion.h2>
 
         {/* Sub */}
         <motion.p variants={item}
           className="mt-5 text-lg text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty"
         >
-          Únete a las inmobiliarias que usan AlloStudios para llenar sus redes de contenido,
+          Únete a los negocios que usan AlloStudios para llenar sus redes de contenido,
           captar interesados y responder cada DM con IA — sin perder un solo lead.
         </motion.p>
 
@@ -80,7 +80,7 @@ export default function CTASection() {
             </svg>
           </button>
           <a
-            href="https://wa.me/34613112671?text=Hola%2C%20quiero%20hablar%20con%20un%20experto%20de%20AlloStudios"
+            href="https://wa.me/34695868793?text=Hola%2C%20quiero%20hablar%20con%20un%20experto%20de%20AlloStudios"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-4 rounded-full border border-ink/15 text-ink/70 hover:text-ink hover:border-ink/30 hover:bg-white/60 text-sm font-medium transition-all duration-300 backdrop-blur-sm"

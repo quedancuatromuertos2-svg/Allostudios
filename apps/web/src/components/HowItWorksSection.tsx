@@ -6,8 +6,8 @@ import { motion, useInView } from 'framer-motion'
 const steps = [
   {
     n: '01',
-    title: 'Cuéntanos tu inmobiliaria',
-    desc: 'Nos pasas tu marca, tus pisos y tu zona. Preparamos tu estrategia de contenido y el calendario del primer mes. Te guiamos paso a paso.',
+    title: 'Cuéntanos tu negocio',
+    desc: 'Nos pasas tu marca, lo que ofreces y tu zona. Preparamos tu estrategia de contenido y el calendario del primer mes. Te guiamos paso a paso.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
@@ -18,7 +18,7 @@ const steps = [
   {
     n: '02',
     title: 'Publicamos y respondemos',
-    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tus DMs de Instagram y WhatsApp, cualifica interesados y agenda visitas.',
+    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tus DMs de Instagram y WhatsApp, cualifica interesados y agenda citas.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -29,7 +29,7 @@ const steps = [
   {
     n: '03',
     title: 'Crece sin límites',
-    desc: 'Recibe un informe mensual, más visibilidad y más captaciones. Y cuando quieras, escalamos con campañas de anuncios en Meta.',
+    desc: 'Recibe un informe mensual, más visibilidad y más clientes. Y cuando quieras, escalamos con campañas de anuncios en Meta y Google.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="como" ref={ref} className="py-section bg-white overflow-hidden">
+    <section id="como" ref={ref} className="py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -58,7 +58,7 @@ export default function HowItWorksSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-headline font-semibold text-ink text-balance"
+            className="font-display text-headline font-semibold text-ink text-balance"
           >
             En marcha en<br />una semana.
           </motion.h2>
@@ -91,7 +91,7 @@ export default function HowItWorksSection() {
                 {/* Glow ring */}
                 <div className="absolute inset-[-6px] rounded-full bg-accent-light opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative w-[104px] h-[104px] rounded-full bg-canvas border border-border flex items-center justify-center text-dim shadow-sm">
+                <div className="lg relative w-[104px] h-[104px] rounded-full flex items-center justify-center text-dim">
                   {s.icon}
                 </div>
 
@@ -107,7 +107,7 @@ export default function HowItWorksSection() {
               <p className="text-[13.5px] text-dim font-light leading-relaxed max-w-[260px] mb-4">{s.desc}</p>
 
               {/* Detail chip */}
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface border border-border text-[11.5px] font-medium text-dim">
+              <span className="lg inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11.5px] font-medium text-dim">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                   <circle cx="5" cy="5" r="4" stroke="#5B5BD6" strokeWidth="1.2"/>
                   <path d="M5 3v2l1.2 1.2" stroke="#5B5BD6" strokeWidth="1.2" strokeLinecap="round"/>

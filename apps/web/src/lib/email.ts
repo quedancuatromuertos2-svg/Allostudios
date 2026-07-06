@@ -96,7 +96,7 @@ export async function sendLeadEmail(d: {
     <div style="padding:28px 32px;">
       <table style="width:100%;border-collapse:collapse;">
         ${row('Nombre', d.nombre)}
-        ${row('Inmobiliaria', d.inmobiliaria)}
+        ${row('Negocio', d.inmobiliaria)}
         ${row('Teléfono', d.telefono)}
         ${row('Email', d.email)}
         ${row('Servicio', d.servicio)}

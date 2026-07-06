@@ -111,7 +111,7 @@ export default function DashboardPage() {
       color: "bg-red-500",
     },
     {
-      title: "Citas reservadas",
+      title: "Visitas agendadas",
       value: stats?.appointmentsBooked ?? "—",
       change: stats?.appointmentsChangePercent ?? 0,
       icon: CalendarCheck,
@@ -146,7 +146,7 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-          Vista general de tu negocio
+          Vista general de tu inmobiliaria
         </p>
       </div>
 
@@ -222,7 +222,7 @@ export default function DashboardPage() {
                 icon: Clock,
               },
               {
-                label: "Próximas citas",
+                label: "Próximas visitas",
                 value: stats?.upcomingAppointments ?? 0,
                 icon: CalendarCheck,
               },
@@ -275,18 +275,18 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {call.callerName || call.callerNumber || "Desconocido"}
+                  {call.caller_number || "Desconocido"}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  {call.aiSummary
-                    ? call.aiSummary.substring(0, 60) + "..."
+                  {call.summary
+                    ? call.summary.substring(0, 60) + "..."
                     : "Sin resumen disponible"}
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                {call.duration && (
+                {call.duration_seconds != null && (
                   <span className="text-xs text-gray-400">
-                    {Math.floor(call.duration / 60)}:{String(call.duration % 60).padStart(2, "0")}
+                    {Math.floor(call.duration_seconds / 60)}:{String(call.duration_seconds % 60).padStart(2, "0")}
                   </span>
                 )}
                 <span

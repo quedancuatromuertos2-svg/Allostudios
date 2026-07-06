@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -118,12 +119,59 @@
   background-size: 60px 60px;
 }
 
-/* ─── Mesh hero gradient ─── */
+/* ─── Mesh hero gradient — breathes slowly ─── */
 .mesh-hero {
   background:
     radial-gradient(ellipse 70% 60% at 15% 0%, rgba(91,91,214,0.10) 0%, transparent 70%),
     radial-gradient(ellipse 50% 50% at 85% 10%, rgba(124,124,232,0.07) 0%, transparent 65%),
     radial-gradient(ellipse 40% 40% at 50% 80%, rgba(91,91,214,0.05) 0%, transparent 60%);
+  animation: meshBreath 22s ease-in-out infinite alternate;
+}
+
+@keyframes meshBreath {
+  0%   { opacity: 0.7; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* ─── Wavy lines ambient drift (image 3 style — used in CTASection) ─── */
+.wavy-drift {
+  animation: wavyDrift 30s ease-in-out infinite alternate;
+}
+
+@keyframes wavyDrift {
+  0%   { background-position: 0px 0px; }
+  100% { background-position: 120px 80px; }
+}
+
+/* ─── Mesh pulse (image 1 style — subtle breathe) ─── */
+.mesh-pulse {
+  animation: meshPulse 18s ease-in-out infinite alternate;
+}
+
+@keyframes meshPulse {
+  0%   { opacity: 0.08; background-size: 26px 26px; }
+  50%  { opacity: 0.13; background-size: 28px 28px; }
+  100% { opacity: 0.09; background-size: 25px 25px; }
+}
+
+/* ─── Scroll-driven ambient for page sections ─── */
+.section-ambient::before {
+  content: '';
+  position: absolute;
+  inset: -80px;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(91,91,214,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(124,124,232,0.04) 0%, transparent 55%);
+  animation: sectionOrb 28s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes sectionOrb {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(2%, 3%); }
+  100% { transform: translate(-2%, -1%); }
 }
 
 /* ─── Noise texture ─── */
@@ -163,6 +211,31 @@
   background: rgba(255,255,255,0.92);
 }
 
+/* ─── Liquid Glass — Apple-style (absorbs background colors via backdrop-filter) ─── */
+.liquid-glass {
+  backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+  -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.62);
+  /* Specular highlight — simulates light refraction at the glass edge */
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.25),
+    0 8px 32px rgba(91,91,214,0.10),
+    0 2px 8px rgba(0,0,0,0.05);
+}
+.liquid-glass-vivid {
+  backdrop-filter: blur(40px) saturate(220%) brightness(1.10);
+  -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.10);
+  background: rgba(255,255,255,0.60);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.20),
+    0 12px 48px rgba(91,91,214,0.16),
+    0 3px 12px rgba(0,0,0,0.06);
+}
+
 /* ─── Focus ring ─── */
 *:focus-visible {
   outline: 2px solid rgba(91,91,214,0.5);
@@ -172,3 +245,56 @@
 
 details summary { list-style: none; }
 details summary::-webkit-details-marker { display: none; }
+
+/* ══════════════════════════════════════════════════════════════
+   LIQUID GLASS SYSTEM (aprobado 2026-07-06) — fondo claro + cristal
+   translúcido + rastro de color fluido + auras persistentes.
+   Aplica solo a superficies claras; las secciones oscuras se dejan.
+   ══════════════════════════════════════════════════════════════ */
+.font-display { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-spacing: -0.02em; }
+
+/* Rastro de color fluido (canvas global, detrás del contenido) */
+#lg-trail { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* Material de cristal líquido translúcido con aura que sigue al ratón */
+.lg {
+  position: relative; isolation: isolate;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(20px) saturate(2) brightness(1.05);
+  -webkit-backdrop-filter: blur(20px) saturate(2) brightness(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 1px rgba(255,255,255,0.28),
+    0 2px 5px rgba(26,20,52,0.09),
+    0 12px 24px -8px rgba(26,20,52,0.18),
+    0 30px 56px -18px rgba(26,20,52,0.30);
+  transition: background 0.45s cubic-bezier(.32,.72,0,1), box-shadow 0.45s cubic-bezier(.32,.72,0,1);
+}
+.lg:hover {
+  background: rgba(255,255,255,0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 1px rgba(255,255,255,0.3),
+    0 3px 7px rgba(26,20,52,0.10),
+    0 16px 30px -8px rgba(26,20,52,0.2),
+    0 40px 70px -20px rgba(26,20,52,0.34);
+}
+.lg::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  opacity: 0; transition: opacity 0.45s cubic-bezier(.32,.72,0,1); pointer-events: none;
+  background: radial-gradient(105px circle at var(--mx,50%) var(--my,50%),
+    hsla(262,88%,62%,0.34), hsla(300,88%,62%,0.18) 45%, transparent 72%);
+}
+.lg:hover::before { opacity: 1; }
+
+/* Título premium legible: sólido + segunda línea con degradado de marca */
+.lg-h { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; letter-spacing: -0.045em; line-height: 0.96; color: #15121f; }
+.lg-grad {
+  background: linear-gradient(100deg, #4f6bff, #8a5bff 48%, #d95bc0);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  #lg-trail { display: none; }
+  .lg::before, .lg { transition: none; }
+}

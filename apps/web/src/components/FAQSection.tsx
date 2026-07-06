@@ -5,18 +5,18 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const faqs = [
   {
-    q: '¿Qué hacéis exactamente con el Instagram de mi inmobiliaria?',
-    a: 'Lo llevamos entero: creamos el contenido (carruseles de propiedades, posts educativos, reels), escribimos los textos, lo diseñamos con tu marca y lo publicamos cada semana. Tú solo nos pasas las fotos de los pisos y das el visto bueno.',
+    q: '¿Qué hacéis exactamente con el Instagram de mi negocio?',
+    a: 'Lo llevamos entero: creamos el contenido (carruseles, posts educativos, reels), escribimos los textos, lo diseñamos con tu marca y lo publicamos cada semana. Tú solo nos pasas las fotos de tu negocio y das el visto bueno.',
     tag: 'Instagram',
   },
   {
     q: '¿En cuánto tiempo veo resultados?',
-    a: 'Empezamos a publicar la primera semana. El alcance y la imagen profesional mejoran desde el primer mes, y las captaciones van llegando a medida que tu cuenta gana constancia y autoridad. Si quieres acelerarlo, lo combinamos con campañas de anuncios.',
+    a: 'Empezamos a publicar la primera semana. El alcance y la imagen profesional mejoran desde el primer mes, y los clientes van llegando a medida que tu cuenta gana constancia y autoridad. Si quieres acelerarlo, lo combinamos con campañas de anuncios.',
     tag: 'Instagram',
   },
   {
     q: '¿Cómo funciona el asistente de IA en los DMs?',
-    a: 'Un asistente de IA responde tus mensajes directos de Instagram y WhatsApp 24/7: contesta dudas de los pisos, cualifica al interesado (compra o alquiler, presupuesto, zona), capta su contacto y agenda la visita. Cuando hace falta, te avisa para que entres tú.',
+    a: 'Un asistente de IA responde tus mensajes directos de Instagram y WhatsApp 24/7: contesta dudas de tus productos o servicios, cualifica al interesado, capta su contacto y agenda la cita. Cuando hace falta, te avisa para que entres tú.',
     tag: 'Asistente IA',
   },
   {
@@ -25,8 +25,8 @@ const faqs = [
     tag: 'Anuncios',
   },
   {
-    q: '¿Cuánto cuesta una web inmobiliaria y qué incluye?',
-    a: 'La Web Inmobiliaria parte de 790 € (pago único). Incluye diseño premium a medida, buscador de inmuebles integrado, velocidad 99+ en PageSpeed, SEO local de tu zona, diseño responsive, formulario de contacto + WhatsApp y 12 meses de mantenimiento. El precio final depende del alcance — contáctanos para un presupuesto sin compromiso.',
+    q: '¿Cuánto cuesta una web y qué incluye?',
+    a: 'Tenemos tres niveles: Arranque (400 € + 49 €/mes) con diseño a medida, móvil, SEO local y todo incluido; Premium (790 €) con animaciones y tus reseñas de Google; y Cinematográfica (desde 1.490 €) con el efecto de scroll estilo Apple. Todos sin permanencia. Y lo mejor: te enseñamos una demo real de tu web ANTES de que pagues nada.',
     tag: 'Webs',
   },
   {
@@ -103,7 +103,7 @@ export default function FAQSection() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section id="faq" className="py-section bg-canvas">
+    <section id="faq" className="py-section">
       <div className="max-w-3xl mx-auto px-6 md:px-12">
 
         <div className="text-center mb-14">
@@ -114,7 +114,7 @@ export default function FAQSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
-            className="text-headline font-semibold text-ink"
+            className="font-display text-headline font-semibold text-ink"
           >
             ¿Tienes dudas? Resueltas.
           </motion.h2>
@@ -123,7 +123,7 @@ export default function FAQSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ delay: 0.16 }}
-          className="bg-white rounded-2xl border border-border shadow-sm px-8"
+          className="lg rounded-2xl px-8"
         >
           {faqs.map((faq, i) => (
             <FAQItem
@@ -142,7 +142,7 @@ export default function FAQSection() {
         >
           ¿No encuentras tu respuesta?{' '}
           <a
-            href="https://wa.me/34613112671?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20AlloStudios"
+            href="https://wa.me/34695868793?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20AlloStudios"
             target="_blank" rel="noopener noreferrer"
             className="text-accent font-medium hover:underline"
           >

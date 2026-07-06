@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, PhoneCall, Calendar, Users, Settings, CheckCircle, XCircle } from "lucide-react"
 
 const PLANS = ["TRIAL", "STARTER", "PROFESSIONAL", "ENTERPRISE"]
-const PLAN_CALLS: Record<string, number> = { TRIAL: 50, STARTER: 200, PROFESSIONAL: 1000, ENTERPRISE: 999999 }
+const PLAN_CALLS: Record<string, number> = { TRIAL: 30, STARTER: 200, PROFESSIONAL: 500, ENTERPRISE: 999999 }
 
 export default function AdminClientDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -19,9 +19,17 @@ export default function AdminClientDetailPage() {
     queryFn: () => api.get(`/api/admin/clients/${id}`).then(r => r.data),
   })
 
+  const [mutationError, setMutationError] = useState<string | null>(null)
+
   const mutation = useMutation({
     mutationFn: (payload: any) => api.patch(`/api/admin/clients/${id}`, payload),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "client", id] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "client", id] })
+      setMutationError(null)
+    },
+    onError: (e: any) => {
+      setMutationError(e?.response?.data?.error || "Error al guardar cambios")
+    },
   })
 
   const [editPlan, setEditPlan] = useState(false)
@@ -34,6 +42,7 @@ export default function AdminClientDetailPage() {
   const sub = Array.isArray(business.subscription) ? business.subscription[0] : business.subscription
 
   const savePlan = () => {
+    if (!window.confirm(`¿Cambiar plan a ${selectedPlan}? Esto modifica el límite de minutos del cliente.`)) return
     mutation.mutate({
       subscription: { plan: selectedPlan, calls_limit: PLAN_CALLS[selectedPlan] },
     })
@@ -74,6 +83,9 @@ export default function AdminClientDetailPage() {
           <h2 className="font-semibold text-white flex items-center gap-2">
             <Settings className="w-4 h-4 text-violet-400" /> Suscripción
           </h2>
+          {mutationError && (
+            <p className="text-xs text-red-400 bg-red-400/10 rounded-lg px-3 py-1.5">{mutationError}</p>
+          )}
           {editPlan ? (
             <div className="space-y-2">
               <select
@@ -84,10 +96,10 @@ export default function AdminClientDetailPage() {
                 {PLANS.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
               <div className="flex gap-2">
-                <button onClick={savePlan} className="flex-1 bg-violet-600 hover:bg-violet-700 text-white text-sm py-1.5 rounded-lg">
-                  Guardar
+                <button onClick={savePlan} disabled={mutation.isPending} className="flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm py-1.5 rounded-lg">
+                  {mutation.isPending ? "Guardando..." : "Guardar"}
                 </button>
-                <button onClick={() => setEditPlan(false)} className="flex-1 bg-gray-800 text-gray-300 text-sm py-1.5 rounded-lg">
+                <button onClick={() => setEditPlan(false)} disabled={mutation.isPending} className="flex-1 bg-gray-800 text-gray-300 text-sm py-1.5 rounded-lg">
                   Cancelar
                 </button>
               </div>
@@ -108,13 +120,13 @@ export default function AdminClientDetailPage() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-400 text-sm">Llamadas usadas</span>
-                <span className="text-white">{sub?.calls_used || 0} / {sub?.calls_limit || 50}</span>
+                <span className="text-gray-400 text-sm">Minutos usados</span>
+                <span className="text-white">{sub?.calls_used || 0} / {sub?.calls_limit || PLAN_CALLS[sub?.plan || "TRIAL"]}</span>
               </div>
               <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-violet-500 rounded-full"
-                  style={{ width: `${Math.min(100, ((sub?.calls_used || 0) / (sub?.calls_limit || 50)) * 100)}%` }}
+                  style={{ width: `${Math.min(100, ((sub?.calls_used || 0) / (sub?.calls_limit || PLAN_CALLS[sub?.plan || "TRIAL"] || 1)) * 100)}%` }}
                 />
               </div>
               <button

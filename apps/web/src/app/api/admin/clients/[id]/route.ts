@@ -53,10 +53,18 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
   if (body.subscription) {
     const { plan, status, calls_limit } = body.subscription
-    await supabaseAdmin
-      .from("subscriptions")
-      .update({ plan, status, calls_limit })
-      .eq("business_id", params.id)
+    const validPlans = ["TRIAL", "STARTER", "PROFESSIONAL", "ENTERPRISE"]
+    const validStatuses = ["trialing", "active", "past_due", "cancelled", "canceled", "incomplete"]
+    if (plan && !validPlans.includes(plan)) return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
+    if (status && !validStatuses.includes(status)) return NextResponse.json({ error: "Invalid status" }, { status: 400 })
+    if (calls_limit !== undefined && (calls_limit < 0 || calls_limit > 1000000)) return NextResponse.json({ error: "Invalid calls_limit" }, { status: 400 })
+    const updates: Record<string, unknown> = {}
+    if (plan) updates.plan = plan
+    if (status) updates.status = status
+    if (calls_limit !== undefined) updates.calls_limit = calls_limit
+    if (Object.keys(updates).length > 0) {
+      await supabaseAdmin.from("subscriptions").update(updates).eq("business_id", params.id)
+    }
   }
 
   if (body.is_active !== undefined) {

@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase"
-import { getVapiCalls } from "@/lib/vapi"
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { userId } = await auth()
@@ -10,31 +9,35 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   const url = new URL(req.url)
   const page = parseInt(url.searchParams.get("page") || "1")
   const limit = parseInt(url.searchParams.get("limit") || "20")
+  const search = url.searchParams.get("search") || ""
   const from = (page - 1) * limit
 
-  // Get business to verify ownership + get vapi assistant id
   const { data: business } = await supabaseAdmin
     .from("businesses")
-    .select("id, vapi_assistant_id")
+    .select("id")
     .eq("id", params.id)
     .eq("owner_clerk_id", userId)
     .single()
 
   if (!business) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
-  // Get calls from Supabase (synced from Vapi webhooks)
-  const { data: calls, count, error } = await supabaseAdmin
+  let query = supabaseAdmin
     .from("calls")
     .select("*", { count: "exact" })
     .eq("business_id", params.id)
-    .order("created_at", { ascending: false })
-    .range(from, from + limit - 1)
+    .order("started_at", { ascending: false })
+
+  if (search) {
+    query = query.or(`caller_number.ilike.%${search}%,summary.ilike.%${search}%,transcript.ilike.%${search}%`)
+  }
+
+  const { data: calls, count, error } = await query.range(from, from + limit - 1)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   return NextResponse.json({
-    data: calls,
-    total: count,
+    data: calls || [],
+    total: count || 0,
     page,
     limit,
     pages: Math.ceil((count || 0) / limit),

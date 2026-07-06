@@ -1,5 +1,15 @@
 {
   "framework": "nextjs",
   "buildCommand": "./node_modules/.bin/tailwindcss -i ./src/app/globals.css -o ./src/app/globals.css && next build",
-  "installCommand": "npm install"
+  "installCommand": "npm install --ignore-scripts",
+  "crons": [
+    {
+      "path": "/api/admin/retry-jobs",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/health-check",
+      "schedule": "0 8 * * *"
+    }
+  ]
 }

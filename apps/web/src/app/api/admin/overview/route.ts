@@ -18,7 +18,7 @@ export async function GET() {
   ])
 
   const subs = subRes.data || []
-  const planPrices: Record<string, number> = { STARTER: 79, PROFESSIONAL: 199, ENTERPRISE: 499, TRIAL: 0 }
+  const planPrices: Record<string, number> = { STARTER: 399, PROFESSIONAL: 599, ENTERPRISE: 899, TRIAL: 0 }
   const mrr = subs.filter(s => s.status === "active").reduce((sum, s) => sum + (planPrices[s.plan] || 0), 0)
   const activeSubs = subs.filter(s => s.status === "active").length
   const trialSubs = subs.filter(s => s.status === "trialing").length

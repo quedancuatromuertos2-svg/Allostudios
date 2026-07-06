@@ -73,11 +73,11 @@ function LiveCallCard() {
         <div className="px-5 space-y-2.5 pb-1">
           <div className="bg-surface rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%]">
             <div className="text-[10px] font-semibold text-muted mb-0.5 tracking-[0.06em] uppercase">Interesado</div>
-            <div className="text-[12px] text-ink leading-relaxed">¿Sigue disponible el ático de Chamberí?</div>
+            <div className="text-[12px] text-ink leading-relaxed">Hola, ¿tenéis hueco esta semana?</div>
           </div>
           <div className="bg-accent-light rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[85%] ml-auto">
             <div className="text-[10px] font-semibold text-accent mb-0.5 tracking-[0.06em] uppercase">IA</div>
-            <div className="text-[12px] text-ink leading-relaxed">Sí. ¿Le agendo una visita mañana a las 18:00?</div>
+            <div className="text-[12px] text-ink leading-relaxed">¡Sí! ¿Le agendo cita mañana a las 18:00?</div>
           </div>
         </div>
 
@@ -125,11 +125,11 @@ function LiveCallCard() {
 
 // ─── Automation Flow ───
 const flowNodes = [
-  { icon: '💬', label: 'Mensaje\nentrante',  bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
-  { icon: '🤖', label: 'IA cualifica\nel lead', bg: '#EEEFFF', border: 'rgba(91,91,214,0.3)', color: '#5B5BD6' },
-  { icon: '📅', label: 'Visita\nagendada',   bg: '#ECFDF5', border: '#A7F3D0', color: '#065F46' },
-  { icon: '💬', label: 'Aviso al\nagente',    bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' },
-  { icon: '⭐', label: 'Lead\ncaptado',       bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
+  { d: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>', label: 'Mensaje\nentrante',  bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
+  { d: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>', label: 'IA cualifica\nel lead', bg: '#EEEFFF', border: 'rgba(91,91,214,0.3)', color: '#5B5BD6' },
+  { d: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/>', label: 'Visita\nagendada',   bg: '#ECFDF5', border: '#A7F3D0', color: '#065F46' },
+  { d: '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>', label: 'Aviso a\ntu equipo',   bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' },
+  { d: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>', label: 'Cliente\ncaptado',       bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
 ]
 
 function AutoFlow() {
@@ -147,7 +147,9 @@ function AutoFlow() {
               className="flex flex-col items-center gap-2 p-3.5 rounded-2xl border"
               style={{ background: node.bg, borderColor: node.border, minWidth: 80 }}
             >
-              <span className="text-xl leading-none">{node.icon}</span>
+              <span className="leading-none" style={{ color: node.color }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: node.d }} />
+              </span>
               <span className="text-[10px] font-semibold text-center leading-tight whitespace-pre-line" style={{ color: node.color }}>
                 {node.label}
               </span>
@@ -188,7 +190,9 @@ function AutoFlow() {
               className="flex items-center gap-3 px-4 py-3 rounded-2xl border w-full max-w-xs"
               style={{ background: node.bg, borderColor: node.border }}
             >
-              <span className="text-lg leading-none shrink-0">{node.icon}</span>
+              <span className="leading-none shrink-0" style={{ color: node.color }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: node.d }} />
+              </span>
               <span className="text-[12.5px] font-semibold leading-tight" style={{ color: node.color }}>
                 {node.label.replace('\n', ' ')}
               </span>
@@ -328,8 +332,8 @@ export default function ServicesSection() {
                 className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
               >
                 Un asistente de IA responde tus DMs de Instagram y WhatsApp en segundos,
-                cualifica al interesado (compra o alquiler, presupuesto, zona), agenda la visita
-                y avisa al agente — mientras tú enseñas pisos, firmas o descansas.
+                cualifica al interesado, agenda la cita
+                y te avisa — mientras tú atiendes, vendes o descansas.
               </motion.p>
 
               <motion.ul
@@ -341,8 +345,8 @@ export default function ServicesSection() {
                   'Responde en segundos, 24/7',
                   'Visitas agendadas en tu Google Calendar',
                   'Cualificación del lead: compra/alquiler, presupuesto y zona',
-                  'Resumen de cada conversación enviado al agente',
-                  'Responde con el tono y la marca de tu agencia',
+                  'Resumen de cada conversación enviado al instante',
+                  'Responde con el tono y la marca de tu negocio',
                   'En Instagram, WhatsApp y tu web — sin cambiar nada',
                 ].map(f => (
                   <motion.li key={f} variants={lineItem} className="flex items-center gap-3 text-[14px] text-dim">
@@ -438,8 +442,8 @@ export default function ServicesSection() {
                 transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
               >
-                Conecta tu IA con WhatsApp, Google Calendar y tu CRM inmobiliario.
-                Los flujos automáticos reparten leads entre agentes, envían fichas de inmuebles
+                Conecta tu IA con WhatsApp, Google Calendar y tu CRM.
+                Los flujos automáticos reparten los leads a tu equipo, envían información
                 y hacen seguimiento — sin que toques nada.
               </motion.p>
 
@@ -449,17 +453,19 @@ export default function ServicesSection() {
                 className="grid grid-cols-2 gap-2.5 mb-10"
               >
                 {[
-                  { icon: '📅', name: 'Google Calendar' },
-                  { icon: '💬', name: 'WhatsApp' },
-                  { icon: '📊', name: 'Dashboard de leads' },
-                  { icon: '📧', name: 'Email y SMS' },
-                  { icon: '🔗', name: 'CRM inmobiliario' },
-                  { icon: '📈', name: 'Informes semanales' },
+                  { d: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', name: 'Google Calendar' },
+                  { d: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>', name: 'WhatsApp' },
+                  { d: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h8"/><path d="M7 11h12"/><path d="M7 6h3"/>', name: 'Dashboard de leads' },
+                  { d: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>', name: 'Email y SMS' },
+                  { d: '<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/>', name: 'Tu CRM' },
+                  { d: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>', name: 'Informes semanales' },
                 ].map(item => (
                   <motion.div key={item.name} variants={lineItem}
                     className="flex items-center gap-2.5 bg-white rounded-xl border border-border px-3.5 py-3 hover:shadow-sm transition-shadow duration-200"
                   >
-                    <span className="text-[15px]">{item.icon}</span>
+                    <span className="text-accent">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: item.d }} />
+                    </span>
                     <span className="text-[12.5px] font-medium text-ink">{item.name}</span>
                   </motion.div>
                 ))}
