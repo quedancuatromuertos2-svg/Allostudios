@@ -7,10 +7,12 @@ import SectoresSection from '@/components/SectoresSection'
 import WebsSection from '@/components/WebsSection'
 import ServicesSection from '@/components/ServicesSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
+import PosterBand from '@/components/PosterBand'
 import PricingSection from '@/components/PricingSection'
 import TestimonialsSection from '@/components/TestimonialsSection'
 import FAQSection from '@/components/FAQSection'
 import CTASection from '@/components/CTASection'
+import BrandReveal from '@/components/BrandReveal'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 
@@ -26,11 +28,13 @@ export default function Home() {
         <WebsSection />
         <ServicesSection />
         <HowItWorksSection />
+        <PosterBand />
         <PricingSection />
         <ContactFormSection />
         <TestimonialsSection />
         <FAQSection />
         <CTASection />
+        <BrandReveal />
       </main>
       <Footer />
       <FloatingWhatsApp />

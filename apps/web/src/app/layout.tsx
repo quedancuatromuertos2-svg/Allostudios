@@ -68,19 +68,29 @@ export const metadata: Metadata = {
   classification: "Business",
 }
 
+/**
+ * La clave de producción de Clerk solo es válida en el dominio allostudios.net.
+ * Si clerk-js se carga en localhost lanza «Production Keys are only allowed for
+ * domain "allostudios.net"» y Next lo muestra como Unhandled Runtime Error.
+ *
+ * Por eso en desarrollo la landing se sirve SIN ClerkProvider (no usa Clerk:
+ * solo lo usan el dashboard y las pantallas de login). Basta con definir
+ * NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY (una pk_test_…) en .env.local para volver a
+ * activarlo en local. En producción NODE_ENV siempre vale 'production', así que
+ * el comportamiento es exactamente el de siempre.
+ */
+const CLERK_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_live_Y2xlcmsuYWxsb3N0dWRpb3MubmV0JA"
+
+const CLERK_ENABLED =
+  process.env.NODE_ENV === "production" || !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <ClerkProvider
-      publishableKey="pk_live_Y2xlcmsuYWxsb3N0dWRpb3MubmV0JA"
-      signInUrl="/login"
-      signUpUrl="/register"
-      afterSignInUrl="/dashboard"
-      afterSignUpUrl="/onboarding"
-    >
+  const document = (
       <html lang="es" suppressHydrationWarning>
         <head>
           {/* Structured Data — LocalBusiness / Agencia */}
@@ -100,7 +110,7 @@ export default function RootLayout({
                 priceRange: "€€",
                 contactPoint: {
                   "@type": "ContactPoint",
-                  telephone: "+34-613-112-671",
+                  telephone: "+34-695-868-793",
                   contactType: "sales",
                   availableLanguage: "Spanish",
                 },
@@ -211,6 +221,19 @@ export default function RootLayout({
           <Providers>{children}</Providers>
         </body>
       </html>
+  )
+
+  if (!CLERK_ENABLED) return document
+
+  return (
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      signInUrl="/login"
+      signUpUrl="/register"
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/onboarding"
+    >
+      {document}
     </ClerkProvider>
   )
 }

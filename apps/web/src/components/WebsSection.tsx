@@ -1,98 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-
-/*  CSS Browser mockup — */
-function BrowserMockup() {
-  return (
-    <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-      {/* Chrome bar */}
-      <div className="flex items-center gap-1.5 px-4 py-3 bg-[#1a1a2e] border-b border-white/8">
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="flex-1 mx-3 bg-white/8 rounded-md px-3 py-1.5 text-[10px] text-white/30 font-mono flex items-center gap-2">
-          <svg width="7" height="7" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" stroke="currentColor" strokeWidth="1.2"/></svg>
-          tunegocio.com
-        </div>
-      </div>
-      {/* Page content */}
-      <div className="bg-[#0d0d1a]">
-        {/* Hero strip */}
-        <div className="relative px-7 pt-7 pb-5 overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl" style={{ background: 'rgba(91,91,214,0.18)' }} />
-          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-2xl" style={{ background: 'rgba(124,124,232,0.12)' }} />
-          <div className="w-20 h-1.5 rounded-full bg-accent/40 mb-3" />
-          <div className="w-56 h-4 rounded-full bg-white/15 mb-1.5" />
-          <div className="w-40 h-4 rounded-full bg-white/10 mb-4" />
-          <div className="w-52 h-2 rounded-full bg-white/8 mb-1.5" />
-          <div className="w-36 h-2 rounded-full bg-white/6 mb-6" />
-          <div className="flex gap-2.5">
-            <div className="h-8 w-24 rounded-full bg-accent/70 flex items-center justify-center">
-              <div className="w-14 h-1.5 rounded-full bg-white/60" />
-            </div>
-            <div className="h-8 w-24 rounded-full border border-white/15 flex items-center justify-center">
-              <div className="w-14 h-1.5 rounded-full bg-white/25" />
-            </div>
-          </div>
-        </div>
-        {/* Stats row */}
-        <div className="flex gap-2 px-7 pb-4">
-          {['#5B5BD6', '#16a34a', '#f59e0b', '#e11d48'].map((c, i) => (
-            <div key={i} className="flex-1 rounded-xl p-3 border border-white/6 bg-white/3">
-              <div className="w-6 h-3 rounded-full mb-2" style={{ background: `${c}40` }} />
-              <div className="w-full h-1.5 rounded-full bg-white/10 mb-1" />
-              <div className="w-2/3 h-1.5 rounded-full bg-white/6" />
-            </div>
-          ))}
-        </div>
-        {/* Card row */}
-        <div className="flex gap-2 px-7 pb-6">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex-1 rounded-xl p-3 border border-white/6 bg-white/3">
-              <div className="w-7 h-7 rounded-lg bg-accent/20 mb-2" />
-              <div className="w-full h-1.5 rounded-full bg-white/12 mb-1" />
-              <div className="w-3/4 h-1.5 rounded-full bg-white/7" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/*  Mobile mockup — */
-function PhoneMockup() {
-  return (
-    <div className="w-[90px] rounded-[22px] overflow-hidden border border-white/12 shadow-xl bg-[#0d0d1a]">
-      {/* Notch */}
-      <div className="flex justify-center pt-2 pb-1">
-        <div className="w-10 h-2 rounded-full bg-white/10" />
-      </div>
-      {/* Screen */}
-      <div className="px-2 pb-3 space-y-1.5">
-        <div className="w-full h-12 rounded-lg bg-accent/15 relative overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-1.5 rounded-full bg-white/20" />
-          </div>
-        </div>
-        {[1, 2, 3].map(i => (
-          <div key={i} className="w-full h-8 rounded-lg bg-white/5 border border-white/6 px-2 flex items-center gap-1.5">
-            <div className="w-4 h-4 rounded bg-accent/20 shrink-0" />
-            <div className="flex-1 space-y-1">
-              <div className="h-1 rounded-full bg-white/15" />
-              <div className="h-1 rounded-full bg-white/8 w-2/3" />
-            </div>
-          </div>
-        ))}
-        <div className="w-full h-6 rounded-full bg-accent/50 flex items-center justify-center">
-          <div className="w-12 h-1.5 rounded-full bg-white/50" />
-        </div>
-      </div>
-    </div>
-  )
-}
+import { motion } from 'framer-motion'
+import DemoDeck from '@/components/DemoDeck'
 
 /*  Bento feature cards — */
 const bentoFeatures = [
@@ -168,13 +77,8 @@ const fadeUp = {
 }
 
 export default function WebsSection() {
-  const ref = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y1 = useTransform(scrollYProgress, [0, 1], [-30, 30])
-  const y2 = useTransform(scrollYProgress, [0, 1], [30, -30])
-
   return (
-    <section id="webs" ref={ref} className="relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
+    <section id="webs" className="relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
 
       {/* Ambient orbs */}
       <div className="absolute w-[700px] h-[700px] rounded-full blur-[120px] top-[-20%] right-[-20%] opacity-20 pointer-events-none"
@@ -226,52 +130,12 @@ export default function WebsSection() {
           </motion.div>
         </motion.div>
 
-        {/* —★ MOCKUP SHOWCASE —★ */}
-        <div className="relative flex items-start justify-center gap-5 mb-16 md:mb-20">
-          {/* Main browser */}
-          <motion.div
-            style={{ y: y1 }}
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 max-w-[560px]"
-          >
-            <BrowserMockup />
-
-            {/* Badge — PageSpeed */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-5 -left-6 bg-white rounded-2xl border border-border shadow-xl px-4 py-3 flex items-center gap-2.5"
-            >
-              <div className="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-green-600">99</span>
-              </div>
-              <div>
-                <div className="text-[12px] font-semibold text-ink leading-none">PageSpeed</div>
-                <div className="text-[10px] text-muted mt-0.5">Rendimiento perfecto</div>
-              </div>
-            </motion.div>
-
-            {/* Badge — Entrega */}
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
-              className="absolute -bottom-4 -right-6 bg-white rounded-2xl border border-border shadow-xl px-4 py-2.5"
-            >
-              <div className="text-[18px] font-semibold text-ink tracking-[-0.03em] leading-none">7 días</div>
-              <div className="text-[10px] text-muted mt-0.5">tiempo de entrega</div>
-            </motion.div>
-          </motion.div>
-
-          {/* Phone */}
-          <motion.div
-            style={{ y: y2 }}
-            initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden md:flex items-end pb-8 self-end"
-          >
-            <PhoneMockup />
-          </motion.div>
+        {/* —★ BARAJA DE DEMOS —★ */}
+        <div className="mb-16 md:mb-20">
+          <DemoDeck />
+          <p className="mt-5 text-center text-[11px] uppercase tracking-[0.18em] text-white/25">
+            Toca la baraja para ver otro sector
+          </p>
         </div>
 
         {/* —★ BENTO GRID —★ */}

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* Serif editorial en itálica — solo se usa en PosterBand (1 archivo, ~14 KB) */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -252,6 +254,9 @@ details summary::-webkit-details-marker { display: none; }
    Aplica solo a superficies claras; las secciones oscuras se dejan.
    ══════════════════════════════════════════════════════════════ */
 .font-display { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-spacing: -0.02em; }
+
+/* Serif itálica editorial — contrapunto del display en PosterBand */
+.font-serif-display { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif; font-style: italic; letter-spacing: -0.01em; }
 
 /* Rastro de color fluido (canvas global, detrás del contenido) */
 #lg-trail { position: fixed; inset: 0; z-index: 0; pointer-events: none; }

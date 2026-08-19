@@ -1,112 +1,39 @@
-import type { Metadata } from "next"
+import type { Metadata } from 'next'
+import Navigation from '@/components/Navigation'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad",
-  description: "Política de privacidad de AlloStudios. Cómo recopilamos, usamos y protegemos tus datos personales.",
+  title: 'Privacidad',
+  robots: { index: false, follow: true },
 }
 
+// Política de privacidad básica (RGPD) para el formulario público y el generador de demos.
+// ⚠️ Ángel: cuando te des de alta como autónomo, añade tu NIF donde pone [NIF].
 export default function PrivacidadPage() {
   return (
-    <main className="min-h-screen bg-white py-20 px-6">
-      <div className="max-w-3xl mx-auto">
-        <a href="/" className="inline-flex items-center gap-2 text-[13px] text-muted hover:text-ink transition-colors mb-10">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          Volver al inicio
-        </a>
+    <>
+      <Navigation />
+      <main className="relative z-10 max-w-2xl mx-auto px-6 py-32">
+        <h1 className="font-display text-headline font-semibold text-ink mb-8">Política de privacidad</h1>
+        <div className="space-y-5 text-dim font-light text-[15px] leading-relaxed">
+          <p><strong className="text-ink">Responsable del tratamiento:</strong> AlloStudios (Ángel) · NIF [NIF] · Valencia (España). Contacto: <a className="underline" href="mailto:hola.allostudios@gmail.com">hola.allostudios@gmail.com</a>.</p>
 
-        <h1 className="text-3xl font-semibold text-ink mb-2">Política de Privacidad</h1>
-        <p className="text-muted text-[13px] mb-10">Última actualización: mayo de 2026</p>
+          <p><strong className="text-ink">Qué datos recogemos:</strong> los que nos facilitas en nuestros formularios — nombre del negocio, ciudad, sector, teléfono/WhatsApp y, si lo aportas, email. Para generar la demo de tu web consultamos datos públicos de tu negocio en Google (nombre, reseñas, dirección, foto y teléfono públicos de tu ficha).</p>
 
-        <div className="prose prose-sm max-w-none text-dim leading-relaxed space-y-8">
+          <p><strong className="text-ink">Para qué los usamos (finalidad):</strong> generar tu demo, contactarte para enseñártela y enviarte un presupuesto si te interesa. No los usamos para otra cosa.</p>
 
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">1. Responsable del tratamiento</h2>
-            <p>El responsable del tratamiento de los datos personales recogidos en este sitio web es <strong>AlloStudios</strong>, con correo electrónico de contacto: <a href="mailto:hola@allostudios.net" className="text-accent hover:underline">hola@allostudios.net</a>.</p>
-          </section>
+          <p><strong className="text-ink">Base legal:</strong> tu consentimiento, que das al marcar la casilla y enviar el formulario.</p>
 
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">2. Datos que recopilamos</h2>
-            <p>Recopilamos los siguientes datos personales:</p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li>Nombre y apellidos</li>
-              <li>Dirección de correo electrónico</li>
-              <li>Información de facturación (gestionada por Stripe)</li>
-              <li>Datos del negocio (nombre, sector, teléfono, dirección)</li>
-              <li>Registros de llamadas procesadas por el asistente IA</li>
-              <li>Datos de uso de la plataforma</li>
-            </ul>
-          </section>
+          <p><strong className="text-ink">Conservación:</strong> guardamos tus datos mientras gestionamos tu solicitud y, como máximo, 12 meses desde el último contacto, salvo que llegues a ser cliente.</p>
 
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">3. Finalidad del tratamiento</h2>
-            <p>Utilizamos tus datos para:</p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li>Prestarte el servicio de asistente IA de voz contratado</li>
-              <li>Gestionar tu cuenta y suscripción</li>
-              <li>Enviarte comunicaciones relacionadas con el servicio</li>
-              <li>Mejorar la plataforma y resolver incidencias</li>
-              <li>Cumplir con obligaciones legales y fiscales</li>
-            </ul>
-          </section>
+          <p><strong className="text-ink">Cesión a terceros:</strong> no vendemos ni cedemos tus datos. Usamos proveedores tecnológicos (alojamiento y envío de avisos) que solo los tratan por cuenta nuestra.</p>
 
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">4. Base jurídica</h2>
-            <p>El tratamiento de tus datos se basa en:</p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Ejecución del contrato:</strong> necesario para prestarte el servicio</li>
-              <li><strong>Consentimiento:</strong> para comunicaciones de marketing (puedes retirarlo en cualquier momento)</li>
-              <li><strong>Cumplimiento de obligaciones legales</strong></li>
-            </ul>
-          </section>
+          <p><strong className="text-ink">Tus derechos:</strong> puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos escribiéndonos a <a className="underline" href="mailto:hola.allostudios@gmail.com">hola.allostudios@gmail.com</a>. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
 
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">5. Transferencias internacionales</h2>
-            <p>Utilizamos proveedores tecnológicos de terceros que pueden procesar datos fuera del Espacio Económico Europeo, incluyendo:</p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Supabase</strong> — almacenamiento de datos</li>
-              <li><strong>Stripe</strong> — procesamiento de pagos</li>
-              <li><strong>OpenAI / Vapi</strong> — procesamiento de voz e IA</li>
-              <li><strong>Clerk</strong> — autenticación</li>
-            </ul>
-            <p className="mt-2">Todos cumplen con el RGPD y/o disponen de mecanismos de transferencia adecuados (cláusulas contractuales tipo, etc.).</p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">6. Plazo de conservación</h2>
-            <p>Conservamos tus datos mientras mantengas una cuenta activa y durante el tiempo legalmente exigido (5 años para datos fiscales). Los registros de llamadas se eliminan a los 12 meses.</p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">7. Tus derechos</h2>
-            <p>Tienes derecho a:</p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Acceso</strong> a tus datos personales</li>
-              <li><strong>Rectificación</strong> de datos inexactos</li>
-              <li><strong>Supresión</strong> (derecho al olvido)</li>
-              <li><strong>Portabilidad</strong> de tus datos</li>
-              <li><strong>Oposición</strong> al tratamiento</li>
-              <li><strong>Limitación</strong> del tratamiento</li>
-            </ul>
-            <p className="mt-2">Para ejercer tus derechos, escríbenos a <a href="mailto:hola@allostudios.net" className="text-accent hover:underline">hola@allostudios.net</a>. También puedes presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Agencia Española de Protección de Datos (AEPD)</a>.</p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">8. Seguridad</h2>
-            <p>Aplicamos medidas técnicas y organizativas adecuadas para proteger tus datos frente a accesos no autorizados, pérdida o divulgación, incluyendo cifrado en tránsito (HTTPS) y en reposo.</p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">9. Cambios en esta política</h2>
-            <p>Nos reservamos el derecho a actualizar esta política. Te notificaremos por email si los cambios son relevantes.</p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">10. Contacto</h2>
-            <p>Para cualquier consulta sobre privacidad: <a href="mailto:hola@allostudios.net" className="text-accent hover:underline">hola@allostudios.net</a></p>
-          </section>
-
+          <p className="text-muted text-[13px] pt-4">Última actualización: agosto de 2026.</p>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   )
 }
