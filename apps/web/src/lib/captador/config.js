@@ -6,17 +6,9 @@
 module.exports = {
   PORT: process.env.PORT || 4321,
 
-  // Acceso a la app: usuario y contraseña compartidos (tú y Fran). Cámbialos si quieres.
-  // Protege el acceso tanto por wifi como por internet (túnel). Pon pass:'' para desactivar.
-  AUTH: { user: process.env.CAPTADOR_USER || 'allostudios', pass: process.env.CAPTADOR_PASS || 'allostudios2026' }, // admin: ve TODOS los leads
-
-  // Afiliados/comerciales: cada uno con su login → ve SOLO sus leads (su vendedor).
-  // 'vendedor' casa con phoneFor: '1' = móvil 1 (Ángel), '2' = móvil 2 (Fran).
-  // Añade más comerciales aquí cuando reclutes (usuario/contraseña/vendedor propios).
-  USERS: [
-    { user: 'angel', pass: 'angel2026', name: 'Ángel', vendedor: '1' },
-    { user: 'fran',  pass: 'fran2026',  name: 'Fran',  vendedor: '2' },
-  ],
+  // OJO: esta es la COPIA para la web. El login aquí lo lleva Clerk, así que
+  // las credenciales del Captador (AUTH/USERS) NO se copian — este repo es público.
+  USERS: [],
 
   // Tus datos: aparecen en los mensajes de venta y en el pie de las demos.
   SENDER: {
@@ -61,7 +53,7 @@ module.exports = {
   // ⭐ Clave de Google Places (fuente de leads BUENA: teléfono, reseñas, abierto/cerrado).
   // Pega aquí tu clave y la app buscará en Google en vez de OpenStreetMap.
   // Cómo sacarla gratis en 5 min: mira PLACES-SETUP.md. Déjala vacía para seguir con OSM.
-  GOOGLE_PLACES_KEY: process.env.GOOGLE_PLACES_KEY || 'AIzaSyB0JiKfAWLDntPpLyzwwsUcS_o7ggNDDgo',
+  GOOGLE_PLACES_KEY: process.env.GOOGLE_PLACES_KEY || '',
 
   // Objetivo de contactos diarios (barra de progreso en Estadísticas).
   // Modo jornada completa ×2 vendedores: 30 por cabeza. El lote acepta ?limit=60 si hace falta más.
@@ -203,13 +195,4 @@ module.exports = {
       : this.SENDER.name;
   },
 
-  // Valida credenciales de acceso → devuelve { name, vendedor, admin } o null.
-  // AUTH compartido = admin (ve todo). Cada USER = comercial atado a su vendedor.
-  authUser(u, p) {
-    if (this.AUTH && this.AUTH.pass && u === this.AUTH.user && p === this.AUTH.pass) {
-      return { name: 'Admin', vendedor: null, admin: true };
-    }
-    const found = (this.USERS || []).find((x) => x.user === u && x.pass === p);
-    return found ? { name: found.name, vendedor: found.vendedor || null, admin: Boolean(found.admin) } : null;
-  },
 };
