@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { getMember } from '@/lib/panel'
+import { getPanelContext } from '@/lib/panel'
 
 export const runtime = 'nodejs'
 
@@ -8,7 +8,8 @@ const ESTADOS = ['nuevo', 'contactado', 'interesado', 'cliente', 'descartado']
 
 // Actualiza un lead desde el panel. Un comercial solo puede tocar los suyos.
 export async function PATCH(req: NextRequest) {
-  const member = await getMember()
+  const ctx = await getPanelContext()
+  const member = ctx?.member
   if (!member || !member.active) return NextResponse.json({ error: 'Sin acceso' }, { status: 403 })
 
   const body = await req.json().catch(() => ({}))

@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
 import { LogoFull } from '@/components/Logo'
-import { getMember, getLeads } from '@/lib/panel'
+import { getPanelContext, getLeads, getMembers } from '@/lib/panel'
 import LeadsBoard from '@/components/panel/LeadsBoard'
+import EquipoPanel from '@/components/panel/EquipoPanel'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 }
 
 export default async function PanelPage() {
-  const member = await getMember()
+  const ctx = await getPanelContext()
+  const member = ctx?.member
 
   // Sin acceso: no es un error, es que todavía no está dado de alta
   if (!member || !member.active) {
@@ -27,6 +29,12 @@ export default async function PanelPage() {
               Esta zona es para el equipo comercial de AlloStudios. Si vas a trabajar con nosotros,
               pídenos que demos de alta tu email y entras con esta misma cuenta.
             </p>
+            {ctx?.email && (
+              <p className="mt-4 text-[12.5px] text-muted bg-surface rounded-xl px-4 py-3">
+                Has entrado como <span className="text-ink font-medium">{ctx.email}</span>. Pásanos
+                ese email para darte acceso.
+              </p>
+            )}
             <div className="flex flex-col sm:flex-row gap-2.5 justify-center mt-7">
               <a
                 href="https://wa.me/34695868793?text=Hola%2C%20quiero%20acceso%20al%20panel%20de%20captaci%C3%B3n."
@@ -46,7 +54,8 @@ export default async function PanelPage() {
     )
   }
 
-  const leads = await getLeads(member)
+  const [leads, members] = await Promise.all([getLeads(member), getMembers(member.workspace)])
+  const sinAsignar = leads.filter((l) => !l.owner_email && l.status !== 'descartado').length
   const activos = leads.filter((l) => l.status !== 'descartado')
   const clientes = leads.filter((l) => l.status === 'cliente').length
   const contactados = leads.filter((l) => l.contacted_at).length
@@ -88,7 +97,11 @@ export default async function PanelPage() {
           ))}
         </div>
 
-        <LeadsBoard leads={leads} member={member} />
+        {member.role === 'admin' && (
+          <EquipoPanel members={members} yo={member} sinAsignar={sinAsignar} />
+        )}
+
+        <LeadsBoard leads={leads} member={member} members={members} />
       </div>
     </main>
   )

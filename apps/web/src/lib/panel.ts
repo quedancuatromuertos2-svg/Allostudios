@@ -13,6 +13,13 @@ export type PanelMember = {
   workspace: string
   role: 'admin' | 'comercial' | 'cliente'
   active: boolean
+  created_at?: string
+}
+
+export type PanelContext = {
+  email: string
+  name: string
+  member: PanelMember | null
 }
 
 function adminEmails(): string[] {
@@ -22,7 +29,9 @@ function adminEmails(): string[] {
     .filter(Boolean)
 }
 
-export async function getMember(): Promise<PanelMember | null> {
+// Devuelve siempre el email de quien mira, aunque no tenga acceso: así la
+// pantalla de "sin acceso" puede decirle con qué cuenta ha entrado.
+export async function getPanelContext(): Promise<PanelContext | null> {
   const user = await currentUser()
   if (!user) return null
 
@@ -31,7 +40,7 @@ export async function getMember(): Promise<PanelMember | null> {
     .toLowerCase()
   if (!email) return null
 
-  const nombre = [user.firstName, user.lastName].filter(Boolean).join(' ') || email.split('@')[0]
+  const name = [user.firstName, user.lastName].filter(Boolean).join(' ') || email.split('@')[0]
 
   const { data: existing } = await supabaseAdmin
     .from('panel_members')
@@ -44,24 +53,29 @@ export async function getMember(): Promise<PanelMember | null> {
     if (!existing.clerk_id) {
       await supabaseAdmin
         .from('panel_members')
-        .update({ clerk_id: user.id, name: existing.name || nombre })
+        .update({ clerk_id: user.id, name: existing.name || name })
         .eq('id', existing.id)
       existing.clerk_id = user.id
     }
-    return existing as PanelMember
+    return { email, name, member: existing as PanelMember }
   }
 
-  // Arranque: el dueño se da de alta solo la primera vez que entra
-  if (adminEmails().includes(email)) {
+  // Arranque: o el email está en PANEL_ADMIN_EMAILS, o el panel está vacío y
+  // por tanto quien entra es el dueño montándolo por primera vez.
+  const { count } = await supabaseAdmin
+    .from('panel_members')
+    .select('id', { count: 'exact', head: true })
+
+  if (adminEmails().includes(email) || !count) {
     const { data } = await supabaseAdmin
       .from('panel_members')
-      .insert({ email, clerk_id: user.id, name: nombre, role: 'admin', workspace: 'allostudios' })
+      .insert({ email, clerk_id: user.id, name, role: 'admin', workspace: 'allostudios' })
       .select('*')
       .single()
-    return (data as PanelMember) || null
+    return { email, name, member: (data as PanelMember) || null }
   }
 
-  return null
+  return { email, name, member: null }
 }
 
 export type Lead = {
@@ -107,4 +121,14 @@ export async function getLeads(member: PanelMember): Promise<Lead[]> {
   const { data, error } = await q
   if (error) return []
   return (data || []) as Lead[]
+}
+
+// El equipo del espacio de trabajo (para asignar leads y para la pestaña Equipo)
+export async function getMembers(workspace: string): Promise<PanelMember[]> {
+  const { data } = await supabaseAdmin
+    .from('panel_members')
+    .select('*')
+    .eq('workspace', workspace)
+    .order('created_at', { ascending: true })
+  return (data || []) as PanelMember[]
 }

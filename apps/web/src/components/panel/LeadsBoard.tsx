@@ -19,7 +19,15 @@ function waLink(phone: string, message: string) {
   return `https://wa.me/${num}?text=${encodeURIComponent(message)}`
 }
 
-export default function LeadsBoard({ leads: iniciales, member }: { leads: Lead[]; member: PanelMember }) {
+export default function LeadsBoard({
+  leads: iniciales,
+  member,
+  members = [],
+}: {
+  leads: Lead[]
+  member: PanelMember
+  members?: PanelMember[]
+}) {
   const [leads, setLeads] = useState(iniciales)
   const [filtro, setFiltro] = useState<string>('nuevo')
   const [busca, setBusca] = useState('')
@@ -54,6 +62,24 @@ export default function LeadsBoard({ leads: iniciales, member }: { leads: Lead[]
       if (!r.ok) throw new Error()
     } catch {
       setLeads(previo) // si falla, lo dejamos como estaba
+    } finally {
+      setGuardando(null)
+    }
+  }
+
+  async function asignar(id: string, email: string) {
+    setGuardando(id)
+    const previo = leads
+    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, owner_email: email || null } : l)))
+    try {
+      const r = await fetch('/api/panel/assign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: [id], email }),
+      })
+      if (!r.ok) throw new Error()
+    } catch {
+      setLeads(previo)
     } finally {
       setGuardando(null)
     }
@@ -171,6 +197,23 @@ export default function LeadsBoard({ leads: iniciales, member }: { leads: Lead[]
                     <div>
                       <p className="text-[11px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Mensaje sugerido</p>
                       <pre className="text-[12.5px] text-dim whitespace-pre-wrap font-sans bg-white border border-border rounded-xl p-3.5 max-h-52 overflow-y-auto">{l.message}</pre>
+                    </div>
+                  )}
+
+                  {member.role === 'admin' && members.length > 0 && (
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-[12px] text-muted">Asignado a</span>
+                      <select
+                        value={l.owner_email || ''}
+                        disabled={guardando === l.id}
+                        onChange={(e) => asignar(l.id, e.target.value)}
+                        className="px-3 py-1.5 rounded-full border border-border bg-white text-[12.5px] text-dim disabled:opacity-50"
+                      >
+                        <option value="">Sin asignar</option>
+                        {members.filter((m) => m.active && m.role !== 'cliente').map((m) => (
+                          <option key={m.id} value={m.email}>{m.name || m.email}</option>
+                        ))}
+                      </select>
                     </div>
                   )}
 
