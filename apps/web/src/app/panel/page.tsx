@@ -6,6 +6,7 @@ import { getPanelContext, getLeads, getMembers } from '@/lib/panel'
 import LeadsBoard from '@/components/panel/LeadsBoard'
 import EquipoPanel from '@/components/panel/EquipoPanel'
 import BuscarPanel from '@/components/panel/BuscarPanel'
+import RutaPanel from '@/components/panel/RutaPanel'
 
 export const dynamic = 'force-dynamic'
 
@@ -97,6 +98,8 @@ export default async function PanelPage() {
             </div>
           ))}
         </div>
+
+        <RutaPanel />
 
         {member.role === 'admin' && (
           <>
