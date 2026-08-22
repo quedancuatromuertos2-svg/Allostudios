@@ -80,7 +80,7 @@ export default function PricingSection() {
 
               <div className="mb-7">
                 <div className="flex items-end gap-1">
-                  <span className="text-5xl font-semibold text-ink tracking-[-0.04em] leading-none">€400</span>
+                  <span className="text-5xl font-semibold text-ink tracking-[-0.04em] leading-none">€499</span>
                   <span className="text-sm text-muted pb-1.5">+ 49 €/mes</span>
                 </div>
                 <div className="text-[12px] text-muted mt-1.5">todo incluido · entrega en 7 días</div>

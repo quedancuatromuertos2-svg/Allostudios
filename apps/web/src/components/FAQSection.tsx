@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: '¿Cuánto cuesta una web y qué incluye?',
-    a: 'Tenemos tres niveles: Arranque (400 € + 49 €/mes) con diseño a medida, móvil, SEO local y todo incluido; Premium (790 €) con animaciones y tus reseñas de Google; y Cinematográfica (desde 1.490 €) con el efecto de scroll estilo Apple. Todos sin permanencia. Y lo mejor: te enseñamos una demo real de tu web ANTES de que pagues nada.',
+    a: 'Tenemos tres niveles: Arranque (499 € + 49 €/mes) con diseño a medida, móvil, SEO local y todo incluido; Premium (790 €) con animaciones y tus reseñas de Google; y Cinematográfica (desde 1.490 €) con el efecto de scroll estilo Apple. Todos sin permanencia. Y lo mejor: te enseñamos una demo real de tu web ANTES de que pagues nada.',
     tag: 'Webs',
   },
   {

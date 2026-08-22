@@ -65,7 +65,7 @@ export default async function Image() {
 
         {/* Tags */}
         <div style={{ display: 'flex', gap: 10, marginBottom: 24, position: 'relative', zIndex: 10 }}>
-          {['Webs desde 400 €', 'Instagram gestionado', 'Anuncios · IA 24/7'].map((tag) => (
+          {['Webs desde 499 €', 'Instagram gestionado', 'Anuncios · IA 24/7'].map((tag) => (
             <div
               key={tag}
               style={{
@@ -116,7 +116,7 @@ export default async function Image() {
 
         {/* Stats row */}
         <div style={{ display: 'flex', gap: 40, position: 'relative', zIndex: 10 }}>
-          {[['7 días', 'Tu web online'], ['24/7', 'IA respondiendo'], ['400 €', 'Desde']].map(([n, l]) => (
+          {[['7 días', 'Tu web online'], ['24/7', 'IA respondiendo'], ['499 €', 'Desde']].map(([n, l]) => (
             <div key={n} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               <span style={{ color: 'white', fontSize: 28, fontWeight: 800, letterSpacing: '-1px' }}>{n}</span>
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, fontWeight: 500 }}>{l}</span>

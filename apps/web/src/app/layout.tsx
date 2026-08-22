@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   description:
-    "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 400 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tus mensajes 24/7. Pide tu demo gratis.",
+    "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tus mensajes 24/7. Pide tu demo gratis.",
   keywords: [
     "diseño web Valencia", "web para negocios Valencia", "agencia digital Valencia",
     "gestión de Instagram Valencia", "community manager Valencia", "publicidad Meta Ads Valencia",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: "AlloStudios",
     title: "AlloStudios — Webs, Instagram y Anuncios para negocios locales",
     description:
-      "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 400 €, gestión de Instagram, anuncios y un asistente de IA que responde 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
+      "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 499 €, gestión de Instagram, anuncios y un asistente de IA que responde 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
   },
   twitter: {
     card: "summary_large_image",
@@ -95,7 +95,7 @@ export default function RootLayout({
                 logo: "https://allostudios.net/favicon.svg",
                 image: "https://allostudios.net/favicon.svg",
                 description:
-                  "Agencia digital para negocios locales de Valencia: webs profesionales desde 400 €, gestión de Instagram, anuncios de Meta y Google, SEO local, reseñas y asistente de IA 24/7.",
+                  "Agencia digital para negocios locales de Valencia: webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local, reseñas y asistente de IA 24/7.",
                 areaServed: { "@type": "City", name: "Valencia" },
                 priceRange: "€€",
                 contactPoint: {
@@ -124,7 +124,7 @@ export default function RootLayout({
                   {
                     "@type": "Offer",
                     name: "Web Arranque",
-                    price: "400",
+                    price: "499",
                     priceCurrency: "EUR",
                     description: "Web profesional a medida en 7 días, con tu marca, más 49 €/mes de hosting, cambios y soporte. Demo gratis antes de pagar.",
                   },
@@ -182,7 +182,7 @@ export default function RootLayout({
                     name: "¿Cuánto cuesta una web con AlloStudios?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Tenemos tres niveles: Arranque por 400 € + 49 €/mes (todo incluido), Premium por 790 € con animaciones y reseñas integradas, y Cinematográfica desde 1.490 € con el efecto de scroll estilo Apple. Todos sin permanencia y con hosting, cambios y soporte incluidos.",
+                      text: "Tenemos tres niveles: Arranque por 499 € + 49 €/mes (todo incluido), Premium por 790 € con animaciones y reseñas integradas, y Cinematográfica desde 1.490 € con el efecto de scroll estilo Apple. Todos sin permanencia y con hosting, cambios y soporte incluidos.",
                     },
                   },
                   {

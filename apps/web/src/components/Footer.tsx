@@ -14,6 +14,7 @@ const anchorLinks = {
 
 const pageLinks = {
   Legal: [['Privacidad', '/privacidad'], ['Términos', '/terminos'], ['Cookies', '/cookies']],
+  'Trabaja con nosotros': [['Programa de comerciales', '/afiliados']],
 }
 
 export default function Footer() {
@@ -27,7 +28,7 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-border">
       <div className="max-w-6xl mx-auto px-6 md:px-12 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr] gap-10 md:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-[1.7fr_1fr_1fr_1fr] gap-10 md:gap-12">
 
           <div className="col-span-2 md:col-span-1">
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="mb-5 block">
