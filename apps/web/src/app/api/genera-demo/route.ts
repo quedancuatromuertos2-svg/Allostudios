@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { lookupBusiness } from '@/lib/places'
 import { sendLeadEmail } from '@/lib/email'
-import { encodeDemo, slimPlace } from '@/lib/demo-token'
+import { encodeDemo } from '@/lib/demo-token'
 
 export const runtime = 'nodejs'
 
@@ -62,7 +62,12 @@ export async function POST(req: NextRequest) {
       id = row.id
     } catch {
       guardado = false
-      id = encodeDemo({ n: negocio, c: ciudad, s: sector, p: slimPlace(place) })
+      id = encodeDemo({
+        n: negocio, c: ciudad, s: sector,
+        i: place?.placeId || undefined,
+        r: place?.rating ?? undefined,
+        v: place?.reviews || undefined,
+      })
     }
 
     // Aviso al equipo — mismo canal que las solicitudes normales

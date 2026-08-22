@@ -1,6 +1,5 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 import { deflateSync, inflateSync } from 'zlib'
-import { cutText, type PlaceData } from './places'
 
 // Plan B del generador de demos: si la tabla `demo_leads` de Supabase no existe
 // (o la base de datos falla), la demo viaja firmada dentro de la propia URL en vez
@@ -9,12 +8,17 @@ import { cutText, type PlaceData } from './places'
 //
 // Formato del token: "d0.<payload deflate+base64url>.<firma HMAC recortada>"
 // La firma evita que nadie fabrique una página con texto inventado en nuestro dominio.
+//
+// Dentro solo van 4 datos cortos: los de Google se piden al pintar la página con el
+// placeId, porque el nombre de UNA sola foto de Places ocupa ~476 caracteres.
 
 export type DemoPayload = {
   n: string // negocio
   c: string // ciudad
   s: string // sector
-  p: PlaceData | null // datos de Google Places
+  i?: string // placeId de Google (27 caracteres)
+  r?: number // valoración, por si Places falla al pintar
+  v?: number // nº de reseñas
 }
 
 const PREFIX = 'd0'
@@ -55,17 +59,5 @@ export function decodeDemo(token: string): DemoPayload | null {
     return typeof payload?.n === 'string' ? payload : null
   } catch {
     return null
-  }
-}
-
-// Recorta los datos de Places a lo que la demo pinta, para que la URL no se dispare.
-export function slimPlace(place: PlaceData | null): PlaceData | null {
-  if (!place) return null
-  return {
-    ...place,
-    topReviews: (place.topReviews || []).slice(0, 3).map((r) => ({
-      ...r,
-      text: cutText(r.text, 200),
-    })),
   }
 }
