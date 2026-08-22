@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LogoFull } from './Logo'
 
-const links = [
+const links: { label: string; href: string; highlight?: boolean }[] = [
   { label: 'Servicios', href: '#catalogo' },
   { label: 'Páginas Web', href: '#webs' },
+  { label: 'Tu web gratis', href: '#tu-web', highlight: true },
   { label: 'Precios', href: '#precios' },
   { label: 'FAQ', href: '#faq' },
 ]
@@ -24,7 +25,10 @@ export default function Navigation() {
   const go = (href: string) => {
     setOpen(false)
     setTimeout(() => {
-      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+      const target = document.querySelector(href)
+      // Si la sección no está en esta página (ej. /tu-web), volvemos a la home con el ancla
+      if (!target) { window.location.href = `/${href}`; return }
+      target.scrollIntoView({ behavior: 'smooth' })
     }, open ? 200 : 0)
   }
 
@@ -62,7 +66,11 @@ export default function Navigation() {
               <button
                 key={l.label}
                 onClick={() => go(l.href)}
-                className="px-4 py-2 text-[14px] text-dim hover:text-ink rounded-xl hover:bg-surface/80 transition-all duration-200 font-medium"
+                className={`px-4 py-2 text-[14px] rounded-xl transition-all duration-200 font-medium ${
+                  l.highlight
+                    ? 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
+                    : 'text-dim hover:text-ink hover:bg-surface/80'
+                }`}
               >
                 {l.label}
               </button>
@@ -120,7 +128,9 @@ export default function Navigation() {
                 <button
                   key={l.label}
                   onClick={() => go(l.href)}
-                  className="text-left px-4 py-3 text-[14px] text-dim hover:text-ink rounded-xl hover:bg-surface transition-all font-medium"
+                  className={`text-left px-4 py-3 text-[14px] rounded-xl transition-all font-medium ${
+                    l.highlight ? 'text-accent hover:bg-accent-light/70' : 'text-dim hover:text-ink hover:bg-surface'
+                  }`}
                 >
                   {l.label}
                 </button>

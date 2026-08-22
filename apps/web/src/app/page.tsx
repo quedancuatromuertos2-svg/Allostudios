@@ -5,6 +5,7 @@ import ServicesCatalogSection from '@/components/ServicesCatalogSection'
 import ContactFormSection from '@/components/ContactFormSection'
 import SectoresSection from '@/components/SectoresSection'
 import WebsSection from '@/components/WebsSection'
+import DemoGeneratorSection from '@/components/DemoGeneratorSection'
 import ServicesSection from '@/components/ServicesSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import PricingSection from '@/components/PricingSection'
@@ -21,6 +22,7 @@ export default function Home() {
       <main className="relative z-10">
         <HeroGlass />
         <LogoBand />
+        <DemoGeneratorSection />
         <ServicesCatalogSection />
         <SectoresSection />
         <WebsSection />
