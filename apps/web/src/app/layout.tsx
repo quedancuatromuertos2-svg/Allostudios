@@ -78,8 +78,8 @@ export default function RootLayout({
       publishableKey="pk_live_Y2xlcmsuYWxsb3N0dWRpb3MubmV0JA"
       signInUrl="/login"
       signUpUrl="/register"
-      afterSignInUrl="/dashboard"
-      afterSignUpUrl="/onboarding"
+      afterSignInUrl="/panel"
+      afterSignUpUrl="/panel"
     >
       <html lang="es" suppressHydrationWarning>
         <head>
