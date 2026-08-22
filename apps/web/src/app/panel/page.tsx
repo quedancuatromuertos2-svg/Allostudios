@@ -5,6 +5,7 @@ import { LogoFull } from '@/components/Logo'
 import { getPanelContext, getLeads, getMembers } from '@/lib/panel'
 import LeadsBoard from '@/components/panel/LeadsBoard'
 import EquipoPanel from '@/components/panel/EquipoPanel'
+import BuscarPanel from '@/components/panel/BuscarPanel'
 
 export const dynamic = 'force-dynamic'
 
@@ -98,7 +99,10 @@ export default async function PanelPage() {
         </div>
 
         {member.role === 'admin' && (
-          <EquipoPanel members={members} yo={member} sinAsignar={sinAsignar} />
+          <>
+            <BuscarPanel />
+            <EquipoPanel members={members} yo={member} sinAsignar={sinAsignar} />
+          </>
         )}
 
         <LeadsBoard leads={leads} member={member} members={members} />
