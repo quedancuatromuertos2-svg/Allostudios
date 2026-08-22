@@ -16,10 +16,8 @@ export const metadata: Metadata = {
   },
 }
 
-// Enlace al panel del Captador (donde cada comercial ve SUS leads). Se configura con
-// NEXT_PUBLIC_CAPTADOR_URL; mientras no haya URL fija, el botón pide el acceso por WhatsApp.
-const CAPTADOR = process.env.NEXT_PUBLIC_CAPTADOR_URL || ''
-const WA_ACCESO = `https://wa.me/34695868793?text=${encodeURIComponent('Hola, soy comercial de AlloStudios y quiero el acceso al panel de leads.')}`
+// El panel de leads vive en la propia web: cada comercial entra con su cuenta y ve los suyos.
+const PANEL = '/panel'
 
 const pasos = [
   {
@@ -148,12 +146,7 @@ export default function AfiliadosPage() {
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <a
-                href={CAPTADOR || WA_ACCESO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-ink"
-              >
+              <a href={PANEL} className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-ink">
                 Ya soy comercial · Entrar
               </a>
             </div>
@@ -346,13 +339,8 @@ export default function AfiliadosPage() {
                   Entra al panel para ver tus leads asignados, sus demos y el estado de cada uno.
                 </p>
               </div>
-              <a
-                href={CAPTADOR || WA_ACCESO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary shrink-0 rounded-full"
-              >
-                {CAPTADOR ? 'Entrar al panel' : 'Pedir acceso'}
+              <a href={PANEL} className="btn-primary shrink-0 rounded-full">
+                Entrar al panel
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
