@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LogoFull } from './Logo'
 
-const links: { label: string; href: string; highlight?: boolean }[] = [
+const links: { label: string; href: string; highlight?: boolean; page?: boolean }[] = [
   { label: 'Servicios', href: '#catalogo' },
   { label: 'Páginas Web', href: '#webs' },
   { label: 'Tu web gratis', href: '#tu-web', highlight: true },
   { label: 'Precios', href: '#precios' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Trabaja con nosotros', href: '/afiliados', page: true },
 ]
 
 export default function Navigation() {
@@ -62,19 +62,19 @@ export default function Navigation() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-0.5">
-            {links.map(l => (
-              <button
-                key={l.label}
-                onClick={() => go(l.href)}
-                className={`px-4 py-2 text-[14px] rounded-xl transition-all duration-200 font-medium ${
-                  l.highlight
-                    ? 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
-                    : 'text-dim hover:text-ink hover:bg-surface/80'
-                }`}
-              >
-                {l.label}
-              </button>
-            ))}
+            {links.map(l => {
+              const cls = `px-4 py-2 text-[14px] rounded-xl transition-all duration-200 font-medium ${
+                l.highlight
+                  ? 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
+                  : 'text-dim hover:text-ink hover:bg-surface/80'
+              }`
+              // Los enlaces a otra página son <a>; los demás hacen scroll a su sección
+              return l.page ? (
+                <a key={l.label} href={l.href} className={cls}>{l.label}</a>
+              ) : (
+                <button key={l.label} onClick={() => go(l.href)} className={cls}>{l.label}</button>
+              )
+            })}
           </nav>
 
           {/* Desktop CTA */}
@@ -124,17 +124,16 @@ export default function Navigation() {
             className="lg md:hidden mx-4 mt-1 rounded-2xl overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
-              {links.map(l => (
-                <button
-                  key={l.label}
-                  onClick={() => go(l.href)}
-                  className={`text-left px-4 py-3 text-[14px] rounded-xl transition-all font-medium ${
-                    l.highlight ? 'text-accent hover:bg-accent-light/70' : 'text-dim hover:text-ink hover:bg-surface'
-                  }`}
-                >
-                  {l.label}
-                </button>
-              ))}
+              {links.map(l => {
+                const cls = `text-left px-4 py-3 text-[14px] rounded-xl transition-all font-medium ${
+                  l.highlight ? 'text-accent hover:bg-accent-light/70' : 'text-dim hover:text-ink hover:bg-surface'
+                }`
+                return l.page ? (
+                  <a key={l.label} href={l.href} className={cls}>{l.label}</a>
+                ) : (
+                  <button key={l.label} onClick={() => go(l.href)} className={cls}>{l.label}</button>
+                )
+              })}
               <div className="pt-3 mt-1 border-t border-border/60">
                 <a
                   href="https://wa.me/34695868793?text=Hola%2C%20quiero%20mi%20demo%20gratis.%20Mi%20negocio%20es%3A%20"

@@ -314,9 +314,11 @@ export default function AfiliadosPage() {
         </section>
 
         {/* ── Solicitud ── */}
+        {/* La calculadora se repite aquí a propósito: es el momento en el que la
+            persona decide, y lo que la mueve es ver el número. */}
         <section id="solicitud" className="py-section bg-surface/60">
-          <div className="max-w-xl mx-auto px-6 md:px-12">
-            <div className="text-center mb-9">
+          <div className="max-w-5xl mx-auto px-6 md:px-12">
+            <div className="text-center mb-10">
               <span className="eyebrow block mb-4">Solicitud</span>
               <h2 className="text-headline font-semibold text-ink text-balance">
                 Cuéntanos quién eres.
@@ -325,7 +327,18 @@ export default function AfiliadosPage() {
                 No buscamos currículums. Buscamos gente que coja el teléfono.
               </p>
             </div>
-            <AfiliadoForm />
+            <div className="grid lg:grid-cols-[1fr_1.15fr] gap-8 items-start">
+              <div className="lg:sticky lg:top-24">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-semibold mb-3">
+                  Esto es lo que ganarías
+                </p>
+                <ComisionCalculadora compact />
+                <p className="text-[12px] text-muted mt-4 leading-relaxed">
+                  Sin techo y sin objetivos. Si un mes cierras diez, cobras diez.
+                </p>
+              </div>
+              <AfiliadoForm />
+            </div>
           </div>
         </section>
 

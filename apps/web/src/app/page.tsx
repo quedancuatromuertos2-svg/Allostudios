@@ -11,6 +11,7 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import PricingSection from '@/components/PricingSection'
 import TestimonialsSection from '@/components/TestimonialsSection'
 import FAQSection from '@/components/FAQSection'
+import ComercialesSection from '@/components/ComercialesSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
@@ -32,6 +33,7 @@ export default function Home() {
         <ContactFormSection />
         <TestimonialsSection />
         <FAQSection />
+        <ComercialesSection />
         <CTASection />
       </main>
       <Footer />

@@ -12,7 +12,7 @@ const PRESETS = [
 const eur = (n: number) =>
   n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
-export default function ComisionCalculadora() {
+export default function ComisionCalculadora({ compact = false }: { compact?: boolean }) {
   const [ticket, setTicket] = useState(499)
   const [ventas, setVentas] = useState(4)
 
@@ -20,8 +20,8 @@ export default function ComisionCalculadora() {
   const mes = comision * ventas
 
   return (
-    <div className="lg rounded-2xl p-6 md:p-8">
-      <div className="flex flex-wrap gap-2 mb-6">
+    <div className={`lg rounded-2xl ${compact ? 'p-5' : 'p-6 md:p-8'}`}>
+      {!compact && <div className="flex flex-wrap gap-2 mb-6">
         {PRESETS.map((p) => (
           <button
             key={p.label}
@@ -36,7 +36,7 @@ export default function ComisionCalculadora() {
             {p.label} · {eur(p.ticket)}
           </button>
         ))}
-      </div>
+      </div>}
 
       <div className="grid sm:grid-cols-2 gap-6">
         <div>
@@ -78,17 +78,17 @@ export default function ComisionCalculadora() {
         </div>
       </div>
 
-      <div className="mt-7 pt-7 border-t border-border grid sm:grid-cols-2 gap-5">
+      <div className={`grid sm:grid-cols-2 gap-5 border-t border-border ${compact ? 'mt-5 pt-5' : 'mt-7 pt-7'}`}>
         <div>
           <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Por venta</div>
-          <div className="font-display text-[2.4rem] leading-none font-semibold text-accent tracking-[-0.03em]">
+          <div className={`font-display leading-none font-semibold text-accent tracking-[-0.03em] ${compact ? 'text-[2rem]' : 'text-[2.4rem]'}`}>
             {eur(comision)}
           </div>
           <p className="text-[12.5px] text-muted mt-1.5">30 % del ticket, íntegro para ti</p>
         </div>
         <div>
           <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Al mes</div>
-          <div className="font-display text-[2.4rem] leading-none font-semibold text-ink tracking-[-0.03em]">
+          <div className={`font-display leading-none font-semibold text-ink tracking-[-0.03em] ${compact ? 'text-[2rem]' : 'text-[2.4rem]'}`}>
             {eur(mes)}
           </div>
           <p className="text-[12.5px] text-muted mt-1.5">
