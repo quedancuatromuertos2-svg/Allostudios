@@ -6,7 +6,9 @@ import { analizarLead, filaDesdeLead, cfg } from '@/lib/captador/motor'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
-const TANDA = 24
+// Los que no tienen web se analizan al instante, asi que caben muchos por tanda;
+// el presupuesto de tiempo corta solo cuando toca bajarse webs de verdad.
+const TANDA = 60
 const PRESUPUESTO_MS = 40_000
 
 // Analiza la web de los leads que quedaron pendientes en la búsqueda: saca
