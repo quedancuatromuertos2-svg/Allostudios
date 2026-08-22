@@ -44,17 +44,28 @@ function normPhone(raw?: string): string {
   return d
 }
 
+// Corta por la última palabra entera para que no queden frases a medias.
+export function cutText(raw: string, max: number): string {
+  const t = raw.trim()
+  if (t.length <= max) return t
+  const cut = t.slice(0, max)
+  const sp = cut.lastIndexOf(' ')
+  return `${(sp > max * 0.6 ? cut.slice(0, sp) : cut).replace(/[,;:.\s]+$/, '')}…`
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapReviews(reviews: any[]): PlaceReview[] {
   return (reviews || [])
-    .slice(0, 4)
     .map((r) => ({
       author: r?.authorAttribution?.displayName || 'Cliente',
       rating: Number(r?.rating) || 5,
-      text: String(r?.text?.text || r?.originalText?.text || '').trim().slice(0, 240),
+      text: cutText(String(r?.text?.text || r?.originalText?.text || ''), 240),
       when: r?.relativePublishTimeDescription || '',
     }))
-    .filter((r) => r.text.length > 15)
+    // La demo es material de VENTA: solo reseñas buenas. Google devuelve también las
+    // malas y enseñarle a un negocio su reseña de 1★ en su propia web mata el trato.
+    .filter((r) => r.rating >= 4 && r.text.length > 15)
+    .sort((a, b) => b.rating - a.rating)
     .slice(0, 3)
 }
 

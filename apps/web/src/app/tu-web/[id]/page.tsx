@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PlaceData } from '@/lib/places'
+import { decodeDemo, isDemoToken } from '@/lib/demo-token'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,14 +15,25 @@ type DemoRow = {
 }
 
 async function getDemo(id: string): Promise<DemoRow | null> {
+  // Plan B: la demo viene firmada dentro de la propia URL (sin base de datos)
+  if (isDemoToken(id)) {
+    const p = decodeDemo(id)
+    if (!p) return null
+    return { id, negocio: p.n, ciudad: p.c || null, sector: p.s || null, place: p.p }
+  }
+
   if (!/^[0-9a-fA-F-]{20,}$/.test(id)) return null
-  const { data, error } = await supabaseAdmin
-    .from('demo_leads')
-    .select('id, negocio, ciudad, sector, place')
-    .eq('id', id)
-    .single()
-  if (error || !data) return null
-  return data as DemoRow
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('demo_leads')
+      .select('id, negocio, ciudad, sector, place')
+      .eq('id', id)
+      .single()
+    if (error || !data) return null
+    return data as DemoRow
+  } catch {
+    return null
+  }
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
@@ -79,10 +91,11 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
         )}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,8,14,.25) 0%, rgba(8,8,14,.55) 55%, rgba(8,8,14,.96) 100%)' }} />
         <div style={{ position: 'relative', padding: '0 24px 56px', maxWidth: 1000, margin: '0 auto', width: '100%' }}>
-          {rating ? (
+          {/* La demo vende: solo presumimos de la nota si es buena */}
+          {rating && rating >= 4 ? (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,.18)', borderRadius: 999, padding: '7px 14px', fontSize: 13, marginBottom: 18 }}>
-              <span style={{ color: '#ffd15c' }}>★★★★★</span>
-              <span><b>{rating.toFixed(1)}</b> · {reviews} reseñas en Google</span>
+              <span style={{ color: '#ffd15c' }}>{'★'.repeat(Math.round(rating))}</span>
+              <span><b>{rating.toFixed(1).replace('.', ',')}</b> · {reviews} reseñas en Google</span>
             </div>
           ) : null}
           <h1 style={{ fontSize: 'clamp(2.6rem,7vw,5rem)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.02, margin: 0 }}>{name}</h1>
@@ -113,7 +126,8 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
       {place?.topReviews && place.topReviews.length > 0 ? (
         <section style={{ padding: '10px 24px 72px', maxWidth: 1000, margin: '0 auto' }}>
           <h2 style={{ fontSize: 'clamp(1.6rem,4vw,2.4rem)', fontWeight: 700, marginBottom: 26 }}>Lo que dicen nuestros clientes</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 18 }}>
+          {/* Con una sola reseña buena, una tarjeta a todo lo ancho queda vacía */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 18, maxWidth: place.topReviews.length === 1 ? 560 : undefined }}>
             {place.topReviews.map((r, i) => (
               <div key={i} style={card}>
                 <div style={{ color: '#ffd15c', marginBottom: 10 }}>{'★'.repeat(Math.max(1, Math.round(r.rating || 5)))}</div>

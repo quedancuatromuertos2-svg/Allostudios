@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { lookupBusiness } from '@/lib/places'
 import { sendLeadEmail } from '@/lib/email'
+import { encodeDemo, slimPlace } from '@/lib/demo-token'
 
 export const runtime = 'nodejs'
 
@@ -47,17 +48,21 @@ export async function POST(req: NextRequest) {
     // Datos reales del negocio (reseñas, foto, dirección, web actual)
     const place = await lookupBusiness(negocio, ciudad).catch(() => null)
 
-    const { data: row, error } = await supabaseAdmin
-      .from('demo_leads')
-      .insert({ negocio, ciudad, sector, telefono, email: email || null, consent, place, ip })
-      .select('id')
-      .single()
-
-    if (error || !row) {
-      return NextResponse.json(
-        { error: 'No se pudo generar la demo. Escríbenos por WhatsApp y te la hacemos al momento.' },
-        { status: 500 },
-      )
+    // Guardamos el lead. Si la tabla `demo_leads` todavía no existe (o Supabase falla),
+    // NO dejamos al visitante sin su demo: la servimos firmada dentro de la URL.
+    let id: string
+    let guardado = true
+    try {
+      const { data: row, error } = await supabaseAdmin
+        .from('demo_leads')
+        .insert({ negocio, ciudad, sector, telefono, email: email || null, consent, place, ip })
+        .select('id')
+        .single()
+      if (error || !row) throw new Error(error?.message || 'insert failed')
+      id = row.id
+    } catch {
+      guardado = false
+      id = encodeDemo({ n: negocio, c: ciudad, s: sector, p: slimPlace(place) })
     }
 
     // Aviso al equipo — mismo canal que las solicitudes normales
@@ -69,7 +74,8 @@ export async function POST(req: NextRequest) {
       email: email || undefined,
       mensaje:
         `Generó su demo en /tu-web. Ciudad: ${ciudad}. Sector: ${sector || '—'}. ` +
-        `Web actual: ${place?.website || 'NO tiene'}. ${place?.rating ? `${place.rating}★ (${place.reviews} reseñas).` : ''}`,
+        `Web actual: ${place?.website || 'NO tiene'}. ${place?.rating ? `${place.rating}★ (${place.reviews} reseñas).` : ''}` +
+        (guardado ? '' : ' ⚠️ NO guardado en Supabase (falta la tabla demo_leads) — apunta este lead a mano.'),
     }).catch(() => {})
 
     const apikey = process.env.CALLMEBOT_APIKEY
@@ -84,7 +90,7 @@ export async function POST(req: NextRequest) {
       ).catch(() => {})
     }
 
-    return NextResponse.json({ ok: true, id: row.id })
+    return NextResponse.json({ ok: true, id })
   } catch {
     return NextResponse.json({ error: 'Error inesperado' }, { status: 500 })
   }
