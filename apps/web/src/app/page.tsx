@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation'
-import HeroNeon from '@/components/HeroNeon'
+import HeroGlass from '@/components/HeroGlass'
 import LogoBand from '@/components/LogoBand'
 import ServicesCatalogSection from '@/components/ServicesCatalogSection'
 import ContactFormSection from '@/components/ContactFormSection'
@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <Navigation />
       <main className="relative z-10">
-        <HeroNeon />
+        <HeroGlass />
         <LogoBand />
         <DemoGeneratorSection />
         <ServicesCatalogSection />
