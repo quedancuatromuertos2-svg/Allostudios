@@ -1,21 +1,26 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { motion, useScroll, useTransform } from 'framer-motion'
+
+// WebGL solo en el navegador, y sin bloquear la carga de la página
+const Blob3D = dynamic(() => import('@/components/hero/Blob3D'), { ssr: false })
 
 /*  Cabecera oscura: logotipo en neón sobre una aurora violeta.
 
-    El logotipo es TEXTO, no un vídeo. Se probó con el vídeo de Higgsfield y
-    se le veía el rectángulo: mix-blend-mode:screen no podía fundirlo con el
-    fondo porque la animación de scroll del contenedor aísla la composición,
-    y el vídeo salía además más blando que el texto. En texto se rerenderiza
-    nítido a cualquier resolución y pesa cero.                              */
+    En el centro va una masa líquida en WebGL que reacciona al cursor. Antes
+    estuvo el logotipo gigante y no sostenía la cabecera: un nombre en grande
+    no cuenta nada. El logotipo vive ahora en la barra, que es su sitio.
+
+    Si WebGL falla, cae al logotipo en texto para que nunca haya un hueco.   */
 
 const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero mi demo gratis. Mi negocio es: ')
 
 export default function HeroNeon() {
   const ref = useRef<HTMLElement>(null)
   const [p, setP] = useState({ x: 0, y: 0 })
+  const [sinWebgl, setSinWebgl] = useState(false)
 
   // Paralaje con el ratón: logotipo y aurora se mueven distinto = profundidad
   useEffect(() => {
@@ -50,12 +55,16 @@ export default function HeroNeon() {
       </div>
 
       <motion.div className="hn-in" style={{ scale: escala, opacity: opaco, y: sube }}>
-        <div className="hn-marca" style={{ transform: `translate3d(${p.x * 9}px, ${p.y * 7}px, 0)` }}>
-          <span className="hn-bloom" aria-hidden>allostudios.</span>
-          <h1 className="hn-word">
-            allostudios<span className="hn-punto">.</span>
-            <span className="hn-barrido" aria-hidden>allostudios.</span>
-          </h1>
+        <div className="hn-obj">
+          <h1 className="hn-h1">AlloStudios — agencia digital para negocios locales de Valencia</h1>
+          {sinWebgl ? (
+            <div className="hn-marca" aria-hidden>
+              <span className="hn-bloom">allostudios.</span>
+              <span className="hn-word">allostudios<span className="hn-punto">.</span></span>
+            </div>
+          ) : (
+            <Blob3D onFallo={() => setSinWebgl(true)} />
+          )}
         </div>
 
         <p className="hn-claim">
@@ -136,9 +145,19 @@ animation:hnGrano .7s steps(2,end) infinite}
 .hn-in{position:relative;z-index:2;width:100%;max-width:1080px;text-align:center;
 display:flex;flex-direction:column;align-items:center}
 
-/* ── El logotipo ─────────────────────────────────────────── */
-.hn-marca{position:relative;width:100%;will-change:transform;
-transition:transform .5s cubic-bezier(.16,1,.3,1)}
+/* ── El objeto 3D ────────────────────────────────────────── */
+.hn-obj{position:relative;width:min(440px,68vw,46vh);aspect-ratio:1;margin:0 auto;
+display:flex;align-items:center;justify-content:center}
+/* Resplandor en CSS detrás del objeto: difumina sin bordes, cosa que una
+   malla no puede hacer porque el lienzo siempre acaba en un rectángulo. */
+.hn-obj::before{content:'';position:absolute;inset:-32%;border-radius:50%;pointer-events:none;
+background:radial-gradient(closest-side,rgba(139,91,255,.34),rgba(106,91,255,.12) 52%,transparent 76%);
+filter:blur(28px);animation:hnRespira 7s ease-in-out infinite}
+.hn-lienzo{position:absolute;inset:0;animation:hnEntra 1.2s cubic-bezier(.16,1,.3,1) .15s both}
+.hn-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Respaldo si no hay WebGL */
+.hn-marca{position:relative;width:100%;display:flex;align-items:center;justify-content:center}
 
 .hn-word,.hn-bloom,.hn-barrido{font-family:Inter,system-ui,sans-serif;font-weight:600;letter-spacing:-.055em;
 line-height:.9;font-size:clamp(2.7rem,11.8vw,11rem);margin:0;white-space:nowrap}
@@ -158,7 +177,7 @@ background-size:280% 100%;background-position:180% 0;
 animation:hnBarrido 9s cubic-bezier(.5,0,.3,1) 1.8s infinite}
 
 /* ── Texto ───────────────────────────────────────────────── */
-.hn-claim{margin:clamp(20px,3.4vw,40px) 0 0;font-family:Inter,system-ui,sans-serif;
+.hn-claim{margin:clamp(6px,1.6vw,20px) 0 0;font-family:Inter,system-ui,sans-serif;
 font-size:clamp(1.22rem,3.3vw,2.05rem);font-weight:600;letter-spacing:-.03em;color:#fff;
 animation:hnEntra .9s cubic-bezier(.16,1,.3,1) .5s both}
 .hn-claim span{background:linear-gradient(100deg,#a58bff,#e0ccff);-webkit-background-clip:text;

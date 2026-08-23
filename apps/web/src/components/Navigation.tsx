@@ -71,7 +71,7 @@ export default function Navigation() {
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className={`flex items-center transition-all duration-500 ${
-              sobreOscuro && !scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              'opacity-100'
             } ${sobreOscuro ? 'text-white' : 'text-ink'}`}
             aria-label="Ir al inicio"
           >
