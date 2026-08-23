@@ -3,20 +3,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-/*  Cabecera oscura con el logotipo en neón.
-    Todo el brillo es CSS: se rerenderiza nítido a cualquier resolución,
-    pesa 0 KB y se puede enganchar al ratón y al scroll — cosas que un
-    vídeo de fondo no puede hacer.                                        */
+/*  Cabecera oscura: logotipo en neón sobre una aurora violeta.
+
+    El logotipo es TEXTO, no un vídeo. Se probó con el vídeo de Higgsfield y
+    se le veía el rectángulo: mix-blend-mode:screen no podía fundirlo con el
+    fondo porque la animación de scroll del contenedor aísla la composición,
+    y el vídeo salía además más blando que el texto. En texto se rerenderiza
+    nítido a cualquier resolución y pesa cero.                              */
 
 const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero mi demo gratis. Mi negocio es: ')
 
 export default function HeroNeon() {
   const ref = useRef<HTMLElement>(null)
   const [p, setP] = useState({ x: 0, y: 0 })
-  const [listo, setListo] = useState(false)
 
-  // Paralaje suave con el ratón: el logotipo y el halo se mueven distinto
-  // y eso da sensación de profundidad sin que nada se note "animado".
+  // Paralaje con el ratón: logotipo y aurora se mueven distinto = profundidad
   useEffect(() => {
     const fina = window.matchMedia('(pointer: fine)').matches
     const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -28,43 +29,33 @@ export default function HeroNeon() {
     return () => window.removeEventListener('mousemove', mover)
   }, [])
 
-  // Al bajar, el logotipo se aleja y se apaga
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const escala = useTransform(scrollYProgress, [0, 1], [1, 0.86])
-  const opaco = useTransform(scrollYProgress, [0, 0.7], [1, 0])
-  const sube = useTransform(scrollYProgress, [0, 1], [0, -60])
+  const escala = useTransform(scrollYProgress, [0, 1], [1, 0.88])
+  const opaco = useTransform(scrollYProgress, [0, 0.75], [1, 0])
+  const sube = useTransform(scrollYProgress, [0, 1], [0, -70])
 
   return (
     <section ref={ref} id="hero-oscuro" className="hn">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* Halo detrás del logotipo */}
-      <div className="hn-halo" style={{ transform: `translate3d(${p.x * -14}px, ${p.y * -10}px, 0)` }} />
-      <div className="hn-grid" />
-      <div className="hn-vineta" />
+      {/* ── Fondo: aurora + haces de luz + rejilla + grano ── */}
+      <div className="hn-fondo" aria-hidden>
+        <div className="hn-aurora hn-a1" style={{ transform: `translate3d(${p.x * -26}px, ${p.y * -18}px, 0)` }} />
+        <div className="hn-aurora hn-a2" style={{ transform: `translate3d(${p.x * 18}px, ${p.y * 14}px, 0)` }} />
+        <div className="hn-aurora hn-a3" style={{ transform: `translate3d(${p.x * -10}px, ${p.y * 8}px, 0)` }} />
+        <div className="hn-haces" />
+        <div className="hn-grid" />
+        <div className="hn-vineta" />
+        <div className="hn-grano" />
+      </div>
 
       <motion.div className="hn-in" style={{ scale: escala, opacity: opaco, y: sube }}>
-        <div className="hn-marca" style={{ transform: `translate3d(${p.x * 8}px, ${p.y * 6}px, 0)` }}>
-          <h1 className="hn-h1">allostudios.</h1>
-
-          {/* El logotipo animado. Va en <video> y no en texto porque el neón
-              respira y le cruza un destello — eso no se puede hacer con CSS. */}
-          <video
-            className={`hn-video ${listo ? 'is-listo' : ''}`}
-            autoPlay muted loop playsInline preload="metadata"
-            poster="/hero/neon-poster.jpg"
-            onCanPlay={() => setListo(true)}
-            aria-hidden
-          >
-            <source src="/hero/neon.webm" type="video/webm" />
-            <source src="/hero/neon.mp4" type="video/mp4" />
-          </video>
-
-          {/* Respaldo en CSS mientras el vídeo carga (o si no puede reproducirse) */}
-          <div className={`hn-css ${listo ? 'is-oculto' : ''}`} aria-hidden>
-            <span className="hn-bloom">allostudios.</span>
-            <span className="hn-word">allostudios<span className="hn-punto">.</span></span>
-          </div>
+        <div className="hn-marca" style={{ transform: `translate3d(${p.x * 9}px, ${p.y * 7}px, 0)` }}>
+          <span className="hn-bloom" aria-hidden>allostudios.</span>
+          <h1 className="hn-word">
+            allostudios<span className="hn-punto">.</span>
+            <span className="hn-barrido" aria-hidden>allostudios.</span>
+          </h1>
         </div>
 
         <p className="hn-claim">
@@ -101,109 +92,123 @@ export default function HeroNeon() {
 
 const CSS = `
 .hn{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;
-overflow:hidden;background:#05050a;isolation:isolate;padding:120px 24px 90px}
+overflow:hidden;background:#05050a;isolation:isolate;padding:104px 24px 80px}
 
-/* ── Fondo ── */
-.hn-halo{position:absolute;left:50%;top:50%;width:min(1500px,140vw);height:min(900px,90vh);
-transform:translate(-50%,-50%);pointer-events:none;
-background:radial-gradient(closest-side,rgba(140,91,255,.42),rgba(106,91,255,.16) 45%,transparent 72%);
-filter:blur(30px);animation:hnRespira 7s ease-in-out infinite;will-change:transform,opacity}
-.hn-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
-background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:64px 64px;
-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000 30%,transparent 100%);
--webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000 30%,transparent 100%)}
-.hn-vineta{position:absolute;inset:0;pointer-events:none;
-background:radial-gradient(ellipse 90% 80% at 50% 50%,transparent 40%,rgba(0,0,0,.85) 100%)}
+/* ── Fondo ───────────────────────────────────────────────── */
+.hn-fondo{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* Aurora: tres manchas de color que se mueven muy despacio y a distinta
+   velocidad. Da la sensación de que el fondo está vivo sin que se note. */
+.hn-aurora{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform,opacity}
+.hn-a1{width:58vw;height:46vw;left:8%;top:-6%;
+background:radial-gradient(closest-side,rgba(106,91,255,.40),transparent 70%);
+animation:hnDeriva1 26s ease-in-out infinite alternate}
+.hn-a2{width:52vw;height:40vw;right:2%;top:16%;
+background:radial-gradient(closest-side,rgba(160,91,255,.34),transparent 70%);
+animation:hnDeriva2 32s ease-in-out infinite alternate}
+.hn-a3{width:46vw;height:34vw;left:26%;bottom:-14%;
+background:radial-gradient(closest-side,rgba(70,60,220,.30),transparent 70%);
+animation:hnDeriva3 38s ease-in-out infinite alternate}
+
+/* Haces de luz cayendo desde arriba, muy sutiles */
+.hn-haces{position:absolute;inset:-20% -10% 0;opacity:.5;
+background:
+ linear-gradient(178deg,rgba(160,120,255,.09) 0%,transparent 42%),
+ conic-gradient(from 200deg at 30% -10%,transparent 0deg,rgba(160,120,255,.10) 14deg,transparent 30deg),
+ conic-gradient(from 160deg at 72% -10%,transparent 0deg,rgba(106,91,255,.09) 12deg,transparent 26deg);
+animation:hnHaces 22s ease-in-out infinite alternate}
+
+.hn-grid{position:absolute;inset:0;opacity:.45;
+background-image:linear-gradient(rgba(255,255,255,.026) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.026) 1px,transparent 1px);background-size:68px 68px;
+mask-image:radial-gradient(ellipse 68% 58% at 50% 46%,#000 25%,transparent 100%);
+-webkit-mask-image:radial-gradient(ellipse 68% 58% at 50% 46%,#000 25%,transparent 100%)}
+
+.hn-vineta{position:absolute;inset:0;
+background:radial-gradient(ellipse 92% 78% at 50% 46%,transparent 38%,rgba(0,0,0,.9) 100%)}
+
+/* Grano. Además de dar aspecto de película, TAPA el bandeado: los degradados
+   oscuros se ven a escalones en muchas pantallas y el ruido lo disimula. */
+.hn-grano{position:absolute;inset:-100%;opacity:.055;pointer-events:none;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:hnGrano .7s steps(2,end) infinite}
 
 .hn-in{position:relative;z-index:2;width:100%;max-width:1080px;text-align:center;
 display:flex;flex-direction:column;align-items:center}
 
-/* ── El logotipo ── */
-.hn-marca{position:relative;width:100%;max-width:min(1100px,92vw);margin:0 auto;aspect-ratio:1726/452;
-will-change:transform;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+/* ── El logotipo ─────────────────────────────────────────── */
+.hn-marca{position:relative;width:100%;will-change:transform;
+transition:transform .5s cubic-bezier(.16,1,.3,1)}
 
-/* El titular de verdad para Google y los lectores de pantalla */
-.hn-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-
-.hn-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-opacity:0;transition:opacity .6s ease}
-.hn-video.is-listo{opacity:1}
-
-.hn-css{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-transition:opacity .5s ease}
-.hn-css.is-oculto{opacity:0}
-.hn-word,.hn-bloom{
-  font-family:Inter,system-ui,sans-serif;font-weight:600;letter-spacing:-.055em;line-height:.9;
-  font-size:clamp(2.6rem,11.2vw,10.5rem);margin:0;white-space:nowrap}
-
-/* Capa borrosa detrás = el resplandor del tubo */
-.hn-bloom{position:absolute;color:#8c5bff;filter:blur(26px);opacity:.42;
-animation:hnRespira 7s ease-in-out infinite;pointer-events:none}
-
-.hn-word{position:relative;display:block;color:#fff;
+.hn-word,.hn-bloom,.hn-barrido{font-family:Inter,system-ui,sans-serif;font-weight:600;letter-spacing:-.055em;
+line-height:.9;font-size:clamp(2.7rem,11.8vw,11rem);margin:0;white-space:nowrap}
+.hn-bloom{position:absolute;inset:0;color:#8c5bff;filter:blur(26px);opacity:.42;pointer-events:none;
+animation:hnRespira 7s ease-in-out infinite}
+.hn-word{position:relative;display:block;margin:0;color:#fff;
+animation:hnEnciende 1.4s steps(1,end) both;
 text-shadow:0 0 2px rgba(255,255,255,.9),0 0 11px rgba(223,201,255,.85),
-0 0 34px rgba(160,91,255,.75),0 0 78px rgba(140,91,255,.5),
-0 0 150px rgba(106,91,255,.32);
-animation:hnEnciende 1.5s steps(1,end) both}
+0 0 34px rgba(160,91,255,.75),0 0 78px rgba(140,91,255,.5),0 0 150px rgba(106,91,255,.32)}
 .hn-punto{color:#c39bff}
 
-/* Destello que recorre las letras cada pocos segundos */
+/* Destello que recorre las letras cada 9 s, como un reflejo sobre el cristal */
 .hn-barrido{position:absolute;inset:0;color:transparent;pointer-events:none;
-background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.92) 50%,transparent 62%);
+background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.95) 50%,transparent 62%);
 background-size:280% 100%;background-position:180% 0;
 -webkit-background-clip:text;background-clip:text;
-animation:hnBarrido 9s cubic-bezier(.5,0,.3,1) 2.4s infinite}
+animation:hnBarrido 9s cubic-bezier(.5,0,.3,1) 1.8s infinite}
 
-/* ── Texto ── */
-.hn-claim{margin:clamp(22px,4vw,38px) 0 0;font-family:Inter,system-ui,sans-serif;
-font-size:clamp(1.25rem,3.4vw,2.1rem);font-weight:600;letter-spacing:-.03em;color:#fff;
-animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.15s both}
+/* ── Texto ───────────────────────────────────────────────── */
+.hn-claim{margin:clamp(20px,3.4vw,40px) 0 0;font-family:Inter,system-ui,sans-serif;
+font-size:clamp(1.22rem,3.3vw,2.05rem);font-weight:600;letter-spacing:-.03em;color:#fff;
+animation:hnEntra .9s cubic-bezier(.16,1,.3,1) .5s both}
 .hn-claim span{background:linear-gradient(100deg,#a58bff,#e0ccff);-webkit-background-clip:text;
 background-clip:text;color:transparent}
 .hn-sub strong{color:rgba(255,255,255,.9);font-weight:600}
-.hn-sub{margin:16px auto 0;max-width:36rem;font-size:clamp(.94rem,1.6vw,1.06rem);line-height:1.65;
-font-weight:300;color:rgba(255,255,255,.58);animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.3s both}
+.hn-sub{margin:15px auto 0;max-width:36rem;font-size:clamp(.94rem,1.6vw,1.05rem);line-height:1.65;
+font-weight:300;color:rgba(255,255,255,.56);animation:hnEntra .9s cubic-bezier(.16,1,.3,1) .65s both}
 
-.hn-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:clamp(26px,4vw,38px);
-animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.45s both}
+.hn-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:clamp(24px,3.4vw,34px);
+animation:hnEntra .9s cubic-bezier(.16,1,.3,1) .8s both}
 .hn-btn{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:999px;
 font-size:14.5px;font-weight:600;letter-spacing:-.01em;text-decoration:none;
 transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,background .25s}
 .hn-btn-p{color:#fff;background:linear-gradient(100deg,#6a5bff,#a05bff);
 box-shadow:0 18px 44px -16px rgba(140,91,255,.9),inset 0 1px 0 rgba(255,255,255,.35)}
 .hn-btn-p:hover{transform:translateY(-2px);box-shadow:0 24px 56px -16px rgba(140,91,255,1)}
-.hn-btn-s{color:#fff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.16);
+.hn-btn-s{color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
 backdrop-filter:blur(10px)}
-.hn-btn-s:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+.hn-btn-s:hover{background:rgba(255,255,255,.11);transform:translateY(-2px)}
 
-.hn-chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:clamp(30px,5vw,46px);
-animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.6s both}
+.hn-chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:clamp(26px,4vw,40px);
+animation:hnEntra .9s cubic-bezier(.16,1,.3,1) .95s both}
 .hn-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 17px;border-radius:999px;
 font-size:12.5px;font-weight:500;color:rgba(255,255,255,.72);
 background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09)}
 .hn-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:#a05bff;
 box-shadow:0 0 8px #a05bff}
 
-.hn-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;
-width:22px;height:36px;border:1px solid rgba(255,255,255,.2);border-radius:999px;
-display:flex;justify-content:center;padding-top:7px;animation:hnEntra 1s ease 2s both}
-.hn-scroll span{width:3px;height:7px;border-radius:99px;background:rgba(255,255,255,.55);
+.hn-scroll{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;
+width:22px;height:36px;border:1px solid rgba(255,255,255,.18);border-radius:999px;
+display:flex;justify-content:center;padding-top:7px;animation:hnEntra 1s ease 1.4s both}
+.hn-scroll span{width:3px;height:7px;border-radius:99px;background:rgba(255,255,255,.5);
 animation:hnRueda 2s ease-in-out infinite}
 
-/* ── Movimiento ── */
-@keyframes hnEnciende{
-  0%,7%{opacity:0}
-  8%{opacity:1}  11%{opacity:.15} 13%{opacity:1}
-  17%{opacity:.25} 19%{opacity:1} 24%{opacity:.5}
-  26%,100%{opacity:1}}
+/* ── Movimiento ──────────────────────────────────────────── */
+@keyframes hnDeriva1{from{transform:translate(0,0) scale(1)}to{transform:translate(7%,5%) scale(1.14)}}
+@keyframes hnDeriva2{from{transform:translate(0,0) scale(1.08)}to{transform:translate(-8%,7%) scale(.94)}}
+@keyframes hnDeriva3{from{transform:translate(0,0) scale(.96)}to{transform:translate(5%,-6%) scale(1.16)}}
+@keyframes hnHaces{from{opacity:.34}to{opacity:.62}}
 @keyframes hnRespira{0%,100%{opacity:.62}50%{opacity:1}}
 @keyframes hnBarrido{0%{background-position:180% 0}22%,100%{background-position:-120% 0}}
+@keyframes hnEnciende{0%,7%{opacity:0}8%{opacity:1}11%{opacity:.15}13%{opacity:1}
+17%{opacity:.25}19%{opacity:1}24%{opacity:.5}26%,100%{opacity:1}}
 @keyframes hnEntra{from{opacity:0;transform:translateY(16px);filter:blur(6px)}
 to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes hnRueda{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:.3}}
+@keyframes hnGrano{
+ 0%{transform:translate(0,0)} 25%{transform:translate(-2%,1%)}
+ 50%{transform:translate(1%,-2%)} 75%{transform:translate(-1%,-1%)} 100%{transform:translate(0,0)}}
 
-@media (prefers-reduced-motion:reduce){
-  .hn *,.hn-halo{animation:none!important;transition:none!important}
-  .hn-word{opacity:1}}
+@media (prefers-reduced-motion:reduce){.hn *{animation:none!important;transition:none!important}}
+@media (max-width:640px){.hn-grano{opacity:.04}.hn-aurora{filter:blur(60px)}}
 `
