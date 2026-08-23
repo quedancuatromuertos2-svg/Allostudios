@@ -102,8 +102,8 @@ export function LogoFull({ className = '', size = 'md' }: { className?: string; 
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark size={markSize} className="text-ink shrink-0" />
-      <span className={`${textSize} tracking-[-0.03em] text-ink select-none`}>
+      <LogoMark size={markSize} className="shrink-0" />
+      <span className={`${textSize} tracking-[-0.03em] select-none`}>
         <span className="font-semibold">Allo</span>
         <span className="font-normal">Studios</span>
       </span>

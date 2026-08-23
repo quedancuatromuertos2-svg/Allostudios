@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation'
-import HeroGlass from '@/components/HeroGlass'
+import HeroNeon from '@/components/HeroNeon'
 import LogoBand from '@/components/LogoBand'
 import ServicesCatalogSection from '@/components/ServicesCatalogSection'
 import ContactFormSection from '@/components/ContactFormSection'
@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <Navigation />
       <main className="relative z-10">
-        <HeroGlass />
+        <HeroNeon />
         <LogoBand />
         <DemoGeneratorSection />
         <ServicesCatalogSection />
@@ -29,10 +29,10 @@ export default function Home() {
         <WebsSection />
         <ServicesSection />
         <HowItWorksSection />
-        <PricingSection />
-        <ContactFormSection />
         <TestimonialsSection />
+        <PricingSection />
         <FAQSection />
+        <ContactFormSection />
         <ComercialesSection />
         <CTASection />
       </main>

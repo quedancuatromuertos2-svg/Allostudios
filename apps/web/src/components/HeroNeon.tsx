@@ -35,7 +35,7 @@ export default function HeroNeon() {
   const sube = useTransform(scrollYProgress, [0, 1], [0, -60])
 
   return (
-    <section ref={ref} className="hn">
+    <section ref={ref} id="hero-oscuro" className="hn">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* Halo detrás del logotipo */}
@@ -68,21 +68,23 @@ export default function HeroNeon() {
         </div>
 
         <p className="hn-claim">
-          Más clientes. <span>Sin tocar el marketing.</span>
+          Que te encuentren. Que te escriban. <span>Que compren.</span>
         </p>
         <p className="hn-sub">
-          Webs, Instagram, anuncios y un asistente de IA que responde 24/7 —
-          para negocios locales de Valencia. Tú solo cierras.
+          Webs, Instagram, anuncios y un asistente de IA que responde 24/7 para negocios
+          locales de Valencia. Te enseñamos tu web <strong>antes</strong> de que pagues nada.
         </p>
 
         <div className="hn-ctas">
-          <a href={wa} target="_blank" rel="noopener noreferrer" className="hn-btn hn-btn-p">
-            Pide tu demo gratis
+          <a href="#tu-web" className="hn-btn hn-btn-p">
+            Mira tu web gratis
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
               <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <a href="#tu-web" className="hn-btn hn-btn-s">Mira tu web gratis</a>
+          <a href={wa} target="_blank" rel="noopener noreferrer" className="hn-btn hn-btn-s">
+            Hablar por WhatsApp
+          </a>
         </div>
 
         <div className="hn-chips">
@@ -159,6 +161,7 @@ font-size:clamp(1.25rem,3.4vw,2.1rem);font-weight:600;letter-spacing:-.03em;colo
 animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.15s both}
 .hn-claim span{background:linear-gradient(100deg,#a58bff,#e0ccff);-webkit-background-clip:text;
 background-clip:text;color:transparent}
+.hn-sub strong{color:rgba(255,255,255,.9);font-weight:600}
 .hn-sub{margin:16px auto 0;max-width:36rem;font-size:clamp(.94rem,1.6vw,1.06rem);line-height:1.65;
 font-weight:300;color:rgba(255,255,255,.58);animation:hnEntra .9s cubic-bezier(.16,1,.3,1) 1.3s both}
 

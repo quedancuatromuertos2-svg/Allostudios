@@ -14,12 +14,25 @@ const links: { label: string; href: string; highlight?: boolean; page?: boolean 
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
+  const [sobreOscuro, setSobreOscuro] = useState(false)
   const [open, setOpen] = useState(false)
 
+  // Mientras la barra esté por encima de la cabecera oscura va en claro;
+  // al salir de ella vuelve a la pastilla blanca del resto de la web.
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 24)
+    const hero = document.getElementById('hero-oscuro')
+    const fn = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+      setSobreOscuro(hero ? y < hero.offsetHeight - 90 : false)
+    }
+    fn()
     window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
+    window.addEventListener('resize', fn)
+    return () => {
+      window.removeEventListener('scroll', fn)
+      window.removeEventListener('resize', fn)
+    }
   }, [])
 
   const go = (href: string) => {
@@ -48,13 +61,18 @@ export default function Navigation() {
         }
       `}>
         <div className={`
-          lg flex items-center justify-between h-[60px] px-6 rounded-full transition-all duration-500
-          ${scrolled ? 'shadow-md' : ''}
+          flex items-center justify-between h-[60px] px-6 rounded-full transition-all duration-500
+          ${!scrolled ? 'bg-transparent'
+            : sobreOscuro
+              ? 'bg-white/[0.07] border border-white/10 backdrop-blur-xl shadow-lg'
+              : 'lg shadow-md'}
         `}>
           {/* Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center"
+            className={`flex items-center transition-all duration-500 ${
+              sobreOscuro && !scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            } ${sobreOscuro ? 'text-white' : 'text-ink'}`}
             aria-label="Ir al inicio"
           >
             <LogoFull />
@@ -65,8 +83,12 @@ export default function Navigation() {
             {links.map(l => {
               const cls = `px-4 py-2 text-[14px] rounded-xl transition-all duration-200 font-medium ${
                 l.highlight
-                  ? 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
-                  : 'text-dim hover:text-ink hover:bg-surface/80'
+                  ? sobreOscuro
+                    ? 'text-[#c3a5ff] hover:text-white hover:bg-white/10'
+                    : 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
+                  : sobreOscuro
+                    ? 'text-white/70 hover:text-white hover:bg-white/10'
+                    : 'text-dim hover:text-ink hover:bg-surface/80'
               }`
               // Los enlaces a otra página son <a>; los demás hacen scroll a su sección
               return l.page ? (
@@ -97,17 +119,17 @@ export default function Navigation() {
             <motion.span
               animate={open ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.25 }}
-              className="w-[18px] h-[1.5px] bg-ink block rounded-full origin-center"
+              className={`w-[18px] h-[1.5px] block rounded-full origin-center ${sobreOscuro && !open ? "bg-white" : "bg-ink"}`}
             />
             <motion.span
               animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.2 }}
-              className="w-[18px] h-[1.5px] bg-ink block rounded-full"
+              className={`w-[18px] h-[1.5px] block rounded-full ${sobreOscuro && !open ? "bg-white" : "bg-ink"}`}
             />
             <motion.span
               animate={open ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.25 }}
-              className="w-[18px] h-[1.5px] bg-ink block rounded-full origin-center"
+              className={`w-[18px] h-[1.5px] block rounded-full origin-center ${sobreOscuro && !open ? "bg-white" : "bg-ink"}`}
             />
           </button>
         </div>
