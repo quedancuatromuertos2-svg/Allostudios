@@ -13,6 +13,7 @@ const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero 
 export default function HeroNeon() {
   const ref = useRef<HTMLElement>(null)
   const [p, setP] = useState({ x: 0, y: 0 })
+  const [listo, setListo] = useState(false)
 
   // Paralaje suave con el ratón: el logotipo y el halo se mueven distinto
   // y eso da sensación de profundidad sin que nada se note "animado".
@@ -44,11 +45,26 @@ export default function HeroNeon() {
 
       <motion.div className="hn-in" style={{ scale: escala, opacity: opaco, y: sube }}>
         <div className="hn-marca" style={{ transform: `translate3d(${p.x * 8}px, ${p.y * 6}px, 0)` }}>
-          <span className="hn-bloom" aria-hidden>allostudios.</span>
-          <h1 className="hn-word">
-            allostudios<span className="hn-punto">.</span>
-            <span className="hn-barrido" aria-hidden>allostudios.</span>
-          </h1>
+          <h1 className="hn-h1">allostudios.</h1>
+
+          {/* El logotipo animado. Va en <video> y no en texto porque el neón
+              respira y le cruza un destello — eso no se puede hacer con CSS. */}
+          <video
+            className={`hn-video ${listo ? 'is-listo' : ''}`}
+            autoPlay muted loop playsInline preload="metadata"
+            poster="/hero/neon-poster.jpg"
+            onCanPlay={() => setListo(true)}
+            aria-hidden
+          >
+            <source src="/hero/neon.webm" type="video/webm" />
+            <source src="/hero/neon.mp4" type="video/mp4" />
+          </video>
+
+          {/* Respaldo en CSS mientras el vídeo carga (o si no puede reproducirse) */}
+          <div className={`hn-css ${listo ? 'is-oculto' : ''}`} aria-hidden>
+            <span className="hn-bloom">allostudios.</span>
+            <span className="hn-word">allostudios<span className="hn-punto">.</span></span>
+          </div>
         </div>
 
         <p className="hn-claim">
@@ -102,16 +118,28 @@ background:radial-gradient(ellipse 90% 80% at 50% 50%,transparent 40%,rgba(0,0,0
 display:flex;flex-direction:column;align-items:center}
 
 /* ── El logotipo ── */
-.hn-marca{position:relative;width:100%;will-change:transform;transition:transform .5s cubic-bezier(.16,1,.3,1)}
-.hn-word,.hn-bloom,.hn-barrido{
+.hn-marca{position:relative;width:100%;max-width:min(1100px,92vw);margin:0 auto;aspect-ratio:1726/452;
+will-change:transform;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+
+/* El titular de verdad para Google y los lectores de pantalla */
+.hn-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+.hn-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+opacity:0;transition:opacity .6s ease}
+.hn-video.is-listo{opacity:1}
+
+.hn-css{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+transition:opacity .5s ease}
+.hn-css.is-oculto{opacity:0}
+.hn-word,.hn-bloom{
   font-family:Inter,system-ui,sans-serif;font-weight:600;letter-spacing:-.055em;line-height:.9;
-  font-size:clamp(3.1rem,13.6vw,13rem);margin:0;white-space:nowrap}
+  font-size:clamp(2.6rem,11.2vw,10.5rem);margin:0;white-space:nowrap}
 
 /* Capa borrosa detrás = el resplandor del tubo */
-.hn-bloom{position:absolute;inset:0;color:#8c5bff;filter:blur(26px);opacity:.42;
+.hn-bloom{position:absolute;color:#8c5bff;filter:blur(26px);opacity:.42;
 animation:hnRespira 7s ease-in-out infinite;pointer-events:none}
 
-.hn-word{position:relative;color:#fff;
+.hn-word{position:relative;display:block;color:#fff;
 text-shadow:0 0 2px rgba(255,255,255,.9),0 0 11px rgba(223,201,255,.85),
 0 0 34px rgba(160,91,255,.75),0 0 78px rgba(140,91,255,.5),
 0 0 150px rgba(106,91,255,.32);
