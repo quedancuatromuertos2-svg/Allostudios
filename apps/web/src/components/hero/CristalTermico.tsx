@@ -70,16 +70,17 @@ export default function CristalTermico({
     c2.fillStyle = '#fff'
     c2.textAlign = 'center'
     c2.textBaseline = 'middle'
-    // Cuanto más corta, más grande y más gruesa: una palabra larga la
-    // refracción la destroza, pero 3-4 letras grandes aguantan bien.
+    // Tipografía de Apple: SF Pro en Mac y iPhone. En Windows y Android no
+    // existe, así que cae a Inter, que es prácticamente la misma letra.
+    const TIPO = '-apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Inter, sans-serif'
     const n = palabra.trim().length
-    const ancho = n <= 2 ? 0.46 : n <= 5 ? 0.72 : 0.92
+    const ancho = n <= 2 ? 0.46 : n <= 5 ? 0.72 : 0.88
     const grosor = n <= 5 ? 700 : 600
     let tam = n <= 2 ? 470 : 430
-    c2.font = `${grosor} ${tam}px Inter, system-ui, sans-serif`
+    c2.font = `${grosor} ${tam}px ${TIPO}`
     while (c2.measureText(palabra).width > texto.width * ancho && tam > 40) {
-      tam -= 8
-      c2.font = `${grosor} ${tam}px Inter, system-ui, sans-serif`
+      tam -= 6
+      c2.font = `${grosor} ${tam}px ${TIPO}`
     }
     c2.fillText(palabra, texto.width / 2, texto.height / 2 + tam * 0.02)
 
@@ -134,15 +135,30 @@ export default function CristalTermico({
         return v;
       }
 
-      // Alfa de la palabra, con la caja centrada y sin deformar
+      // Alfa de la palabra. La textura es 4:1 y se encaja a lo ANCHO de la
+      // pantalla; la altura se deduce de la proporción para no deformarla.
+      // (Antes se dividía por la relación de aspecto y solo se veía el 40 %
+      //  central de la textura: la palabra salía ampliada y cortada.)
       float letra(vec2 uv){
         float rel = uRes.x / uRes.y;
-        vec2 t = uv;
-        t.x = (t.x - 0.5) * (rel / 4.0) + 0.5;   // la textura es 4:1
-        if (t.x < 0.0 || t.x > 1.0) return 0.0;
-        t.y = (t.y - 0.60) * 2.0 + 0.5;   // centrada en la franja alta
-        if (t.y < 0.0 || t.y > 1.0) return 0.0;
+        float escala = 0.88;              // parte del ancho que ocupa
+        float alto = (rel / 4.0) * escala; // altura de la banda, en uv
+        vec2 t;
+        t.x = (uv.x - 0.5) / escala + 0.5;
+        t.y = (uv.y - 0.60) / alto + 0.5;  // centrada en la franja alta
+        if (t.x < 0.0 || t.x > 1.0 || t.y < 0.0 || t.y > 1.0) return 0.0;
         return texture2D(uTexto, t).a;
+      }
+
+      // Cristal mate: en vez de una muestra nítida, se promedian varias
+      // alrededor. Eso es lo que hace que la luz se difunda en vez de reflejarse.
+      float letraDifusa(vec2 uv, float r){
+        float s = letra(uv);
+        s += letra(uv + vec2( r, 0.0)) + letra(uv + vec2(-r, 0.0));
+        s += letra(uv + vec2(0.0, r)) + letra(uv + vec2(0.0, -r));
+        s += letra(uv + vec2( r*0.7,  r*0.7)) + letra(uv + vec2(-r*0.7,  r*0.7));
+        s += letra(uv + vec2( r*0.7, -r*0.7)) + letra(uv + vec2(-r*0.7, -r*0.7));
+        return s / 9.0;
       }
 
       void main(){
@@ -163,28 +179,27 @@ export default function CristalTermico({
         float h = 1.0 - smoothstep(0.02, 0.72, d);
         h += (fbm(uvR*vec2(rel,1.0)*3.2 + vec2(uTime*0.05, uTime*0.03)) - 0.5) * 0.42;
 
-        // La palabra irradia: el calor sube justo a su alrededor
-        float a = letra(uvR);
-        float halo = 0.0;
-        for (int k = 1; k <= 5; k++){
-          float e = float(k) * 0.0055;
-          halo += letra(uvR + vec2(e, 0.0)) + letra(uvR - vec2(e, 0.0))
-                + letra(uvR + vec2(0.0, e)) + letra(uvR - vec2(0.0, e));
-        }
-        halo = clamp(halo / 20.0, 0.0, 1.0);
-        h += halo * 0.55;
+        // La palabra ya no es una silueta oscura: es la LUZ. Se muestrea a
+        // tres radios — el núcleo casi nítido, el resplandor que atraviesa el
+        // cristal, y el halo ancho que tiñe todo lo de alrededor.
+        float nucleo = letraDifusa(uvR, 0.0016);
+        float pasa   = letraDifusa(uvR, 0.0130);
+        float halo   = letraDifusa(uvR, 0.0380);
+
+        h = h * 0.34 + nucleo * 0.98 + pasa * 0.52 + halo * 0.34;
 
         vec3 col = calorColor(h);
+        // El corazón de la letra se va a blanco puro
+        col = mix(col, vec3(1.0), smoothstep(0.62, 1.0, nucleo) * 0.62);
 
-        // La palabra queda en oscuro, recortada sobre el calor
-        col = mix(col, col * 0.055, smoothstep(0.35, 0.65, a));
-
-        // ── Relieve del cristal: brillo en el centro de cada franja y sombra en el borde ──
-        float brillo = pow(1.0 - abs(f), 16.0);
-        float borde = smoothstep(0.72, 1.0, abs(f));
-        col *= 0.70 + 0.30 * (1.0 - abs(f));      // volumen cilíndrico
-        col *= 1.0 - borde * 0.55;                 // la junta entre franjas
-        col += brillo * 0.34;                      // el reflejo
+        // ── Relieve MATE: nada de reflejo especular. Un velo ancho y suave,
+        //    la junta apenas insinuada, y una textura fina de vidrio arenado.
+        float velo = pow(1.0 - abs(f), 2.6) * 0.085;
+        float borde = smoothstep(0.82, 1.0, abs(f));
+        col *= 0.88 + 0.12 * (1.0 - abs(f));       // volumen muy suave
+        col *= 1.0 - borde * 0.28;                  // junta discreta
+        col += velo;                                // velo mate, no reflejo
+        col *= 0.97 + 0.06 * ruido(uv * vec2(420.0, 90.0));   // arenado
 
         // Grano: tapa el bandeado de los degradados oscuros
         col += (hash(gl_FragCoord.xy + uTime) - 0.5) * 0.035;

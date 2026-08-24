@@ -17,8 +17,8 @@ const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero 
 export default function CristalPreview() {
   const [rampa, setRampa] = useState<Rampa>('violeta')
   const [franjas, setFranjas] = useState(46)
-  const [fuerza, setFuerza] = useState(0.45)
-  const [palabra, setPalabra] = useState('ALLO')
+  const [fuerza, setFuerza] = useState(0.7)
+  const [palabra, setPalabra] = useState('Allostudios')
 
   return (
     <>
@@ -67,7 +67,7 @@ export default function CristalPreview() {
         </div>
         <div className="ct-grupo">
           <span className="ct-eti">Detrás</span>
-          {[['A', 'Una letra'], ['ALLO', 'ALLO'], ['allostudios', 'Completo']].map(([v, l]) => (
+          {[['A', 'Una letra'], ['ALLO', 'ALLO'], ['Allostudios', 'Completo']].map(([v, l]) => (
             <button key={v} onClick={() => setPalabra(v)} className={`ct-op ${palabra === v ? 'is-on' : ''}`}>
               {l}
             </button>
