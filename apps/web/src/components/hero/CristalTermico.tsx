@@ -70,13 +70,16 @@ export default function CristalTermico({
     c2.fillStyle = '#fff'
     c2.textAlign = 'center'
     c2.textBaseline = 'middle'
-    // Una sola letra se dibuja enorme; una palabra se ajusta al ancho.
-    const corta = palabra.trim().length <= 2
-    let tam = corta ? 470 : 340
-    c2.font = `${corta ? 700 : 600} ${tam}px Inter, system-ui, sans-serif`
-    while (c2.measureText(palabra).width > texto.width * (corta ? 0.5 : 0.92) && tam > 40) {
+    // Cuanto más corta, más grande y más gruesa: una palabra larga la
+    // refracción la destroza, pero 3-4 letras grandes aguantan bien.
+    const n = palabra.trim().length
+    const ancho = n <= 2 ? 0.46 : n <= 5 ? 0.72 : 0.92
+    const grosor = n <= 5 ? 700 : 600
+    let tam = n <= 2 ? 470 : 430
+    c2.font = `${grosor} ${tam}px Inter, system-ui, sans-serif`
+    while (c2.measureText(palabra).width > texto.width * ancho && tam > 40) {
       tam -= 8
-      c2.font = `${corta ? 700 : 600} ${tam}px Inter, system-ui, sans-serif`
+      c2.font = `${grosor} ${tam}px Inter, system-ui, sans-serif`
     }
     c2.fillText(palabra, texto.width / 2, texto.height / 2 + tam * 0.02)
 
@@ -137,7 +140,7 @@ export default function CristalTermico({
         vec2 t = uv;
         t.x = (t.x - 0.5) * (rel / 4.0) + 0.5;   // la textura es 4:1
         if (t.x < 0.0 || t.x > 1.0) return 0.0;
-        t.y = (t.y - 0.5) * 1.9 + 0.5;
+        t.y = (t.y - 0.60) * 2.0 + 0.5;   // centrada en la franja alta
         if (t.y < 0.0 || t.y > 1.0) return 0.0;
         return texture2D(uTexto, t).a;
       }
