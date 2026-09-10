@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import { CATALOGO, eur, porClave } from '@/lib/precios'
 
 export const metadata: Metadata = {
-  title: 'Contratar — AlloStudios',
+  title: 'Contratar tu web, Instagram o captación',
   description:
     'Contrata tu web, tu Instagram o la captación de clientes online, con pago seguro y sin permanencia.',
   alternates: { canonical: 'https://allostudios.net/contratar' },

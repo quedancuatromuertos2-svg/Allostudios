@@ -98,11 +98,19 @@ export default function RootLayout({
                   "Agencia digital para negocios locales de Valencia: webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local, reseñas y asistente de IA 24/7.",
                 areaServed: { "@type": "City", name: "Valencia" },
                 priceRange: "€€",
+                telephone: "+34-695-868-793",
                 contactPoint: {
                   "@type": "ContactPoint",
-                  telephone: "+34-613-112-671",
+                  telephone: "+34-695-868-793",
                   contactType: "sales",
                   availableLanguage: "Spanish",
+                  // Compromiso público de respuesta: sale en los resultados de Google
+                  hoursAvailable: {
+                    "@type": "OpeningHoursSpecification",
+                    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    opens: "09:00",
+                    closes: "20:00",
+                  },
                 },
                 sameAs: [
                   "https://wa.me/34695868793",

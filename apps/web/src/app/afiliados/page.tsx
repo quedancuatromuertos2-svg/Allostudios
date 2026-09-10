@@ -5,7 +5,7 @@ import ComisionCalculadora from '@/components/afiliados/ComisionCalculadora'
 import AfiliadoForm from '@/components/afiliados/AfiliadoForm'
 
 export const metadata: Metadata = {
-  title: 'Programa de comerciales — gana el 30 % de cada venta | AlloStudios',
+  title: 'Programa de comerciales — gana el 30 % de cada venta',
   description:
     'Vende webs y servicios digitales a negocios locales y llévate el 30 % de cada ticket. Nosotros ponemos los leads, la demo ya hecha, el guion y toda la producción. Tú solo llamas y cierras. 100 % remoto, sin inversión.',
   alternates: { canonical: 'https://allostudios.net/afiliados' },

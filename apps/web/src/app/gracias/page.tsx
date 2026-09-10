@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Gracias — AlloStudios',
+  title: 'Gracias por tu pedido',
   robots: { index: false, follow: false },
 }
 

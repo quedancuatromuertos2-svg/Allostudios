@@ -4,7 +4,7 @@ import Footer from '@/components/Footer'
 import TuWebForm from '@/components/TuWebForm'
 
 export const metadata: Metadata = {
-  title: 'Genera la web de tu negocio gratis — AlloStudios',
+  title: 'Genera la web de tu negocio gratis',
   description:
     'Escribe el nombre de tu negocio y te generamos una demo real de tu web en 30 segundos, con tus reseñas y datos de Google. Gratis y sin crear cuenta.',
   alternates: { canonical: 'https://allostudios.net/tu-web' },
