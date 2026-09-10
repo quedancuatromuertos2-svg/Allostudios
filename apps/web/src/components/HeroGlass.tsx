@@ -34,15 +34,19 @@ export default function HeroGlass() {
         </motion.p>
 
         <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-9">
-          <a href={wa} target="_blank" rel="noopener noreferrer"
+          <a href="#tu-web"
             className="group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full font-semibold text-[14px] text-white transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
             style={{ background: 'linear-gradient(100deg,#6a5bff,#a05bff)', boxShadow: '0 16px 40px -14px rgba(140,91,255,.6),inset 0 1px 0 rgba(255,255,255,.4)' }}>
-            Pide tu demo gratis
+            Mira tu web gratis
             <span className="w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-px" style={{ background: 'rgba(255,255,255,.22)', transitionTimingFunction: 'cubic-bezier(.32,.72,0,1)' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </span>
           </a>
           <a href="#precios" className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-[#1e1a2b]">Ver planes</a>
+          <a href={wa} target="_blank" rel="noopener noreferrer"
+            className="text-[13px] text-[#5a5470] hover:text-[#1e1a2b] underline underline-offset-4 transition-colors">
+            o hablar por WhatsApp
+          </a>
         </motion.div>
 
         <motion.div variants={item} className="flex flex-wrap justify-center gap-2.5 mt-11">

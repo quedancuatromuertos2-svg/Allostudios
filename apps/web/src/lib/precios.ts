@@ -66,6 +66,36 @@ export const CATALOGO: Articulo[] = [
     desc: 'Gestión de Instagram más campañas de anuncios de Meta.',
     priceId: 'price_1U9qZVAtD7Uqmi3UeKHCisus',
   },
+  {
+    clave: 'ASISTENTE_IA', nombre: 'Asistente de IA', eur: 199, cobro: 'unico',
+    desc: 'Configuramos tu asistente para que responda tus mensajes de Instagram y WhatsApp 24/7.',
+    priceId: 'price_1U9rzRAtD7Uqmi3UUGtFxOBD', acompana: 'ASISTENTE_IA_MES',
+  },
+  {
+    clave: 'ASISTENTE_IA_MES', nombre: 'Asistente de IA (mensual)', eur: 39, cobro: 'mes',
+    desc: 'Tu asistente respondiendo, cualificando y agendando citas todos los días.',
+    priceId: 'price_1U9rzSAtD7Uqmi3UNNQRyt3o',
+  },
+  {
+    clave: 'SEO_LOCAL', nombre: 'SEO local', eur: 199, cobro: 'unico',
+    desc: 'Ficha de Google, palabras clave y estructura para que te encuentren en tu zona.',
+    priceId: 'price_1U9rzSAtD7Uqmi3Ur9W0IFBz', acompana: 'SEO_LOCAL_MES',
+  },
+  {
+    clave: 'SEO_LOCAL_MES', nombre: 'SEO local (mensual)', eur: 99, cobro: 'mes',
+    desc: 'Trabajo mensual de posicionamiento para subir y mantenerte arriba en Google.',
+    priceId: 'price_1U9rzSAtD7Uqmi3UVn1WseUF',
+  },
+  {
+    clave: 'RESENAS', nombre: 'Reseñas 5★ en Google', eur: 79, cobro: 'mes',
+    desc: 'Sistema para pedir reseñas a tus clientes contentos, automatizado.',
+    priceId: 'price_1U9rzTAtD7Uqmi3UfZZZarF5',
+  },
+  {
+    clave: 'ADS', nombre: 'Campañas Meta y Google Ads', eur: 199, cobro: 'mes',
+    desc: 'Creamos y optimizamos tus anuncios cada mes. La inversión publicitaria va aparte.',
+    priceId: 'price_1U9rzTAtD7Uqmi3U2R8rEgzk',
+  },
 ]
 
 export const porClave = (clave: string) => CATALOGO.find((a) => a.clave === clave)

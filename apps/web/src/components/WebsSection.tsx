@@ -212,17 +212,16 @@ export default function WebsSection() {
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <a
-              href="https://wa.me/34695868793?text=Hola%2C%20quiero%20información%20sobre%20páginas%20web%20premium"
-              target="_blank" rel="noopener noreferrer"
+              href="/contratar"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-ink text-[14px] font-semibold hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 active:scale-[0.98]"
               style={{ boxShadow: '0 8px 28px rgba(255,255,255,0.15), 0 1px 0 rgba(255,255,255,0.9) inset' }}
             >
-              Solicitar presupuesto
+              Ver precios y contratar
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
                 <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
-            <span className="text-[12px] text-white/30">Respuesta en menos de 24h</span>
+            <span className="text-[12px] text-white/30">Desglose claro · sin permanencia</span>
           </motion.div>
         </motion.div>
 

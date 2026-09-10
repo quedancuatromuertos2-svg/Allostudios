@@ -23,12 +23,12 @@ const waBase = 'https://wa.me/34695868793?text='
 
 /* Servicios mensuales recurrentes (fila de apoyo bajo la escalera de webs) */
 const monthly = [
-  { n: 'Gestión de Instagram', p: 'desde 199 €/mes', msg: 'Hola, me interesa la gestión de Instagram de AlloStudios para mi negocio.' },
-  { n: 'Instagram Pro + Ads', p: '349 €/mes', msg: 'Hola, me interesa el plan Instagram Pro de AlloStudios.' },
-  { n: 'Asistente IA en WhatsApp/DMs', p: '199 € + 39 €/mes', msg: 'Hola, me interesa el asistente de IA que responde mensajes 24/7.' },
-  { n: 'SEO local · salir en Google', p: '199 € + 99 €/mes', msg: 'Hola, quiero que mi negocio salga en Google (SEO local).' },
-  { n: 'Reseñas 5★ en Google', p: '79 €/mes', msg: 'Hola, me interesa el sistema de reseñas 5 estrellas.' },
-  { n: 'Campañas Meta · Google Ads', p: '199 €/mes', msg: 'Hola, me interesan las campañas de anuncios para mi negocio.' },
+  { n: 'Gestión de Instagram', p: 'desde 199 €/mes', clave: 'instagram' },
+  { n: 'Instagram Pro + Ads', p: '349 €/mes', clave: 'instagram_pro' },
+  { n: 'Asistente IA en WhatsApp/DMs', p: '199 € + 39 €/mes', clave: 'asistente_ia' },
+  { n: 'SEO local · salir en Google', p: '199 € + 99 €/mes', clave: 'seo_local' },
+  { n: 'Reseñas 5★ en Google', p: '79 €/mes', clave: 'resenas' },
+  { n: 'Campañas Meta · Google Ads', p: '199 €/mes', clave: 'ads' },
 ]
 
 export default function PricingSection() {
@@ -86,12 +86,12 @@ export default function PricingSection() {
                 <div className="text-[12px] text-muted mt-1.5">todo incluido · entrega en 7 días</div>
               </div>
 
-              <button
-                onClick={() => openWhatsApp('Hola, quiero ver la demo GRATIS de mi web (nivel Arranque). Mi negocio es: ')}
-                className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+              <a
+                href="/contratar/web_arranque"
+                className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
               >
-                Quiero mi demo gratis
-              </button>
+                Contratar · ver desglose
+              </a>
 
               <ul className="space-y-3 flex-1">
                 {[
@@ -148,13 +148,13 @@ export default function PricingSection() {
                   <div className="text-[12px] text-white/35 mt-1.5">lo más elegido · sin permanencia</div>
                 </div>
 
-                <button
-                  onClick={() => openWhatsApp('Hola, me interesa la Web Premium de AlloStudios (790 €). Mi negocio es: ')}
-                  className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-accent hover:bg-accent-dark text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+                <a
+                  href="/contratar/web_premium"
+                  className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-accent hover:bg-accent-dark text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
                   style={{ boxShadow: '0 4px 24px rgba(91,91,214,0.35)' }}
                 >
-                  Quiero la Premium
-                </button>
+                  Contratar · ver desglose
+                </a>
 
                 <div className="mb-5 p-3 rounded-xl bg-white/5 border border-white/8">
                   <div className="text-[11px] text-white/40 font-medium tracking-[0.08em] uppercase">Todo lo del Arranque, más:</div>
@@ -201,12 +201,12 @@ export default function PricingSection() {
                 <div className="text-[12px] text-muted mt-1.5">100% a medida · dirección de arte incluida</div>
               </div>
 
-              <button
-                onClick={() => openWhatsApp('Hola, me interesa la Web Cinematográfica de AlloStudios (el efecto del scroll estilo Apple). Mi negocio es: ')}
-                className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-3 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+              <a
+                href="/contratar/web_cine"
+                className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-3 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
               >
-                Quiero algo único
-              </button>
+                Contratar · ver desglose
+              </a>
               <a
                 href="https://demos-six-gold.vercel.app/efecto-apple/"
                 target="_blank" rel="noopener noreferrer"
@@ -240,20 +240,32 @@ export default function PricingSection() {
           viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="mt-10"
         >
+          <p className="text-center text-[12.5px] text-muted mb-8 -mt-2">
+            ¿Prefieres verla antes de pagar?{' '}
+            <a href="#tu-web" className="text-accent font-medium underline underline-offset-2">
+              Genera tu web gratis en 30 segundos
+            </a>{' '}
+            o{' '}
+            <button onClick={() => openWhatsApp('Hola, tengo dudas sobre los planes de AlloStudios. Mi negocio es: ')}
+              className="text-accent font-medium underline underline-offset-2">
+              escríbenos por WhatsApp
+            </button>.
+          </p>
+
           <div className="text-center text-[12px] font-semibold tracking-[0.12em] uppercase text-muted mb-4">
             Y los servicios que hacen crecer tu negocio cada mes
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {monthly.map(s => (
-              <button
+              <a
                 key={s.n}
-                onClick={() => openWhatsApp(s.msg)}
+                href={`/contratar/${s.clave}`}
                 className="lg group flex flex-col items-start text-left rounded-xl p-4 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
               >
                 <span className="text-[13px] font-semibold text-ink leading-snug">{s.n}</span>
                 <span className="text-[12px] text-accent font-semibold mt-1">{s.p}</span>
-                <span className="text-[11px] text-muted mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Pedir info → </span>
-              </button>
+                <span className="text-[11px] text-muted mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Ver y contratar → </span>
+              </a>
             ))}
           </div>
         </motion.div>

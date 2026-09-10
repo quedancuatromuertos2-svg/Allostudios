@@ -7,9 +7,9 @@ import { LogoFull } from './Logo'
 const links: { label: string; href: string; highlight?: boolean; page?: boolean }[] = [
   { label: 'Servicios', href: '#catalogo' },
   { label: 'Páginas Web', href: '#webs' },
-  { label: 'Tu web gratis', href: '#tu-web', highlight: true },
   { label: 'Precios', href: '#precios' },
-  { label: 'Trabaja con nosotros', href: '/afiliados', page: true },
+  { label: 'Contratar', href: '/contratar', page: true, highlight: true },
+  { label: 'Comerciales', href: '/afiliados', page: true },
 ]
 
 export default function Navigation() {
@@ -63,7 +63,7 @@ export default function Navigation() {
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-0.5">
             {links.map(l => {
-              const cls = `px-4 py-2 text-[14px] rounded-xl transition-all duration-200 font-medium ${
+              const cls = `px-3.5 py-2 text-[14px] whitespace-nowrap rounded-xl transition-all duration-200 font-medium ${
                 l.highlight
                   ? 'text-accent hover:text-accent-dark hover:bg-accent-light/70'
                   : 'text-dim hover:text-ink hover:bg-surface/80'
@@ -79,13 +79,12 @@ export default function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-2.5">
-            <a
-              href="https://wa.me/34695868793?text=Hola%2C%20quiero%20mi%20demo%20gratis.%20Mi%20negocio%20es%3A%20"
-              target="_blank" rel="noopener noreferrer"
-              className="btn-accent text-[13px] px-5 py-2.5 rounded-full"
+            <button
+              onClick={() => go('#tu-web')}
+              className="btn-accent text-[13px] px-5 py-2.5 rounded-full whitespace-nowrap"
             >
-              Pide tu demo gratis
-            </a>
+              Mira tu web gratis
+            </button>
           </div>
 
           {/* Mobile hamburger */}
@@ -135,13 +134,12 @@ export default function Navigation() {
                 )
               })}
               <div className="pt-3 mt-1 border-t border-border/60">
-                <a
-                  href="https://wa.me/34695868793?text=Hola%2C%20quiero%20mi%20demo%20gratis.%20Mi%20negocio%20es%3A%20"
-                  target="_blank" rel="noopener noreferrer"
-                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center block"
+                <button
+                  onClick={() => go('#tu-web')}
+                  className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center"
                 >
-                  Pide tu demo gratis
-                </a>
+                  Mira tu web gratis
+                </button>
               </div>
             </div>
           </motion.div>
