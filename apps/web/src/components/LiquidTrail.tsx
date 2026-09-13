@@ -23,7 +23,7 @@ import { useEffect } from 'react'
  *  getComputedStyle sería carísimo. `[style*="ackdrop"]` pilla los paneles que
  *  llevan el backdrop-filter en línea (React lo escribe en el atributo style). */
 const CRISTAL = '.lg, [class*="glass"], [class*="backdrop-blur"], [style*="ackdrop"]'
-const MAX_PANELES = 60
+const MAX_PANELES = 120
 
 type Radio = { v: number; pct: boolean }
 type Panel = { el: HTMLElement; rad: Radio[] }
@@ -118,10 +118,10 @@ export default function LiquidTrail() {
     }
 
     // ── Rastro ───────────────────────────────────────────────────────────
-    // Radio e intensidad son mayores que cuando el rastro se veía a pelo:
-    // ahora tiene que sobrevivir a un blur de hasta 36 px y a un panel con
-    // 76-92 % de blanco encima. Un hilo fino ahí no se vería.
-    const R = 26 * DPR, LIFE = 2600
+    // Radio e intensidad son los del diseño aprobado (2026-07-06), calibrados
+    // para .lg (12 % de blanco): a través de su blur(20px) el hilo de 7 px se
+    // convierte en un halo suave. Subirlos vuelve la barra de navegación neón.
+    const R = 7 * DPR, LIFE = 2600
     const pts: { x: number; y: number; h: number; born: number }[] = []
     let hue = 250
     let hx = innerWidth / 2 * DPR, hy = innerHeight / 2 * DPR, tx = hx, ty = hy
@@ -131,9 +131,9 @@ export default function LiquidTrail() {
 
     const blob = (p: { x: number; y: number; h: number }, a: number) => {
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, R)
-      g.addColorStop(0, `hsla(${p.h},95%,55%,${0.92 * a})`)
-      g.addColorStop(0.55, `hsla(${p.h + 35},95%,54%,${0.46 * a})`)
-      g.addColorStop(1, `hsla(${p.h + 70},95%,54%,0)`)
+      g.addColorStop(0, `hsla(${p.h},92%,58%,${0.7 * a})`)
+      g.addColorStop(0.55, `hsla(${p.h + 35},92%,56%,${0.34 * a})`)
+      g.addColorStop(1, `hsla(${p.h + 70},92%,56%,0)`)
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, 6.2832); ctx.fill()
     }
 
@@ -144,7 +144,7 @@ export default function LiquidTrail() {
       hx += (tx - hx) * 0.22; hy += (ty - hy) * 0.22
       hue = (hue + 0.35) % 360
       const dx = hx - ph.x, dy = hy - ph.y, dist = Math.hypot(dx, dy)
-      const steps = Math.max(1, Math.floor(dist / (R * 0.22)))
+      const steps = Math.max(1, Math.floor(dist / (R * 0.4)))
       for (let i = 0; i < steps; i++) {
         const t = i / steps
         pts.push({ x: ph.x + dx * t, y: ph.y + dy * t, h: (hue + t * 7) % 360, born: now })
