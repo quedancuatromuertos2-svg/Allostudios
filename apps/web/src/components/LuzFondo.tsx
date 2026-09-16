@@ -12,37 +12,52 @@
  */
 import { useEffect, useRef } from 'react'
 
-type Foco = [x: number, y: number, tam: number, color: string] // vw, vh, vw, hex
+type Foco = [x: number, y: number, tam: number, rol: string] // vw, vh, vw, rol de color
+// Paletas: los mismos estados, otros colores. Se elige con la prop `paleta` (o ?paleta= en la URL, para previsualizar).
+export const PALETAS: Record<string, Record<string, string>> = {
+  marca:     { a: '#FF7A2A', b: '#FF4FA3', c: '#5B5BD6', d: '#3B6CFF', e: '#FFF1B8', o: '#121216' }, // naranja · magenta · violeta · azul
+  atardecer: { a: '#FF5A1F', b: '#FF3D5A', c: '#FF8A5C', d: '#FFB86B', e: '#FFF0C2', o: '#121216' }, // naranja · rojo · melocotón (el cartel)
+  brasa:     { a: '#FF2E12', b: '#FF7A2A', c: '#FFD23F', d: '#FF4FA3', e: '#FFF6D6', o: '#121216' }, // rojo · naranja · amarillo
+  noche:     { a: '#3B6CFF', b: '#5B5BD6', c: '#8A5BFF', d: '#FF4FA3', e: '#EAE6FF', o: '#121216' }, // azul · violeta · lila · un toque magenta
+  ceniza:    { a: '#FF7A2A', b: '#2A2A34', c: '#3A3A46', d: '#5B5BD6', e: '#FFE3C2', o: '#121216' }, // grafito con una sola brasa
+}
 const ESTADOS: Foco[][] = [
-  [[50, 112, 74, '#FF7A2A'], [50, 92, 96, '#FF4FA3'], [50, -14, 110, '#5B5BD6']],   // hero: la luz sube
-  [[82, 60, 58, '#5B5BD6'], [8, 84, 54, '#3B6CFF'], [50, -30, 60, '#5B5BD6']],     // datos
-  [[80, 44, 64, '#FF4FA3'], [84, 62, 42, '#FF7A2A'], [-12, 22, 72, '#5B5BD6']],    // generador
-  [[50, 42, 96, '#5B5BD6'], [50, 42, 54, '#121216'], [50, 42, 76, '#FF4FA3']],     // servicios: aura
-  [[18, 30, 72, '#3B6CFF'], [72, 56, 72, '#FF4FA3'], [36, 82, 62, '#FF7A2A']],     // sectores
-  [[26, 42, 62, '#FF7A2A'], [74, 64, 68, '#FF3D5A'], [50, 104, 72, '#FF4FA3']],    // webs: esferas cálidas
-  [[50, 40, 88, '#FF4FA3'], [50, 40, 50, '#121216'], [50, 40, 70, '#FF7A2A']],     // servicios detalle
-  [[14, 20, 62, '#3B6CFF'], [86, 82, 62, '#5B5BD6'], [50, 50, 30, '#121216']],     // cómo
-  [[84, 22, 52, '#5B5BD6'], [16, 90, 52, '#FF4FA3'], [50, 50, 24, '#121216']],     // testimonios
-  [[50, 106, 84, '#FF7A2A'], [50, 90, 104, '#FF4FA3'], [50, 0, 60, '#5B5BD6']],    // precios: cálida abajo
-  [[86, 18, 52, '#5B5BD6'], [14, 92, 52, '#3B6CFF'], [50, 50, 20, '#121216']],     // faq
-  [[50, 50, 62, '#FF4FA3'], [50, 50, 92, '#5B5BD6'], [50, 50, 30, '#FF7A2A']],     // contacto
-  [[20, 70, 70, '#3B6CFF'], [80, 30, 70, '#FF4FA3'], [50, 100, 50, '#FF7A2A']],    // comerciales
-  [[50, 110, 74, '#FFF1B8'], [50, 96, 96, '#FF7A2A'], [50, 62, 112, '#FF4FA3']],   // cta: el faro entero
+  [[50, 112, 74, 'a'], [50, 92, 96, 'b'], [50, -14, 110, 'c']],   // hero: la luz sube
+  [[82, 60, 58, 'c'], [8, 84, 54, 'd'], [50, -30, 60, 'c']],     // datos
+  [[80, 44, 64, 'b'], [84, 62, 42, 'a'], [-12, 22, 72, 'c']],    // generador
+  [[50, 42, 96, 'c'], [50, 42, 54, 'o'], [50, 42, 76, 'b']],     // servicios: aura
+  [[18, 30, 72, 'd'], [72, 56, 72, 'b'], [36, 82, 62, 'a']],     // sectores
+  [[26, 42, 62, 'a'], [74, 64, 68, 'b'], [50, 104, 72, 'b']],    // webs: esferas cálidas
+  [[50, 40, 88, 'b'], [50, 40, 50, 'o'], [50, 40, 70, 'a']],     // servicios detalle
+  [[14, 20, 62, 'd'], [86, 82, 62, 'c'], [50, 50, 30, 'o']],     // cómo
+  [[84, 22, 52, 'c'], [16, 90, 52, 'b'], [50, 50, 24, 'o']],     // testimonios
+  [[50, 106, 84, 'a'], [50, 90, 104, 'b'], [50, 0, 60, 'c']],    // precios: cálida abajo
+  [[86, 18, 52, 'c'], [14, 92, 52, 'd'], [50, 50, 20, 'o']],     // faq
+  [[50, 50, 62, 'b'], [50, 50, 92, 'c'], [50, 50, 30, 'a']],     // contacto
+  [[20, 70, 70, 'd'], [80, 30, 70, 'b'], [50, 100, 50, 'a']],    // comerciales
+  [[50, 110, 74, 'e'], [50, 96, 96, 'a'], [50, 62, 112, 'b']],   // cta: el faro entero
 ]
 const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]
 const mix = (a: number, b: number, t: number) => a + (b - a) * t
 const suave = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 
-export default function LuzFondo() {
+export default function LuzFondo({ paleta = 'marca' }: { paleta?: keyof typeof PALETAS }) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const raiz = ref.current
     if (!raiz) return
+    // Previsualización: ?paleta=brasa y ?tema=claro cambian paleta y tema sin tocar código
+    const q = new URLSearchParams(window.location.search)
+    const nombre = (q.get('paleta') && PALETAS[q.get('paleta')!]) ? q.get('paleta')! : paleta
+    const P = PALETAS[nombre] || PALETAS.marca
+    const col = (rol: string) => P[rol] || P.o
+    const envoltorio = raiz.parentElement
+    if (q.get('tema') === 'claro' && envoltorio) { envoltorio.classList.remove('tema-oscuro'); envoltorio.classList.add('tema-claro') }
     const focos = Array.from(raiz.querySelectorAll<HTMLElement>('i'))
     const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     // estado actual de cada foco (x, y, tamaño, r, g, b) — arranca en el del hero
-    const actual = ESTADOS[0].map(([x, y, s, c]) => [x, y, s, ...hex(c)])
+    const actual = ESTADOS[0].map(([x, y, s, c]) => [x, y, s, ...hex(col(c))])
     let objetivo = actual.map((f) => [...f])
     let raf = 0
     const t0 = performance.now()
@@ -59,7 +74,7 @@ export default function LuzFondo() {
       const t = a === b ? 0 : suave(Math.max(0, Math.min(1, (y - a.offsetTop) / Math.max(1, b.offsetTop - a.offsetTop))))
       const A = ESTADOS[Math.min(i, ESTADOS.length - 1)], B = ESTADOS[Math.min(i + 1, ESTADOS.length - 1)]
       objetivo = A.map((fa, k) => {
-        const fb = B[k], ca = hex(fa[3]), cb = hex(fb[3])
+        const fb = B[k], ca = hex(col(fa[3])), cb = hex(col(fb[3]))
         return [mix(fa[0], fb[0], t), mix(fa[1], fb[1], t), mix(fa[2], fb[2], t), mix(ca[0], cb[0], t), mix(ca[1], cb[1], t), mix(ca[2], cb[2], t)]
       })
     }

@@ -345,7 +345,8 @@ body:has(.tema-oscuro){background:#121216}
 .tema-oscuro .card-gradient-border{background:rgba(255,255,255,.05)}
 .tema-oscuro .shadow-sm,.tema-oscuro .shadow-md,.tema-oscuro .shadow-lg{box-shadow:0 20px 50px -30px rgba(0,0,0,.7)}
 /* las secciones ya oscuras (bg-ink) se quedan, un punto más claras que el grafito para que se distingan */
-.tema-oscuro .bg-ink{background-color:#0B0B10}
+.tema-oscuro .bg-ink{background-color:rgba(11,11,16,.55);backdrop-filter:blur(6px)}
+.tema-claro .bg-ink{background-color:rgba(11,11,16,.82)}
 /* liquid glass sobre grafito: el cristal se ve; el texto dentro, claro */
 .tema-oscuro .lg{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.25),0 12px 24px -8px rgba(0,0,0,.35),0 30px 56px -18px rgba(0,0,0,.5)}
@@ -362,3 +363,16 @@ body:has(.tema-oscuro){background:#121216}
 .tema-oscuro .text-ink\/70{color:rgba(244,243,247,.72)}
 .tema-oscuro .border-ink\/15{border-color:rgba(255,255,255,.18)}
 .tema-oscuro .hover\:bg-white\/60:hover{background-color:rgba(255,255,255,.08)}
+
+/* ── TEMA CLARO: la web tal cual (fondos claros) con la luz de la marca detrás, suave ── */
+.tema-claro{position:relative;min-height:100vh;background:#F2F1EE}
+body:has(.tema-claro){background:#F2F1EE}
+.tema-claro .luz-fondo i{opacity:.55;filter:blur(110px)}
+.tema-claro .luz-velo{background:radial-gradient(120% 80% at 50% 50%,rgba(242,241,238,0) 30%,rgba(242,241,238,.7) 100%)}
+.tema-claro .luz-grano{opacity:.14;mix-blend-mode:multiply}
+.tema-claro main{position:relative;z-index:2}
+.tema-claro header{z-index:50}
+.tema-claro h1,.tema-claro h2,.tema-claro h3,.tema-claro .lg-h,.tema-claro .font-display{font-family:var(--font-outfit),'Inter',sans-serif;letter-spacing:-.035em}
+.tema-claro .lg-grad{background:linear-gradient(100deg,#5B5BD6 0%,#FF4FA3 55%,#FF7A2A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tema-claro .bg-canvas,.tema-claro .bg-surface{background-color:rgba(255,255,255,.55);backdrop-filter:blur(12px)}
+.tema-claro .fondo-lavanda{background:linear-gradient(170deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.25) 100%) !important}
