@@ -18,7 +18,7 @@ export default function HeroGlass() {
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 pt-40 pb-24 overflow-hidden">
       <motion.div variants={stagger} initial="hidden" animate="show" className="relative z-[2] max-w-3xl">
-        <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-[#3f3a52] mb-9">
+        <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-dim mb-9">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#2bb673', boxShadow: '0 0 8px #2bb673' }} />
           Agencia digital · Valencia
         </motion.div>
@@ -28,7 +28,7 @@ export default function HeroGlass() {
           <span className="lg-grad block">Sin tocar el marketing.</span>
         </motion.h1>
 
-        <motion.p variants={item} className="mt-7 max-w-xl mx-auto text-[#453f56]" style={{ fontSize: 'clamp(1rem,1.7vw,1.18rem)', lineHeight: 1.65 }}>
+        <motion.p variants={item} className="mt-7 max-w-xl mx-auto text-dim" style={{ fontSize: 'clamp(1rem,1.7vw,1.18rem)', lineHeight: 1.65 }}>
           Webs, Instagram, anuncios y un asistente de IA que responde 24/7 —
           para negocios locales de Valencia. Tú solo cierras.
         </motion.p>
@@ -42,16 +42,16 @@ export default function HeroGlass() {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </span>
           </a>
-          <a href="#precios" className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-[#1e1a2b]">Ver planes</a>
+          <a href="#precios" className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-ink">Ver planes</a>
           <a href={wa} target="_blank" rel="noopener noreferrer"
-            className="text-[13px] text-[#5a5470] hover:text-[#1e1a2b] underline underline-offset-4 transition-colors">
+            className="text-[13px] text-[#5a5470] hover:text-ink underline underline-offset-4 transition-colors">
             o hablar por WhatsApp
           </a>
         </motion.div>
 
         <motion.div variants={item} className="flex flex-wrap justify-center gap-2.5 mt-11">
           {chips.map(c => (
-            <span key={c.label} className="lg inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-medium text-[#2a2536]">
+            <span key={c.label} className="lg inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-medium text-ink">
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: c.dot }} />
               {c.label}
             </span>

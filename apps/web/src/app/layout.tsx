@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
-import { Inter } from "next/font/google"
+import { Inter, Outfit } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import LiquidTrail from "@/components/LiquidTrail"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-geist-sans" })
+const outfit = Outfit({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-outfit" })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allostudios.net"),
@@ -214,7 +215,7 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className={`${inter.variable} font-sans antialiased`}>
+        <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
           <LiquidTrail />
           <Providers>{children}</Providers>
         </body>

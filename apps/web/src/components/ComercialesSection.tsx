@@ -22,7 +22,7 @@ const puntos = [
 export default function ComercialesSection() {
   return (
     <section id="comerciales" className="relative overflow-hidden py-section">
-      <div className="absolute inset-0 pointer-events-none" style={{
+      <div className="absolute inset-0 pointer-events-none fondo-lavanda" style={{
         background: 'linear-gradient(170deg, #FAFAF9 0%, #F3F3FE 50%, #EDEDFB 100%)',
       }} />
       <div className="absolute w-[600px] h-[600px] rounded-full blur-[130px] opacity-35 -bottom-40 -left-32 pointer-events-none"

@@ -13,7 +13,7 @@ const item = {
 
 export default function CTASection() {
   return (
-    <section className="relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12" style={{
+    <section className="relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12 fondo-lavanda" style={{
       background: 'linear-gradient(160deg, #f8f8ff 0%, #f0f0fd 40%, #e8e8fa 100%)',
     }}>
 

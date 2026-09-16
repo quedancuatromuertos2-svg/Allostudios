@@ -1,97 +1,34 @@
 /**
- * AlloStudios brand logo — faithful recreation of the official mark:
- * • A-shape: two diagonal strokes meeting at a rounded peak, no crossbar
- * • Audio wave: 5 vertical bars inside the A (short › medium › tall › medium › short)
- * • Wordmark: "Allo" semibold + "Studios" medium — same ink color, no accent
+ * Logo de AlloStudios (marca de 16/09/2026): una pieza de luz — la luz sube desde la
+ * base sobre negro — y el nombre "allostudios" en minúscula, en Outfit 700.
+ * La versión con "allo." dentro vive en MARCA-ALLOSTUDIOS/logo; aquí, a tamaño de
+ * barra, solo la luz (con palabra no se leería por debajo de 48 px).
  */
 
 interface LogoMarkProps {
   size?: number
   className?: string
-  color?: string
 }
 
-export function LogoMark({ size = 32, className = '', color = 'currentColor' }: LogoMarkProps) {
+export function LogoMark({ size = 32, className = '' }: LogoMarkProps) {
+  // Pieza redondeada con la luz (Faro) dentro. Sin texto: a este tamaño solo se ve la luz.
+  const id = 'allo' + size
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 48 48"
-      fill="none"
-      className={className}
-      aria-label="AlloStudios mark"
-    >
-      {/* Left leg of the A */}
-      <path
-        d="M24 5 L4 43"
-        stroke={color}
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* Right leg of the A */}
-      <path
-        d="M24 5 L44 43"
-        stroke={color}
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      {/* Audio bars inside the A — short | medium | tall | medium | short */}
-      {/* Bar 1 — leftmost, shortest */}
-      <line
-        x1="16" y1="40"
-        x2="16" y2="35"
-        stroke={color}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      {/* Bar 2 — medium */}
-      <line
-        x1="20" y1="40"
-        x2="20" y2="30"
-        stroke={color}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      {/* Bar 3 — center, tallest */}
-      <line
-        x1="24" y1="40"
-        x2="24" y2="23"
-        stroke={color}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      {/* Bar 4 — medium */}
-      <line
-        x1="28" y1="40"
-        x2="28" y2="30"
-        stroke={color}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      {/* Bar 5 — rightmost, shortest */}
-      <line
-        x1="32" y1="40"
-        x2="32" y2="35"
-        stroke={color}
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
+    <svg width={size} height={size} viewBox="0 0 100 100" className={className} aria-label="AlloStudios">
+      <defs>
+        <clipPath id={id + 'c'}><rect width="100" height="100" rx="27" /></clipPath>
+        <linearGradient id={id + 's'} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3B6CFF" /><stop offset=".7" stopColor="#0B0B10" /></linearGradient>
+        <radialGradient id={id + 'l'} cx="50%" cy="100%" r="100%" gradientTransform="translate(0.5 1) scale(0.2 0.92) translate(-0.5 -1)">
+          <stop offset="0" stopColor="#FFF1B8" /><stop offset=".28" stopColor="#FF7A2A" /><stop offset=".52" stopColor="#FF4FA3" stopOpacity=".75" /><stop offset=".84" stopColor="#0B0B10" stopOpacity="0" />
+        </radialGradient>
+        <filter id={id + 'b'} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8.5" /></filter>
+      </defs>
+      <g clipPath={`url(#${id}c)`}>
+        <rect width="100" height="100" fill="#0B0B10" />
+        <g filter={`url(#${id}b)`}><rect x="-22" y="-22" width="144" height="144" fill={`url(#${id}s)`} /><rect x="-22" y="-22" width="144" height="144" fill={`url(#${id}l)`} /></g>
+        <rect width="100" height="100" rx="27" fill="none" stroke="rgba(255,255,255,.12)" />
+      </g>
     </svg>
-  )
-}
-
-/** Compact icon — used in nav, favicon, app icon contexts */
-export function LogoIcon({ size = 28, className = '' }: { size?: number; className?: string }) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-xl bg-ink ${className}`}
-      style={{ width: size, height: size }}
-    >
-      <LogoMark size={Math.round(size * 0.72)} color="white" />
-    </div>
   )
 }
 
@@ -102,11 +39,8 @@ export function LogoFull({ className = '', size = 'md' }: { className?: string; 
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark size={markSize} className="text-ink shrink-0" />
-      <span className={`${textSize} tracking-[-0.03em] text-ink select-none`}>
-        <span className="font-semibold">Allo</span>
-        <span className="font-normal">Studios</span>
-      </span>
+      <LogoMark size={markSize} className="shrink-0" />
+      <span className={`${textSize} font-logo font-bold tracking-[-0.035em] text-ink select-none`}>allostudios</span>
     </div>
   )
 }
@@ -118,11 +52,8 @@ export function LogoFullWhite({ className = '', size = 'md' }: { className?: str
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark size={markSize} color="white" className="shrink-0" />
-      <span className={`${textSize} tracking-[-0.03em] text-white select-none`}>
-        <span className="font-semibold">Allo</span>
-        <span className="font-normal">Studios</span>
-      </span>
+      <LogoMark size={markSize} className="shrink-0" />
+      <span className={`${textSize} font-logo font-bold tracking-[-0.035em] text-white select-none`}>allostudios</span>
     </div>
   )
 }

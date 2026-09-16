@@ -298,3 +298,67 @@ details summary::-webkit-details-marker { display: none; }
   #lg-trail { display: none; }
   .lg::before, .lg { transition: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   TEMA OSCURO · marca 16/09/2026 (solo donde envuelve .tema-oscuro)
+   Grafito premium en vez de blancos, la luz de la marca detrás
+   (LuzFondo) y el liquid glass que ya existía por encima.
+   Es una capa de sustitución de utilidades: no toca componentes.
+   ══════════════════════════════════════════════════════════════ */
+.tema-oscuro{--grafito:#121216;--grafito-2:#17171d;--tinta-clara:#F4F3F7;--gris-1:#C9C6D2;--gris-2:#8E8A9B;--linea:rgba(255,255,255,.1);
+  background:var(--grafito);color:var(--tinta-clara);min-height:100vh;position:relative}
+body:has(.tema-oscuro){background:#121216}
+
+/* la luz fija detrás de todo */
+.luz-fondo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.luz-fondo i{position:absolute;left:0;top:0;border-radius:50%;filter:blur(90px);opacity:.8;will-change:transform}
+.luz-velo{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 50%,rgba(18,18,22,0) 30%,rgba(18,18,22,.6) 100%)}
+.luz-grano{position:absolute;inset:0;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
+.tema-oscuro #lg-trail{z-index:1}
+.tema-oscuro main{position:relative;z-index:2}
+.tema-oscuro header{z-index:50}
+
+/* títulos con la letra del logo */
+.tema-oscuro h1,.tema-oscuro h2,.tema-oscuro h3,.tema-oscuro .lg-h,.tema-oscuro .font-display{font-family:var(--font-outfit),'Inter',sans-serif;letter-spacing:-.035em}
+.tema-oscuro .lg-h{color:#fff}
+.tema-oscuro .lg-grad{background:linear-gradient(100deg,#A78BFF 0%,#FF4FA3 55%,#FF7A2A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tema-oscuro .gradient-text{background:linear-gradient(100deg,#A78BFF 0%,#FF4FA3 60%,#FF7A2A 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* texto */
+.tema-oscuro .text-ink{color:var(--tinta-clara)}
+.tema-oscuro .text-dim{color:var(--gris-1)}
+.tema-oscuro .text-muted{color:#A6A2B2}
+.tema-oscuro .text-accent{color:#B4A8FF}
+.tema-oscuro .text-accent-dark{color:#C9BFFF}
+.tema-oscuro .placeholder\:text-muted::placeholder{color:#7d7a8a}
+
+/* fondos claros → grafito y cristal */
+.tema-oscuro .bg-canvas{background-color:var(--grafito)}
+.tema-oscuro .bg-surface{background-color:var(--grafito-2)}
+.tema-oscuro .bg-white{background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.tema-oscuro .bg-white\/60,.tema-oscuro .bg-white\/85{background-color:rgba(18,18,22,.62);backdrop-filter:blur(14px)}
+.tema-oscuro .bg-accent-light{background-color:rgba(91,91,214,.16)}
+.tema-oscuro .bg-accent\/8{background-color:rgba(167,139,255,.14)}
+.tema-oscuro .bg-border{background-color:rgba(255,255,255,.1)}
+.tema-oscuro .border-border,.tema-oscuro .border-border\/60,.tema-oscuro .border-accent\/20{border-color:var(--linea)}
+.tema-oscuro .card{background-color:rgba(255,255,255,.05);border-color:var(--linea);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 20px 50px -30px rgba(0,0,0,.6);backdrop-filter:blur(14px)}
+.tema-oscuro .card-gradient-border{background:rgba(255,255,255,.05)}
+.tema-oscuro .shadow-sm,.tema-oscuro .shadow-md,.tema-oscuro .shadow-lg{box-shadow:0 20px 50px -30px rgba(0,0,0,.7)}
+/* las secciones ya oscuras (bg-ink) se quedan, un punto más claras que el grafito para que se distingan */
+.tema-oscuro .bg-ink{background-color:#0B0B10}
+/* liquid glass sobre grafito: el cristal se ve; el texto dentro, claro */
+.tema-oscuro .lg{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.25),0 12px 24px -8px rgba(0,0,0,.35),0 30px 56px -18px rgba(0,0,0,.5)}
+.tema-oscuro .lg:hover{background:rgba(255,255,255,.11)}
+/* inputs */
+.tema-oscuro input,.tema-oscuro textarea,.tema-oscuro select{color:var(--tinta-clara);background-color:rgba(255,255,255,.06);border-color:var(--linea)}
+.tema-oscuro input::placeholder,.tema-oscuro textarea::placeholder{color:#7d7a8a}
+/* botones claros (fondo blanco con texto oscuro) se mantienen: son el contraste */
+.tema-oscuro .bg-white.text-ink,.tema-oscuro .btn-secondary{background-color:#fff;color:#18181B;backdrop-filter:none}
+/* fondos lavanda claros (comerciales, CTA final): en oscuro, grafito translúcido para que pase la luz */
+.tema-oscuro .fondo-lavanda{background:linear-gradient(170deg,rgba(18,18,22,.55) 0%,rgba(18,18,22,.35) 100%) !important}
+.tema-oscuro .line-grid{opacity:.12}
+.tema-oscuro .wavy-drift{opacity:.25 !important;filter:invert(1)}
+.tema-oscuro .text-ink\/70{color:rgba(244,243,247,.72)}
+.tema-oscuro .border-ink\/15{border-color:rgba(255,255,255,.18)}
+.tema-oscuro .hover\:bg-white\/60:hover{background-color:rgba(255,255,255,.08)}

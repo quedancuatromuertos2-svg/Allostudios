@@ -15,10 +15,12 @@ import ComercialesSection from '@/components/ComercialesSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import LuzFondo from '@/components/LuzFondo'
 
 export default function Home() {
   return (
-    <>
+    <div className="tema-oscuro">
+      <LuzFondo />
       <Navigation />
       <main className="relative z-10">
         <HeroGlass />
@@ -38,6 +40,6 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
-    </>
+    </div>
   )
 }
