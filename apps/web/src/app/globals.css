@@ -448,11 +448,13 @@ body:has(.tema-claro){background:#F2F1EE}
 /* papel */
 .tema-oscuro .papel{background:#F2F1EE;color:#18181B;isolation:isolate}
 /* la luz del papel: el orbe de siempre (mismos colores, tamaño y desenfoque), que deriva despacio con la cadencia de la luz del tema oscuro */
-.tema-oscuro .papel::before{content:"";position:absolute;left:50%;top:40%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);animation:orbe-papel 20s cubic-bezier(.45,0,.55,1) infinite alternate;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(80px);opacity:.5;
+.tema-oscuro .papel::before{content:"";position:absolute;left:50%;top:40%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);animation:orbe-papel 20s cubic-bezier(.45,0,.55,1) infinite alternate,orbe-scroll linear both;animation-timeline:auto,view();animation-range:normal,entry 0% exit 100%;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(80px);opacity:.5;
   background:radial-gradient(closest-side,#FFB07A 0%,#FF8FB8 45%,#C9C2FF 75%,rgba(201,194,255,0) 100%)}
 .tema-oscuro .papel-violeta::before{left:72%;top:50%;background:radial-gradient(closest-side,#B4A8FF 0%,#C9C2FF 45%,#FFC2E0 75%,rgba(255,194,224,0) 100%)}
 .tema-oscuro .papel-orbe::before{top:38%;background:radial-gradient(closest-side,#FF8A2A 0%,#FF5A6E 32%,#FF6FB5 58%,rgba(255,111,181,0) 100%);filter:blur(70px);opacity:.8}
-@keyframes orbe-papel{0%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-44%,-56%) scale(1.08)}100%{transform:translate(-56%,-46%) scale(.96)}}
+@keyframes orbe-papel{0%{transform:translate(-72%,-58%) scale(1)}50%{transform:translate(-36%,-42%) scale(1.14)}100%{transform:translate(-58%,-68%) scale(.94)}}
+/* y ligado al scroll: mientras el apartado cruza la pantalla, el orbe se desliza (translate es una propiedad aparte de transform, no se pisan) */
+@keyframes orbe-scroll{from{translate:0 -14%}to{translate:0 14%}}
 @media (prefers-reduced-motion:reduce){.tema-oscuro .papel::before{animation:none}}
 .tema-oscuro .papel .text-ink{color:#18181B}
 .tema-oscuro .papel .text-dim{color:#4E4A5E}
