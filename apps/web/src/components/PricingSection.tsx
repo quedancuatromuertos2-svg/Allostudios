@@ -118,7 +118,7 @@ export default function PricingSection() {
             viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="md:-mt-4"
           >
-            <div className="relative flex flex-col rounded-2xl overflow-hidden" style={{
+            <div className="destacado relative flex flex-col rounded-2xl overflow-hidden" style={{
               background: 'linear-gradient(145deg, #18181b 0%, #1a1a2e 60%, #16162a 100%)',
               boxShadow: '0 0 0 1px rgba(91,91,214,0.35), 0 32px 80px rgba(91,91,214,0.2)',
             }}>
@@ -276,7 +276,7 @@ export default function PricingSection() {
           viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="mt-5"
         >
-          <div className="relative overflow-hidden rounded-2xl" style={{
+          <div className="destacado relative overflow-hidden rounded-2xl" style={{
             background: 'linear-gradient(120deg, #0f0f1a 0%, #141428 50%, #0d0d20 100%)',
             boxShadow: '0 0 0 1px rgba(91,91,214,0.25), 0 24px 80px rgba(91,91,214,0.12)',
           }}>

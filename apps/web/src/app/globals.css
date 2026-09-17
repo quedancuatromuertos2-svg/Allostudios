@@ -432,3 +432,20 @@ body:has(.tema-claro){background:#F2F1EE}
 @media (min-width:1800px){.tema-oscuro .hero-texto{max-width:46rem}.tema-oscuro .hero-h1{font-size:4.3rem}.tema-oscuro .hero-sub{font-size:1.22rem;max-width:40rem}.tema-oscuro .hero-datos>div{padding:1.15rem 1.25rem}.tema-oscuro .hero-datos .text-ink{font-size:20px}.tema-oscuro .hero-datos .text-muted{font-size:13px}}
 .tema-oscuro .hero-bandeja{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .tema-oscuro .hero-bandeja .hero-datos{box-shadow:inset 0 1px 1px rgba(255,255,255,.14),0 24px 48px -24px rgba(0,0,0,.55)}
+/* ── Apartados claros de verdad: lo destacado no es una tarjeta oscura, es blanco con hilo de luz ── */
+.tema-oscuro .seccion-clara .destacado{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#5B5BD6 0%,#FF4FA3 55%,#FF7A2A 100%) border-box !important;border:1.5px solid transparent;
+  box-shadow:0 30px 70px -34px rgba(91,91,214,.45),0 10px 30px -18px rgba(255,79,163,.25) !important}
+.tema-oscuro .seccion-clara .destacado .text-white{color:#18181B}
+.tema-oscuro .seccion-clara .destacado .text-white\/65,.tema-oscuro .seccion-clara .destacado .text-white\/60{color:rgba(24,24,27,.74)}
+.tema-oscuro .seccion-clara .destacado .text-white\/55,.tema-oscuro .seccion-clara .destacado .text-white\/45,.tema-oscuro .seccion-clara .destacado .text-white\/40{color:rgba(24,24,27,.66)}
+.tema-oscuro .seccion-clara .destacado .text-white\/35,.tema-oscuro .seccion-clara .destacado .text-white\/30,.tema-oscuro .seccion-clara .destacado .text-white\/25{color:rgba(24,24,27,.6)}
+.tema-oscuro .seccion-clara .destacado .bg-white\/10,.tema-oscuro .seccion-clara .destacado .bg-white\/8,.tema-oscuro .seccion-clara .destacado .bg-white\/5{background-color:rgba(91,91,214,.08)}
+.tema-oscuro .seccion-clara .destacado .border-white\/10,.tema-oscuro .seccion-clara .destacado .border-white\/8{border-color:rgba(91,91,214,.18)}
+.tema-oscuro .seccion-clara .destacado .bg-accent\/15{background-color:rgba(91,91,214,.1)}
+/* contraste en claro: acentos un punto más profundos (mismo tono, legibles sobre papel) */
+.tema-oscuro .seccion-clara .text-accent,.tema-oscuro .seccion-clara .text-accent-dark,.tema-oscuro .seccion-clara .eyebrow{color:#4A4AC4}
+.tema-oscuro .seccion-clara h2 .acento,.tema-oscuro .seccion-clara-amanecer h2 .acento{color:#E45F16}
+.tema-oscuro .seccion-clara-violeta h2 .acento,.tema-oscuro .seccion-clara-suave h2 .acento{color:#4A4AC4}
+.tema-oscuro .seccion-clara .text-emerald-600{color:#047857}
+.tema-oscuro .seccion-clara .text-muted{color:#625E70}
+.tema-oscuro .seccion-clara .bg-accent{background-color:#4A4AC4}
