@@ -62,7 +62,7 @@ export default function CristalHero() {
     function campo(seg: number) {
       const w = luz.width, h = luz.height, veloIzq = movil ? 0 : .55, veloArr = movil ? .3 : .35
       // deriva lenta e independiente de cada foco (fracción del ancho)
-      const d = (i: number, a: number) => Math.sin(seg / (12 + i * 3.5) + i * 1.7) * a * 1.8
+      const d = (i: number, a: number) => Math.sin(seg / (7 + i * 2.2) + i * 1.7) * a * 3.2
       lx.filter = `blur(${Math.round(w * .05)}px)`
       lx.fillStyle = P.fondo; lx.fillRect(0, 0, w, h)
       // mismos degradados que el cartel: lienzo al -20 % (por eso las medidas van sobre 1.4·w)
