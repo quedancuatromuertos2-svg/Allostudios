@@ -22,6 +22,8 @@ export default function CristalHero() {
     const grano = document.createElement('canvas'), gx = grano.getContext('2d')!
     const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches
     let W = 0, H = 0, N = 84, movil = false, raf = 0, visible = false, listo = false, t0 = performance.now(), ultimo = 0
+    // Next carga Outfit con un nombre interno (__Outfit_xxxx); se lee de la variable CSS, no vale escribir «Outfit»
+    const familia = (getComputedStyle(document.body).getPropertyValue('--font-outfit').trim() || 'Outfit') + ', sans-serif'
 
     const hex = (h: string, a = 1) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})` }
     // elipse radial (canvas solo tiene círculos: se escala el contexto)
@@ -39,7 +41,7 @@ export default function CristalHero() {
       // letras «allo.» (Outfit 700, tamaño 370/2560 del ancho en escritorio; 220/1080 en móvil)
       tx.clearRect(0, 0, W, H)
       const tam = movil ? W * 220 / 1080 : W * 370 / 2560
-      tx.font = `700 ${tam}px Outfit, sans-serif`; tx.textAlign = 'center'; tx.textBaseline = 'middle'
+      tx.font = `700 ${tam}px ${familia}`; tx.textAlign = 'center'; tx.textBaseline = 'middle'
       try { (tx as unknown as { letterSpacing: string }).letterSpacing = `${-0.05 * tam}px` } catch {}
       tx.fillStyle = 'rgba(10,8,6,.86)'; tx.fillText('allo.', movil ? W * .5 : W * .75, movil ? H * .14 : H * .52)
       // relieve de las estrías (fijo)
@@ -59,7 +61,7 @@ export default function CristalHero() {
     function campo(seg: number) {
       const w = luz.width, h = luz.height, veloIzq = movil ? 0 : .55, veloArr = movil ? .3 : .35
       // deriva lenta e independiente de cada foco (fracción del ancho)
-      const d = (i: number, a: number) => Math.sin(seg / (23 + i * 7) + i * 1.7) * a
+      const d = (i: number, a: number) => Math.sin(seg / (12 + i * 3.5) + i * 1.7) * a * 1.8
       lx.filter = `blur(${Math.round(w * .05)}px)`
       lx.fillStyle = P.fondo; lx.fillRect(0, 0, w, h)
       // mismos degradados que el cartel: lienzo al -20 % (por eso las medidas van sobre 1.4·w)
@@ -97,7 +99,7 @@ export default function CristalHero() {
     const arrancar = () => { if (!raf && visible && !quieto) raf = requestAnimationFrame(bucle) }
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; arrancar() }); io.observe(vidrio)
     const ro = new ResizeObserver(medir); ro.observe(vidrio)
-    document.fonts.load('700 100px Outfit').then(medir)
+    document.fonts.load(`700 100px ${familia}`).then(medir, medir)
     return () => { cancelAnimationFrame(raf); io.disconnect(); ro.disconnect() }
   }, [])
 
