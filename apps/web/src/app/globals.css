@@ -398,7 +398,7 @@ body:has(.tema-claro){background:#F2F1EE}
    Todo se mide en --u (1 % del alto del escenario), así el conjunto se escala como una imagen. */
 .tema-oscuro .hero{background:#0E0B14}
 .tema-oscuro .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 8% 55%,rgba(91,91,214,.4) 0%,rgba(91,91,214,0) 70%),radial-gradient(40% 60% at 30% 100%,rgba(255,79,163,.16) 0%,rgba(255,79,163,0) 70%);pointer-events:none}
-.tema-oscuro .hero-escenario{--ew:calc(100dvh * 1.7778);--eh:100dvh;--u:calc(var(--eh) / 100);
+.tema-oscuro .hero-escenario{--ew:calc(100dvh * 1.7778);--eh:100dvh;--u:min(calc(var(--eh) / 100),calc((100vw - 0.425 * var(--ew) - 64px) / 93));
   position:absolute;right:0;top:0;width:var(--ew);height:var(--eh)}
 .tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.jpg) center/100% 100% no-repeat;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 26%);mask-image:linear-gradient(90deg,transparent 0%,#000 26%)}
