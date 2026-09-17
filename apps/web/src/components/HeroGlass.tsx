@@ -27,6 +27,7 @@ export default function HeroGlass() {
     <section className="hero relative min-h-[100dvh] overflow-hidden">
       <div className="hero-escenario">
         <div className="hero-cartel-img absolute inset-0" aria-hidden />
+        <div className="hero-reflejos absolute inset-0" aria-hidden><i /><i /><i /></div>
         <motion.div variants={stagger} initial="hidden" animate="show" className="hero-panel-marco absolute">
           <div className="hero-panel">
             <motion.div variants={item} className="hero-etiqueta inline-flex items-center gap-2 rounded-full font-semibold text-dim">
