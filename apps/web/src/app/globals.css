@@ -312,7 +312,7 @@ body:has(.tema-oscuro){background:#121216}
 /* la luz fija detrás de todo */
 .luz-fondo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .luz-fondo i{position:absolute;left:0;top:0;border-radius:50%;filter:blur(70px);opacity:.8;will-change:transform}
-.luz-velo{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 50%,rgba(18,18,22,0) 40%,rgba(18,18,22,.45) 100%)}
+.luz-velo{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 50%,rgba(18,18,22,0) 30%,rgba(18,18,22,.6) 100%)}
 .luz-grano{position:absolute;inset:0;opacity:.09;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
 .tema-oscuro #lg-trail{z-index:1}
 .tema-oscuro main{position:relative;z-index:2}
@@ -446,7 +446,17 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .papel .lg:hover{background:rgba(255,255,255,.72)}
 
 /* papel */
-.tema-oscuro .papel{background:rgba(242,241,238,.86);color:#18181B;isolation:isolate}
+.tema-oscuro .papel{--pa:#FFB07A;--pb:#FF8FB8;--px1:22%;--py1:30%;--px2:78%;--py2:70%;--ps1:62% 70%;--ps2:52% 62%;background:#F2F1EE;color:#18181B;isolation:isolate}
+/* la luz del papel: dos focos que derivan sin parar (como la luz del tema oscuro), colores por apartado */
+.tema-oscuro .papel::before{content:"";position:absolute;inset:-10%;z-index:-1;pointer-events:none;filter:blur(70px);opacity:.6;
+  background-image:radial-gradient(closest-side,var(--pa),rgba(255,255,255,0)),radial-gradient(closest-side,var(--pb),rgba(255,255,255,0));
+  background-size:var(--ps1),var(--ps2);background-repeat:no-repeat;background-position:var(--px1) var(--py1),var(--px2) var(--py2);
+  animation:papel-luz 26s cubic-bezier(.45,0,.55,1) infinite alternate}
+@keyframes papel-luz{0%{background-position:var(--px1) var(--py1),var(--px2) var(--py2)}50%{background-position:calc(var(--px1) + 14%) calc(var(--py1) + 18%),calc(var(--px2) - 12%) calc(var(--py2) - 16%)}100%{background-position:calc(var(--px1) + 6%) calc(var(--py1) - 12%),calc(var(--px2) - 18%) calc(var(--py2) + 8%)}}
+@media (prefers-reduced-motion:reduce){.tema-oscuro .papel::before{animation:none}}
+.tema-oscuro .papel-violeta{--pa:#B4A8FF;--pb:#FFC2E0;--px1:74%;--py1:40%;--px2:22%;--py2:72%}
+.tema-oscuro .papel-orbe{--pa:#FF8A2A;--pb:#FF6FB5;--px1:50%;--py1:38%;--px2:58%;--py2:46%;--ps1:78% 66%;--ps2:60% 60%}
+.tema-oscuro .papel-orbe::before{opacity:.8}
 .tema-oscuro .papel::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:multiply;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
 .tema-oscuro .papel .text-ink{color:#18181B}
 .tema-oscuro .papel .text-dim{color:#4E4A5E}

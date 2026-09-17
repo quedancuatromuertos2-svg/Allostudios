@@ -27,15 +27,15 @@ export const PALETAS: Record<string, Record<string, string>> = {
 const ESTADOS: Foco[][] = [
   [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 0 cabecera: la luz la pone el cristal
   [[82, 40, 70, 'c'], [12, 90, 62, 'd'], [50, 50, 0, 'o']],       // 1 generador: violeta y azul
-  [[24, 34, 78, 'g'], [78, 70, 72, 'b'], [50, 50, 0, 'o']],       // 2 servicios (papel): melocotón y rosa
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 2 servicios (papel): lleva su propia luz
   [[20, 30, 66, 'd'], [84, 70, 62, 'c'], [50, 50, 0, 'o']],       // 3 sectores: azul y violeta
   [[82, 20, 64, 'c'], [12, 88, 56, 'b'], [50, 50, 0, 'o']],       // 4 páginas web: violeta y un magenta
   [[86, 24, 62, 'h'], [14, 84, 66, 'c'], [50, 50, 0, 'o']],       // 5 cómo trabajamos: lila y violeta
-  [[74, 40, 76, 'h'], [18, 76, 66, 'b'], [50, 50, 0, 'o']],       // 6 cómo funciona (papel): lila y rosa
-  [[50, 40, 92, 'a'], [50, 44, 62, 'b'], [50, 50, 0, 'o']],       // 7 precios (papel): el orbe naranja-rosa, centrado
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 6 cómo funciona (papel): lleva su propia luz
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 7 precios (papel): lleva su propia luz
   [[84, 30, 62, 'd'], [16, 80, 60, 'c'], [50, 50, 0, 'o']],       // 8 faq: azul y violeta
   [[50, 60, 70, 'h'], [50, 60, 40, 'c'], [50, 50, 0, 'o']],       // 9 contacto: lila centrada
-  [[76, 50, 74, 'h'], [22, 40, 66, 'b'], [50, 50, 0, 'o']],       // 10 comerciales (papel): violeta y rosa
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 10 comerciales (papel): lleva su propia luz
   [[50, 100, 84, 'a'], [50, 92, 104, 'b'], [50, 50, 40, 'c']],    // 11 cierre: el faro entero
 ]
 const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]
