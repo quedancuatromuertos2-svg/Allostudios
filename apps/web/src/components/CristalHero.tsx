@@ -8,11 +8,15 @@ import { useEffect, useRef } from 'react'
   de luz derivan muy despacio, como la luz de fondo del resto de la web, y las letras no se mueven.
   La imagen fija (hero-cristal.jpg) queda debajo como respaldo hasta que este canvas pinta su primer fotograma.
 */
-const P = { fondo: '#0E0B14', c1: '#5B5BD6', c2: '#FF4FA3', c3: '#FF7A2A', c4: '#FFE2B0' }
+export type PaletaCristal = { fondo: string; c1: string; c2: string; c3: string; c4: string }
+export const PALETA_MARCA: PaletaCristal = { fondo: '#0E0B14', c1: '#5B5BD6', c2: '#FF4FA3', c3: '#FF7A2A', c4: '#FFE2B0' }
 const K = 2.2, RELIEVE = 0.8, GRANO = 26
 
-export default function CristalHero() {
+// texto: lo que va detrás del vidrio («allo.» en la web; el nombre del negocio en las demos cinematográficas).
+// Si es más largo que «allo.», se reduce para ocupar el mismo ancho. paleta: colores de la luz.
+export default function CristalHero({ texto = 'allo.', paleta = PALETA_MARCA }: { texto?: string; paleta?: PaletaCristal }) {
   const ref = useRef<HTMLCanvasElement>(null)
+  const P = paleta
 
   useEffect(() => {
     const vidrio = ref.current!, vx = vidrio.getContext('2d')!
@@ -40,11 +44,14 @@ export default function CristalHero() {
       luz.width = Math.round(W / 6); luz.height = Math.round(H / 6)
       // letras «allo.» (Outfit 700, tamaño 370/2560 del ancho en escritorio; 220/1080 en móvil)
       tx.clearRect(0, 0, W, H)
-      const tam = movil ? W * 220 / 1080 : W * 370 / 2560
-      tx.font = `700 ${tam}px ${familia}`; tx.textAlign = 'center'; tx.textBaseline = 'middle'
-      try { (tx as unknown as { letterSpacing: string }).letterSpacing = `${-0.05 * tam}px` } catch {}
+      let tam = movil ? W * 220 / 1080 : W * 370 / 2560
+      const fuente = () => { tx.font = `700 ${tam}px ${familia}`; try { (tx as unknown as { letterSpacing: string }).letterSpacing = `${-0.05 * tam}px` } catch {} }
+      fuente(); tx.textAlign = 'center'; tx.textBaseline = 'middle'
+      // textos más largos que «allo.» se encogen para ocupar el mismo ancho (nunca pisan el panel)
+      const anchoRef = tx.measureText('allo.').width, ancho = tx.measureText(texto).width
+      if (ancho > anchoRef) { tam = tam * anchoRef / ancho; fuente() }
       // el cartel centra la caja de línea (line-height 1); el 'middle' del canvas queda ~0.08 em más arriba: se corrige
-      tx.fillStyle = 'rgba(10,8,6,.86)'; tx.fillText('allo.', movil ? W * .5 : W * .75, (movil ? H * .14 : H * .52) + tam * .08)
+      tx.fillStyle = 'rgba(10,8,6,.86)'; tx.fillText(texto, movil ? W * .5 : W * .75, (movil ? H * .14 : H * .52) + tam * .08)
       // relieve de las estrías (fijo)
       rx.clearRect(0, 0, W, H); const sw = W / N
       for (let i = 0; i < N; i++) {
@@ -102,7 +109,7 @@ export default function CristalHero() {
     const ro = new ResizeObserver(medir); ro.observe(vidrio)
     document.fonts.load(`700 100px ${familia}`).then(medir, medir)
     return () => { cancelAnimationFrame(raf); io.disconnect(); ro.disconnect() }
-  }, [])
+  }, [texto, paleta])
 
   return <canvas ref={ref} className="hero-vivo absolute inset-0 w-full h-full pointer-events-none" aria-hidden />
 }

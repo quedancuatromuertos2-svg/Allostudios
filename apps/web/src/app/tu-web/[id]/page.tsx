@@ -3,6 +3,24 @@ import type { Metadata } from 'next'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getPlaceDetails, type PlaceData } from '@/lib/places'
 import { decodeDemo, isDemoToken } from '@/lib/demo-token'
+import LuzFondo from '@/components/LuzFondo'
+import LuzPapel from '@/components/LuzPapel'
+import CristalHero from '@/components/CristalHero'
+
+// Niveles de la demo = las tres tarifas de web. Cada nivel suma sobre el anterior, sin quitar nada.
+export type Nivel = 'arranque' | 'premium' | 'cine'
+const NIVELES: { k: Nivel; n: string; p: string; d: string }[] = [
+  { k: 'arranque', n: 'Arranque', p: '499 €', d: 'Web completa con tus datos reales' },
+  { k: 'premium', n: 'Premium', p: '790 €', d: 'Luz de fondo, cristal y animaciones' },
+  { k: 'cine', n: 'Cinematográfica', p: '1.490 €', d: 'Cabecera de cristal en vivo y dirección de arte' },
+]
+function nivelDe(v: unknown): Nivel { return v === 'premium' || v === 'cine' ? v : 'arranque' }
+// nombre corto para el cristal: primera palabra significativa (≤ 12 letras) o iniciales
+function nombreCristal(n: string): string {
+  const palabras = n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 2 && !/^(el|la|los|las|de|del|y|en|al)$/i.test(w))
+  const w = (palabras[0] || n).toLowerCase()
+  return w.length <= 12 ? w + '.' : palabras.slice(0, 3).map(x => x[0]).join('').toLowerCase() + '.'
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -150,9 +168,11 @@ function todayIndex(hours: string[]): number {
 
 /* ─────────── Página ─────────── */
 
-export default async function DemoPage({ params }: { params: { id: string } }) {
+export default async function DemoPage({ params, searchParams }: { params: { id: string }; searchParams?: { nivel?: string } }) {
   const demo = await getDemo(params.id)
   if (!demo) notFound()
+  const nivel = nivelDe(searchParams?.nivel)
+  const premium = nivel !== 'arranque', cine = nivel === 'cine'
 
   const place = demo.place
   const name = place?.name || demo.negocio
@@ -175,8 +195,20 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
   const wa = `https://wa.me/34695868793?text=${encodeURIComponent(`Hola, me gusta la demo de la web de ${name}. Quiero presupuesto.`)}`
 
   return (
-    <div className="dm">
+    <div className={`dm dm-${nivel}${premium ? ' tema-oscuro' : ''}`}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      {premium && <LuzFondo />}
+      {cine && <LuzPapel />}
+
+      {/* ── Conmutador de nivel (para enseñar las tres al cliente) ── */}
+      <div className="dm-niveles">
+        <span className="dm-niveles-t">Ver esta demo como</span>
+        {NIVELES.map(n => (
+          <a key={n.k} href={`?nivel=${n.k}`} className={`dm-nivel${n.k === nivel ? ' is-on' : ''}`} title={n.d}>
+            {n.n} <em>{n.p}</em>
+          </a>
+        ))}
+      </div>
 
       {/* ── Cabecera fija ── */}
       <header className="dm-nav">
@@ -197,15 +229,24 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
       </header>
 
       {/* ── Hero ── */}
+      <main className="dm-main">
       <section className="dm-hero">
-        {hero ? (
+        {cine ? (
+          <>
+            {hero && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={hero} alt={name} className="dm-hero-img dm-hero-img-cine" />
+            )}
+            <CristalHero texto={nombreCristal(name)} />
+          </>
+        ) : hero ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={hero} alt={name} className="dm-hero-img" />
         ) : (
           <div className="dm-hero-img dm-hero-grad" />
         )}
         <div className="dm-hero-veil" />
-        <div className="dm-hero-in">
+        <div className={`dm-hero-in${cine ? ' dm-panel' : ''}`}>
           <div className="dm-pills">
             {buenaNota && (
               <span className="dm-pill">
@@ -264,7 +305,7 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
 
       {/* ── Reseñas reales (solo las buenas) ── */}
       {place?.topReviews && place.topReviews.length > 0 && (
-        <section id="resenas" className="dm-sec">
+        <section id="resenas" className={`dm-sec${premium ? ' dm-papel papel' : ''}`}>
           <p className="dm-eyebrow">Opiniones</p>
           <h2 className="dm-h2">Lo que dicen nuestros clientes.</h2>
           <div className={place.topReviews.length === 1 ? 'dm-grid-3 dm-grid-1' : 'dm-grid-3'}>
@@ -333,6 +374,8 @@ export default async function DemoPage({ params }: { params: { id: string } }) {
         </div>
         <p className="dm-foot">allostudios.net · Webs · Instagram · Anuncios · Asistente IA 24/7</p>
       </section>
+
+      </main>
 
       {/* ── Barra fija en móvil ── */}
       <div className="dm-bar">
@@ -452,4 +495,54 @@ background:var(--bg);color:var(--txt);min-height:100dvh;font-family:Inter,system
   .dm-sec-last{padding-bottom:70px}
   .dm-bar{display:none}
 }
+
+/* ══ Conmutador de nivel ══ */
+.dm-niveles{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:6px;padding:6px 8px 6px 14px;border-radius:999px;background:rgba(10,10,17,.72);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 50px -20px rgba(0,0,0,.7);font-size:12px;white-space:nowrap;max-width:calc(100vw - 24px);overflow:auto}
+.dm-niveles-t{color:var(--faint);letter-spacing:.08em;text-transform:uppercase;font-size:10px;margin-right:4px}
+.dm-nivel{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;color:var(--dim);border:1px solid transparent}
+.dm-nivel em{font-style:normal;color:var(--faint);font-size:11px}
+.dm-nivel:hover{color:var(--txt)}
+.dm-nivel.is-on{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16);color:#fff}
+.dm-nivel.is-on em{color:#FFD23F}
+@media (max-width:640px){.dm-niveles{bottom:74px}.dm-nivel em{display:none}}
+
+/* ══ PREMIUM: la luz que viaja, cristal de verdad, títulos Outfit, papel con luz ══ */
+.dm-premium,.dm-cine{--bg:#121216;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.1);background:var(--bg)}
+.dm-premium .dm-main,.dm-cine .dm-main{position:relative;z-index:2}
+.dm-premium .dm-nav,.dm-cine .dm-nav{background:rgba(18,18,22,.55);backdrop-filter:blur(18px) saturate(1.2)}
+.dm-premium h1,.dm-premium h2,.dm-premium h3,.dm-premium .dm-strip b,.dm-cine h1,.dm-cine h2,.dm-cine h3,.dm-cine .dm-strip b{font-family:var(--font-outfit),'Bricolage Grotesque',sans-serif}
+.dm-premium .dm-card,.dm-cine .dm-card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 1px rgba(255,255,255,.04),0 24px 50px -30px rgba(0,0,0,.6);border-radius:22px}
+.dm-premium .dm-card-hover:hover,.dm-cine .dm-card-hover:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.dm-premium .dm-grid-3 .dm-card-hover,.dm-cine .dm-grid-3 .dm-card-hover{position:relative}
+.dm-premium .dm-ico,.dm-cine .dm-ico{background:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.dm-premium .dm-pill,.dm-cine .dm-pill{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.dm-premium .dm-hero-veil,.dm-cine .dm-hero-veil{background:linear-gradient(180deg,rgba(18,18,22,.25) 0%,rgba(18,18,22,.5) 48%,rgba(18,18,22,.98) 100%)}
+.dm-premium .dm-eyebrow,.dm-cine .dm-eyebrow{color:#B4A8FF}
+.dm-premium .dm-strip,.dm-cine .dm-strip{border-color:rgba(255,255,255,.1)}
+/* apartado de papel (reseñas): mismo papel que allostudios.net, con su orbe */
+.dm-papel{--txt:#18181B;--dim:#4E4A5E;--faint:#6E6A7C;color:#18181B;max-width:none;padding:76px 22px 76px;margin:76px 0 0;position:relative;isolation:isolate;overflow:hidden}
+.dm-papel>*{max-width:1060px;margin-left:auto;margin-right:auto}
+.dm-papel .dm-eyebrow{color:#5B5BD6}
+.dm-papel .dm-card{background:rgba(255,255,255,.62);border-color:rgba(255,255,255,.9);backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 #fff,0 20px 44px -24px rgba(24,24,27,.28)}
+.dm-papel .dm-stars{color:#E0A500}
+.dm-papel .dm-avatar{background:#18181B;color:#fff}
+.dm-papel + .dm-sec{padding-top:76px}
+.dm-premium .dm-final,.dm-cine .dm-final{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px)}
+
+/* ══ CINEMATOGRÁFICA: cabecera de cristal en vivo + panel, entradas animadas ══ */
+.dm-cine .dm-hero{min-height:100dvh;align-items:center;background:#0E0B14}
+.dm-cine .dm-hero-img-cine{opacity:.22;filter:saturate(.8)}
+.dm-cine .dm-hero .hero-vivo{opacity:0;transition:opacity 1.2s ease;mix-blend-mode:normal}
+.dm-cine .dm-hero .hero-vivo.listo{opacity:1}
+.dm-cine .dm-hero-veil{background:linear-gradient(180deg,rgba(14,11,20,.1) 0%,rgba(14,11,20,0) 40%,rgba(14,11,20,.85) 100%)}
+.dm-cine .dm-hero-in{max-width:1060px;padding:0 22px}
+.dm-cine .dm-panel>*{position:relative}
+.dm-cine .dm-panel::before{content:"";position:absolute;left:-2px;right:auto;top:-28px;bottom:-28px;width:min(100%,640px);border-radius:28px;background:rgba(14,11,20,.42);backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(255,255,255,.05),0 40px 80px -40px rgba(0,0,0,.7),0 0 0 6px rgba(255,255,255,.04)}
+.dm-cine .dm-hero-in{padding:28px 26px 28px 24px;max-width:1060px}
+.dm-cine .dm-h1,.dm-cine .dm-sub,.dm-cine .dm-pills,.dm-cine .dm-cta-row{max-width:560px}
+.dm-cine .dm-h1{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+.dm-cine .dm-sec>*{animation:dmUp .9s cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 0% entry 40%}
+@media (prefers-reduced-motion:reduce){.dm-cine .dm-sec>*{animation:none}}
 `

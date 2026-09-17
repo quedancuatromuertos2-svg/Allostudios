@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
     const negocio = String(d?.negocio || '').trim().slice(0, 120)
     const ciudad = (String(d?.ciudad || '').trim() || 'Valencia').slice(0, 80)
     const sector = String(d?.sector || '').trim().slice(0, 60)
+    const nivel = ['arranque', 'premium', 'cine'].includes(d?.nivel) ? String(d.nivel) : 'arranque'
     const telefono = String(d?.telefono || '').trim().slice(0, 40)
     const email = String(d?.email || '').trim().slice(0, 120)
     const consent = Boolean(d?.consent)
@@ -78,7 +79,7 @@ export async function POST(req: NextRequest) {
       inmobiliaria: negocio,
       email: email || undefined,
       mensaje:
-        `Generó su demo en /tu-web. Ciudad: ${ciudad}. Sector: ${sector || '—'}. ` +
+        `Generó su demo en /tu-web (nivel ${nivel}). Ciudad: ${ciudad}. Sector: ${sector || '—'}. ` +
         `Web actual: ${place?.website || 'NO tiene'}. ${place?.rating ? `${place.rating}★ (${place.reviews} reseñas).` : ''}` +
         (guardado ? '' : ' ⚠️ NO guardado en Supabase (falta la tabla demo_leads) — apunta este lead a mano.'),
     }).catch(() => {})
@@ -88,14 +89,14 @@ export async function POST(req: NextRequest) {
     if (apikey && alertPhone) {
       const text =
         `🔥 Demo generada (lead caliente)\n` +
-        `Negocio: ${negocio} (${ciudad})\nTel: ${telefono}\n` +
+        `Negocio: ${negocio} (${ciudad}) · nivel ${nivel}\nTel: ${telefono}\n` +
         `${place?.website ? 'YA tiene web' : 'SIN web'} ${place?.rating ? `· ${place.rating}★(${place.reviews})` : ''}`
       fetch(
         `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(alertPhone)}&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(apikey)}`,
       ).catch(() => {})
     }
 
-    return NextResponse.json({ ok: true, id })
+    return NextResponse.json({ ok: true, id, nivel })
   } catch {
     return NextResponse.json({ error: 'Error inesperado' }, { status: 500 })
   }

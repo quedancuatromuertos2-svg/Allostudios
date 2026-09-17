@@ -44,6 +44,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
       negocio: fd.get('negocio'),
       ciudad: fd.get('ciudad'),
       sector: fd.get('sector'),
+      nivel: fd.get('nivel'),
       telefono: fd.get('telefono'),
       email: fd.get('email'),
       consent: Boolean(fd.get('consent')),
@@ -57,7 +58,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
       })
       const d = await r.json()
       if (!r.ok || !d.id) throw new Error(d.error || '__generic__')
-      router.push(`/tu-web/${d.id}`)
+      router.push(`/tu-web/${d.id}?nivel=${encodeURIComponent(String(fd.get('nivel') || 'arranque'))}`)
     } catch (err) {
       const msg = err instanceof Error && err.message !== '__generic__' ? err.message : ''
       setError(msg || 'No se pudo generar. Escríbenos por WhatsApp y te la hacemos al momento.')
@@ -103,6 +104,24 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
             {SECTORES.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
+      </div>
+
+      <div>
+        <label className="block text-[13px] font-medium text-dim mb-1.5">Tipo de web que quieres ver</label>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            ['arranque', 'Arranque', '499 €'],
+            ['premium', 'Premium', '790 €'],
+            ['cine', 'Cinematográfica', '1.490 €'],
+          ].map(([v, n, p], i) => (
+            <label key={v} className="nivel-opcion cursor-pointer rounded-xl border border-border bg-canvas px-3 py-3 text-center transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-light">
+              <input type="radio" name="nivel" value={v} defaultChecked={i === 0} className="sr-only" />
+              <span className="block text-[13px] font-semibold text-ink leading-tight">{n}</span>
+              <span className="block text-[11px] text-muted mt-0.5">{p}</span>
+            </label>
+          ))}
+        </div>
+        <p className="text-[11.5px] text-muted mt-1.5">Luego puedes cambiarlo dentro de la demo.</p>
       </div>
 
       <div>
