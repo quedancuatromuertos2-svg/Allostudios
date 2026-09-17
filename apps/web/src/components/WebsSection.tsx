@@ -86,39 +86,14 @@ export default function WebsSection() {
     <section id="webs" className="webs relative overflow-hidden py-[clamp(5rem,12vw,10rem)]">
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
 
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
-          className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-end">
-          <div>
-            <motion.span variants={fadeUp} className="eyebrow block mb-5">Webs premium a medida</motion.span>
-            <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
-              Tu negocio merece algo<br />mejor que una plantilla.
-            </motion.h2>
-            <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light max-w-md leading-relaxed text-pretty">
-              Diseñamos webs que transmiten confianza desde el primer segundo. Rápidas, a medida y construidas para que te escriban.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-3 mt-8">
-              <a href="/contratar" className="btn-primario group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full text-[14px] font-semibold">
-                Ver precios y contratar
-                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              </a>
-              <span className="text-[12px] text-muted">Desglose claro · sin permanencia</span>
-            </motion.div>
-          </div>
-          <motion.ol variants={fadeUp} className="rasgos grid sm:grid-cols-2 gap-x-8 gap-y-4">
-            {bentoFeatures.map((f, i) => (
-              <li key={f.title} className="flex items-start gap-3.5">
-                <span className="font-mono text-[11px] text-muted tabular-nums pt-1">{String(i + 1).padStart(2, '0')}</span>
-                <span><span className="block text-[14.5px] font-semibold text-ink">{f.title}</span><span className="block text-[13px] text-dim font-light leading-relaxed mt-0.5">{f.desc}</span></span>
-              </li>
-            ))}
-          </motion.ol>
-        </motion.div>
-
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mt-20 md:mt-24">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} >
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
-            <motion.h3 variants={fadeUp} className="font-display text-[clamp(1.4rem,2.4vw,2rem)] font-semibold text-ink tracking-[-0.03em] text-balance">
-              Cada negocio, su propia web. Ninguna se parece a otra.
-            </motion.h3>
+            <div>
+              <motion.span variants={fadeUp} className="eyebrow block mb-5">Webs premium a medida</motion.span>
+              <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
+                Cada negocio, su propia web.<br />Ninguna se parece a otra.
+              </motion.h2>
+            </div>
             <motion.p variants={fadeUp} className="text-dim font-light text-[14px] max-w-sm md:text-right">
               Tres conceptos publicados para tres sectores. Entra y tócalas: son webs de verdad.
             </motion.p>
@@ -148,6 +123,33 @@ export default function WebsSection() {
             Negocios y datos ficticios, diseño real. La tuya la ves gratis en{' '}
             <a href="#tu-web" className="text-ink underline underline-offset-4 hover:text-accent transition-colors">20 segundos</a>.
           </motion.p>
+        </motion.div>
+
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
+          className="mt-20 md:mt-24 grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-end">
+          <div>
+            <motion.h3 variants={fadeUp} className="font-display text-[clamp(1.6rem,2.8vw,2.4rem)] font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance">
+              Tu negocio merece algo<br />mejor que una plantilla.
+            </motion.h3>
+            <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light max-w-md leading-relaxed text-pretty">
+              Diseñamos webs que transmiten confianza desde el primer segundo. Rápidas, a medida y construidas para que te escriban.
+            </motion.p>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-3 mt-8">
+              <a href="/contratar" className="btn-primario group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full text-[14px] font-semibold">
+                Ver precios y contratar
+                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+              </a>
+              <span className="text-[12px] text-muted">Desglose claro · sin permanencia</span>
+            </motion.div>
+          </div>
+          <motion.ol variants={fadeUp} className="rasgos grid sm:grid-cols-2 gap-x-8 gap-y-4">
+            {bentoFeatures.map((f, i) => (
+              <li key={f.title} className="flex items-start gap-3.5">
+                <span className="font-mono text-[11px] text-muted tabular-nums pt-1">{String(i + 1).padStart(2, '0')}</span>
+                <span><span className="block text-[14.5px] font-semibold text-ink">{f.title}</span><span className="block text-[13px] text-dim font-light leading-relaxed mt-0.5">{f.desc}</span></span>
+              </li>
+            ))}
+          </motion.ol>
         </motion.div>
 
       </div>
