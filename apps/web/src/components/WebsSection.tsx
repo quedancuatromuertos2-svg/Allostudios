@@ -174,7 +174,7 @@ export default function WebsSection() {
   const y2 = useTransform(scrollYProgress, [0, 1], [30, -30])
 
   return (
-    <section id="webs" ref={ref} className="relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
+    <section id="webs" ref={ref} className="webs-cristal relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
 
       {/* Ambient orbs */}
       <div className="absolute w-[700px] h-[700px] rounded-full blur-[120px] top-[-20%] right-[-20%] opacity-20 pointer-events-none"

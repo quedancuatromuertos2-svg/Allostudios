@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion'
 
-const chips = [
-  { label: 'Instagram gestionado', dot: '#5b6bff' },
-  { label: 'Webs profesionales', dot: '#2bb673' },
-  { label: 'Anuncios · IA 24/7', dot: '#b45bff' },
+// Datos que responden en 3 segundos: qué, cuánto, cuándo (los mismos que en Precios)
+const datos = [
+  { valor: 'Desde 499 €', texto: 'web completa, pago único' },
+  { valor: '7 días', texto: 'de encargo a web publicada' },
+  { valor: 'Gratis antes', texto: 'ves tu web y luego decides' },
 ]
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } } }
 const item = {
@@ -16,24 +17,25 @@ const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero 
 
 export default function HeroGlass() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center px-6 pt-40 pb-24 overflow-hidden">
-      <motion.div variants={stagger} initial="hidden" animate="show" className="relative z-[2] max-w-3xl">
+    <section className="hero-cristal relative min-h-[100dvh] flex flex-col justify-end md:justify-center px-6 pt-64 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+      <motion.div variants={stagger} initial="hidden" animate="show" className="relative z-[2] w-full max-w-6xl mx-auto md:px-6">
+      <div className="max-w-2xl mx-auto md:mx-0 text-center md:text-left">
         <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-dim mb-9">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#2bb673', boxShadow: '0 0 8px #2bb673' }} />
           Agencia digital · Valencia
         </motion.div>
 
-        <motion.h1 variants={item} className="lg-h" style={{ fontSize: 'clamp(3rem,7.6vw,6rem)' }}>
-          Más clientes.
-          <span className="lg-grad block">Sin tocar el marketing.</span>
+        <motion.h1 variants={item} className="lg-h" style={{ fontSize: 'clamp(2.5rem,5.6vw,4.8rem)' }}>
+          Tu web nueva en <span className="whitespace-nowrap">7 días.</span>
+          <span className="lg-grad block">La ves gratis antes de pagar.</span>
         </motion.h1>
 
-        <motion.p variants={item} className="mt-7 max-w-xl mx-auto text-dim" style={{ fontSize: 'clamp(1rem,1.7vw,1.18rem)', lineHeight: 1.65 }}>
-          Webs, Instagram, anuncios y un asistente de IA que responde 24/7 —
-          para negocios locales de Valencia. Tú solo cierras.
+        <motion.p variants={item} className="mt-7 max-w-xl mx-auto md:mx-0 text-dim" style={{ fontSize: 'clamp(1rem,1.7vw,1.18rem)', lineHeight: 1.65 }}>
+          Webs, Instagram y un asistente de IA que responde 24/7, para negocios de Valencia.
+          Escribe el nombre de tu negocio y mira cómo quedaría.
         </motion.p>
 
-        <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-9">
+        <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 mt-9">
           <a href="#tu-web"
             className="group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full font-semibold text-[14px] text-white transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
             style={{ background: 'linear-gradient(100deg,#6a5bff,#a05bff)', boxShadow: '0 16px 40px -14px rgba(140,91,255,.6),inset 0 1px 0 rgba(255,255,255,.4)' }}>
@@ -44,19 +46,20 @@ export default function HeroGlass() {
           </a>
           <a href="#precios" className="lg px-7 py-4 rounded-full font-semibold text-[14px] text-ink">Ver planes</a>
           <a href={wa} target="_blank" rel="noopener noreferrer"
-            className="text-[13px] text-[#5a5470] hover:text-ink underline underline-offset-4 transition-colors">
+            className="text-[13px] text-muted hover:text-ink underline underline-offset-4 transition-colors">
             o hablar por WhatsApp
           </a>
         </motion.div>
 
-        <motion.div variants={item} className="flex flex-wrap justify-center gap-2.5 mt-11">
-          {chips.map(c => (
-            <span key={c.label} className="lg inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-medium text-ink">
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: c.dot }} />
-              {c.label}
-            </span>
+        <motion.div variants={item} className="lg hero-datos grid grid-cols-1 sm:grid-cols-3 rounded-2xl mt-9 max-w-xl mx-auto md:mx-0">
+          {datos.map(d => (
+            <div key={d.valor} className="px-4 py-3 sm:py-4 flex sm:block items-baseline justify-between gap-3 text-left">
+              <div className="text-ink font-semibold text-[17px] md:text-[19px] leading-tight">{d.valor}</div>
+              <div className="text-muted text-[11.5px] md:text-[12.5px] sm:mt-1 leading-snug text-right sm:text-left">{d.texto}</div>
+            </div>
           ))}
         </motion.div>
+      </div>
       </motion.div>
     </section>
   )

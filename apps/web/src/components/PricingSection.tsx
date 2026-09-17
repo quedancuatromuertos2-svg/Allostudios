@@ -35,8 +35,8 @@ export default function PricingSection() {
   const openWhatsApp = (msg: string) => window.open(waBase + encodeURIComponent(msg), '_blank')
 
   return (
-    <section id="precios" className="py-section overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+    <section id="precios" className="seccion-clara relative py-section overflow-hidden">
+      <div className="relative max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
         <div className="text-center mb-14">
