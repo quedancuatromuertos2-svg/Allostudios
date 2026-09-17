@@ -8,7 +8,6 @@ import DemoGeneratorSection from '@/components/DemoGeneratorSection'
 import ServicesSection from '@/components/ServicesSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import PricingSection from '@/components/PricingSection'
-import TrabajoSection from '@/components/TrabajoSection'
 import FAQSection from '@/components/FAQSection'
 import ComercialesSection from '@/components/ComercialesSection'
 import CTASection from '@/components/CTASection'
@@ -29,7 +28,6 @@ export default function Home() {
         <WebsSection />
         <ServicesSection />
         <HowItWorksSection />
-        <TrabajoSection />
         <PricingSection />
         <FAQSection />
         <ContactFormSection />

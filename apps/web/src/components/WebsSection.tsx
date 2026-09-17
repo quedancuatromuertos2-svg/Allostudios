@@ -1,101 +1,7 @@
 'use client'
 
-import { useVariante } from '@/lib/variante'
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-/*  CSS Browser mockup — */
-function BrowserMockup() {
-  return (
-    <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-      {/* Chrome bar */}
-      <div className="flex items-center gap-1.5 px-4 py-3 bg-[#1a1a2e] border-b border-white/8">
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="w-2.5 h-2.5 rounded-full bg-white/15" />
-        <div className="flex-1 mx-3 bg-white/8 rounded-md px-3 py-1.5 text-[10px] text-white/30 font-mono flex items-center gap-2">
-          <svg width="7" height="7" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" stroke="currentColor" strokeWidth="1.2"/></svg>
-          tunegocio.com
-        </div>
-      </div>
-      {/* Page content */}
-      <div className="bg-[#0d0d1a]">
-        {/* Hero strip */}
-        <div className="relative px-7 pt-7 pb-5 overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl" style={{ background: 'rgba(91,91,214,0.18)' }} />
-          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-2xl" style={{ background: 'rgba(124,124,232,0.12)' }} />
-          <div className="w-20 h-1.5 rounded-full bg-accent/40 mb-3" />
-          <div className="w-56 h-4 rounded-full bg-white/15 mb-1.5" />
-          <div className="w-40 h-4 rounded-full bg-white/10 mb-4" />
-          <div className="w-52 h-2 rounded-full bg-white/8 mb-1.5" />
-          <div className="w-36 h-2 rounded-full bg-white/6 mb-6" />
-          <div className="flex gap-2.5">
-            <div className="h-8 w-24 rounded-full bg-accent/70 flex items-center justify-center">
-              <div className="w-14 h-1.5 rounded-full bg-white/60" />
-            </div>
-            <div className="h-8 w-24 rounded-full border border-white/15 flex items-center justify-center">
-              <div className="w-14 h-1.5 rounded-full bg-white/25" />
-            </div>
-          </div>
-        </div>
-        {/* Stats row */}
-        <div className="flex gap-2 px-7 pb-4">
-          {['#5B5BD6', '#16a34a', '#f59e0b', '#e11d48'].map((c, i) => (
-            <div key={i} className="flex-1 rounded-xl p-3 border border-white/6 bg-white/3">
-              <div className="w-6 h-3 rounded-full mb-2" style={{ background: `${c}40` }} />
-              <div className="w-full h-1.5 rounded-full bg-white/10 mb-1" />
-              <div className="w-2/3 h-1.5 rounded-full bg-white/6" />
-            </div>
-          ))}
-        </div>
-        {/* Card row */}
-        <div className="flex gap-2 px-7 pb-6">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex-1 rounded-xl p-3 border border-white/6 bg-white/3">
-              <div className="w-7 h-7 rounded-lg bg-accent/20 mb-2" />
-              <div className="w-full h-1.5 rounded-full bg-white/12 mb-1" />
-              <div className="w-3/4 h-1.5 rounded-full bg-white/7" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/*  Mobile mockup — */
-function PhoneMockup() {
-  return (
-    <div className="w-[90px] rounded-[22px] overflow-hidden border border-white/12 shadow-xl bg-[#0d0d1a]">
-      {/* Notch */}
-      <div className="flex justify-center pt-2 pb-1">
-        <div className="w-10 h-2 rounded-full bg-white/10" />
-      </div>
-      {/* Screen */}
-      <div className="px-2 pb-3 space-y-1.5">
-        <div className="w-full h-12 rounded-lg bg-accent/15 relative overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-1.5 rounded-full bg-white/20" />
-          </div>
-        </div>
-        {[1, 2, 3].map(i => (
-          <div key={i} className="w-full h-8 rounded-lg bg-white/5 border border-white/6 px-2 flex items-center gap-1.5">
-            <div className="w-4 h-4 rounded bg-accent/20 shrink-0" />
-            <div className="flex-1 space-y-1">
-              <div className="h-1 rounded-full bg-white/15" />
-              <div className="h-1 rounded-full bg-white/8 w-2/3" />
-            </div>
-          </div>
-        ))}
-        <div className="w-full h-6 rounded-full bg-accent/50 flex items-center justify-center">
-          <div className="w-12 h-1.5 rounded-full bg-white/50" />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/*  Bento feature cards — */
 const bentoFeatures = [
   {
     icon: (
@@ -159,201 +65,89 @@ const bentoFeatures = [
   },
 ]
 
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-}
+const webs = [
+  { slug: 'navaja', nombre: 'Navaja', tipo: 'Barbería · Ruzafa', url: 'https://concepto-navaja.vercel.app', nota: 'Verde botella, latón y una carta de precios como la de un barbero de verdad.' },
+  { slug: 'serra', nombre: 'Clínica Serra', tipo: 'Dental · Benimaclet', url: 'https://concepto-serra.vercel.app', nota: 'Madera, salvia y la primera visita gratis como gancho para pedir cita.' },
+  { slug: 'sequer', nombre: 'Sequer', tipo: 'Arrocería · El Palmar', url: 'https://concepto-sequer.vercel.app', nota: 'Carbón y brasa: la paella al fuego a pantalla completa y reserva en un toque.' },
+]
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 const fadeUp = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(6px)' },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] } },
+  hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
 }
 
+/*
+  Páginas web: un solo apartado con el mensaje («mejor que una plantilla»), los seis rasgos como
+  lista numerada y, debajo, la prueba: las tres webs de concepto reales. Sustituye a la maqueta
+  de navegador con datos falsos y al apartado «Trabajo reciente» separado.
+*/
 export default function WebsSection() {
-  const ref = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y1 = useTransform(scrollYProgress, [0, 1], [-30, 30])
-  const y2 = useTransform(scrollYProgress, [0, 1], [30, -30])
-
-  // vitrina:   grafito; a la derecha, las tres webs reales en cascada (la prueba es la web)
-  // editorial: papel; titular grande y una web real en marco, rasgos como lista numerada
-  // luz:       grafito con una luz de marca fija arriba a la derecha; maqueta y tarjetas de cristal como en allostudios.net
-  const v = useVariante('webs', 'vitrina')
-  const webs = [
-    { slug: 'navaja', nombre: 'Navaja · barbería', url: 'https://concepto-navaja.vercel.app' },
-    { slug: 'serra', nombre: 'Serra · dental', url: 'https://concepto-serra.vercel.app' },
-    { slug: 'sequer', nombre: 'Sequer · arrocería', url: 'https://concepto-sequer.vercel.app' },
-  ]
-
-  if (v !== 'luz') return (
-    <section id="webs" ref={ref} className={`webs webs-${v} relative overflow-hidden ${v === 'editorial' ? 'papel' : ''} py-[clamp(5rem,12vw,10rem)]`}>
+  return (
+    <section id="webs" className="webs relative overflow-hidden py-[clamp(5rem,12vw,10rem)]">
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
-        <div className={`grid gap-12 lg:gap-16 items-center ${v === 'vitrina' ? 'lg:grid-cols-[.9fr_1.1fr]' : 'lg:grid-cols-[1fr_1fr]'}`}>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}>
+
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}
+          className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-end">
+          <div>
             <motion.span variants={fadeUp} className="eyebrow block mb-5">Webs premium a medida</motion.span>
             <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
-              Tu negocio merece algo<br />mejor que <span className="acento">una plantilla</span>.
+              Tu negocio merece algo<br />mejor que una plantilla.
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light max-w-md leading-relaxed text-pretty">
               Diseñamos webs que transmiten confianza desde el primer segundo. Rápidas, a medida y construidas para que te escriban.
             </motion.p>
-            <motion.ol variants={fadeUp} className="rasgos mt-8 grid grid-cols-2 gap-x-8 gap-y-3 max-w-md">
-              {bentoFeatures.map((f, i) => (
-                <li key={f.title} className="flex items-baseline gap-3 text-[14px] text-ink">
-                  <span className="font-mono text-[11px] text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>{f.title}
-                </li>
-              ))}
-            </motion.ol>
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-3 mt-9">
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-3 mt-8">
               <a href="/contratar" className="btn-primario group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full text-[14px] font-semibold">
                 Ver precios y contratar
                 <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
               </a>
               <span className="text-[12px] text-muted">Desglose claro · sin permanencia</span>
             </motion.div>
-          </motion.div>
+          </div>
+          <motion.ol variants={fadeUp} className="rasgos grid sm:grid-cols-2 gap-x-8 gap-y-4">
+            {bentoFeatures.map((f, i) => (
+              <li key={f.title} className="flex items-start gap-3.5">
+                <span className="font-mono text-[11px] text-muted tabular-nums pt-1">{String(i + 1).padStart(2, '0')}</span>
+                <span><span className="block text-[14.5px] font-semibold text-ink">{f.title}</span><span className="block text-[13px] text-dim font-light leading-relaxed mt-0.5">{f.desc}</span></span>
+              </li>
+            ))}
+          </motion.ol>
+        </motion.div>
 
-          {v === 'vitrina' ? (
-            <motion.div style={{ y: y1 }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="vitrina relative h-[460px] md:h-[560px]">
-              {webs.map((w, i) => (
-                <a key={w.slug} href={w.url} target="_blank" rel="noopener noreferrer" className={`vitrina-pieza vitrina-${i} absolute block p-1.5 rounded-[1.4rem] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]`}>
-                  <img src={`/marca/trabajo/${w.slug}.jpg`} alt={w.nombre} className="block w-full rounded-[calc(1.4rem-0.375rem)]" />
-                  <span className="absolute left-4 bottom-4 text-[10.5px] tracking-[0.14em] uppercase px-2.5 py-1 rounded-full bg-black/45 text-white/85 backdrop-blur-md">{w.nombre}</span>
-                </a>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div style={{ y: y1 }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="marco-web p-2 rounded-[2rem]">
-              <div className="relative rounded-[calc(2rem-0.5rem)] overflow-hidden">
-                <img src="/marca/trabajo/sequer.jpg" alt="Sequer · arrocería" className="block w-full" loading="lazy" />
-                <img src="/marca/trabajo/sequer-m.jpg" alt="" aria-hidden className="absolute right-5 bottom-0 w-[22%] rounded-t-[10px] shadow-[0_20px_40px_-16px_rgba(0,0,0,.6)] translate-y-2" loading="lazy" />
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </div>
-    </section>
-  )
-
-  return (
-    <section id="webs" ref={ref} className="webs webs-luz relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
-
-        {/* —★ HEADER —★ */}
-        <motion.div
-          variants={stagger} initial="hidden" whileInView="show"
-          viewport={{ once: true }}
-          className="text-center mb-16 md:mb-20"
-        >
-          <motion.span variants={fadeUp} className="inline-block text-[11px] font-bold tracking-[0.22em] uppercase text-accent mb-5">
-            Webs Premium a medida
-          </motion.span>
-          <motion.h2 variants={fadeUp}
-            className="text-headline font-semibold text-white leading-[1.08] tracking-[-0.03em] text-balance"
-          >
-            Tu negocio merece algo<br />mejor que una plantilla.
-          </motion.h2>
-          <motion.p variants={fadeUp}
-            className="mt-5 text-[1.05rem] text-white/50 font-light max-w-xl mx-auto leading-relaxed text-pretty"
-          >
-            Diseñamos webs profesionales que transmiten confianza desde el primer segundo.
-            Rápidas, modernas y construidas para captar leads.
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mt-20 md:mt-24">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
+            <motion.h3 variants={fadeUp} className="font-display text-[clamp(1.4rem,2.4vw,2rem)] font-semibold text-ink tracking-[-0.03em] text-balance">
+              Cada negocio, su propia web. Ninguna se parece a otra.
+            </motion.h3>
+            <motion.p variants={fadeUp} className="text-dim font-light text-[14px] max-w-sm md:text-right">
+              Tres conceptos publicados para tres sectores. Entra y tócalas: son webs de verdad.
+            </motion.p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+            {webs.map(t => (
+              <motion.a key={t.slug} variants={fadeUp} href={t.url} target="_blank" rel="noopener noreferrer"
+                className="trabajo group block rounded-[1.6rem] p-1.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1">
+                <div className="relative rounded-[calc(1.6rem-0.375rem)] overflow-hidden aspect-[4/3]">
+                  <img src={`/marca/trabajo/${t.slug}.jpg`} alt={`Web de concepto ${t.nombre}`}
+                    className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]" />
+                  <img src={`/marca/trabajo/${t.slug}-m.jpg`} alt="" aria-hidden
+                    className="absolute right-4 bottom-0 w-[22%] rounded-t-[10px] shadow-[0_20px_40px_-16px_rgba(0,0,0,.6)] translate-y-3 transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-1" />
+                  <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full bg-black/40 text-white/85 backdrop-blur-md">Concepto</span>
+                </div>
+                <div className="px-3 pt-4 pb-2.5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[17px] font-semibold text-ink">{t.nombre}</span>
+                    <span className="text-[11px] tracking-[0.12em] uppercase text-muted whitespace-nowrap">{t.tipo}</span>
+                  </div>
+                  <p className="mt-1.5 text-[13.5px] text-dim font-light leading-relaxed">{t.nota}</p>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+          <motion.p variants={fadeUp} className="mt-8 text-[13px] text-muted text-center">
+            Negocios y datos ficticios, diseño real. La tuya la ves gratis en{' '}
+            <a href="#tu-web" className="text-ink underline underline-offset-4 hover:text-accent transition-colors">20 segundos</a>.
           </motion.p>
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
-            <a
-              href="/contratar"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-ink text-[14px] font-semibold hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 active:scale-[0.98]"
-              style={{ boxShadow: '0 8px 28px rgba(255,255,255,0.15), 0 1px 0 rgba(255,255,255,0.9) inset' }}
-            >
-              Ver precios y contratar
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-                <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-            <span className="text-[12px] text-white/30">Desglose claro · sin permanencia</span>
-          </motion.div>
-        </motion.div>
-
-        {/* —★ MOCKUP SHOWCASE —★ */}
-        <div className="relative flex items-start justify-center gap-5 mb-16 md:mb-20">
-          {/* Main browser */}
-          <motion.div
-            style={{ y: y1 }}
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 max-w-[560px]"
-          >
-            <BrowserMockup />
-
-            {/* Badge — PageSpeed */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-5 -left-6 bg-white rounded-2xl border border-border shadow-xl px-4 py-3 flex items-center gap-2.5"
-            >
-              <div className="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-green-600">99</span>
-              </div>
-              <div>
-                <div className="text-[12px] font-semibold text-ink leading-none">PageSpeed</div>
-                <div className="text-[10px] text-muted mt-0.5">Rendimiento perfecto</div>
-              </div>
-            </motion.div>
-
-            {/* Badge — Entrega */}
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
-              className="absolute -bottom-4 -right-6 bg-white rounded-2xl border border-border shadow-xl px-4 py-2.5"
-            >
-              <div className="text-[18px] font-semibold text-ink tracking-[-0.03em] leading-none">7 días</div>
-              <div className="text-[10px] text-muted mt-0.5">tiempo de entrega</div>
-            </motion.div>
-          </motion.div>
-
-          {/* Phone */}
-          <motion.div
-            style={{ y: y2 }}
-            initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden md:flex items-end pb-8 self-end"
-          >
-            <PhoneMockup />
-          </motion.div>
-        </div>
-
-        {/* —★ BENTO GRID —★ */}
-        <motion.div
-          variants={stagger} initial="hidden" whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          {bentoFeatures.map((f) => (
-            <motion.div
-              key={f.title}
-              variants={fadeUp}
-              className="bg-white/5 border border-white/8 rounded-2xl p-5 hover:bg-white/8 hover:border-white/15 transition-all duration-300 group"
-            >
-              <div className={`inline-flex w-10 h-10 rounded-xl items-center justify-center mb-4 border ${f.accent}`}>
-                {f.icon}
-              </div>
-              <div className="text-[15px] font-semibold text-white mb-1.5">{f.title}</div>
-              <div className="text-[13px] text-white/45 leading-relaxed font-light">{f.desc}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* —★ BOTTOM STATEMENT —★ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ delay: 0.3 }}
-          className="mt-14 text-center"
-        >
-          <p className="text-[13px] text-white/25 tracking-[0.12em] uppercase font-medium">
-            No solo captamos tus leads — construimos la presencia digital de tu negocio
-          </p>
         </motion.div>
 
       </div>
