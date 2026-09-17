@@ -5,7 +5,7 @@ import { getPlaceDetails, type PlaceData } from '@/lib/places'
 import { decodeDemo, isDemoToken } from '@/lib/demo-token'
 import LuzFondo from '@/components/LuzFondo'
 import LuzPapel from '@/components/LuzPapel'
-import CristalHero from '@/components/CristalHero'
+import { adnDe, type ADN } from '@/lib/adn'
 
 // Niveles de la demo = las tres tarifas de web. Cada nivel suma sobre el anterior, sin quitar nada.
 export type Nivel = 'arranque' | 'premium' | 'cine'
@@ -15,12 +15,6 @@ const NIVELES: { k: Nivel; n: string; p: string; d: string }[] = [
   { k: 'cine', n: 'Cinematográfica', p: '1.490 €', d: 'Cabecera de cristal en vivo y dirección de arte' },
 ]
 function nivelDe(v: unknown): Nivel { return v === 'premium' || v === 'cine' ? v : 'arranque' }
-// nombre corto para el cristal: primera palabra significativa (≤ 12 letras) o iniciales
-function nombreCristal(n: string): string {
-  const palabras = n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 2 && !/^(el|la|los|las|de|del|y|en|al)$/i.test(w))
-  const w = (palabras[0] || n).toLowerCase()
-  return w.length <= 12 ? w + '.' : palabras.slice(0, 3).map(x => x[0]).join('').toLowerCase() + '.'
-}
 
 export const dynamic = 'force-dynamic'
 
@@ -168,11 +162,140 @@ function todayIndex(hours: string[]): number {
 
 /* ─────────── Página ─────────── */
 
+
+/* ─────────── Cabecera Cinematográfica: un concepto por identidad ─────────── */
+type HeroCineProps = { adn: ADN; name: string; intro: string; hero: string | null; galeria: string[]; rating: number | null; reviews: number; horaHoy: string; phone: string; telVisible: string; services: Service[]; ciudad: string; tipo: string }
+function Palabras({ texto }: { texto: string }) {
+  // cada palabra entra con su propio retardo (revelado)
+  return <>{texto.split(' ').map((w, i) => <span key={i} className="dm-w" style={{ animationDelay: `${.15 + i * .09}s` }}>{w}&nbsp;</span>)}</>
+}
+function Cursiva({ texto }: { texto: string }) {
+  // la última palabra en cursiva (aura)
+  const p = texto.trim().split(' '); if (p.length < 2) return <>{texto}</>
+  return <>{p.slice(0, -1).join(' ')} <em>{p[p.length - 1]}</em></>
+}
+function HeroCine({ adn, name, intro, hero, galeria, rating, reviews, horaHoy, phone, telVisible, services, ciudad, tipo }: HeroCineProps) {
+  const c = adn.cine
+  const img = hero ? <img src={hero} alt={name} className="dm-hero-img" /> : <div className="dm-hero-img dm-hero-grad" />
+  const nota = rating ? <span className="dm-pill"><span className="dm-stars">{'★'.repeat(Math.round(rating))}</span><b>{rating.toFixed(1).replace('.', ',')}</b> · {reviews} reseñas</span> : null
+  const ctas = (
+    <div className="dm-cta-row">
+      <a href="#contacto" className="dm-btn dm-btn-lg">Reservar / Contactar</a>
+      {phone && <a href={`tel:+${phone}`} className="dm-btn dm-btn-ghost dm-btn-lg">Llamar {telVisible}</a>}
+    </div>
+  )
+  const cinta = (
+    <div className="dm-cinta" aria-hidden>
+      <div className="dm-cinta-in">{[...services, ...services, ...services].map((sv, i) => <span key={i}>{sv.t}<i /></span>)}</div>
+    </div>
+  )
+  if (c === 'revelado') return (
+    <>
+      <section className="dm-hero dm-cine-revelado">
+        {img}<div className="dm-hero-veil" />
+        <div className="dm-hero-in">
+          <p className="dm-adn-eyebrow">{tipo} · {ciudad}</p>
+          <h1 className="dm-h1"><Palabras texto={name} /></h1>
+          <div className="dm-rev-fila">
+            <p className="dm-sub">{intro}</p>
+            <div>{nota}{horaHoy && <span className="dm-pill dm-pill-soft">Hoy · {horaHoy}</span>}</div>
+          </div>
+          {ctas}
+        </div>
+      </section>
+      {cinta}
+    </>
+  )
+  if (c === 'aura') return (
+    <>
+      <section className="dm-hero dm-cine-aura">
+        <div className="dm-aura" aria-hidden />
+        <div className="dm-hero-in">
+          <p className="dm-adn-eyebrow">{tipo} · {ciudad}</p>
+          <h1 className="dm-h1"><Cursiva texto={name} /></h1>
+          <p className="dm-sub">{intro}</p>
+          {ctas}
+          <div className="dm-pills">{nota}{horaHoy && <span className="dm-pill dm-pill-soft">Hoy · {horaHoy}</span>}</div>
+        </div>
+        <div className="dm-flotantes" aria-hidden>
+          {services.slice(0, 3).map((sv, i) => (
+            <div key={sv.t} className={`dm-flot dm-flot-${i}`}>
+              {galeria[i] ? <img src={galeria[i]} alt="" /> : <span className="dm-flot-ico"><Icon k={sv.k} size={26} /></span>}
+              <b>{sv.t}</b>
+            </div>
+          ))}
+        </div>
+      </section>
+      {cinta}
+    </>
+  )
+  if (c === 'dividido') return (
+    <section className="dm-hero dm-cine-dividido">
+      <div className="dm-div-papel">
+        <p className="dm-adn-eyebrow">{tipo} · {ciudad}</p>
+        <h1 className="dm-h1">{name}</h1>
+        <p className="dm-sub">{intro}</p>
+        <div className="dm-cita">
+          <div className="dm-cita-t">Pide tu cita</div>
+          <div className="dm-cita-campos"><span>Nombre</span><span>Teléfono</span><span>Día que te viene bien</span></div>
+          <a href="#contacto" className="dm-btn">Enviar solicitud</a>
+          <small>Te confirmamos por WhatsApp en menos de una hora.</small>
+        </div>
+        <div className="dm-pills">{nota}{horaHoy && <span className="dm-pill dm-pill-soft">Hoy · {horaHoy}</span>}</div>
+      </div>
+      <div className="dm-div-foto">
+        <div className="dm-marco">{img}</div>
+        {galeria[0] && <div className="dm-marco dm-marco-2"><img src={galeria[0]} alt="" /></div>}
+      </div>
+    </section>
+  )
+  if (c === 'poster') return (
+    <>
+      <section className="dm-hero dm-cine-poster">
+        <div className="dm-sello" aria-hidden>
+          <svg viewBox="0 0 200 200"><defs><path id="dm-sello-c" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0" /></defs><text><textPath href="#dm-sello-c">{`${tipo} · ${ciudad} · desde siempre · `}</textPath></text></svg>
+        </div>
+        <div className="dm-hero-in">
+          <p className="dm-adn-eyebrow">{tipo} · {ciudad}</p>
+          <h1 className="dm-h1">{name}</h1>
+          <p className="dm-sub">{intro}</p>
+          {ctas}
+        </div>
+        <div className="dm-ventana">{img}</div>
+        <div className="dm-pills">{nota}{horaHoy && <span className="dm-pill dm-pill-soft">Hoy · {horaHoy}</span>}</div>
+      </section>
+      {cinta}
+    </>
+  )
+  // velocidad
+  return (
+    <>
+      <section className="dm-hero dm-cine-velocidad">
+        {img}<div className="dm-hero-veil" /><div className="dm-diagonal" aria-hidden />
+        <div className="dm-hero-in">
+          <p className="dm-adn-eyebrow">{tipo} · {ciudad}</p>
+          <h1 className="dm-h1 dm-h1-contorno" data-texto={name}>{name}</h1>
+          <p className="dm-sub">{intro}</p>
+          {ctas}
+        </div>
+        <div className="dm-contadores">
+          {rating && <div><b>{rating.toFixed(1).replace('.', ',')}</b><span>en Google</span></div>}
+          {reviews > 0 && <div><b>{reviews}</b><span>opiniones</span></div>}
+          <div><b>{services.length}</b><span>servicios</span></div>
+          {horaHoy && <div><b>{horaHoy.split('–')[0].trim()}</b><span>abrimos hoy</span></div>}
+        </div>
+      </section>
+      {cinta}
+    </>
+  )
+}
+
 export default async function DemoPage({ params, searchParams }: { params: { id: string }; searchParams?: { nivel?: string } }) {
   const demo = await getDemo(params.id)
   if (!demo) notFound()
   const nivel = nivelDe(searchParams?.nivel)
   const premium = nivel !== 'arranque', cine = nivel === 'cine'
+  const adn = adnDe(demo.sector)
 
   const place = demo.place
   const name = place?.name || demo.negocio
@@ -195,9 +318,15 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
   const wa = `https://wa.me/34695868793?text=${encodeURIComponent(`Hola, me gusta la demo de la web de ${name}. Quiero presupuesto.`)}`
 
   return (
-    <div className={`dm dm-${nivel}${premium ? ' tema-oscuro' : ''}`}>
+    <div className={`dm dm-${nivel}${premium ? ` tema-oscuro adn-${adn.clave} dm-cab-${adn.cabecera}` : ''}`}
+      style={premium ? ({
+        '--f-display': adn.fuentes.display, '--f-texto': adn.fuentes.texto, '--f-peso': adn.fuentes.displayPeso,
+        '--bg': adn.bg, '--papel': adn.papel, '--tinta': adn.tinta, '--acento': adn.acento, '--acento2': adn.acento2,
+        '--luz1': adn.luz[0], '--luz2': adn.luz[1], '--luzp1': adn.luzPapel[0], '--luzp2': adn.luzPapel[1],
+      } as React.CSSProperties) : undefined}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      {premium && <LuzFondo />}
+      {premium && <link rel="stylesheet" href={adn.fuentes.url} />}
+      {premium && <LuzFondo paleta="sector" colores={{ a: adn.luz[1], b: adn.acento2, c: adn.luz[0], d: adn.luz[0], e: adn.cristal.c4, f: adn.acento, g: adn.cristal.c3, h: adn.luz[1], o: adn.bg }} />}
       {cine && <LuzPapel />}
 
       {/* ── Conmutador de nivel (para enseñar las tres al cliente) ── */}
@@ -230,23 +359,19 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
 
       {/* ── Hero ── */}
       <main className="dm-main">
+      {cine ? (
+        <HeroCine adn={adn} name={name} intro={intro} hero={hero} galeria={galeria} rating={buenaNota ? (rating as number) : null} reviews={reviews} horaHoy={horaHoy} phone={phone} telVisible={telVisible} services={services} ciudad={demo.ciudad || 'Valencia'} tipo={place?.type || adn.eyebrow} />
+      ) : (
       <section className="dm-hero">
-        {cine ? (
-          <>
-            {hero && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt={name} className="dm-hero-img dm-hero-img-cine" />
-            )}
-            <CristalHero texto={nombreCristal(name)} />
-          </>
-        ) : hero ? (
+        {hero ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={hero} alt={name} className="dm-hero-img" />
         ) : (
           <div className="dm-hero-img dm-hero-grad" />
         )}
         <div className="dm-hero-veil" />
-        <div className={`dm-hero-in${cine ? ' dm-panel' : ''}`}>
+        <div className="dm-hero-in">
+          {premium && <p className="dm-adn-eyebrow">{adn.eyebrow} · {demo.ciudad || 'Valencia'}</p>}
           <div className="dm-pills">
             {buenaNota && (
               <span className="dm-pill">
@@ -266,6 +391,8 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
         </div>
       </section>
 
+      )}
+
       {/* ── Franja de confianza ── */}
       <section className="dm-strip">
         {buenaNota && <div><b>{(rating as number).toFixed(1).replace('.', ',')}★</b><span>valoración en Google</span></div>}
@@ -278,6 +405,17 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
       <section id="servicios" className="dm-sec">
         <p className="dm-eyebrow">Lo que ofrecemos</p>
         <h2 className="dm-h2">Todo pensado para que tus clientes lo tengan fácil.</h2>
+        {premium && adn.carta ? (
+          <ol className="dm-carta">
+            {services.map((sv, i) => (
+              <li key={sv.t}>
+                <span className="dm-carta-n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="dm-carta-t"><h3>{sv.t}</h3><p>{sv.d}</p></span>
+                <span className="dm-carta-ico"><Icon k={sv.k} /></span>
+              </li>
+            ))}
+          </ol>
+        ) : (
         <div className="dm-grid-3">
           {services.map((sv) => (
             <div key={sv.t} className="dm-card dm-card-hover">
@@ -287,6 +425,7 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
             </div>
           ))}
         </div>
+        )}
       </section>
 
       {/* ── Galería con fotos reales del negocio ── */}
@@ -510,7 +649,6 @@ background:var(--bg);color:var(--txt);min-height:100dvh;font-family:Inter,system
 .dm-premium,.dm-cine{--bg:#121216;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.1);background:var(--bg)}
 .dm-premium .dm-main,.dm-cine .dm-main{position:relative;z-index:2}
 .dm-premium .dm-nav,.dm-cine .dm-nav{background:rgba(18,18,22,.55);backdrop-filter:blur(18px) saturate(1.2)}
-.dm-premium h1,.dm-premium h2,.dm-premium h3,.dm-premium .dm-strip b,.dm-cine h1,.dm-cine h2,.dm-cine h3,.dm-cine .dm-strip b{font-family:var(--font-outfit),'Bricolage Grotesque',sans-serif}
 .dm-premium .dm-card,.dm-cine .dm-card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 1px rgba(255,255,255,.04),0 24px 50px -30px rgba(0,0,0,.6);border-radius:22px}
 .dm-premium .dm-card-hover:hover,.dm-cine .dm-card-hover:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
@@ -530,19 +668,143 @@ background:var(--bg);color:var(--txt);min-height:100dvh;font-family:Inter,system
 .dm-papel + .dm-sec{padding-top:76px}
 .dm-premium .dm-final,.dm-cine .dm-final{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px)}
 
-/* ══ CINEMATOGRÁFICA: cabecera de cristal en vivo + panel, entradas animadas ══ */
-.dm-cine .dm-hero{min-height:100dvh;align-items:center;background:#0E0B14}
-.dm-cine .dm-hero-img-cine{opacity:.22;filter:saturate(.8)}
-.dm-cine .dm-hero .hero-vivo{opacity:0;transition:opacity 1.2s ease;mix-blend-mode:normal}
-.dm-cine .dm-hero .hero-vivo.listo{opacity:1}
-.dm-cine .dm-hero-veil{background:linear-gradient(180deg,rgba(14,11,20,.1) 0%,rgba(14,11,20,0) 40%,rgba(14,11,20,.85) 100%)}
-.dm-cine .dm-hero-in{max-width:1060px;padding:0 22px}
-.dm-cine .dm-panel>*{position:relative}
-.dm-cine .dm-panel::before{content:"";position:absolute;left:-2px;right:auto;top:-28px;bottom:-28px;width:min(100%,640px);border-radius:28px;background:rgba(14,11,20,.42);backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(255,255,255,.05),0 40px 80px -40px rgba(0,0,0,.7),0 0 0 6px rgba(255,255,255,.04)}
-.dm-cine .dm-hero-in{padding:28px 26px 28px 24px;max-width:1060px}
-.dm-cine .dm-h1,.dm-cine .dm-sub,.dm-cine .dm-pills,.dm-cine .dm-cta-row{max-width:560px}
-.dm-cine .dm-h1{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+/* ══ CINEMATOGRÁFICA: entradas animadas de cada apartado ══ */
 .dm-cine .dm-sec>*{animation:dmUp .9s cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 0% entry 40%}
 @media (prefers-reduced-motion:reduce){.dm-cine .dm-sec>*{animation:none}}
+
+/* ══ ADN por sector (Premium y Cinematográfica): variables que vienen del servidor ══ */
+.dm-premium,.dm-cine{background:var(--bg);font-family:var(--f-texto)}
+/* escalera tipográfica por tarifa: Arranque = sans genérica · Premium = la sans limpia del sector · Cinematográfica = la display expresiva del sector */
+.dm-premium h1,.dm-premium h2,.dm-premium h3,.dm-premium .dm-strip b{font-family:var(--f-texto);font-weight:600;letter-spacing:-.025em}
+.dm-cine h1,.dm-cine h2,.dm-cine h3,.dm-cine .dm-strip b,.dm-cine .dm-carta-n,.dm-cine .dm-cita-t,.dm-cine .dm-flot b,.dm-cine .dm-contadores b,.dm-cine .dm-cinta span{font-family:var(--f-display);font-weight:var(--f-peso);letter-spacing:-.02em}
+.dm-premium .dm-h1{font-weight:600}.dm-cine .dm-h1{font-weight:var(--f-peso)}
+.dm-premium .dm-eyebrow,.dm-cine .dm-eyebrow{color:var(--acento)}
+.dm-premium .dm-brand-dot,.dm-cine .dm-brand-dot{background:var(--acento);box-shadow:0 0 12px var(--acento)}
+.dm-premium .dm-btn,.dm-cine .dm-btn{background:var(--acento);color:var(--bg);box-shadow:0 12px 30px -14px var(--acento)}
+.dm-premium .dm-btn:hover,.dm-cine .dm-btn:hover{box-shadow:0 16px 36px -14px var(--acento)}
+.dm-premium .dm-btn-ghost,.dm-cine .dm-btn-ghost{background:transparent;color:var(--txt);box-shadow:none}
+.dm-premium .dm-btn-white,.dm-cine .dm-btn-white{background:#fff;color:#171325}
+.dm-premium .dm-stars,.dm-cine .dm-stars{color:var(--acento2)}
+.dm-premium .dm-nav,.dm-cine .dm-nav{background:color-mix(in srgb,var(--bg) 60%,transparent)}
+.dm-adn-eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--acento);margin:0 0 14px;font-weight:500}
+/* luz de fondo con los colores del sector */
+.dm-premium .luz-fondo,.dm-cine .luz-fondo{--grafito:var(--bg)}
+.dm-premium .luz-velo,.dm-cine .luz-velo{background:radial-gradient(120% 80% at 50% 50%,transparent 30%,color-mix(in srgb,var(--bg) 60%,transparent) 100%)}
+/* papel del sector: su color, su orbe */
+.dm-premium .dm-papel,.dm-cine .dm-papel{background:var(--papel) !important;--txt:var(--tinta);--dim:color-mix(in srgb,var(--tinta) 70%,var(--papel));--faint:color-mix(in srgb,var(--tinta) 50%,var(--papel));color:var(--tinta)}
+.dm-premium .dm-papel::before,.dm-cine .dm-papel::before{background:radial-gradient(closest-side,var(--luzp1) 0%,var(--luzp2) 55%,transparent 100%) !important}
+.dm-premium .dm-papel .dm-eyebrow,.dm-cine .dm-papel .dm-eyebrow{color:var(--tinta)}
+.dm-premium .dm-papel .dm-avatar,.dm-cine .dm-papel .dm-avatar{background:var(--tinta);color:var(--papel)}
+/* carta (servicios como lista) */
+.dm-carta{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.dm-carta li{display:grid;grid-template-columns:44px 1fr 40px;gap:18px;align-items:start;padding:22px 4px;border-bottom:1px solid var(--line)}
+.dm-carta-n{font-family:var(--f-display);font-weight:var(--f-peso);font-size:20px;color:var(--acento);padding-top:2px}
+.dm-carta h3{font-size:clamp(1.2rem,2.4vw,1.6rem);margin:0 0 6px}
+.dm-carta p{margin:0;color:var(--dim);font-size:14.5px;line-height:1.55;max-width:60ch}
+.dm-carta-ico{color:var(--acento);opacity:.8;padding-top:4px}
+.dm-carta li:hover .dm-carta-ico{opacity:1}
+/* ── composiciones de cabecera ── */
+.dm-premium.dm-cab-editorial .dm-hero-in{padding-bottom:70px}
+.dm-premium.dm-cab-editorial .dm-h1{font-size:clamp(3rem,9vw,7rem);line-height:.96;letter-spacing:-.03em;max-width:12ch}
+.dm-premium.dm-cab-editorial .dm-sub{max-width:520px}
+.dm-premium.dm-cab-editorial .dm-hero-veil{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 20%,transparent) 0%,color-mix(in srgb,var(--bg) 55%,transparent) 50%,var(--bg) 100%)}
+.dm-premium.dm-cab-centro .dm-hero{align-items:center;text-align:center}
+.dm-premium.dm-cab-centro .dm-hero-in{display:flex;flex-direction:column;align-items:center;padding-bottom:0}
+.dm-premium.dm-cab-centro .dm-pills{justify-content:center}
+.dm-premium.dm-cab-centro .dm-h1{max-width:16ch}
+.dm-premium.dm-cab-centro .dm-sub{margin-left:auto;margin-right:auto}
+.dm-premium.dm-cab-centro .dm-cta-row{justify-content:center}
+.dm-premium.dm-cab-centro .dm-hero-veil{background:radial-gradient(70% 60% at 50% 45%,color-mix(in srgb,var(--bg) 25%,transparent) 0%,color-mix(in srgb,var(--bg) 70%,transparent) 70%,var(--bg) 100%)}
+/* cine: el panel de cristal toma el color del sector; en centro va centrado; en editorial, sin panel (el texto va sobre la luz) */
+
+/* ══ CINEMATOGRÁFICA · conceptos de cabecera (ninguno es el cristal de allo) ══ */
+.dm-cine .dm-hero{min-height:100dvh}
+.dm-cine .dm-hero-grad{background:radial-gradient(90% 70% at 70% 20%,var(--luz2) 0%,var(--luz1) 45%,var(--bg) 100%)}
+.dm-cine .dm-hero-img{animation:dmZoom 22s ease-out both}
+/* cinta de servicios en marcha */
+.dm-cinta{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px)}
+.dm-cinta-in{display:flex;gap:0;white-space:nowrap;width:max-content;animation:dmCinta 38s linear infinite}
+.dm-cinta span{display:inline-flex;align-items:center;gap:26px;padding:14px 26px 14px 0;font-family:var(--f-display);font-weight:var(--f-peso);font-size:clamp(1rem,1.8vw,1.35rem);letter-spacing:-.01em;color:var(--dim)}
+.dm-cinta i{width:6px;height:6px;border-radius:50%;background:var(--acento);display:inline-block}
+@keyframes dmCinta{to{transform:translateX(-33.333%)}}
+@media (prefers-reduced-motion:reduce){.dm-cinta-in{animation:none}}
+/* revelado */
+.dm-cine-revelado{align-items:flex-end}
+.dm-cine-revelado .dm-hero-in{padding-bottom:64px;animation:none}
+.dm-cine-revelado .dm-h1{font-size:clamp(3.4rem,10vw,8.4rem);line-height:.94;letter-spacing:-.035em;max-width:14ch;overflow:hidden}
+.dm-w{display:inline-block;animation:dmPalabra 1.1s cubic-bezier(.16,1,.3,1) both}
+@keyframes dmPalabra{from{transform:translateY(110%) rotate(3deg);opacity:0}to{transform:none;opacity:1}}
+.dm-rev-fila{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin:22px 0 28px}
+.dm-rev-fila .dm-sub{margin:0;max-width:560px}
+.dm-rev-fila>div{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:760px){.dm-rev-fila{grid-template-columns:1fr}.dm-rev-fila>div{justify-content:flex-start}}
+.dm-cine-revelado .dm-hero-veil{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 15%,transparent) 0%,color-mix(in srgb,var(--bg) 40%,transparent) 55%,var(--bg) 100%)}
+/* aura */
+.dm-cine-aura{align-items:center;text-align:center;overflow:hidden;background:var(--bg)}
+.dm-aura{position:absolute;inset:-20%;filter:blur(90px);opacity:.75;background:radial-gradient(38% 42% at 50% 42%,var(--acento) 0%,var(--luz2) 40%,transparent 72%),radial-gradient(40% 40% at 20% 80%,var(--luz1) 0%,transparent 70%),radial-gradient(35% 35% at 82% 20%,var(--acento2) 0%,transparent 70%);animation:dmAura 26s ease-in-out infinite alternate}
+@keyframes dmAura{0%{transform:translate(0,0) scale(1)}50%{transform:translate(4%,-3%) scale(1.06)}100%{transform:translate(-3%,3%) scale(.97)}}
+.dm-cine-aura .dm-hero-in{display:flex;flex-direction:column;align-items:center;padding:110px 22px 220px}
+.dm-cine-aura .dm-h1{font-size:clamp(3rem,8vw,6.6rem);max-width:16ch;line-height:1}
+.dm-cine-aura .dm-h1 em{font-style:italic;color:var(--acento)}
+.dm-cine-aura .dm-sub{margin-left:auto;margin-right:auto}
+.dm-cine-aura .dm-cta-row{justify-content:center}
+.dm-cine-aura .dm-pills{justify-content:center;margin-top:22px}
+.dm-flotantes{position:absolute;inset:auto 0 0 0;height:210px;pointer-events:none}
+.dm-flot{position:absolute;bottom:34px;width:220px;padding:10px 10px 12px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 30px 60px -30px rgba(0,0,0,.7);animation:dmFlota 7s ease-in-out infinite alternate}
+.dm-flot img{width:100%;height:110px;object-fit:cover;border-radius:12px;display:block;margin-bottom:8px}
+.dm-flot-ico{display:flex;align-items:center;justify-content:center;height:110px;border-radius:12px;background:color-mix(in srgb,var(--acento) 18%,transparent);color:var(--acento);margin-bottom:8px}
+.dm-flot b{display:block;font-family:var(--f-display);font-weight:var(--f-peso);font-size:15px;text-align:left;padding:0 4px}
+.dm-flot-0{left:8%;transform:rotate(-6deg)}.dm-flot-1{left:calc(50% - 110px);bottom:10px;transform:rotate(2deg);animation-delay:-2s}.dm-flot-2{right:8%;transform:rotate(5deg);animation-delay:-4s}
+@keyframes dmFlota{to{translate:0 -14px}}
+@media (max-width:760px){.dm-flot-1{display:none}.dm-flot{width:150px}.dm-flot img,.dm-flot-ico{height:80px}}
+/* dividido */
+.dm-cine-dividido{display:grid;grid-template-columns:1fr 1fr;min-height:100dvh;align-items:stretch}
+.dm-div-papel{background:var(--papel);color:var(--tinta);--txt:var(--tinta);--dim:color-mix(in srgb,var(--tinta) 72%,var(--papel));padding:150px 56px 70px;display:flex;flex-direction:column;justify-content:center;gap:0;position:relative;z-index:1}
+.dm-div-papel .dm-h1{font-size:clamp(2.6rem,5vw,4.6rem);line-height:1.02}
+.dm-div-papel .dm-sub{color:var(--dim);max-width:460px}
+.dm-div-papel .dm-adn-eyebrow{color:var(--tinta)}
+.dm-div-papel .dm-pill{background:color-mix(in srgb,var(--tinta) 8%,transparent);border-color:color-mix(in srgb,var(--tinta) 14%,transparent);color:var(--tinta)}
+.dm-div-papel .dm-pill-soft{color:var(--dim)}
+.dm-cita{margin:8px 0 26px;padding:22px;border-radius:20px;background:#fff;box-shadow:0 0 0 1px color-mix(in srgb,var(--tinta) 8%,transparent),0 30px 60px -36px color-mix(in srgb,var(--tinta) 45%,transparent)}
+.dm-cita-t{font-family:var(--f-display);font-weight:var(--f-peso);font-size:22px;margin-bottom:12px}
+.dm-cita-campos{display:grid;gap:8px;margin-bottom:14px}
+.dm-cita-campos span{display:block;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--tinta) 14%,transparent);color:color-mix(in srgb,var(--tinta) 55%,var(--papel));font-size:13.5px;background:#fff}
+.dm-cita .dm-btn{width:100%;background:var(--tinta);color:var(--papel);box-shadow:none}
+.dm-cita small{display:block;margin-top:10px;font-size:12px;color:color-mix(in srgb,var(--tinta) 60%,var(--papel))}
+.dm-div-foto{position:relative;background:var(--bg);overflow:hidden;padding:120px 40px 60px}
+.dm-marco{position:absolute;inset:100px 44px 90px;padding:8px;border-radius:32px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 50px 100px -40px rgba(0,0,0,.8)}
+.dm-marco .dm-hero-img,.dm-marco img{position:static;width:100%;height:100%;object-fit:cover;border-radius:24px;display:block}
+.dm-marco-2{inset:auto 24px 40px auto;width:240px;height:170px;padding:6px;border-radius:22px;transform:rotate(-4deg);background:rgba(255,255,255,.1)}
+.dm-marco-2 img{border-radius:16px}
+@media (max-width:900px){.dm-cine-dividido{grid-template-columns:1fr}.dm-div-papel{padding:120px 22px 40px}.dm-div-foto{min-height:60vh;padding:0}.dm-marco{inset:20px 16px 70px}.dm-marco-2{width:150px;height:110px}}
+/* póster (cabecera clara) */
+.dm-cine-poster{background:var(--papel);color:var(--tinta);--txt:var(--tinta);--dim:color-mix(in srgb,var(--tinta) 72%,var(--papel));--faint:color-mix(in srgb,var(--tinta) 55%,var(--papel));display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;padding:150px 56px 90px;overflow:hidden;position:relative}
+.dm-cine-poster::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
+.dm-cine-poster .dm-hero-in{padding:0;animation:none;max-width:none}
+.dm-cine-poster .dm-adn-eyebrow{color:var(--acento2)}
+.dm-cine-poster .dm-h1{font-size:clamp(3.2rem,8vw,7.2rem);line-height:.96;color:var(--tinta)}
+.dm-cine-poster .dm-sub{color:var(--dim)}
+.dm-cine-poster .dm-btn-ghost{color:var(--tinta);border-color:color-mix(in srgb,var(--tinta) 30%,transparent)}
+.dm-ventana{position:relative;aspect-ratio:4/5;border-radius:200px 200px 28px 28px;overflow:hidden;box-shadow:0 40px 80px -40px color-mix(in srgb,var(--tinta) 60%,transparent)}
+.dm-ventana .dm-hero-img{position:absolute;inset:0;animation:dmZoom 22s ease-out both}
+.dm-cine-poster .dm-pills{position:absolute;left:56px;bottom:40px}
+.dm-cine-poster .dm-pill{background:#fff;border-color:color-mix(in srgb,var(--tinta) 12%,transparent);color:var(--tinta)}
+.dm-cine-poster .dm-pill-soft{color:var(--dim)}
+.dm-sello{position:absolute;right:calc(.9fr);top:96px;right:44%;width:150px;height:150px;animation:dmGira 24s linear infinite;z-index:2}
+.dm-sello svg{width:100%;height:100%;overflow:visible}
+.dm-sello text{font-family:var(--f-texto);font-size:16.5px;letter-spacing:.22em;text-transform:uppercase;fill:var(--tinta);font-weight:500}
+@keyframes dmGira{to{transform:rotate(360deg)}}
+@media (max-width:900px){.dm-cine-poster{grid-template-columns:1fr;padding:120px 22px 70px}.dm-sello{right:16px;top:90px;width:110px;height:110px}.dm-cine-poster .dm-pills{position:static;margin-top:18px}}
+/* velocidad */
+.dm-cine-velocidad{align-items:flex-end}
+.dm-diagonal{position:absolute;inset:0;background:linear-gradient(112deg,var(--bg) 0%,var(--bg) 42%,transparent 42.2%);opacity:.92}
+.dm-cine-velocidad .dm-hero-veil{background:linear-gradient(180deg,transparent 0%,color-mix(in srgb,var(--bg) 60%,transparent) 70%,var(--bg) 100%)}
+.dm-cine-velocidad .dm-hero-in{padding-bottom:150px}
+.dm-h1-contorno{position:relative;font-size:clamp(3.4rem,9.5vw,8rem);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;max-width:12ch}
+.dm-h1-contorno::before{content:attr(data-texto);position:absolute;left:.06em;top:.06em;color:transparent;-webkit-text-stroke:1.5px var(--acento);z-index:-1;opacity:.9}
+.dm-contadores{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(12px)}
+.dm-contadores div{padding:20px 22px;border-right:1px solid var(--line)}
+.dm-contadores b{display:block;font-family:var(--f-display);font-weight:var(--f-peso);font-size:clamp(1.6rem,3vw,2.4rem);color:var(--acento);letter-spacing:-.02em}
+.dm-contadores span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+@media (max-width:760px){.dm-contadores{grid-template-columns:repeat(2,1fr)}}
 `

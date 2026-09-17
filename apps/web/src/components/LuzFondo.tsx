@@ -43,7 +43,7 @@ const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5),
 const mix = (a: number, b: number, t: number) => a + (b - a) * t
 const suave = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 
-export default function LuzFondo({ paleta = 'marca', estados }: { paleta?: keyof typeof PALETAS; estados?: Foco[][] }) {
+export default function LuzFondo({ paleta = 'marca', estados, colores }: { paleta?: keyof typeof PALETAS | 'sector'; estados?: Foco[][]; colores?: Record<string, string> }) {
   const ref = useRef<HTMLDivElement>(null)
   const ESTADOS = estados || ESTADOS_PORTADA
 
@@ -53,7 +53,7 @@ export default function LuzFondo({ paleta = 'marca', estados }: { paleta?: keyof
     // Previsualización: ?paleta=brasa y ?tema=claro cambian paleta y tema sin tocar código
     const q = new URLSearchParams(window.location.search)
     const nombre = (q.get('paleta') && PALETAS[q.get('paleta')!]) ? q.get('paleta')! : paleta
-    const P = PALETAS[nombre] || PALETAS.marca
+    const P = (paleta === 'sector' && colores) ? colores : (PALETAS[nombre] || PALETAS.marca)
     const col = (rol: string) => P[rol] || P.o
     const envoltorio = raiz.parentElement
     if (q.get('tema') === 'claro' && envoltorio) { envoltorio.classList.remove('tema-oscuro'); envoltorio.classList.add('tema-claro') }
@@ -104,7 +104,7 @@ export default function LuzFondo({ paleta = 'marca', estados }: { paleta?: keyof
     window.addEventListener('resize', onScroll)
     raf = requestAnimationFrame(pintar)
     return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll) }
-  }, [])
+  }, [paleta, ESTADOS, colores])
 
   return (
     <div ref={ref} className="luz-fondo" aria-hidden>
