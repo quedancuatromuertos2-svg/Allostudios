@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import CristalHero from './CristalHero'
 
 // Cabecera elegida el 17/09/2026 (propuesta B): dolor general + «tranquilo, nos encargamos» + datos
 const TITULO = 'Estás perdiendo clientes'
@@ -27,7 +28,7 @@ export default function HeroGlass() {
     <section className="hero relative min-h-[100dvh] overflow-hidden">
       <div className="hero-escenario">
         <div className="hero-cartel-img absolute inset-0" aria-hidden />
-        <div className="hero-reflejos absolute inset-0" aria-hidden><i /><i /><i /></div>
+        <CristalHero />
         <motion.div variants={stagger} initial="hidden" animate="show" className="hero-panel-marco absolute">
           <div className="hero-panel">
             <motion.div variants={item} className="hero-etiqueta inline-flex items-center gap-2 rounded-full font-semibold text-dim">
