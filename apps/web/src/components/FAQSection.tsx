@@ -57,7 +57,7 @@ const tagColors: Record<string, string> = {
 
 function FAQItem({ faq, isOpen, onClick }: { faq: typeof faqs[0]; isOpen: boolean; onClick: () => void }) {
   return (
-    <div className="border-b border-border last:border-none">
+    <div className="px-6">
       <button
         onClick={onClick}
         className="w-full flex items-center justify-between py-5 text-left gap-4 group"
@@ -123,7 +123,7 @@ export default function FAQSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ delay: 0.16 }}
-          className="lg rounded-2xl px-8"
+          className="faq-colores space-y-3"
         >
           {faqs.map((faq, i) => (
             <FAQItem

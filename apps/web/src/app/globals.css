@@ -475,3 +475,15 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .trabajo:hover{background:rgba(255,255,255,.06)}
 /* cierre en faro: el texto sobre la luz cálida */
 .tema-oscuro .cierre .text-ink\/70{color:rgba(244,243,247,.72)}
+
+/* ── Preguntas: cada panel con un color de la paleta (cristal teñido), en ciclo ── */
+.tema-oscuro .faq-colores>*{--fc:91,91,214;background:rgba(var(--fc),.13) !important;border:1px solid rgba(var(--fc),.34) !important;border-radius:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 20px 44px -30px rgba(0,0,0,.6)}
+.tema-oscuro .faq-colores>*:nth-child(6n+2){--fc:255,79,163}
+.tema-oscuro .faq-colores>*:nth-child(6n+3){--fc:255,122,42}
+.tema-oscuro .faq-colores>*:nth-child(6n+4){--fc:59,108,255}
+.tema-oscuro .faq-colores>*:nth-child(6n+5){--fc:138,91,255}
+.tema-oscuro .faq-colores>*:nth-child(6n+6){--fc:255,210,63}
+.tema-oscuro .faq-colores>*:hover{background:rgba(var(--fc),.18) !important}
+.tema-oscuro .papel .faq-colores>*{background:rgba(var(--fc),.1) !important;border-color:rgba(var(--fc),.28) !important;box-shadow:inset 0 1px 0 #fff,0 16px 40px -28px rgba(24,24,27,.3)}
+/* inputs: nunca blancos en oscuro (la regla de los botones blancos no les afecta) */
+.tema-oscuro input.bg-white.text-ink,.tema-oscuro textarea.bg-white.text-ink,.tema-oscuro select.bg-white.text-ink,.tema-oscuro input.bg-white,.tema-oscuro textarea.bg-white,.tema-oscuro select.bg-white{background-color:rgba(255,255,255,.06);color:var(--tinta-clara);backdrop-filter:none}

@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import { CATALOGO, eur, porClave } from '@/lib/precios'
+import { CATALOGO, eur, porClave, luzDe } from '@/lib/precios'
+import LuzFondo from '@/components/LuzFondo'
+import { ESTADOS_INTERIOR } from '@/lib/luces'
 
 export const metadata: Metadata = {
   title: 'Contratar tu web, Instagram o captación',
@@ -19,7 +21,8 @@ export default function ContratarPage() {
   const principales = CATALOGO.filter((a) => !ACOMPANANTES.has(a.clave))
 
   return (
-    <>
+    <div className="tema-oscuro">
+      <LuzFondo estados={[ESTADOS_INTERIOR[0], ESTADOS_INTERIOR[5]]} />
       <Navigation />
       <main className="relative z-10 pt-36 pb-section">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
@@ -41,8 +44,10 @@ export default function ContratarPage() {
                 <Link
                   key={a.clave}
                   href={`/contratar/${a.clave.toLowerCase()}`}
-                  className="card p-6 flex flex-col hover:-translate-y-0.5 transition-transform duration-300"
+                  className="card p-2 pb-6 flex flex-col hover:-translate-y-0.5 transition-transform duration-300"
                 >
+                  <div className="h-28 rounded-[14px] mb-5" style={{ backgroundImage: `url(/marca/luces/${luzDe(a.clave)}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                  <div className="px-4 flex flex-col flex-1">
                   <h2 className="text-[16px] font-semibold text-ink">{a.nombre}</h2>
                   <p className="text-[13px] text-dim font-light leading-relaxed mt-2 flex-1">{a.desc}</p>
                   <div className="mt-5 pt-4 border-t border-border">
@@ -60,6 +65,7 @@ export default function ContratarPage() {
                     <span className="btn-accent w-full justify-center mt-4 rounded-full text-[13.5px] py-3">
                       Ver desglose
                     </span>
+                  </div>
                   </div>
                 </Link>
               )
@@ -81,6 +87,6 @@ export default function ContratarPage() {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

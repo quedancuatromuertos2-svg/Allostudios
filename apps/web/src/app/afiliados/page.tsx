@@ -3,6 +3,9 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import ComisionCalculadora from '@/components/afiliados/ComisionCalculadora'
 import AfiliadoForm from '@/components/afiliados/AfiliadoForm'
+import LuzFondo from '@/components/LuzFondo'
+import { ESTADOS_INTERIOR } from '@/lib/luces'
+import LuzPapel from '@/components/LuzPapel'
 
 export const metadata: Metadata = {
   title: 'Programa de comerciales — gana el 30 % de cada venta',
@@ -113,18 +116,14 @@ const faqs = [
 
 export default function AfiliadosPage() {
   return (
-    <>
+    <div className="tema-oscuro">
+      <LuzFondo estados={ESTADOS_INTERIOR} />
+      <LuzPapel />
       <Navigation />
 
       <main className="relative z-10">
         {/* ── Hero ── */}
         <section className="relative overflow-hidden pt-40 pb-20 md:pb-24">
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: 'linear-gradient(170deg, #FAFAF9 0%, #F3F3FE 55%, #EDEDFB 100%)',
-          }} />
-          <div className="absolute w-[680px] h-[680px] rounded-full blur-[140px] opacity-40 -top-48 -right-40 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(124,124,232,0.5) 0%, transparent 65%)' }} />
-          <div className="absolute inset-0 line-grid opacity-60 pointer-events-none" />
 
           <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 text-center">
             <span className="eyebrow inline-flex items-center gap-2 mb-5">
@@ -179,8 +178,6 @@ export default function AfiliadosPage() {
 
         {/* ── Cómo funciona ── */}
         <section className="py-section bg-ink relative overflow-hidden">
-          <div className="absolute w-[600px] h-[600px] rounded-full blur-[120px] top-[-15%] right-[-15%] opacity-20 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 65%)' }} />
           <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
             <div className="text-center mb-14">
               <span className="inline-block text-[11px] font-bold tracking-[0.22em] uppercase text-accent mb-5">
@@ -266,7 +263,7 @@ export default function AfiliadosPage() {
         </section>
 
         {/* ── Reglas ── */}
-        <section className="py-section bg-surface/60">
+        <section className="py-section papel relative overflow-hidden">
           <div className="max-w-5xl mx-auto px-6 md:px-12">
             <div className="text-center mb-12">
               <span className="eyebrow block mb-4">Las reglas, por delante</span>
@@ -295,9 +292,9 @@ export default function AfiliadosPage() {
               <span className="eyebrow block mb-4">Dudas</span>
               <h2 className="text-headline font-semibold text-ink text-balance">Lo que todos preguntan.</h2>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 faq-colores">
               {faqs.map((f) => (
-                <details key={f.q} className="group bg-white rounded-2xl border border-border px-6 py-5">
+                <details key={f.q} className="group lg rounded-2xl px-6 py-5">
                   <summary className="flex items-center justify-between gap-4 cursor-pointer list-none text-[15px] font-medium text-ink">
                     {f.q}
                     <span className="shrink-0 text-muted transition-transform duration-300 group-open:rotate-45">
@@ -316,7 +313,7 @@ export default function AfiliadosPage() {
         {/* ── Solicitud ── */}
         {/* La calculadora se repite aquí a propósito: es el momento en el que la
             persona decide, y lo que la mueve es ver el número. */}
-        <section id="solicitud" className="py-section bg-surface/60">
+        <section id="solicitud" className="py-section papel papel-violeta relative overflow-hidden">
           <div className="max-w-5xl mx-auto px-6 md:px-12">
             <div className="text-center mb-10">
               <span className="eyebrow block mb-4">Solicitud</span>
@@ -364,6 +361,6 @@ export default function AfiliadosPage() {
       </main>
 
       <Footer />
-    </>
+    </div>
   )
 }

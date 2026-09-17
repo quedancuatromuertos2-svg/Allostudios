@@ -10,7 +10,12 @@ interface LogoMarkProps {
   className?: string
 }
 
-export function LogoMark({ size = 32, className = '' }: LogoMarkProps) {
+export function LogoMark({ size = 32, className = '', claro = true }: LogoMarkProps & { claro?: boolean }) {
+  // Versión clara (la de la marca, 18/09/2026): la pieza de papel con la luz. Es la que va en la barra y en el favicon.
+  if (claro) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src="/marca/icono-claro-256.png" width={size} height={size} alt="AlloStudios" className={className} style={{ borderRadius: size * 0.27 }} />
+  }
   // Pieza redondeada con la luz (Faro) dentro. Sin texto: a este tamaño solo se ve la luz.
   const id = 'allo' + size
   return (

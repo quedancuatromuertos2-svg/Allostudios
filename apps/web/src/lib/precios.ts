@@ -100,5 +100,17 @@ export const CATALOGO: Articulo[] = [
 
 export const porClave = (clave: string) => CATALOGO.find((a) => a.clave === clave)
 
+// Luz de la marca que acompaña a cada producto (imágenes en public/marca/luces/<luz>.jpg, generadas en MARCA-ALLOSTUDIOS/fondos)
+export const LUZ_PRODUCTO: Record<string, string> = {
+  WEB_ARRANQUE: 'faro', WEB_PREMIUM: 'haz', WEB_CINE: 'prisma',
+  MANTENIMIENTO: 'velo', MANT_CINE: 'eclipse',
+  CAPTACION: 'cometa', CAPTACION_PRO: 'doble',
+  INSTAGRAM: 'aura', INSTAGRAM_PRO: 'espectro',
+  ASISTENTE_IA: 'orbe', ASISTENTE_IA_MES: 'esfera',
+  SEO_LOCAL: 'marea', SEO_LOCAL_MES: 'lente',
+  RESENAS: 'latido', ADS: 'llama',
+}
+export const luzDe = (clave: string) => LUZ_PRODUCTO[clave] || 'faro'
+
 export const eur = (n: number) =>
   n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })

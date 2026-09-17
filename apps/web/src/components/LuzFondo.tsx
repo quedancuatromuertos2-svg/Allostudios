@@ -1,5 +1,6 @@
 'use client'
 
+
 /**
  * La luz de fondo de la marca: tres focos difusos, fijos detrás de todo, que se
  * transforman despacio según se baja por la página. Cada sección de <main> tiene
@@ -24,7 +25,7 @@ export const PALETAS: Record<string, Record<string, string>> = {
 }
 // Estados por sección: [x vw, y vh, tamaño vw, rol]. Un recorrido de color al bajar:
 // violeta/magenta → azul → magenta/naranja → lila → azul/rojo → naranja/rojo → violeta → rojo/melocotón → lila → magenta → azul/rojo → el faro
-const ESTADOS: Foco[][] = [
+export const ESTADOS_PORTADA: Foco[][] = [
   [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 0 cabecera: la luz la pone el cristal
   [[82, 40, 70, 'c'], [12, 90, 62, 'd'], [50, 50, 0, 'o']],       // 1 generador: violeta y azul
   [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // 2 servicios (papel): lleva su propia luz
@@ -42,8 +43,9 @@ const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5),
 const mix = (a: number, b: number, t: number) => a + (b - a) * t
 const suave = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 
-export default function LuzFondo({ paleta = 'marca' }: { paleta?: keyof typeof PALETAS }) {
+export default function LuzFondo({ paleta = 'marca', estados }: { paleta?: keyof typeof PALETAS; estados?: Foco[][] }) {
   const ref = useRef<HTMLDivElement>(null)
+  const ESTADOS = estados || ESTADOS_PORTADA
 
   useEffect(() => {
     const raiz = ref.current

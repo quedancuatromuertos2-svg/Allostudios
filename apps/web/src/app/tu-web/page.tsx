@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import TuWebForm from '@/components/TuWebForm'
+import LuzFondo from '@/components/LuzFondo'
+import { ESTADOS_INTERIOR } from '@/lib/luces'
 
 export const metadata: Metadata = {
   title: 'Genera la web de tu negocio gratis',
@@ -20,7 +22,8 @@ export default function TuWebPage({
   const ciudad = String(searchParams?.ciudad || '').slice(0, 80) || 'Valencia'
 
   return (
-    <>
+    <div className="tema-oscuro">
+      <LuzFondo estados={[ESTADOS_INTERIOR[0], ESTADOS_INTERIOR[5]]} />
       <Navigation />
       <main className="relative z-10 min-h-[100dvh] flex items-center justify-center px-6 py-32">
         <div className="max-w-xl w-full">
@@ -36,10 +39,14 @@ export default function TuWebPage({
             </p>
           </div>
 
-          <TuWebForm defaultNegocio={negocio} defaultCiudad={ciudad} />
+          <div className="hero-bandeja p-1.5 rounded-[1.6rem]">
+            <div className="lg rounded-[calc(1.6rem-0.375rem)] p-6 md:p-8">
+              <TuWebForm defaultNegocio={negocio} defaultCiudad={ciudad} />
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

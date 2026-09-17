@@ -16,10 +16,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/marca/icono-claro-64.png", sizes: "64x64", type: "image/png" },
+      { url: "/marca/icono-claro-256.png", sizes: "256x256", type: "image/png" },
     ],
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    shortcut: "/marca/icono-claro-64.png",
+    apple: "/marca/icono-claro-256.png",
   },
   description:
     "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tus mensajes 24/7. Pide tu demo gratis.",
@@ -95,8 +96,8 @@ export default function RootLayout({
                 "@type": "ProfessionalService",
                 name: "AlloStudios",
                 url: "https://allostudios.net",
-                logo: "https://allostudios.net/favicon.svg",
-                image: "https://allostudios.net/favicon.svg",
+                logo: "https://allostudios.net/marca/icono-claro-256.png",
+                image: "https://allostudios.net/marca/icono-claro-256.png",
                 description:
                   "Agencia digital para negocios locales de Valencia: webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local, reseñas y asistente de IA 24/7.",
                 areaServed: { "@type": "City", name: "Valencia" },
