@@ -106,8 +106,8 @@ function LiveCallCard() {
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute -top-5 -right-6 bg-white rounded-2xl border border-border shadow-md px-3.5 py-2.5"
       >
-        <div className="text-[13px] font-bold text-ink">98%</div>
-        <div className="text-[10px] text-muted">mensajes atendidos</div>
+        <div className="text-[13px] font-bold text-ink">24/7</div>
+        <div className="text-[10px] text-muted">responde siempre</div>
       </motion.div>
 
       <motion.div
