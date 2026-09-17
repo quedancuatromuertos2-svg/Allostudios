@@ -16,10 +16,18 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
+  const [sobreClaro, setSobreClaro] = useState(false)
+
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 24)
-    window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
+    // Qué hay debajo de la barra: si es un apartado de papel (claro), la barra pasa a tinta oscura para leerse
+    const fn = () => {
+      setScrolled(window.scrollY > 24)
+      const bajo = document.elementsFromPoint(window.innerWidth / 2, 44).find(e => !e.closest('header'))
+      setSobreClaro(!!bajo?.closest('.papel'))
+    }
+    fn()
+    window.addEventListener('scroll', fn, { passive: true }); window.addEventListener('resize', fn)
+    return () => { window.removeEventListener('scroll', fn); window.removeEventListener('resize', fn) }
   }, [])
 
   const go = (href: string) => {
@@ -37,7 +45,7 @@ export default function Navigation() {
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500${sobreClaro ? ' nav-claro' : ''}`}
     >
       {/* Frosted pill that appears on scroll */}
       <div className={`
