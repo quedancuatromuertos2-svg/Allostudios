@@ -114,7 +114,7 @@ export default function DemoGeneratorSection() {
   return (
     <section id="tu-web" className="relative overflow-hidden py-section">
       {/* Fondo suave con acento */}
-      <div className="absolute inset-0 pointer-events-none" style={{
+      <div className="absolute inset-0 pointer-events-none fondo-lavanda" style={{
         background: 'linear-gradient(170deg, #FAFAF9 0%, #F3F3FE 45%, #EDEDFB 100%)',
       }} />
       <div className="absolute w-[620px] h-[620px] rounded-full blur-[130px] opacity-40 -top-40 -right-32 pointer-events-none"

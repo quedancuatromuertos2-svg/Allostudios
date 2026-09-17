@@ -15,27 +15,30 @@ import { useEffect, useRef } from 'react'
 type Foco = [x: number, y: number, tam: number, rol: string] // vw, vh, vw, rol de color
 // Paletas: los mismos estados, otros colores. Se elige con la prop `paleta` (o ?paleta= en la URL, para previsualizar).
 export const PALETAS: Record<string, Record<string, string>> = {
-  marca:     { a: '#FF7A2A', b: '#FF4FA3', c: '#5B5BD6', d: '#3B6CFF', e: '#FFF1B8', o: '#121216' }, // naranja · magenta · violeta · azul
-  atardecer: { a: '#FF5A1F', b: '#FF3D5A', c: '#FF8A5C', d: '#FFB86B', e: '#FFF0C2', o: '#121216' }, // naranja · rojo · melocotón (el cartel)
-  brasa:     { a: '#FF2E12', b: '#FF7A2A', c: '#FFD23F', d: '#FF4FA3', e: '#FFF6D6', o: '#121216' }, // rojo · naranja · amarillo
-  noche:     { a: '#3B6CFF', b: '#5B5BD6', c: '#8A5BFF', d: '#FF4FA3', e: '#EAE6FF', o: '#121216' }, // azul · violeta · lila · un toque magenta
-  ceniza:    { a: '#FF7A2A', b: '#2A2A34', c: '#3A3A46', d: '#5B5BD6', e: '#FFE3C2', o: '#121216' }, // grafito con una sola brasa
+  // Marca: violeta y magenta como base, y al bajar aparecen el azul, el naranja, el rojo y el melocotón
+  marca:     { a: '#FF7A2A', b: '#FF4FA3', c: '#5B5BD6', d: '#3B6CFF', e: '#FFF1B8', f: '#FF3D5A', g: '#FFB86B', h: '#8A5BFF', o: '#121216' },
+  atardecer: { a: '#FF5A1F', b: '#FF3D5A', c: '#FF8A5C', d: '#FFB86B', e: '#FFF0C2', f: '#FF2E12', g: '#FFD9A8', h: '#FF7A2A', o: '#121216' },
+  brasa:     { a: '#FF2E12', b: '#FF7A2A', c: '#FFD23F', d: '#FF4FA3', e: '#FFF6D6', f: '#FF3D5A', g: '#FFE58A', h: '#FF7A2A', o: '#121216' },
+  noche:     { a: '#3B6CFF', b: '#5B5BD6', c: '#8A5BFF', d: '#FF4FA3', e: '#EAE6FF', f: '#6A5BFF', g: '#B4A8FF', h: '#3B6CFF', o: '#121216' },
+  ceniza:    { a: '#FF7A2A', b: '#2A2A34', c: '#3A3A46', d: '#5B5BD6', e: '#FFE3C2', f: '#FF3D5A', g: '#3A3A46', h: '#2A2A34', o: '#121216' },
 }
+// Estados por sección: [x vw, y vh, tamaño vw, rol]. Un recorrido de color al bajar:
+// violeta/magenta → azul → magenta/naranja → lila → azul/rojo → naranja/rojo → violeta → rojo/melocotón → lila → magenta → azul/rojo → el faro
 const ESTADOS: Foco[][] = [
-  [[50, 112, 74, 'a'], [50, 92, 96, 'b'], [50, -14, 110, 'c']],   // hero: la luz sube
-  [[82, 60, 58, 'c'], [8, 84, 54, 'd'], [50, -30, 60, 'c']],     // datos
-  [[80, 44, 64, 'b'], [84, 62, 42, 'a'], [-12, 22, 72, 'c']],    // generador
-  [[50, 42, 96, 'c'], [50, 42, 54, 'o'], [50, 42, 76, 'b']],     // servicios: aura
-  [[18, 30, 72, 'd'], [72, 56, 72, 'b'], [36, 82, 62, 'a']],     // sectores
-  [[26, 42, 62, 'a'], [74, 64, 68, 'b'], [50, 104, 72, 'b']],    // webs: esferas cálidas
-  [[50, 40, 88, 'b'], [50, 40, 50, 'o'], [50, 40, 70, 'a']],     // servicios detalle
-  [[14, 20, 62, 'd'], [86, 82, 62, 'c'], [50, 50, 30, 'o']],     // cómo
-  [[84, 22, 52, 'c'], [16, 90, 52, 'b'], [50, 50, 24, 'o']],     // testimonios
-  [[50, 106, 84, 'a'], [50, 90, 104, 'b'], [50, 0, 60, 'c']],    // precios: cálida abajo
-  [[86, 18, 52, 'c'], [14, 92, 52, 'd'], [50, 50, 20, 'o']],     // faq
-  [[50, 50, 62, 'b'], [50, 50, 92, 'c'], [50, 50, 30, 'a']],     // contacto
-  [[20, 70, 70, 'd'], [80, 30, 70, 'b'], [50, 100, 50, 'a']],    // comerciales
-  [[50, 110, 74, 'e'], [50, 96, 96, 'a'], [50, 62, 112, 'b']],   // cta: el faro entero
+  [[56, 104, 78, 'a'], [44, 88, 96, 'b'], [50, -12, 112, 'c']],   // hero: violeta arriba, magenta y un borde naranja abajo
+  [[84, 58, 62, 'd'], [10, 84, 58, 'c'], [50, -30, 60, 'h']],    // datos: azul y lila
+  [[80, 44, 66, 'b'], [86, 66, 46, 'a'], [-12, 22, 74, 'c']],    // generador: magenta y naranja a la derecha
+  [[50, 42, 98, 'h'], [50, 42, 54, 'o'], [50, 42, 78, 'b']],     // servicios: aura lila-magenta
+  [[16, 28, 74, 'd'], [74, 58, 74, 'f'], [36, 84, 62, 'g']],     // sectores: azul, rojo, melocotón
+  [[24, 42, 64, 'a'], [76, 64, 70, 'f'], [50, 106, 72, 'b']],    // webs: esferas naranja y roja
+  [[50, 40, 90, 'c'], [50, 40, 50, 'o'], [50, 40, 70, 'd']],     // servicios detalle: violeta y azul
+  [[12, 22, 62, 'f'], [88, 80, 62, 'g'], [50, 50, 30, 'o']],     // cómo: rojo y melocotón
+  [[86, 22, 54, 'h'], [14, 90, 54, 'b'], [50, 50, 24, 'o']],     // testimonios: lila y magenta
+  [[50, 106, 86, 'a'], [50, 90, 104, 'b'], [50, 0, 62, 'd']],    // precios: cálida abajo, azul arriba
+  [[88, 18, 54, 'c'], [12, 92, 54, 'd'], [50, 50, 20, 'o']],     // faq: violeta y azul
+  [[50, 50, 64, 'b'], [50, 50, 92, 'h'], [50, 50, 30, 'a']],     // contacto: magenta sobre lila
+  [[20, 70, 72, 'd'], [80, 30, 72, 'f'], [50, 100, 52, 'g']],    // comerciales: azul, rojo, melocotón
+  [[50, 110, 76, 'e'], [50, 96, 98, 'a'], [50, 62, 112, 'b']],   // cta: el faro entero
 ]
 const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]
 const mix = (a: number, b: number, t: number) => a + (b - a) * t
