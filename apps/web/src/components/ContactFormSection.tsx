@@ -8,7 +8,7 @@ const SERVICIOS = [
   'Web Cinematográfica (efecto Apple)',
   'Gestión de Instagram',
   'Anuncios Meta / Google',
-  'Asistente IA (WhatsApp/DMs)',
+  'Asistente IA en WhatsApp',
   'SEO local + Reseñas Google',
   'Pack Completo',
   'No estoy seguro',

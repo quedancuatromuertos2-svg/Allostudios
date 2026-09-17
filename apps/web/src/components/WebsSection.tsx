@@ -50,7 +50,7 @@ const bentoFeatures = [
       </svg>
     ),
     title: 'IA integrada',
-    desc: 'El asistente de IA y tu web conectados. Captas leads por la web y por tus DMs en un solo sistema.',
+    desc: 'El asistente de IA y tu web conectados. Captas leads por la web y por WhatsApp en un solo sistema.',
     accent: 'bg-purple-50 text-purple-600 border-purple-100',
   },
   {

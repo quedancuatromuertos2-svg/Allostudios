@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   description:
-    "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tus mensajes 24/7. Pide tu demo gratis.",
+    "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tu WhatsApp 24/7. Pide tu demo gratis.",
   keywords: [
     "diseño web Valencia", "web para negocios Valencia", "agencia digital Valencia",
     "gestión de Instagram Valencia", "community manager Valencia", "publicidad Meta Ads Valencia",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     images: [{ url: "https://allostudios.net/marca/og.jpg", width: 1200, height: 630, alt: "allo." }],
     title: "AlloStudios — Webs, Instagram y Anuncios para negocios locales",
     description:
-      "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 499 €, gestión de Instagram, anuncios y un asistente de IA que responde 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
+      "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 499 €, gestión de Instagram, anuncios y un asistente de IA que responde tu WhatsApp 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
   },
   twitter: {
     card: "summary_large_image",
@@ -179,7 +179,7 @@ export default function RootLayout({
                     name: "¿Qué hace AlloStudios exactamente?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Somos una agencia digital para negocios locales de Valencia. Hacemos tu web profesional, gestionamos tu Instagram, ponemos en marcha tus anuncios de Meta y Google, te subimos en Google (SEO local y reseñas) y montamos un asistente de IA que responde tus mensajes 24/7. Un único partner para todo lo que te trae clientes.",
+                      text: "Somos una agencia digital para negocios locales de Valencia. Hacemos tu web profesional, gestionamos tu Instagram, ponemos en marcha tus anuncios de Meta y Google, te subimos en Google (SEO local y reseñas) y montamos un asistente de IA que responde tu WhatsApp 24/7. Un único partner para todo lo que te trae clientes.",
                     },
                   },
                   {

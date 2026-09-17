@@ -308,7 +308,7 @@ export default function ServicesSection() {
             <div ref={iaRef}>
               <motion.div {...fadeSlide('left')} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-light border border-accent/15 text-[11px] font-bold tracking-[0.13em] uppercase text-accent mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-slow" />
-                Asistente IA · DMs 24/7
+                Asistente IA · WhatsApp 24/7
               </motion.div>
 
               <motion.h2
@@ -326,9 +326,9 @@ export default function ServicesSection() {
                 transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
               >
-                Un asistente de IA responde tus DMs de Instagram y WhatsApp en segundos,
-                cualifica al interesado, agenda la cita
-                y te avisa — mientras tú atiendes, vendes o descansas.
+                Un asistente de IA responde tu WhatsApp en segundos: horarios,
+                precios, dudas y peticiones de cita. Cuando hay que hablar contigo,
+                te avisa — mientras tú atiendes, vendes o descansas.
               </motion.p>
 
               <motion.ul

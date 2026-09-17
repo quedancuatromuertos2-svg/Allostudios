@@ -42,7 +42,7 @@ export default function CTASection() {
         <motion.p variants={item}
           className="mt-5 text-lg text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty"
         >
-          Web nueva, Instagram en marcha y una IA que contesta por ti. Tú solo cierras.
+          Web nueva, Instagram en marcha y un asistente que contesta tu WhatsApp por ti. Tú solo cierras.
           Empieza viendo tu web gratis: sin registro, sin tarjeta.
         </motion.p>
 

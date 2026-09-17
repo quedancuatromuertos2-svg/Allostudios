@@ -68,7 +68,7 @@ export const CATALOGO: Articulo[] = [
   },
   {
     clave: 'ASISTENTE_IA', nombre: 'Asistente de IA', eur: 199, cobro: 'unico',
-    desc: 'Configuramos tu asistente para que responda tus mensajes de Instagram y WhatsApp 24/7.',
+    desc: 'Configuramos tu asistente para que responda el WhatsApp de tu negocio 24/7: horarios, precios, dudas y peticiones de cita, y te avise cuando haga falta.',
     priceId: 'price_1U9rzRAtD7Uqmi3UUGtFxOBD', acompana: 'ASISTENTE_IA_MES',
   },
   {

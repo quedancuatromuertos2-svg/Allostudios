@@ -18,7 +18,7 @@ const steps = [
   {
     n: '02',
     title: 'Publicamos y respondemos',
-    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tus DMs de Instagram y WhatsApp, cualifica interesados y agenda citas.',
+    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tu WhatsApp: horarios, precios, dudas y peticiones de cita, y te avisa cuando hay que hablar contigo.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>

@@ -15,8 +15,8 @@ const faqs = [
     tag: 'Instagram',
   },
   {
-    q: '¿Cómo funciona el asistente de IA en los DMs?',
-    a: 'Un asistente de IA responde tus mensajes directos de Instagram y WhatsApp 24/7: contesta dudas de tus productos o servicios, cualifica al interesado, capta su contacto y agenda la cita. Cuando hace falta, te avisa para que entres tú.',
+    q: '¿Cómo funciona el asistente de IA en WhatsApp?',
+    a: 'Un asistente de IA responde los mensajes de WhatsApp de tu negocio 24/7: contesta dudas de tus productos o servicios, cualifica al interesado, capta su contacto y agenda la cita. Cuando hace falta, te avisa para que entres tú.',
     tag: 'Asistente IA',
   },
   {
@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     q: '¿Puedo juntar varios servicios en un solo plan?',
-    a: 'Sí, y es lo más rentable. El Pack Completo reúne la web, la gestión de Instagram, los anuncios y el asistente de IA en los DMs — todo con un único partner y un solo interlocutor.',
+    a: 'Sí, y es lo más rentable. El Pack Completo reúne la web, la gestión de Instagram, los anuncios y el asistente de IA en WhatsApp — todo con un único partner y un solo interlocutor.',
     tag: 'Pack Completo',
   },
   {

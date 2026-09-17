@@ -25,7 +25,7 @@ const waBase = 'https://wa.me/34695868793?text='
 const monthly = [
   { n: 'Gestión de Instagram', p: 'desde 199 €/mes', clave: 'instagram' },
   { n: 'Instagram Pro + Ads', p: '349 €/mes', clave: 'instagram_pro' },
-  { n: 'Asistente IA en WhatsApp/DMs', p: '199 € + 39 €/mes', clave: 'asistente_ia' },
+  { n: 'Asistente IA en WhatsApp', p: '199 € + 39 €/mes', clave: 'asistente_ia' },
   { n: 'SEO local · salir en Google', p: '199 € + 99 €/mes', clave: 'seo_local' },
   { n: 'Reseñas 5★ en Google', p: '79 €/mes', clave: 'resenas' },
   { n: 'Campañas Meta · Google Ads', p: '199 €/mes', clave: 'ads' },
@@ -306,7 +306,7 @@ export default function PricingSection() {
                 </h3>
                 <p className="text-[14px] text-white/45 font-light max-w-lg leading-relaxed mb-6">
                   La solución completa para negocios que quieren captar y cerrar más.
-                  Web a medida, gestión completa de Instagram, campañas de Meta Ads y un asistente de IA que responde tus mensajes — todo con un único partner.
+                  Web a medida, gestión completa de Instagram, campañas de Meta Ads y un asistente de IA que responde tu WhatsApp — todo con un único partner.
                 </p>
 
                 <div className="flex flex-wrap gap-2">
@@ -314,7 +314,7 @@ export default function PricingSection() {
                     'Web profesional incluida',
                     'Instagram gestionado',
                     'Anuncios Meta',
-                    'Asistente IA en DMs y WhatsApp',
+                    'Asistente IA en WhatsApp',
                     'Reseñas Google',
                     'Informes mensuales',
                     'Setup prioritario',
