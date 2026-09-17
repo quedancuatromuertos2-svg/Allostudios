@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Cristal from './Cristal'
 
 // Cabecera elegida el 17/09/2026 (propuesta B): dolor general + «tranquilo, nos encargamos» + datos
 const TITULO = 'Estás perdiendo clientes'
@@ -22,6 +23,7 @@ const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero 
 export default function HeroGlass() {
   return (
     <section className="hero-cristal relative min-h-[100dvh] flex flex-col justify-end md:justify-center px-6 pt-64 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+      <Cristal modo="marca" />
       <motion.div variants={stagger} initial="hidden" animate="show" className="hero-marco relative z-[2] w-full max-w-6xl mx-auto md:px-6">
       <div className="hero-texto max-w-[40rem] mx-auto md:mx-0 text-center md:text-left">
         <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-dim mb-9">

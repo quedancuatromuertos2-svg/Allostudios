@@ -1,6 +1,6 @@
 'use client'
 
-import CristalVivo from './CristalVivo'
+import Cristal from './Cristal'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
@@ -178,7 +178,7 @@ export default function WebsSection() {
     <section id="webs" ref={ref} className="webs-cristal relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
 
       {/* Cristal estriado vivo: la luz aparece donde pasa el ratón */}
-      <CristalVivo />
+      <Cristal modo="vivo" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
 

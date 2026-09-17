@@ -25,20 +25,19 @@ export const PALETAS: Record<string, Record<string, string>> = {
 // Estados por sección: [x vw, y vh, tamaño vw, rol]. Un recorrido de color al bajar:
 // violeta/magenta → azul → magenta/naranja → lila → azul/rojo → naranja/rojo → violeta → rojo/melocotón → lila → magenta → azul/rojo → el faro
 const ESTADOS: Foco[][] = [
-  [[56, 104, 78, 'a'], [44, 88, 96, 'b'], [50, -12, 112, 'c']],   // hero: violeta arriba, magenta y un borde naranja abajo
-  [[84, 58, 62, 'd'], [10, 84, 58, 'c'], [50, -30, 60, 'h']],    // datos: azul y lila
-  [[80, 44, 66, 'b'], [86, 66, 46, 'a'], [-12, 22, 74, 'c']],    // generador: magenta y naranja a la derecha
-  [[50, 42, 98, 'h'], [50, 42, 54, 'o'], [50, 42, 78, 'b']],     // servicios: aura lila-magenta
-  [[16, 28, 74, 'd'], [74, 58, 74, 'f'], [36, 84, 62, 'g']],     // sectores: azul, rojo, melocotón
-  [[24, 42, 64, 'a'], [76, 64, 70, 'f'], [50, 106, 72, 'b']],    // webs: esferas naranja y roja
-  [[50, 40, 90, 'c'], [50, 40, 50, 'o'], [50, 40, 70, 'd']],     // servicios detalle: violeta y azul
-  [[12, 22, 62, 'f'], [88, 80, 62, 'g'], [50, 50, 30, 'o']],     // cómo: rojo y melocotón
-  [[86, 22, 54, 'h'], [14, 90, 54, 'b'], [50, 50, 24, 'o']],     // testimonios: lila y magenta
-  [[50, 106, 86, 'a'], [50, 90, 104, 'b'], [50, 0, 62, 'd']],    // precios: cálida abajo, azul arriba
-  [[88, 18, 54, 'c'], [12, 92, 54, 'd'], [50, 50, 20, 'o']],     // faq: violeta y azul
-  [[50, 50, 64, 'b'], [50, 50, 92, 'h'], [50, 50, 30, 'a']],     // contacto: magenta sobre lila
-  [[20, 70, 72, 'd'], [80, 30, 72, 'f'], [50, 100, 52, 'g']],    // comerciales: azul, rojo, melocotón
-  [[50, 110, 76, 'e'], [50, 96, 98, 'a'], [50, 62, 112, 'b']],   // cta: el faro entero
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // cabecera: la luz la pone el cristal
+  [[82, 40, 70, 'c'], [12, 90, 62, 'd'], [50, 50, 0, 'o']],       // generador: violeta y azul
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // servicios (papel)
+  [[20, 30, 66, 'd'], [84, 70, 62, 'c'], [50, 50, 0, 'o']],       // sectores: azul y violeta
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // páginas web: cristal vivo
+  [[86, 24, 62, 'h'], [14, 84, 66, 'c'], [50, 50, 0, 'o']],       // cómo trabajamos: lila y violeta
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // cómo funciona (papel)
+  [[18, 26, 60, 'c'], [82, 76, 70, 'b'], [50, 50, 0, 'o']],       // trabajo reciente: violeta y un magenta
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // precios (papel)
+  [[84, 30, 62, 'd'], [16, 80, 60, 'c'], [50, 50, 0, 'o']],       // faq: azul y violeta
+  [[50, 60, 70, 'h'], [50, 60, 40, 'c'], [50, 50, 0, 'o']],       // contacto: lila centrada
+  [[50, 50, 0, 'o'], [50, 50, 0, 'o'], [50, 50, 0, 'o']],         // comerciales (papel)
+  [[50, 100, 84, 'a'], [50, 92, 104, 'b'], [50, 50, 40, 'c']],    // cierre: el faro entero, el único calor
 ]
 const hex = (h: string) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]
 const mix = (a: number, b: number, t: number) => a + (b - a) * t

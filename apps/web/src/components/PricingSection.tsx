@@ -35,7 +35,7 @@ export default function PricingSection() {
   const openWhatsApp = (msg: string) => window.open(waBase + encodeURIComponent(msg), '_blank')
 
   return (
-    <section id="precios" className="seccion-clara relative py-section overflow-hidden">
+    <section id="precios" className="papel papel-orbe relative py-section overflow-hidden">
       <div className="relative max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -120,7 +120,7 @@ export default function PricingSection() {
           >
             <div className="destacado relative flex flex-col rounded-2xl overflow-hidden" style={{
               background: 'linear-gradient(145deg, #18181b 0%, #1a1a2e 60%, #16162a 100%)',
-              boxShadow: '0 0 0 1px rgba(91,91,214,0.35), 0 32px 80px rgba(91,91,214,0.2)',
+              boxShadow: '0 0 0 1px rgba(255,122,42,.45), 0 0 0 6px rgba(255,122,42,.06), 0 0 90px -20px rgba(255,122,42,.55), 0 32px 80px -30px rgba(0,0,0,.5)',
             }}>
               <div className="absolute inset-0 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse 90% 55% at 50% 0%, rgba(91,91,214,0.22) 0%, transparent 70%)' }} />

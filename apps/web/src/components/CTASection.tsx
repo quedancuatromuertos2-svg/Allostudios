@@ -13,29 +13,7 @@ const item = {
 
 export default function CTASection() {
   return (
-    <section className="relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12 fondo-lavanda" style={{
-      background: 'linear-gradient(160deg, #f8f8ff 0%, #f0f0fd 40%, #e8e8fa 100%)',
-    }}>
-
-      {/* Soft ambient orbs */}
-      <div className="absolute w-[600px] h-[600px] rounded-full blur-[120px] top-[-20%] left-[-15%] opacity-25 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 70%)' }} />
-      <div className="absolute w-[400px] h-[400px] rounded-full blur-[80px] bottom-[-10%] right-[-10%] opacity-15 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #7C7CE8 0%, transparent 70%)' }} />
-
-      {/* Wavy lines — image 3 style (white waves on lavender) */}
-      <div className="absolute inset-0 pointer-events-none wavy-drift" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400' preserveAspectRatio='xMidYMid slice'%3E%3Cpath d='M-20 60 C80 20 160 100 280 60 S440 20 560 60 S720 100 820 60' stroke='rgba(91%2C91%2C214%2C0.18)' fill='none' stroke-width='1.5'/%3E%3Cpath d='M-20 140 C80 100 160 180 280 140 S440 100 560 140 S720 180 820 140' stroke='rgba(124%2C124%2C232%2C0.13)' fill='none' stroke-width='1.5'/%3E%3Cpath d='M-20 220 C80 180 160 260 280 220 S440 180 560 220 S720 260 820 220' stroke='rgba(147%2C112%2C219%2C0.10)' fill='none' stroke-width='1'/%3E%3Cpath d='M-20 300 C80 260 160 340 280 300 S440 260 560 300 S720 340 820 300' stroke='rgba(91%2C91%2C214%2C0.08)' fill='none' stroke-width='1'/%3E%3Cpath d='M-20 380 C80 340 160 420 280 380 S440 340 560 380 S720 420 820 380' stroke='rgba(124%2C124%2C232%2C0.06)' fill='none' stroke-width='1'/%3E%3C/svg%3E")`,
-        backgroundSize: '800px 400px',
-        backgroundRepeat: 'repeat-y',
-        opacity: 0.9,
-      }} />
-
-      {/* Dot grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.35]" style={{
-        backgroundImage: 'radial-gradient(circle, rgba(91,91,214,0.18) 1px, transparent 1px)',
-        backgroundSize: '28px 28px',
-      }} />
+    <section className="relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12">
 
       {/* Content */}
       <motion.div

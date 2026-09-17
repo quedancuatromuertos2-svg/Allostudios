@@ -21,13 +21,7 @@ const puntos = [
 
 export default function ComercialesSection() {
   return (
-    <section id="comerciales" className="seccion-clara seccion-clara-violeta relative overflow-hidden py-section">
-      <div className="absolute inset-0 pointer-events-none fondo-lavanda" style={{
-        background: 'linear-gradient(170deg, #FAFAF9 0%, #F3F3FE 50%, #EDEDFB 100%)',
-      }} />
-      <div className="absolute w-[600px] h-[600px] rounded-full blur-[130px] opacity-35 -bottom-40 -left-32 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(124,124,232,0.45) 0%, transparent 65%)' }} />
-      <div className="absolute inset-0 line-grid opacity-60 pointer-events-none" />
+    <section id="comerciales" className="papel papel-violeta relative overflow-hidden py-section">
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">

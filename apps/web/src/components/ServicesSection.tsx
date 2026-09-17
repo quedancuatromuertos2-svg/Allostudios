@@ -299,12 +299,7 @@ export default function ServicesSection() {
       {/* ════════════════════════════════════════════
           BLOCK 1 — IA DE VOZ
       ════════════════════════════════════════════ */}
-      <div className="relative py-[clamp(5rem,10vw,9rem)] bg-canvas">
-        {/* Ambient glow top-right */}
-        <div className="absolute top-[-10%] right-[-10%] w-[520px] h-[520px] rounded-full blur-[100px] opacity-[0.18] pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 65%)' }} />
-        {/* Dot grid overlay */}
-        <div className="absolute inset-0 dot-grid opacity-[0.12] pointer-events-none" />
+      <div className="relative py-[clamp(5rem,10vw,9rem)]">
 
         <div className="relative max-w-6xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -393,10 +388,7 @@ export default function ServicesSection() {
       {/* ════════════════════════════════════════════
           BLOCK 2 — AUTOMATIZACIÓN
       ════════════════════════════════════════════ */}
-      <div className="relative py-[clamp(5rem,10vw,9rem)] overflow-hidden" style={{ background: 'linear-gradient(180deg, #F4F3F1 0%, #FAFAF9 100%)' }}>
-        {/* Ambient glow bottom-left */}
-        <div className="absolute bottom-[-5%] left-[-8%] w-[420px] h-[420px] rounded-full blur-[80px] opacity-[0.15] pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 70%)' }} />
+      <div className="relative py-[clamp(5rem,10vw,9rem)] overflow-hidden">
 
         <div className="relative max-w-6xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">

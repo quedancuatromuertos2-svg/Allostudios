@@ -113,13 +113,6 @@ export default function DemoGeneratorSection() {
 
   return (
     <section id="tu-web" className="relative overflow-hidden py-section">
-      {/* Fondo suave con acento */}
-      <div className="absolute inset-0 pointer-events-none fondo-lavanda" style={{
-        background: 'linear-gradient(170deg, #FAFAF9 0%, #F3F3FE 45%, #EDEDFB 100%)',
-      }} />
-      <div className="absolute w-[620px] h-[620px] rounded-full blur-[130px] opacity-40 -top-40 -right-32 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(124,124,232,0.45) 0%, transparent 65%)' }} />
-      <div className="absolute inset-0 line-grid opacity-60 pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16 items-center">

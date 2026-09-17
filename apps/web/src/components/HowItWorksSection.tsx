@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="como" ref={ref} className="seccion-clara seccion-clara-suave relative py-section overflow-hidden">
+    <section id="como" ref={ref} className="papel relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -91,12 +91,12 @@ export default function HowItWorksSection() {
                 {/* Glow ring */}
                 <div className="absolute inset-[-6px] rounded-full bg-accent-light opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <div className="lg relative w-[104px] h-[104px] rounded-full flex items-center justify-center text-dim">
+                <div className="paso relative w-[104px] h-[104px] rounded-full flex items-center justify-center text-ink">
                   {s.icon}
                 </div>
 
-                {/* Step number pill */}
-                <div className="absolute -top-1 -right-1 min-w-[26px] h-[26px] px-1.5 rounded-full bg-accent text-white text-[11px] font-bold flex items-center justify-center shadow-glow">
+                {/* Step number */}
+                <div className="absolute -top-1 -right-1 min-w-[26px] h-[26px] px-1.5 rounded-full bg-ink text-white text-[11px] font-bold flex items-center justify-center">
                   {i + 1}
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function HowItWorksSection() {
               <p className="text-[13.5px] text-dim font-light leading-relaxed max-w-[260px] mb-4">{s.desc}</p>
 
               {/* Detail chip */}
-              <span className="lg inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11.5px] font-medium text-dim">
+              <span className="paso-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11.5px] font-medium text-dim">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                   <circle cx="5" cy="5" r="4" stroke="#5B5BD6" strokeWidth="1.2"/>
                   <path d="M5 3v2l1.2 1.2" stroke="#5B5BD6" strokeWidth="1.2" strokeLinecap="round"/>

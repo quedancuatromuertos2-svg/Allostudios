@@ -18,7 +18,7 @@ function pick(servicio: string) {
 
 export default function ServicesCatalogSection() {
   return (
-    <section id="catalogo" className="seccion-clara seccion-clara-amanecer relative py-section overflow-hidden">
+    <section id="catalogo" className="papel relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         <div className="text-center mb-14">

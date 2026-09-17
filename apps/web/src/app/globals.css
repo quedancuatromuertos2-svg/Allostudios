@@ -377,76 +377,56 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-claro .bg-canvas,.tema-claro .bg-surface{background-color:rgba(255,255,255,.55);backdrop-filter:blur(12px)}
 .tema-claro .fondo-lavanda{background:linear-gradient(170deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.25) 100%) !important}
 
-/* ── CRISTAL ESTRIADO (imágenes generadas en MARCA-ALLOSTUDIOS/_motor/web-cristal.js) ── */
-.tema-oscuro .hero-cristal{background:#0E0B14 url(/marca/hero-cristal-m.jpg) center top/cover no-repeat}
-@media (min-width:768px){.tema-oscuro .hero-cristal{background-image:url(/marca/hero-cristal.jpg);background-position:center}}
-/* en móvil las letras van arriba: el texto se apoya en un velo para leerse */
-.tema-oscuro .hero-cristal::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,11,20,0) 0%,rgba(14,11,20,.05) 24%,rgba(14,11,20,.7) 36%,rgba(14,11,20,.9) 100%);pointer-events:none}
-@media (min-width:768px){.tema-oscuro .hero-cristal::before{background:linear-gradient(90deg,rgba(14,11,20,.55) 0%,rgba(14,11,20,.28) 40%,rgba(14,11,20,0) 62%)}}
-.tema-oscuro .hero-cristal .lg-h{text-shadow:0 2px 24px rgba(0,0,0,.35)}
-.tema-oscuro .hero-datos>div+div{border-top:1px solid rgba(255,255,255,.12)}
-@media (min-width:640px){.tema-oscuro .hero-datos>div+div{border-top:0;border-left:1px solid rgba(255,255,255,.12)}}
-/* páginas web: cristal vivo (CristalVivo.tsx) sobre grafito; el velo deja leer el contenido */
-.tema-oscuro .webs-cristal{background:#100F16;backdrop-filter:none}
-.cristal-vivo canvas{position:absolute;inset:0;width:100%;height:100%}
-.cristal-vivo .cv-luz{visibility:hidden}
-.cristal-vivo .cv-grano{position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
-.tema-oscuro .webs-cristal::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,15,22,.5) 0%,rgba(16,15,22,.25) 40%,rgba(16,15,22,.55) 100%);pointer-events:none}
 
-/* ── APARTADO CLARO dentro del tema oscuro (Precios): papel + orbe naranja-rosa ── */
-.tema-oscuro .seccion-clara{background:#F2F1EE;color:#18181B;isolation:isolate}
-.tema-oscuro .seccion-clara::before{content:"";position:absolute;left:50%;top:38%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,#FF8A2A 0%,#FF5A6E 32%,#FF6FB5 58%,rgba(255,111,181,0) 100%);filter:blur(70px);opacity:.9;z-index:-1}
-.tema-oscuro .seccion-clara::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:multiply;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
-.tema-oscuro .seccion-clara .text-ink{color:#18181B}
-/* en claro, la palabra clave del título va en naranja (como en los carteles) */
-.tema-oscuro .seccion-clara h2 .acento{color:#FF7A2A}
-.tema-oscuro .seccion-clara-violeta h2 .acento{color:#5B5BD6}
-.tema-oscuro .seccion-clara .text-dim{color:#4E4A5E}
-.tema-oscuro .seccion-clara .text-muted{color:#6E6A7C}
-.tema-oscuro .seccion-clara .text-accent{color:#5B5BD6}
-.tema-oscuro .seccion-clara .eyebrow{color:#5B5BD6}
-.tema-oscuro .seccion-clara .card,.tema-oscuro .seccion-clara .bg-white{background-color:rgba(255,255,255,.72);border-color:rgba(24,24,27,.08);box-shadow:0 20px 50px -30px rgba(60,30,60,.35);backdrop-filter:blur(16px)}
-.tema-oscuro .seccion-clara .lg{background:rgba(255,255,255,.55);border-color:rgba(255,255,255,.8);color:#18181B}
-.tema-oscuro .seccion-clara .bg-ink{background-color:#18181B;backdrop-filter:none}
-.tema-oscuro .seccion-clara .bg-accent-light{background-color:rgba(91,91,214,.12)}
-.tema-oscuro .seccion-clara .border-border,.tema-oscuro .seccion-clara .border-border\/60{border-color:rgba(24,24,27,.1)}
-.tema-oscuro .seccion-clara .text-ink\/70{color:rgba(24,24,27,.7)}
-.tema-oscuro .seccion-clara .fondo-lavanda{background:transparent !important}
-.tema-oscuro .seccion-clara-violeta::before{left:78%;top:55%;background:radial-gradient(closest-side,#7C7CE8 0%,#B48CFF 35%,#FF8BC8 62%,rgba(255,139,200,0) 100%);opacity:.7}
-.tema-oscuro .seccion-clara .line-grid{opacity:.5}
-.tema-oscuro .seccion-clara .wavy-drift{filter:none;opacity:.5 !important}
-/* generador dentro de la cabecera */
-.tema-oscuro .hero-generador{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
-.tema-oscuro .hero-generador input{background:transparent;border:0;color:#F4F3F7}
-@media (max-width:639px){.tema-oscuro .hero-generador{border-radius:22px}}
-/* variantes de luz de los apartados claros: sobrias, una por apartado */
-.tema-oscuro .seccion-clara-amanecer::before{left:22%;top:30%;background:radial-gradient(closest-side,#FFD98A 0%,#FFB07A 40%,#FF8FB8 70%,rgba(255,143,184,0) 100%);opacity:.55}
-.tema-oscuro .seccion-clara-suave::before{left:70%;top:45%;width:min(60vw,820px);height:min(46vw,600px);background:radial-gradient(closest-side,#C9C2FF 0%,#B4A8FF 40%,#FFC2E0 70%,rgba(255,194,224,0) 100%);opacity:.5}
-.tema-oscuro .seccion-clara-amanecer h2 .acento{color:#FF7A2A}
-.tema-oscuro .seccion-clara-suave h2 .acento{color:#5B5BD6}
-/* cabecera: la columna de texto se ancla a las letras (termina al 55 % del ancho) y crece en pantallas grandes */
+/* ══════════════════════════════════════════════════════════════
+   UN SOLO SISTEMA DE FONDO (18/09/2026)
+   Tres materiales y nada más:
+     grafito  — el fondo por defecto; la luz de LuzFondo viaja detrás.
+     papel    — apartados claros para descansar; papel liso con grano, sin orbes
+                (excepto Precios, con el orbe naranja-rosa de referencia).
+     cristal  — dos momentos: cabecera (marca) y Páginas web (vivo), en canvas.
+   Nada decorativo por apartado: ni orbes, ni rejillas, ni ondas.
+   ══════════════════════════════════════════════════════════════ */
+.tema-oscuro .dot-grid,.tema-oscuro .line-grid,.tema-oscuro .wavy-drift{display:none}
+
+/* cristal (Cristal.tsx) */
+.cristal canvas{position:absolute;inset:0;width:100%;height:100%}
+.cristal .cv-luz{visibility:hidden}
+.cristal .cv-grano{position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
+.tema-oscuro .hero-cristal{background:#0E0B14}
+.tema-oscuro .hero-cristal .lg-h{text-shadow:0 2px 24px rgba(0,0,0,.35)}
 .tema-oscuro .hero-h1{font-size:clamp(2.3rem,4.4vw,3.7rem)}
 .tema-oscuro .hero-sub{font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.6}
 @media (min-width:1280px){.tema-oscuro .hero-marco{width:53vw;max-width:none;margin:0;padding:0}.tema-oscuro .hero-texto{margin-left:auto}}
 @media (min-width:1800px){.tema-oscuro .hero-texto{max-width:46rem}.tema-oscuro .hero-h1{font-size:4.3rem}.tema-oscuro .hero-sub{font-size:1.22rem;max-width:40rem}.tema-oscuro .hero-datos>div{padding:1.15rem 1.25rem}.tema-oscuro .hero-datos .text-ink{font-size:20px}.tema-oscuro .hero-datos .text-muted{font-size:13px}}
+.tema-oscuro .hero-datos>div+div{border-top:1px solid rgba(255,255,255,.12)}
+@media (min-width:640px){.tema-oscuro .hero-datos>div+div{border-top:0;border-left:1px solid rgba(255,255,255,.12)}}
 .tema-oscuro .hero-bandeja{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .tema-oscuro .hero-bandeja .hero-datos{box-shadow:inset 0 1px 1px rgba(255,255,255,.14),0 24px 48px -24px rgba(0,0,0,.55)}
-/* ── Apartados claros de verdad: lo destacado no es una tarjeta oscura, es blanco con hilo de luz ── */
-.tema-oscuro .seccion-clara .destacado{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#5B5BD6 0%,#FF4FA3 55%,#FF7A2A 100%) border-box !important;border:1.5px solid transparent;
-  box-shadow:0 30px 70px -34px rgba(91,91,214,.45),0 10px 30px -18px rgba(255,79,163,.25) !important}
-.tema-oscuro .seccion-clara .destacado .text-white{color:#18181B}
-.tema-oscuro .seccion-clara .destacado .text-white\/65,.tema-oscuro .seccion-clara .destacado .text-white\/60{color:rgba(24,24,27,.74)}
-.tema-oscuro .seccion-clara .destacado .text-white\/55,.tema-oscuro .seccion-clara .destacado .text-white\/45,.tema-oscuro .seccion-clara .destacado .text-white\/40{color:rgba(24,24,27,.66)}
-.tema-oscuro .seccion-clara .destacado .text-white\/35,.tema-oscuro .seccion-clara .destacado .text-white\/30,.tema-oscuro .seccion-clara .destacado .text-white\/25{color:rgba(24,24,27,.6)}
-.tema-oscuro .seccion-clara .destacado .bg-white\/10,.tema-oscuro .seccion-clara .destacado .bg-white\/8,.tema-oscuro .seccion-clara .destacado .bg-white\/5{background-color:rgba(91,91,214,.08)}
-.tema-oscuro .seccion-clara .destacado .border-white\/10,.tema-oscuro .seccion-clara .destacado .border-white\/8{border-color:rgba(91,91,214,.18)}
-.tema-oscuro .seccion-clara .destacado .bg-accent\/15{background-color:rgba(91,91,214,.1)}
-/* contraste en claro: acentos un punto más profundos (mismo tono, legibles sobre papel) */
-.tema-oscuro .seccion-clara .text-accent,.tema-oscuro .seccion-clara .text-accent-dark,.tema-oscuro .seccion-clara .eyebrow{color:#4A4AC4}
-.tema-oscuro .seccion-clara h2 .acento,.tema-oscuro .seccion-clara-amanecer h2 .acento{color:#E45F16}
-.tema-oscuro .seccion-clara-violeta h2 .acento,.tema-oscuro .seccion-clara-suave h2 .acento{color:#4A4AC4}
-.tema-oscuro .seccion-clara .text-emerald-600{color:#047857}
-.tema-oscuro .seccion-clara .text-muted{color:#625E70}
-.tema-oscuro .seccion-clara .bg-accent{background-color:#4A4AC4}
-.tema-oscuro .seccion-clara .destacado .bg-accent,.tema-oscuro .seccion-clara .destacado .bg-accent *{color:#fff}
+.tema-oscuro .webs-cristal{background:#100F16;backdrop-filter:none}
+.tema-oscuro .webs-cristal::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,15,22,.5) 0%,rgba(16,15,22,.25) 40%,rgba(16,15,22,.55) 100%);pointer-events:none}
+
+/* papel */
+.tema-oscuro .papel{background:#F2F1EE;color:#18181B;isolation:isolate}
+.tema-oscuro .papel::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:multiply;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
+.tema-oscuro .papel-orbe::before{content:"";position:absolute;left:50%;top:38%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(closest-side,#FF8A2A 0%,#FF5A6E 32%,#FF6FB5 58%,rgba(255,111,181,0) 100%);filter:blur(70px);opacity:.8}
+.tema-oscuro .papel .text-ink{color:#18181B}
+.tema-oscuro .papel .text-dim{color:#4E4A5E}
+.tema-oscuro .papel .text-muted{color:#6E6A7C}
+.tema-oscuro .papel .text-accent,.tema-oscuro .papel .eyebrow{color:#5B5BD6}
+.tema-oscuro .papel h2 .acento{color:#FF7A2A}
+.tema-oscuro .papel-violeta h2 .acento{color:#5B5BD6}
+.tema-oscuro .papel .card,.tema-oscuro .papel .bg-white{background-color:rgba(255,255,255,.78);border-color:rgba(24,24,27,.08);box-shadow:0 20px 50px -30px rgba(60,30,60,.3);backdrop-filter:none}
+.tema-oscuro .papel .lg{background:rgba(255,255,255,.7);border-color:rgba(255,255,255,.9);color:#18181B;box-shadow:inset 0 1px 0 #fff,0 10px 30px -18px rgba(24,24,27,.25)}
+.tema-oscuro .papel .bg-ink{background-color:#18181B;backdrop-filter:none}
+.tema-oscuro .papel .bg-accent-light{background-color:rgba(91,91,214,.12)}
+.tema-oscuro .papel .border-border,.tema-oscuro .papel .border-border\/60{border-color:rgba(24,24,27,.1)}
+.tema-oscuro .papel .text-ink\/70{color:rgba(24,24,27,.7)}
+.tema-oscuro .papel .fondo-lavanda{display:none}
+.tema-oscuro .papel .paso{background:#fff;box-shadow:0 0 0 1px rgba(24,24,27,.06),0 18px 40px -24px rgba(24,24,27,.35)}
+.tema-oscuro .papel .paso-chip{background:#fff;box-shadow:0 0 0 1px rgba(24,24,27,.08);color:#4E4A5E}
+
+/* trabajo reciente */
+.tema-oscuro .trabajo{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.tema-oscuro .trabajo:hover{background:rgba(255,255,255,.06)}

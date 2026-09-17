@@ -1,6 +1,5 @@
 import Navigation from '@/components/Navigation'
 import HeroGlass from '@/components/HeroGlass'
-import LogoBand from '@/components/LogoBand'
 import ServicesCatalogSection from '@/components/ServicesCatalogSection'
 import ContactFormSection from '@/components/ContactFormSection'
 import SectoresSection from '@/components/SectoresSection'
@@ -9,7 +8,7 @@ import DemoGeneratorSection from '@/components/DemoGeneratorSection'
 import ServicesSection from '@/components/ServicesSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import PricingSection from '@/components/PricingSection'
-import TestimonialsSection from '@/components/TestimonialsSection'
+import TrabajoSection from '@/components/TrabajoSection'
 import FAQSection from '@/components/FAQSection'
 import ComercialesSection from '@/components/ComercialesSection'
 import CTASection from '@/components/CTASection'
@@ -24,14 +23,13 @@ export default function Home() {
       <Navigation />
       <main className="relative z-10">
         <HeroGlass />
-        <LogoBand />
         <DemoGeneratorSection />
         <ServicesCatalogSection />
         <SectoresSection />
         <WebsSection />
         <ServicesSection />
         <HowItWorksSection />
-        <TestimonialsSection />
+        <TrabajoSection />
         <PricingSection />
         <FAQSection />
         <ContactFormSection />
