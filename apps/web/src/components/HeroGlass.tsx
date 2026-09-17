@@ -22,19 +22,19 @@ const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero 
 export default function HeroGlass() {
   return (
     <section className="hero-cristal relative min-h-[100dvh] flex flex-col justify-end md:justify-center px-6 pt-64 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-      <motion.div variants={stagger} initial="hidden" animate="show" className="relative z-[2] w-full max-w-6xl mx-auto md:px-6">
-      <div className="max-w-[40rem] mx-auto md:mx-0 text-center md:text-left">
+      <motion.div variants={stagger} initial="hidden" animate="show" className="hero-marco relative z-[2] w-full max-w-6xl mx-auto md:px-6">
+      <div className="hero-texto max-w-[40rem] mx-auto md:mx-0 text-center md:text-left">
         <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-dim mb-9">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#2bb673', boxShadow: '0 0 8px #2bb673' }} />
           Agencia digital · Valencia
         </motion.div>
 
-        <motion.h1 variants={item} className="lg-h" style={{ fontSize: 'clamp(2.3rem,4.4vw,3.7rem)' }}>
+        <motion.h1 variants={item} className="lg-h hero-h1">
           {TITULO}
           <span className="lg-grad block">{TITULO_GRAD}</span>
         </motion.h1>
 
-        <motion.p variants={item} className="mt-6 max-w-lg mx-auto md:mx-0 text-dim" style={{ fontSize: 'clamp(1rem,1.5vw,1.12rem)', lineHeight: 1.6 }}>
+        <motion.p variants={item} className="hero-sub mt-6 max-w-lg mx-auto md:mx-0 text-dim">
           {SUB}
         </motion.p>
 
@@ -53,13 +53,15 @@ export default function HeroGlass() {
           <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-ink underline underline-offset-4 transition-colors">o hablar por WhatsApp</a>
         </motion.div>
 
-        <motion.div variants={item} className="lg hero-datos grid grid-cols-1 sm:grid-cols-3 rounded-2xl mt-9 max-w-lg mx-auto md:mx-0">
+        <motion.div variants={item} className="hero-bandeja mt-9 max-w-lg mx-auto md:mx-0 p-1.5 rounded-[1.6rem]">
+        <div className="lg hero-datos grid grid-cols-1 sm:grid-cols-3 rounded-[calc(1.6rem-0.375rem)]">
           {datos.map(d => (
             <div key={d.valor} className="px-4 py-3 sm:py-4 flex sm:block items-baseline justify-between gap-3 text-left">
               <div className="text-ink font-semibold text-[16px] md:text-[18px] leading-tight">{d.valor}</div>
               <div className="text-muted text-[11.5px] md:text-[12.5px] sm:mt-1 leading-snug text-right sm:text-left">{d.texto}</div>
             </div>
           ))}
+        </div>
         </motion.div>
       </div>
       </motion.div>

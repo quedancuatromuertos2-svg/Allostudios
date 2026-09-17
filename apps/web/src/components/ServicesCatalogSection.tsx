@@ -18,7 +18,7 @@ function pick(servicio: string) {
 
 export default function ServicesCatalogSection() {
   return (
-    <section id="catalogo" className="py-section overflow-hidden">
+    <section id="catalogo" className="seccion-clara seccion-clara-amanecer relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         <div className="text-center mb-14">
@@ -33,7 +33,7 @@ export default function ServicesCatalogSection() {
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            Todo lo que tu negocio<br />necesita para crecer online.
+            Todo lo que tu negocio<br />necesita para <span className="acento">crecer online</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}

@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="como" ref={ref} className="py-section overflow-hidden">
+    <section id="como" ref={ref} className="seccion-clara seccion-clara-suave relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
@@ -60,7 +60,7 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            En marcha en<br />una semana.
+            En marcha en<br /><span className="acento">una semana</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} animate={isInView ? { opacity: 1, y: 0 } : {}}

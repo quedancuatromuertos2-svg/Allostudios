@@ -1,5 +1,6 @@
 'use client'
 
+import CristalVivo from './CristalVivo'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
@@ -176,17 +177,8 @@ export default function WebsSection() {
   return (
     <section id="webs" ref={ref} className="webs-cristal relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
 
-      {/* Ambient orbs */}
-      <div className="absolute w-[700px] h-[700px] rounded-full blur-[120px] top-[-20%] right-[-20%] opacity-20 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #5B5BD6 0%, transparent 65%)' }} />
-      <div className="absolute w-[500px] h-[500px] rounded-full blur-[100px] bottom-[-10%] left-[-15%] opacity-15 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #7C7CE8 0%, transparent 65%)' }} />
-
-      {/* Grid */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
-        backgroundSize: '60px 60px',
-      }} />
+      {/* Cristal estriado vivo: la luz aparece donde pasa el ratón */}
+      <CristalVivo />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
 
