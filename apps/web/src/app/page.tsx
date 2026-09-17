@@ -14,11 +14,13 @@ import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 import LuzFondo from '@/components/LuzFondo'
+import LuzPapel from '@/components/LuzPapel'
 
 export default function Home() {
   return (
     <div className="tema-oscuro">
       <LuzFondo />
+      <LuzPapel />
       <Navigation />
       <main className="relative z-10">
         <HeroGlass />
