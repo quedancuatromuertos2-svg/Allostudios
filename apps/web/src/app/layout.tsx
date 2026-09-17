@@ -54,12 +54,14 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: "https://allostudios.net",
     siteName: "AlloStudios",
+    images: [{ url: "https://allostudios.net/marca/og.jpg", width: 1200, height: 630, alt: "allo." }],
     title: "AlloStudios — Webs, Instagram y Anuncios para negocios locales",
     description:
       "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 499 €, gestión de Instagram, anuncios y un asistente de IA que responde 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
   },
   twitter: {
     card: "summary_large_image",
+    images: ["https://allostudios.net/marca/og.jpg"],
     title: "AlloStudios — Marketing para tu negocio local",
     description:
       "Webs profesionales, gestión de Instagram, anuncios y asistente de IA para negocios de Valencia. Pide tu demo gratis por WhatsApp.",

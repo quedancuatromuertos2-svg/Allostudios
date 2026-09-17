@@ -407,3 +407,11 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .seccion-clara .bg-accent-light{background-color:rgba(91,91,214,.12)}
 .tema-oscuro .seccion-clara .border-border,.tema-oscuro .seccion-clara .border-border\/60{border-color:rgba(24,24,27,.1)}
 .tema-oscuro .seccion-clara .text-ink\/70{color:rgba(24,24,27,.7)}
+.tema-oscuro .seccion-clara .fondo-lavanda{background:transparent !important}
+.tema-oscuro .seccion-clara-violeta::before{left:78%;top:55%;background:radial-gradient(closest-side,#7C7CE8 0%,#B48CFF 35%,#FF8BC8 62%,rgba(255,139,200,0) 100%);opacity:.7}
+.tema-oscuro .seccion-clara .line-grid{opacity:.5}
+.tema-oscuro .seccion-clara .wavy-drift{filter:none;opacity:.5 !important}
+/* generador dentro de la cabecera */
+.tema-oscuro .hero-generador{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.tema-oscuro .hero-generador input{background:transparent;border:0;color:#F4F3F7}
+@media (max-width:639px){.tema-oscuro .hero-generador{border-radius:22px}}
