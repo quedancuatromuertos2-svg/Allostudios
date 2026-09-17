@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Cristal from './Cristal'
+import { useVariante } from '@/lib/variante'
 
 // Cabecera elegida el 17/09/2026 (propuesta B): dolor general + «tranquilo, nos encargamos» + datos
 const TITULO = 'Estás perdiendo clientes'
@@ -21,10 +21,17 @@ const item = {
 const wa = 'https://wa.me/34695868793?text=' + encodeURIComponent('Hola, quiero mi demo gratis. Mi negocio es: ')
 
 export default function HeroGlass() {
+  // cartel: el cartel de cristal aprobado, anclado a la derecha y fundido con el grafito (no se deforma en 21:9)
+  // marco:  sin cristal de fondo; el cartel 4:5 enmarcado a la derecha, como una pieza física
+  // luz:    sin cristal; la luz de la marca y «allo.» como marca de agua
+  const v = useVariante('hero', 'cartel')
+
   return (
-    <section className="hero-cristal relative min-h-[100dvh] flex flex-col justify-end md:justify-center px-6 pt-64 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-      <Cristal modo="marca" />
-      <motion.div variants={stagger} initial="hidden" animate="show" className="hero-marco relative z-[2] w-full max-w-6xl mx-auto md:px-6">
+    <section className={`hero hero-${v} relative min-h-[100dvh] flex flex-col justify-end md:justify-center px-6 pt-64 pb-16 md:pt-40 md:pb-24 overflow-hidden`}>
+      {v === 'cartel' && <div className="hero-cartel-img absolute inset-y-0 right-0 pointer-events-none" aria-hidden />}
+      {v === 'luz' && <div className="hero-luz-marca absolute inset-0 pointer-events-none" aria-hidden><span>allo.</span></div>}
+
+      <motion.div variants={stagger} initial="hidden" animate="show" className={`hero-marco relative z-[2] w-full max-w-6xl mx-auto md:px-6 ${v === 'marco' ? 'grid md:grid-cols-[1.1fr_.9fr] gap-12 items-center' : ''}`}>
       <div className="hero-texto max-w-[40rem] mx-auto md:mx-0 text-center md:text-left">
         <motion.div variants={item} className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] tracking-[0.22em] uppercase font-semibold text-dim mb-9">
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#2bb673', boxShadow: '0 0 8px #2bb673' }} />
@@ -66,6 +73,14 @@ export default function HeroGlass() {
         </div>
         </motion.div>
       </div>
+
+      {v === 'marco' && (
+        <motion.div variants={item} className="hidden md:block justify-self-end">
+          <div className="cartel-marco p-2 rounded-[2rem] rotate-[-2deg] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:rotate-0">
+            <img src="/marca/cartel.jpg" alt="Cartel allo." className="block w-[min(30vw,420px)] rounded-[calc(2rem-0.5rem)]" />
+          </div>
+        </motion.div>
+      )}
       </motion.div>
     </section>
   )

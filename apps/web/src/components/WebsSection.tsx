@@ -1,6 +1,6 @@
 'use client'
 
-import Cristal from './Cristal'
+import { useVariante } from '@/lib/variante'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
@@ -174,11 +174,70 @@ export default function WebsSection() {
   const y1 = useTransform(scrollYProgress, [0, 1], [-30, 30])
   const y2 = useTransform(scrollYProgress, [0, 1], [30, -30])
 
-  return (
-    <section id="webs" ref={ref} className="webs-cristal relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
+  // vitrina:   grafito; a la derecha, las tres webs reales en cascada (la prueba es la web)
+  // editorial: papel; titular grande y una web real en marco, rasgos como lista numerada
+  // luz:       grafito con una luz de marca fija arriba a la derecha; maqueta y tarjetas de cristal como en allostudios.net
+  const v = useVariante('webs', 'vitrina')
+  const webs = [
+    { slug: 'navaja', nombre: 'Navaja · barbería', url: 'https://concepto-navaja.vercel.app' },
+    { slug: 'serra', nombre: 'Serra · dental', url: 'https://concepto-serra.vercel.app' },
+    { slug: 'sequer', nombre: 'Sequer · arrocería', url: 'https://concepto-sequer.vercel.app' },
+  ]
 
-      {/* Cristal estriado vivo: la luz aparece donde pasa el ratón */}
-      <Cristal modo="vivo" />
+  if (v !== 'luz') return (
+    <section id="webs" ref={ref} className={`webs webs-${v} relative overflow-hidden ${v === 'editorial' ? 'papel' : ''} py-[clamp(5rem,12vw,10rem)]`}>
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
+        <div className={`grid gap-12 lg:gap-16 items-center ${v === 'vitrina' ? 'lg:grid-cols-[.9fr_1.1fr]' : 'lg:grid-cols-[1fr_1fr]'}`}>
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}>
+            <motion.span variants={fadeUp} className="eyebrow block mb-5">Webs premium a medida</motion.span>
+            <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
+              Tu negocio merece algo<br />mejor que <span className="acento">una plantilla</span>.
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light max-w-md leading-relaxed text-pretty">
+              Diseñamos webs que transmiten confianza desde el primer segundo. Rápidas, a medida y construidas para que te escriban.
+            </motion.p>
+            <motion.ol variants={fadeUp} className="rasgos mt-8 grid grid-cols-2 gap-x-8 gap-y-3 max-w-md">
+              {bentoFeatures.map((f, i) => (
+                <li key={f.title} className="flex items-baseline gap-3 text-[14px] text-ink">
+                  <span className="font-mono text-[11px] text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>{f.title}
+                </li>
+              ))}
+            </motion.ol>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-3 mt-9">
+              <a href="/contratar" className="btn-primario group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full text-[14px] font-semibold">
+                Ver precios y contratar
+                <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+              </a>
+              <span className="text-[12px] text-muted">Desglose claro · sin permanencia</span>
+            </motion.div>
+          </motion.div>
+
+          {v === 'vitrina' ? (
+            <motion.div style={{ y: y1 }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="vitrina relative h-[460px] md:h-[560px]">
+              {webs.map((w, i) => (
+                <a key={w.slug} href={w.url} target="_blank" rel="noopener noreferrer" className={`vitrina-pieza vitrina-${i} absolute block p-1.5 rounded-[1.4rem] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]`}>
+                  <img src={`/marca/trabajo/${w.slug}.jpg`} alt={w.nombre} className="block w-full rounded-[calc(1.4rem-0.375rem)]" />
+                  <span className="absolute left-4 bottom-4 text-[10.5px] tracking-[0.14em] uppercase px-2.5 py-1 rounded-full bg-black/45 text-white/85 backdrop-blur-md">{w.nombre}</span>
+                </a>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div style={{ y: y1 }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="marco-web p-2 rounded-[2rem]">
+              <div className="relative rounded-[calc(2rem-0.5rem)] overflow-hidden">
+                <img src="/marca/trabajo/sequer.jpg" alt="Sequer · arrocería" className="block w-full" loading="lazy" />
+                <img src="/marca/trabajo/sequer-m.jpg" alt="" aria-hidden className="absolute right-5 bottom-0 w-[22%] rounded-t-[10px] shadow-[0_20px_40px_-16px_rgba(0,0,0,.6)] translate-y-2" loading="lazy" />
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+
+  return (
+    <section id="webs" ref={ref} className="webs webs-luz relative overflow-hidden bg-ink py-[clamp(5rem,12vw,10rem)]">
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
 

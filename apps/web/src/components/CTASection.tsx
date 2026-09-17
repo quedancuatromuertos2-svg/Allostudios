@@ -1,5 +1,6 @@
 'use client'
 
+import { useVariante } from '@/lib/variante'
 import { motion } from 'framer-motion'
 
 const stagger = {
@@ -13,7 +14,7 @@ const item = {
 
 export default function CTASection() {
   return (
-    <section className="relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12">
+    <section className={`cierre relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12 ${useVariante('cierre', 'faro') === 'papel' ? 'papel papel-orbe' : ''}`}>
 
       {/* Content */}
       <motion.div
@@ -25,7 +26,7 @@ export default function CTASection() {
       >
         {/* Eyebrow badge */}
         <motion.div variants={item} className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-accent/20 shadow-sm text-[11px] font-semibold tracking-[0.12em] uppercase text-accent">
+          <span className="lg inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-semibold tracking-[0.22em] uppercase text-dim">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             Plazas limitadas este mes
           </span>
@@ -42,28 +43,23 @@ export default function CTASection() {
         <motion.p variants={item}
           className="mt-5 text-lg text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty"
         >
-          Únete a los negocios que usan AlloStudios para llenar sus redes de contenido,
-          captar interesados y responder cada DM con IA — sin perder un solo lead.
+          Web nueva, Instagram en marcha y una IA que contesta por ti. Tú solo cierras.
+          Empieza viendo tu web gratis: sin registro, sin tarjeta.
         </motion.p>
 
         {/* CTAs */}
         <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
-          <button
-            onClick={() => document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-4 rounded-full bg-accent hover:bg-accent-dark text-white text-sm font-semibold transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2"
-          >
-            Empieza ahora
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          <a href="#tu-web" className="btn-primario group inline-flex items-center gap-2.5 pl-7 pr-2.5 py-3.5 rounded-full text-[14px] font-semibold">
+            Mira tu web gratis
+            <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+          </a>
           <a
             href="https://wa.me/34695868793?text=Hola%2C%20quiero%20hablar%20con%20un%20experto%20de%20AlloStudios"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 rounded-full border border-ink/15 text-ink/70 hover:text-ink hover:border-ink/30 hover:bg-white/60 text-sm font-medium transition-all duration-300 backdrop-blur-sm"
+            className="lg px-7 py-4 rounded-full text-[14px] font-semibold text-ink"
           >
-            Hablar con un experto
+            Hablar por WhatsApp
           </a>
         </motion.div>
 
