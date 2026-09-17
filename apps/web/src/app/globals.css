@@ -394,33 +394,42 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .btn-primario:hover{transform:translateY(-2px)}.tema-oscuro .btn-primario:active{transform:scale(.98)}
 .tema-oscuro .papel .btn-primario{background:#18181B;box-shadow:0 16px 40px -18px rgba(24,24,27,.5)}
 
-/* ── CABECERA · variantes ── */
+/* ── CABECERA · composición fija en escenario 16:9 ──
+   Todo se mide en --u (1 % del alto del escenario), así el conjunto se escala como una imagen. */
 .tema-oscuro .hero{background:#0E0B14}
-.tema-oscuro .hero .lg-h{text-shadow:0 2px 24px rgba(0,0,0,.35)}
-.tema-oscuro .hero-h1{font-size:clamp(2.3rem,4.4vw,3.7rem)}
-.tema-oscuro .hero-sub{font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.6}
-@media (min-width:1280px){.tema-oscuro .hero-cartel .hero-marco,.tema-oscuro .hero-luz .hero-marco{width:53vw;max-width:none;margin:0;padding:0}.tema-oscuro .hero-cartel .hero-texto,.tema-oscuro .hero-luz .hero-texto{margin-left:auto}}
-@media (min-width:2200px){.tema-oscuro .hero-cartel .hero-marco,.tema-oscuro .hero-luz .hero-marco{width:60vw}}
-@media (min-width:1800px){.tema-oscuro .hero-texto{max-width:46rem}.tema-oscuro .hero-h1{font-size:4.3rem}.tema-oscuro .hero-sub{font-size:1.22rem;max-width:40rem}.tema-oscuro .hero-datos>div{padding:1.15rem 1.25rem}.tema-oscuro .hero-datos .text-ink{font-size:20px}.tema-oscuro .hero-datos .text-muted{font-size:13px}}
-.tema-oscuro .hero-datos>div+div{border-top:1px solid rgba(255,255,255,.12)}
-@media (min-width:640px){.tema-oscuro .hero-datos>div+div{border-top:0;border-left:1px solid rgba(255,255,255,.12)}}
-.tema-oscuro .hero-bandeja{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-.tema-oscuro .hero-bandeja .hero-datos{box-shadow:inset 0 1px 1px rgba(255,255,255,.14),0 24px 48px -24px rgba(0,0,0,.55)}
-/* cartel: la imagen aprobada, a la altura de la pantalla y anclada a la derecha; su borde izquierdo se funde con el grafito */
-.tema-oscuro .hero-cartel-img{width:min(100vw,calc(100dvh * 1.7778));background:url(/marca/hero-cristal.jpg) right center/auto 100% no-repeat;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 28%);mask-image:linear-gradient(90deg,transparent 0%,#000 28%)}
-.tema-oscuro .hero-cartel::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 12% 60%,rgba(91,91,214,.35) 0%,rgba(91,91,214,0) 70%);pointer-events:none}
-@media (max-width:767px){.tema-oscuro .hero-cartel-img{width:100vw;background:url(/marca/hero-cristal-m.jpg) center top/cover no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 62%);mask-image:linear-gradient(180deg,#000 30%,transparent 62%)}}
-/* marco: la pieza física */
-.tema-oscuro .cartel-marco{background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 40px 80px -30px rgba(0,0,0,.7)}
-/* luz: la luz de la marca sin cristal y las letras como marca de agua */
-.tema-oscuro .hero-luz-marca{overflow:hidden}
-.tema-oscuro .hero-luz-marca::before{content:"";position:absolute;inset:-20%;filter:blur(90px);background:
-  radial-gradient(38% 46% at 84% 28%,#FFE2B0 0%,#FF7A2A 22%,#FF4FA3 48%,rgba(91,91,214,0) 72%),
-  radial-gradient(45% 55% at 40% 70%,rgba(91,91,214,.9) 0%,rgba(91,91,214,0) 70%),
-  radial-gradient(50% 50% at 8% 20%,rgba(59,108,255,.5) 0%,rgba(59,108,255,0) 70%)}
-.tema-oscuro .hero-luz-marca::after{content:"";position:absolute;inset:0;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
-.tema-oscuro .hero-luz-marca span{position:absolute;right:4vw;top:50%;transform:translateY(-50%);font:700 min(22vw,26vh) var(--font-outfit),sans-serif;letter-spacing:-.05em;color:rgba(255,255,255,.07);line-height:1}
+.tema-oscuro .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 15% 60%,rgba(91,91,214,.28) 0%,rgba(91,91,214,0) 70%);pointer-events:none}
+.tema-oscuro .hero-escenario{--ew:min(100vw,calc(100dvh * 1.7778));--eh:calc(var(--ew) / 1.7778);--u:calc(var(--eh) / 100);
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:var(--ew);height:var(--eh)}
+.tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.jpg) center/100% 100% no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 14%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 14%,#000 88%,transparent 100%)}
+.tema-oscuro .hero-panel-marco{left:calc(var(--u) * 10.5);top:50%;transform:translateY(-50%);width:calc(var(--u) * 84);padding:calc(var(--u) * .9);border-radius:calc(var(--u) * 4.2);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.tema-oscuro .hero-panel{padding:calc(var(--u) * 5) calc(var(--u) * 5.2) calc(var(--u) * 4.6);border-radius:calc(var(--u) * 3.3);background:rgba(14,11,20,.42);backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(255,255,255,.05),0 40px 80px -40px rgba(0,0,0,.7)}
+.tema-oscuro .hero-etiqueta{font-size:calc(var(--u) * 1.15);letter-spacing:.22em;text-transform:uppercase;padding:calc(var(--u) * .9) calc(var(--u) * 1.6);margin-bottom:calc(var(--u) * 3.4);background:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.tema-oscuro .hero-h1{font-size:calc(var(--u) * 6.4);line-height:1.04;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.tema-oscuro .hero-sub{font-size:calc(var(--u) * 1.85);line-height:1.55;margin-top:calc(var(--u) * 2.6);max-width:calc(var(--u) * 66)}
+.tema-oscuro .hero-botones{gap:calc(var(--u) * 1.4);margin-top:calc(var(--u) * 3.4)}
+.tema-oscuro .hero-botones .btn-primario{font-size:calc(var(--u) * 1.5);padding:calc(var(--u) * 1.3) calc(var(--u) * 1) calc(var(--u) * 1.3) calc(var(--u) * 2.8)}
+.tema-oscuro .hero-flecha{width:calc(var(--u) * 3.2);height:calc(var(--u) * 3.2)}
+.tema-oscuro .hero-botones .btn-secundario{font-size:calc(var(--u) * 1.5);padding:calc(var(--u) * 1.6) calc(var(--u) * 2.8)}
+.tema-oscuro .hero-wa{font-size:calc(var(--u) * 1.35);margin-left:calc(var(--u) * .6)}
+.tema-oscuro .hero-datos{margin-top:calc(var(--u) * 3.8);padding-top:calc(var(--u) * 2.6);border-top:1px solid rgba(255,255,255,.12);gap:calc(var(--u) * 2)}
+.tema-oscuro .hero-datos>div+div{border-left:1px solid rgba(255,255,255,.12);padding-left:calc(var(--u) * 2)}
+.tema-oscuro .hero-dato{font-size:calc(var(--u) * 2)}
+.tema-oscuro .hero-dato-txt{font-size:calc(var(--u) * 1.25);margin-top:calc(var(--u) * .5)}
+/* móvil: escenario vertical (imagen 9:16 arriba, panel abajo), también fijo entre teléfonos */
+@media (max-width:767px){
+  .tema-oscuro .hero-escenario{--ew:100vw;--eh:calc(100vw * 1.7778);--u:calc(var(--eh) / 100);position:relative;left:auto;top:auto;transform:none;height:auto;min-height:100dvh;padding-top:calc(var(--u) * 26)}
+  .tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal-m.jpg) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 70%);mask-image:linear-gradient(180deg,#000 30%,transparent 70%)}
+  .tema-oscuro .hero-panel-marco{position:relative;left:auto;top:auto;transform:none;width:auto;margin:0 16px 24px}
+  .tema-oscuro .hero-panel{padding:calc(var(--u) * 3.2) calc(var(--u) * 3)}
+  .tema-oscuro .hero-h1{font-size:calc(var(--u) * 5.2)}
+  .tema-oscuro .hero-sub{font-size:calc(var(--u) * 2.1);max-width:none}
+  .tema-oscuro .hero-datos{grid-template-columns:1fr;gap:calc(var(--u) * 1.2)}
+  .tema-oscuro .hero-datos>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .tema-oscuro .hero-datos>div+div{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.12);padding-top:calc(var(--u) * 1.2)}
+  .tema-oscuro .hero-dato-txt{margin-top:0;text-align:right}
+}
 
 /* ── PÁGINAS WEB · variantes ── */
 .tema-oscuro .webs-vitrina{background:#100F16}
@@ -449,6 +458,9 @@ body:has(.tema-claro){background:#F2F1EE}
 /* papel */
 .tema-oscuro .papel{background:#F2F1EE;color:#18181B;isolation:isolate}
 .tema-oscuro .papel::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:multiply;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
+.tema-oscuro .papel::before{content:"";position:absolute;left:50%;top:40%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:-1;filter:blur(80px);opacity:.5;
+  background:radial-gradient(closest-side,#FFB07A 0%,#FF8FB8 45%,#C9C2FF 75%,rgba(201,194,255,0) 100%)}
+.tema-oscuro .papel-violeta::before{left:72%;top:50%;background:radial-gradient(closest-side,#B4A8FF 0%,#C9C2FF 45%,#FFC2E0 75%,rgba(255,194,224,0) 100%)}
 .tema-oscuro .papel-orbe::before{content:"";position:absolute;left:50%;top:38%;width:min(80vw,1100px);height:min(60vw,760px);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:-1;
   background:radial-gradient(closest-side,#FF8A2A 0%,#FF5A6E 32%,#FF6FB5 58%,rgba(255,111,181,0) 100%);filter:blur(70px);opacity:.8}
 .tema-oscuro .papel .text-ink{color:#18181B}

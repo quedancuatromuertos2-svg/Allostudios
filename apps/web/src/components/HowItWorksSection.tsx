@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="como" ref={ref} className="papel relative py-section overflow-hidden">
+    <section id="como" ref={ref} className="papel papel-violeta relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
 
         {/* Header */}
