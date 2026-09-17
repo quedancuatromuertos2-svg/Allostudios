@@ -1,6 +1,5 @@
 'use client'
 
-import { useVariante } from '@/lib/variante'
 import { motion } from 'framer-motion'
 
 const stagger = {
@@ -14,7 +13,7 @@ const item = {
 
 export default function CTASection() {
   return (
-    <section className={`cierre relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12 ${useVariante('cierre', 'faro') === 'papel' ? 'papel papel-orbe' : ''}`}>
+    <section className="cierre relative overflow-hidden py-[clamp(5rem,10vw,9rem)] px-6 md:px-12">
 
       {/* Content */}
       <motion.div
