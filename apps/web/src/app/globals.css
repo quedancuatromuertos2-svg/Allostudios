@@ -397,13 +397,13 @@ body:has(.tema-claro){background:#F2F1EE}
 /* ── CABECERA · composición fija en escenario 16:9 ──
    Todo se mide en --u (1 % del alto del escenario), así el conjunto se escala como una imagen. */
 .tema-oscuro .hero{background:#0E0B14}
-.tema-oscuro .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 8% 55%,rgba(91,91,214,.4) 0%,rgba(91,91,214,0) 70%),radial-gradient(40% 60% at 30% 100%,rgba(255,79,163,.16) 0%,rgba(255,79,163,0) 70%);pointer-events:none}
-.tema-oscuro .hero-escenario{--ew:calc(100dvh * 1.7778);--eh:100dvh;--u:min(calc(var(--eh) / 100),calc((100vw - 0.425 * var(--ew) - 64px) / 93));
-  position:absolute;right:0;top:0;width:var(--ew);height:var(--eh)}
-.tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.jpg) center/100% 100% no-repeat;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 26%);mask-image:linear-gradient(90deg,transparent 0%,#000 26%)}
+.tema-oscuro .hero-escenario{--ew:max(100vw,calc(100dvh * 1.7778));--eh:calc(var(--ew) / 1.7778);--u:min(calc(100dvh / 100),calc((100vw - 0.425 * var(--ew) - 64px) / 93));
+  position:absolute;right:0;top:50%;transform:translateY(-50%);width:var(--ew);height:var(--eh)}
+/* el cartel cubre toda la pantalla, sin máscaras ni bandas: en 21:9 se recorta un poco arriba y abajo; en 16:10, por la izquierda (la zona oscura) */
+.tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.jpg) center/100% 100% no-repeat}
 /* el panel va a 10.5u del borde del cartel; si el cartel sobresale por la izquierda (pantallas más altas que 16:9), se queda a 24 px del borde de la pantalla */
-.tema-oscuro .hero-panel-marco{left:max(calc(var(--u) * 10.5),calc(var(--ew) - 100vw + 24px));top:50%;transform:translateY(-50%);width:min(calc(var(--u) * 84),calc(100vw - 0.425 * var(--ew) - 64px));padding:calc(var(--u) * .9);border-radius:calc(var(--u) * 4.2);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.tema-oscuro .hero-panel-marco{--pw:min(calc(var(--u) * 84),calc(100vw - 0.425 * var(--ew) - 64px));width:var(--pw);
+  left:max(calc(var(--ew) - 100vw + 24px),calc(var(--ew) - 100vw + (100vw - 0.425 * var(--ew) - var(--pw)) / 2));top:50%;transform:translateY(-50%);padding:calc(var(--u) * .9);border-radius:calc(var(--u) * 4.2);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .tema-oscuro .hero-panel{padding:calc(var(--u) * 5) calc(var(--u) * 5.2) calc(var(--u) * 4.6);border-radius:calc(var(--u) * 3.3);background:rgba(14,11,20,.42);backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 1px rgba(255,255,255,.05),0 40px 80px -40px rgba(0,0,0,.7)}
 .tema-oscuro .hero-etiqueta{font-size:calc(var(--u) * 1.15);letter-spacing:.22em;text-transform:uppercase;padding:calc(var(--u) * .9) calc(var(--u) * 1.6);margin-bottom:calc(var(--u) * 3.4);background:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
