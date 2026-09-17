@@ -43,8 +43,8 @@ export default function CristalHero() {
       const tam = movil ? W * 220 / 1080 : W * 370 / 2560
       tx.font = `700 ${tam}px ${familia}`; tx.textAlign = 'center'; tx.textBaseline = 'middle'
       try { (tx as unknown as { letterSpacing: string }).letterSpacing = `${-0.05 * tam}px` } catch {}
-      // el cartel centra la caja de línea (line-height 1); el 'middle' del canvas queda ~0.1 em más abajo: se corrige
-      tx.fillStyle = 'rgba(10,8,6,.86)'; tx.fillText('allo.', movil ? W * .5 : W * .75, (movil ? H * .14 : H * .52) - tam * .1)
+      // el cartel centra la caja de línea (line-height 1); el 'middle' del canvas queda ~0.08 em más arriba: se corrige
+      tx.fillStyle = 'rgba(10,8,6,.86)'; tx.fillText('allo.', movil ? W * .5 : W * .75, (movil ? H * .14 : H * .52) + tam * .08)
       // relieve de las estrías (fijo)
       rx.clearRect(0, 0, W, H); const sw = W / N
       for (let i = 0; i < N; i++) {
