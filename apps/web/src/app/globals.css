@@ -397,6 +397,9 @@ body:has(.tema-claro){background:#F2F1EE}
   background:radial-gradient(closest-side,#FF8A2A 0%,#FF5A6E 32%,#FF6FB5 58%,rgba(255,111,181,0) 100%);filter:blur(70px);opacity:.9;z-index:-1}
 .tema-oscuro .seccion-clara::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:multiply;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px}
 .tema-oscuro .seccion-clara .text-ink{color:#18181B}
+/* en claro, la palabra clave del título va en naranja (como en los carteles) */
+.tema-oscuro .seccion-clara h2 .acento{color:#FF7A2A}
+.tema-oscuro .seccion-clara-violeta h2 .acento{color:#5B5BD6}
 .tema-oscuro .seccion-clara .text-dim{color:#4E4A5E}
 .tema-oscuro .seccion-clara .text-muted{color:#6E6A7C}
 .tema-oscuro .seccion-clara .text-accent{color:#5B5BD6}

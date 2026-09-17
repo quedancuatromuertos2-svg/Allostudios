@@ -39,7 +39,7 @@ export default function ComercialesSection() {
             </motion.span>
 
             <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink text-balance">
-              ¿Sabes vender?<br />Llévate el 30 %.
+              ¿Sabes vender?<br />Llévate <span className="acento">el 30 %</span>.
             </motion.h2>
 
             <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light leading-relaxed max-w-md text-pretty">

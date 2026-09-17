@@ -51,7 +51,7 @@ export default function PricingSection() {
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            Tu web nueva, en tres niveles.<br />Y la ves gratis antes de pagar.
+            Tu web nueva, en tres niveles.<br />Y la ves <span className="acento">gratis antes de pagar</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
