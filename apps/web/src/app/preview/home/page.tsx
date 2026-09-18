@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navigation from '@/components/Navigation'
+import Navigation, { LINKS_PACKS } from '@/components/Navigation'
 import HeroGlass from '@/components/HeroGlass'
 import DemoGeneratorSection from '@/components/DemoGeneratorSection'
 import FAQSection from '@/components/FAQSection'
@@ -33,7 +33,7 @@ export default function PreviewHome() {
     <div className="tema-oscuro">
       <LuzFondo />
       <LuzPapel />
-      <Navigation />
+      <Navigation links={LINKS_PACKS} />
       <CintaPacks />
       <main className="relative z-10">
         <HeroGlass />

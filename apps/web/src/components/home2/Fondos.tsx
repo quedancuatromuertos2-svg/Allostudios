@@ -80,43 +80,35 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
   const giro = useTransform(progreso, [0.14, 0.24, 0.5], [0, 55, 4])
   const y = useTransform(progreso, [0.06, 0.16, 0.5, 0.95], ['0%', '0%', '-14%', '-24%'])
   const opacidad = useTransform(progreso, [0, 0.04, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
-  const brillo = useTransform(progreso, [0.16, 0.9], ['130%', '-30%'])
-  // Como el «PRO» de Apple: letra ancha de esquinas redondas (Unbounded, la display de la marca) tratada
-  // como cromo naranja pulido. Una banda especular blanca cruza las letras a media altura, los cantos
-  // devuelven luz prismática (cian a un lado, naranja al otro) y un halo cálido sale de detrás.
-  const cara = 'text-[46vw] md:text-[40vw]'
-  const cromo = {
-    background: 'linear-gradient(180deg, #FFFFFF 0%, #FFF0E4 9%, #FFD3B4 20%, #FF9E5A 34%, #F06A22 44%, #FFF6EE 50%, #FFD9BE 55%, #FF8E44 66%, #E25A1A 80%, #FFB784 91%, #7A2E10 100%)',
+  const brillo = useTransform(progreso, [0.16, 0.9], ['120%', '-20%'])
+  // Diseño «Apple»: titanio pulido, monocromo, con la luz de la marca solo como reflejo ambiental.
+  // Nada de cromo naranja ni líneas técnicas: superficie limpia, un brillo que la recorre y un reflejo suave.
+  // Naranja anodizado (el naranja de la marca tratado como el titanio de Apple): claro arriba, denso en el canto
+  const titanio = {
+    background: 'linear-gradient(180deg, #FFE3CF 0%, #FFC29A 16%, #FF8F4A 38%, #C8491A 52%, #FFA366 64%, #E2622A 82%, #6A2410 100%)',
     WebkitBackgroundClip: 'text', color: 'transparent',
   } as const
   return (
     <div className="absolute inset-0 pointer-events-none overflow-clip" aria-hidden style={{ background: 'radial-gradient(120% 70% at 50% 100%, #15131b 0%, #0c0c11 55%, #0b0b10 100%)' }}>
-      {/* luz ambiental de la marca, que respira */}
-      <motion.div animate={{ opacity: [0.45, 0.75, 0.45] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute inset-0" style={{ background: 'radial-gradient(45% 32% at 42% 52%, rgba(255,122,42,.4), transparent 70%), radial-gradient(40% 30% at 62% 48%, rgba(255,79,163,.2), transparent 70%)' }} />
+      {/* luz ambiental de la marca, muy tenue, que respira */}
+      <motion.div animate={{ opacity: [0.35, 0.6, 0.35] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute inset-0" style={{ background: 'radial-gradient(45% 32% at 42% 52%, rgba(255,122,42,.32), transparent 70%), radial-gradient(40% 30% at 62% 48%, rgba(255,79,163,.16), transparent 70%)' }} />
       {/* escenario con perspectiva: pegado a la pantalla mientras dura el capítulo */}
       <div className="sticky top-0 h-screen w-full flex items-start justify-center overflow-hidden" style={{ perspective: '760px' }}>
-        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 0%', fontFamily: 'var(--font-unbounded), "SF Pro Rounded", system-ui, sans-serif' }}
-          className="relative mt-[38vh] md:mt-[40vh] font-extrabold leading-none tracking-[-0.04em] select-none whitespace-nowrap">
-          {/* halo: la luz que sale de detrás de las letras */}
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(255,150,80,.55)', filter: 'blur(46px)', transform: 'scale(1.04)' }}>{palabra}</span>
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(255,230,210,.35)', filter: 'blur(14px)' }}>{palabra}</span>
+        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 0%', fontFamily: 'var(--font-geist-sans), Inter, -apple-system, "SF Pro Display", system-ui, sans-serif' }}
+          className="relative mt-[38vh] md:mt-[40vh] font-bold leading-none tracking-[-0.065em] select-none whitespace-nowrap">
           {/* sombra de contacto, suave */}
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(0,0,0,.65)', transform: 'translateY(4%) scaleY(.94)', filter: 'blur(18px)' }}>{palabra}</span>
-          {/* cantos con luz prismática: copias desplazadas DETRÁS del cromo (cian a la izquierda, naranja a la
-              derecha, blanco arriba). Sin text-stroke: Unbounded tiene contornos solapados y el trazo los delata. */}
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(120,225,255,.75)', transform: 'translate(-0.45%, 0)', filter: 'blur(3px)' }}>{palabra}</span>
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(255,150,60,.85)', transform: 'translate(0.45%, 0)', filter: 'blur(3px)' }}>{palabra}</span>
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(255,255,255,.95)', transform: 'translateY(-0.6%)', filter: 'blur(.6px)' }}>{palabra}</span>
-          <span className={`absolute inset-0 block ${cara}`} style={{ color: 'rgba(255,255,255,.6)', transform: 'translateY(0.5%)', filter: 'blur(.8px)' }}>{palabra}</span>
-          {/* cromo naranja */}
-          <span className={`relative block ${cara}`} style={cromo}>{palabra}</span>
-          {/* brillo que recorre las letras, ancho y blanco */}
-          <motion.span className={`absolute inset-0 block ${cara}`} style={{ backgroundImage: 'linear-gradient(100deg, transparent 38%, rgba(255,255,255,.85) 50%, transparent 62%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
-          {/* reflejo de la marca en la superficie (cian → rosa), apenas */}
-          <span className={`absolute inset-0 block ${cara}`} style={{ background: 'linear-gradient(100deg, rgba(120,225,255,.35) 0%, transparent 40%, rgba(255,79,163,.35) 100%)', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'soft-light' }}>{palabra}</span>
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'rgba(0,0,0,.6)', transform: 'translateY(3%) scaleY(.94)', filter: 'blur(18px)' }}>{palabra}</span>
+          {/* titanio */}
+          <span className="relative block text-[46vw] md:text-[40vw]" style={titanio}>{palabra}</span>
+          {/* arista superior: una línea de luz finísima en el borde de las letras */}
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,.35)', transform: 'translateY(-.35%)', WebkitMaskImage: 'linear-gradient(180deg, #000 0%, transparent 35%)', maskImage: 'linear-gradient(180deg, #000 0%, transparent 35%)' }}>{palabra}</span>
+          {/* brillo que recorre las letras, lento y blanco */}
+          <motion.span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'linear-gradient(100deg, transparent 42%, rgba(255,255,255,.55) 50%, transparent 58%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
+          {/* reflejo de la marca en la superficie (violeta → naranja), apenas */}
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ background: 'linear-gradient(100deg, rgba(255,255,255,.35) 0%, transparent 45%, rgba(255,79,163,.25) 100%)', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'soft-light' }}>{palabra}</span>
           {/* reflejo en el suelo */}
-          <span className={`absolute left-0 right-0 top-full block ${cara}`} style={{ ...cromo, transform: 'scaleY(-.5) translateY(6%)', transformOrigin: '50% 0%', opacity: .22, filter: 'blur(4px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)' }}>{palabra}</span>
+          <span className="absolute left-0 right-0 top-full block text-[46vw] md:text-[40vw]" style={{ ...titanio, transform: 'scaleY(-.5) translateY(6%)', transformOrigin: '50% 0%', opacity: .18, filter: 'blur(4px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)' }}>{palabra}</span>
         </motion.div>
       </div>
       {/* suelo: línea de horizonte y niebla */}

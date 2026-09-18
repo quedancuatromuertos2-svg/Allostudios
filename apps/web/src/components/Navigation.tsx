@@ -4,15 +4,26 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LogoFull } from './Logo'
 
-const links: { label: string; href: string; highlight?: boolean; page?: boolean }[] = [
+export type NavLink = { label: string; href: string; highlight?: boolean; page?: boolean }
+
+// Home actual (catálogo de servicios)
+const LINKS_CATALOGO: NavLink[] = [
   { label: 'Servicios', href: '#catalogo' },
   { label: 'Páginas Web', href: '#webs' },
   { label: 'Precios', href: '#precios' },
   { label: 'Contratar', href: '/contratar', page: true, highlight: true },
   { label: 'Comerciales', href: '/afiliados', page: true },
 ]
+// Home nueva (tres packs): las anclas apuntan a sus apartados
+export const LINKS_PACKS: NavLink[] = [
+  { label: 'Packs', href: '#elegir' },
+  { label: 'Compara', href: '#compara' },
+  { label: 'Complementos', href: '#complementos' },
+  { label: 'Contratar', href: '/contratar', page: true, highlight: true },
+  { label: 'Comerciales', href: '/afiliados', page: true },
+]
 
-export default function Navigation() {
+export default function Navigation({ links = LINKS_CATALOGO }: { links?: NavLink[] }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
