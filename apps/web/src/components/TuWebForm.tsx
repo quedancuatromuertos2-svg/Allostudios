@@ -121,7 +121,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
         <div className="grid grid-cols-3 gap-2">
           {[
             ['arranque', 'Arranque', '99 €/mes'],
-            ['premium', 'Premium', '149 €/mes'],
+            ['premium', 'Pro', '149 €/mes'],
             ['cine', 'Cinematográfica', '249 €/mes'],
           ].map(([v, n, p], i) => (
             <label key={v} className="nivel-opcion cursor-pointer rounded-xl border border-border bg-canvas px-3 py-3 text-center transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-light">

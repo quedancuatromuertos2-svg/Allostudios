@@ -62,17 +62,18 @@ export const CATALOGO: Articulo[] = [
     clave: 'PACK_PRO', nombre: 'Pack Pro', eur: 349, cobro: 'mes', tipo: 'pack', permanencia: 12,
     desc: 'Que te encuentren y te respondan: web premium, Google y un asistente de IA que atiende tu WhatsApp 24/7.',
     priceId: mes('PACK_PRO'), anual: anio('PACK_PRO', 349),
-    incluye: ['Web Premium: animaciones, copy y tus reseñas integradas', 'SEO local cada mes', 'Reseñas 5★ automatizadas', 'Asistente de IA en WhatsApp 24/7'],
+    incluye: ['Web Pro: animaciones, copy y tus reseñas integradas', 'SEO local cada mes', 'Reseñas 5★ automatizadas', 'Asistente de IA en WhatsApp 24/7'],
     sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE, extras: ['CINE_UPGRADE', 'AEO'],
-    desglose: [['Web Premium (hosting, cambios y soporte)', P.WEB_PREMIUM], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE]],
+    desglose: [['Web Pro (hosting, cambios y soporte)', P.WEB_PREMIUM], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE]],
   },
   {
     clave: 'PACK_MAX', nombre: 'Pack Max', eur: 499, cobro: 'mes', tipo: 'pack', permanencia: 12,
-    desc: 'Que te lleguen clientes: todo lo del Pro más campañas de Meta y Google Ads gestionadas cada mes.',
+    desc: 'Que te lleguen clientes: todo lo del Pro con la web Cinematográfica, más campañas de Meta y Google Ads gestionadas cada mes.',
     priceId: mes('PACK_MAX'), anual: anio('PACK_MAX', 499),
-    incluye: ['Todo lo del Pack Pro', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
-    sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['CINE_UPGRADE', 'AEO'],
-    desglose: [['Web Premium (hosting, cambios y soporte)', P.WEB_PREMIUM], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE], ['Campañas Meta y Google Ads (gestión)', P.ADS]],
+    // La Cinematográfica va de serie: por eso Max no ofrece el extra CINE_UPGRADE
+    incluye: ['Todo lo del Pack Pro, con la web Cinematográfica', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
+    sumaSuelto: P.WEB_CINE + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['AEO'],
+    desglose: [['Web Cinematográfica (hosting, cambios y soporte)', P.WEB_CINE], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE], ['Campañas Meta y Google Ads (gestión)', P.ADS]],
   },
 
   /* ── Webs solas (para quien de verdad solo quiere web) ── */
@@ -82,7 +83,7 @@ export const CATALOGO: Articulo[] = [
     priceId: mes('WEB_ARRANQUE'), anual: anio('WEB_ARRANQUE', P.WEB_ARRANQUE),
   },
   {
-    clave: 'WEB_PREMIUM', nombre: 'Web Premium', eur: P.WEB_PREMIUM, cobro: 'mes', tipo: 'web', permanencia: 12,
+    clave: 'WEB_PREMIUM', nombre: 'Web Pro', eur: P.WEB_PREMIUM, cobro: 'mes', tipo: 'web', permanencia: 12,
     desc: 'Web con animaciones avanzadas, copy profesional y tus reseñas de Google integradas. Todo incluido.',
     priceId: mes('WEB_PREMIUM'), anual: anio('WEB_PREMIUM', P.WEB_PREMIUM),
   },

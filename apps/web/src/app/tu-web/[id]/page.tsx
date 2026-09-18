@@ -11,7 +11,7 @@ import { adnDe, type ADN } from '@/lib/adn'
 export type Nivel = 'arranque' | 'premium' | 'cine'
 const NIVELES: { k: Nivel; n: string; p: string; d: string }[] = [
   { k: 'arranque', n: 'Arranque', p: '99 €/mes', d: 'Web completa con tus datos reales' },
-  { k: 'premium', n: 'Premium', p: '149 €/mes', d: 'Luz de fondo, cristal y animaciones' },
+  { k: 'premium', n: 'Pro', p: '149 €/mes', d: 'Luz de fondo, cristal y animaciones' },
   { k: 'cine', n: 'Cinematográfica', p: '249 €/mes', d: 'Cabecera de cristal en vivo y dirección de arte' },
 ]
 function nivelDe(v: unknown): Nivel { return v === 'premium' || v === 'cine' ? v : 'arranque' }
@@ -672,9 +672,9 @@ background:var(--bg);color:var(--txt);min-height:100dvh;font-family:Inter,system
 .dm-cine .dm-sec>*{animation:dmUp .9s cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 0% entry 40%}
 @media (prefers-reduced-motion:reduce){.dm-cine .dm-sec>*{animation:none}}
 
-/* ══ ADN por sector (Premium y Cinematográfica): variables que vienen del servidor ══ */
+/* ══ ADN por sector (Pro y Cinematográfica): variables que vienen del servidor ══ */
 .dm-premium,.dm-cine{background:var(--bg);font-family:var(--f-texto)}
-/* escalera tipográfica por tarifa: Arranque = sans genérica · Premium = la sans limpia del sector · Cinematográfica = la display expresiva del sector */
+/* escalera tipográfica por tarifa: Arranque = sans genérica · Pro = la sans limpia del sector · Cinematográfica = la display expresiva del sector */
 .dm-premium h1,.dm-premium h2,.dm-premium h3,.dm-premium .dm-strip b{font-family:var(--f-texto);font-weight:600;letter-spacing:-.025em}
 .dm-cine h1,.dm-cine h2,.dm-cine h3,.dm-cine .dm-strip b,.dm-cine .dm-carta-n,.dm-cine .dm-cita-t,.dm-cine .dm-flot b,.dm-cine .dm-contadores b,.dm-cine .dm-cinta span{font-family:var(--f-display);font-weight:var(--f-peso);letter-spacing:-.02em}
 .dm-premium .dm-h1{font-weight:600}.dm-cine .dm-h1{font-weight:var(--f-peso)}

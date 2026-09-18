@@ -29,8 +29,11 @@ export default function Navigation({ links = LINKS }: { links?: NavLink[] }) {
       setSobreClaro(!!bajo?.closest('.papel'))
     }
     fn()
-    window.addEventListener('scroll', fn, { passive: true }); window.addEventListener('resize', fn)
-    return () => { window.removeEventListener('scroll', fn); window.removeEventListener('resize', fn) }
+    // elementsFromPoint fuerza layout: como mucho una vez por fotograma
+    let raf = 0
+    const enFrame = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; fn() }) }
+    window.addEventListener('scroll', enFrame, { passive: true }); window.addEventListener('resize', enFrame)
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', enFrame); window.removeEventListener('resize', enFrame) }
   }, [])
 
   const go = (href: string) => {

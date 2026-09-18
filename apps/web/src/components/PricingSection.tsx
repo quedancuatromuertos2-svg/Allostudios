@@ -43,7 +43,7 @@ const VENTA: Record<string, { etiqueta: string; para: string; puntos: string[] }
     etiqueta: 'Que te respondan',
     para: 'Para el que pierde clientes por no contestar a tiempo.',
     puntos: [
-      'Web Premium: animaciones, textos que venden y tus reseñas integradas',
+      'Web Pro: animaciones, textos que venden y tus reseñas integradas',
       'Asistente de IA en tu WhatsApp 24/7: horarios, precios, dudas y citas',
       'Te avisa cuando hay que hablar contigo',
       'SEO local cada mes + reseñas 5★ automatizadas',

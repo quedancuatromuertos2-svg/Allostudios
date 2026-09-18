@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useInView } from 'framer-motion'
 
 /*  Panel a la derecha de cada capítulo: la demo de ese nivel (una web de concepto real, cargada
     en vivo en un móvil) y el generador con el nivel ya elegido: el visitante escribe su negocio
@@ -9,32 +10,40 @@ import { useState } from 'react'
 
 export type NivelDemo = 'arranque' | 'premium' | 'cine'
 
-const DEMOS: Record<NivelDemo, { url: string; nombre: string; sector: string; nota: string }> = {
-  arranque: { url: 'https://concepto-navaja.vercel.app', nombre: 'Navaja', sector: 'Barbería · Ruzafa', nota: 'Web Arranque: una página, tu marca, tus precios y el botón de WhatsApp. Lo esencial, bien hecho.' },
-  premium: { url: 'https://concepto-serra.vercel.app', nombre: 'Clínica Serra', sector: 'Dental · Benimaclet', nota: 'Web Premium: luz de fondo, cristal, animaciones y tus reseñas de Google integradas. Acabado de agencia cara.' },
-  cine: { url: 'https://concepto-sequer.vercel.app', nombre: 'Sequer', sector: 'Arrocería · El Palmar', nota: 'Web Cinematográfica: la cabecera a pantalla completa, dirección de arte y scroll de cine.' },
+const DEMOS: Record<NivelDemo, { url: string; slug: string; nombre: string; sector: string; nota: string }> = {
+  arranque: { url: 'https://concepto-navaja.vercel.app', slug: 'navaja', nombre: 'Navaja', sector: 'Barbería · Ruzafa', nota: 'Web Arranque: una página, tu marca, tus precios y el botón de WhatsApp. Lo esencial, bien hecho.' },
+  premium: { url: 'https://concepto-serra.vercel.app', slug: 'serra', nombre: 'Clínica Serra', sector: 'Dental · Benimaclet', nota: 'Web Pro: luz de fondo, cristal, animaciones y tus reseñas de Google integradas. Acabado de agencia cara.' },
+  cine: { url: 'https://concepto-sequer.vercel.app', slug: 'sequer', nombre: 'Sequer', sector: 'Arrocería · El Palmar', nota: 'Web Cinematográfica: la cabecera a pantalla completa, dirección de arte y scroll de cine.' },
 }
 
 export default function DemoPack({ nivel, pack, oscuro, nivel3 }: { nivel: NivelDemo; pack: string; oscuro?: boolean; nivel3?: boolean }) {
   const d = DEMOS[nivel]
   const [negocio, setNegocio] = useState('')
+  // El iframe (una web entera) solo se monta cuando el panel está cerca de la pantalla; en móvil ni eso:
+  // se enseña la captura real de la web, que pesa 40 KB y no compite con el scroll.
+  const ref = useRef<HTMLDivElement>(null)
+  const cerca = useInView(ref, { margin: '600px 0px', once: true })
+  const [movil, setMovil] = useState(true)
+  useEffect(() => { setMovil(window.matchMedia('(max-width: 767px)').matches) }, [])
   const ink = oscuro ? 'text-white' : 'text-ink'
   const dim = oscuro ? 'text-white/60' : 'text-dim'
   const muted = oscuro ? 'text-white/40' : 'text-muted'
 
   return (
-    <motion.div
+    <motion.div ref={ref}
       initial={{ opacity: 0, x: 32, filter: 'blur(8px)' }} whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.3 }} transition={{ duration: 1, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
       className={`w-full max-w-[420px] rounded-[2rem] p-1.5 ${oscuro ? 'bg-white/[.04] ring-1 ring-white/10' : 'bg-black/[.04] ring-1 ring-black/5'}`}
     >
-      <div className={`rounded-[calc(2rem-0.375rem)] overflow-hidden ${oscuro ? 'bg-[rgba(18,17,24,.82)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)]' : 'bg-white/[.85] shadow-[inset_0_1px_1px_rgba(255,255,255,1)]'} ${nivel3 ? 'backdrop-blur-xl' : ''}`}>
+      <div className={`rounded-[calc(2rem-0.375rem)] overflow-hidden ${oscuro ? 'bg-[rgba(18,17,24,.82)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)]' : 'bg-white/[.85] shadow-[inset_0_1px_1px_rgba(255,255,255,1)]'} ${nivel3 ? 'md:backdrop-blur-xl' : ''}`}>
         {/* La demo en un móvil, recortada */}
         <div className="relative h-[300px] overflow-hidden flex items-start justify-center pt-6" style={{ background: oscuro ? 'radial-gradient(80% 60% at 50% 0%, rgba(91,91,214,.25), transparent 70%)' : 'radial-gradient(80% 60% at 50% 0%, rgba(91,91,214,.12), transparent 70%)' }}>
           <div className="relative w-[240px] h-[500px] rounded-[36px] p-[8px] bg-[#18181B] origin-top" style={{ boxShadow: '0 30px 60px -24px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12)' }}>
             <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[72px] h-[20px] rounded-full bg-black z-10" />
             <div className="w-full h-full rounded-[28px] overflow-hidden bg-white">
-              <iframe src={d.url} title={`Demo ${d.nombre}`} className="w-[390px] h-[800px] origin-top-left border-0" style={{ transform: 'scale(0.574)' }} loading="lazy" />
+              {movil || !cerca
+                ? <img src={`/marca/trabajo/${d.slug}-m.jpg`} alt={`Web de concepto ${d.nombre}`} className="w-full h-auto" loading="lazy" decoding="async" />
+                : <iframe src={d.url} title={`Demo ${d.nombre}`} className="w-[390px] h-[800px] origin-top-left border-0" style={{ transform: 'scale(0.574)' }} loading="lazy" />}
             </div>
           </div>
           <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: oscuro ? 'linear-gradient(180deg, rgba(18,17,24,0), rgba(18,17,24,1))' : 'linear-gradient(180deg, rgba(255,255,255,0), #fff)' }} />

@@ -8,7 +8,7 @@ import { PACKS, WEBS, eur } from '@/lib/precios'
     ligeramente elevada, como el producto destacado de una vitrina.                    */
 
 const FILAS: [string, (boolean | string)[]][] = [
-  ['Web profesional, lista en 7 días', ['Arranque', 'Premium', 'Premium']],
+  ['Web profesional, lista en 7 días', ['Arranque', 'Pro', 'Cinematográfica']],
   ['Hosting, dominio, cambios y soporte', [true, true, true]],
   ['Salir en Google en tu zona (SEO local)', [true, true, true]],
   ['Reseñas 5★ que se piden solas', [true, true, true]],
@@ -54,12 +54,14 @@ export default function ComparaPacks() {
           initial={{ opacity: 0, y: 32, filter: 'blur(8px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 1, ease: EASE }}
           className="rounded-[2rem] p-1.5 bg-white/[.04] ring-1 ring-white/10"
         >
-          <div className="relative rounded-[calc(2rem-0.375rem)] overflow-hidden bg-[rgba(16,15,22,.72)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)] backdrop-blur-2xl">
+          <div className="relative rounded-[calc(2rem-0.375rem)] overflow-hidden bg-[rgba(16,15,22,.72)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)] md:backdrop-blur-2xl">
             {/* columna Pro iluminada */}
             <div className="absolute inset-y-0 pointer-events-none hidden md:block" style={{ left: 'calc(1.8fr)', width: 0 }} />
-            <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr] md:grid-cols-[1.8fr_1fr_1fr_1fr]">
+            {/* En móvil la tabla desliza en horizontal (las tres columnas no caben) y la columna de conceptos se queda fija a la izquierda */}
+            <div className="overflow-x-auto md:overflow-visible overscroll-x-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="grid grid-cols-[150px_1fr_1fr_1fr] md:grid-cols-[1.8fr_1fr_1fr_1fr] min-w-[600px] md:min-w-0">
               {/* cabecera */}
-              <div className="p-4 md:p-7" />
+              <div className="p-4 md:p-7 max-md:sticky max-md:left-0 max-md:z-[1] max-md:bg-[rgba(16,15,22,.97)]" />
               {PACKS.map((p, i) => (
                 <div key={p.clave} className={`relative p-4 md:p-7 text-center ${i === 1 ? 'bg-white/[.05]' : ''}`}>
                   {i === 1 && <div className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #9B9BFF, transparent)' }} />}
@@ -72,7 +74,7 @@ export default function ComparaPacks() {
               {/* filas */}
               {FILAS.map(([k, vs]) => (
                 <div key={k} className="contents">
-                  <div className="p-3.5 md:px-7 md:py-4 text-[13px] md:text-[14px] text-white/75 border-t border-white/[.06]">{k}</div>
+                  <div className="p-3.5 md:px-7 md:py-4 text-[13px] md:text-[14px] text-white/75 border-t border-white/[.06] max-md:sticky max-md:left-0 max-md:z-[1] max-md:bg-[rgba(16,15,22,.97)]">{k}</div>
                   {vs.map((v, i) => (
                     <div key={i} className={`p-3.5 md:py-4 text-center flex items-center justify-center border-t border-white/[.06] ${i === 1 ? 'bg-white/[.05]' : ''}`}>
                       <Celda v={v} i={i} />
@@ -81,7 +83,7 @@ export default function ComparaPacks() {
                 </div>
               ))}
               {/* precio */}
-              <div className="p-4 md:p-7 border-t border-white/10 text-[12.5px] text-white/50 self-center">
+              <div className="p-4 md:p-7 border-t border-white/10 text-[12.5px] text-white/50 self-center max-md:sticky max-md:left-0 max-md:z-[1] max-md:bg-[rgba(16,15,22,.97)] max-md:self-stretch">
                 0 € de entrada · año por adelantado: 2 meses gratis
               </div>
               {PACKS.map((p, i) => (
@@ -96,12 +98,14 @@ export default function ComparaPacks() {
                 </div>
               ))}
             </div>
+            </div>
           </div>
         </motion.div>
+        <p className="md:hidden text-center text-[12px] text-white/45 mt-3">Desliza la tabla hacia la izquierda para ver Max →</p>
 
         <p className="text-center text-[13px] text-white/50 mt-8">
           ¿Solo quieres la web? {WEBS.map((w, i) => <span key={w.clave}>{i ? ' · ' : ''}<a href={`/contratar/${w.clave.toLowerCase()}`} className="underline underline-offset-4 text-white/80">{w.nombre.replace('Web ', '')} {eur(w.eur)}/mes</a></span>)}.
-          En cualquier pack, la Cinematográfica por +100 €/mes.
+          En Estándar y Pro, la Cinematográfica por +100 €/mes; en Max va de serie.
         </p>
       </div>
     </section>

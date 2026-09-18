@@ -137,7 +137,7 @@ function buildMessages(lead, service) {
   // ── CUANDO RESPONDAN: entregar la demo/prueba con el enlace ──
   const demoEnvio = isWeb
     ? (demo
-        ? `¡Aquí la tienes! 👇\n${demo}\n\nÁbrela desde el móvil mismo. Está hecha con vuestros datos públicos — fotos, textos y colores se cambian en un día por lo que me digáis.\n\nSi os gusta, la dejo funcionando esta misma semana: ${c.price}.\n\nY si quieres algo de otra liga, hay dos niveles más: ⭐ Premium ${T.premium.setup} € y 🎬 Cinematográfica desde ${T.cine.setup} € (tu producto despiezándose al hacer scroll, estilo Apple — pídeme un ejemplo y te lo enseño).\n\nVer la demo no compromete a nada 🙂`
+        ? `¡Aquí la tienes! 👇\n${demo}\n\nÁbrela desde el móvil mismo. Está hecha con vuestros datos públicos — fotos, textos y colores se cambian en un día por lo que me digáis.\n\nSi os gusta, la dejo funcionando esta misma semana: ${c.price}.\n\nY si quieres algo de otra liga, hay dos niveles más: ⭐ Pro ${T.premium.setup} € y 🎬 Cinematográfica desde ${T.cine.setup} € (tu producto despiezándose al hacer scroll, estilo Apple — pídeme un ejemplo y te lo enseño).\n\nVer la demo no compromete a nada 🙂`
         : `Te la paso en cuanto la termine de ajustar (hoy mismo). Mientras, dime: ¿tenéis fotos del local o las saco yo de Google/Instagram?`)
     : `Genial 🙌 Te preparo un ${c.proofWord} concreto para ${nombre} y te lo paso por aquí hoy o mañana. Precio para que lo tengas: ${c.price}. ¿Hay algo que os importe especialmente (más clientes, más reseñas, quitaros trabajo de encima)?`;
 

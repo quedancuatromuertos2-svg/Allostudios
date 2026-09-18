@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useTransform, type MotionValue } from 'framer-motion'
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { useRef } from 'react'
 import { VisualWeb } from './Visuales'
 
 /*  Las animaciones propias de cada capítulo, ligadas al scroll (progreso 0→1 de la sección):
@@ -21,7 +22,18 @@ const RESULTADOS = [
   { n: 'Peluquería Unisex Sol', r: '4,1', v: 37, d: 'Russafa · Cierra 19:00' },
 ]
 
-export function BusquedaEnVivo({ progreso, sinMovil }: { progreso: MotionValue<number>; sinMovil?: boolean }) {
+/*  Progreso PROPIO de cada visual: 0 cuando entra por abajo de la pantalla, 1 cuando su parte
+    baja llega al tercio superior. Antes iba con el progreso de todo el capítulo y en el móvil (capítulo
+    altísimo) el visual se iba de la pantalla con la animación apenas empezada.                        */
+function useProgresoPropio(ref: React.RefObject<HTMLDivElement | null>) {
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'end 30%'] })
+  // Se remapea al 0-0.6 que ya usan los tramos de abajo
+  return useTransform(scrollYProgress, [0, 1], [0, 0.6])
+}
+
+export function BusquedaEnVivo({ sinMovil }: { progreso?: MotionValue<number>; sinMovil?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const progreso = useProgresoPropio(ref)
   // Tramos del scroll: 0.05-0.22 se escribe · 0.22-0.32 aparecen resultados · 0.32-0.5 el cliente sube al 1
   const letras = useTransform(progreso, [0.05, 0.22], [0, QUERY.length])
   const texto = useTransform(letras, (n) => QUERY.slice(0, Math.round(n)))
@@ -36,7 +48,7 @@ export function BusquedaEnVivo({ progreso, sinMovil }: { progreso: MotionValue<n
   const badgeEsc = useTransform(progreso, [0.5, 0.58], [0.8, 1])
 
   return (
-    <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
+    <div ref={ref} className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
       {/* Google */}
       <div className="w-full max-w-[520px]">
         <div className="rounded-full px-5 py-3.5 flex items-center gap-3" style={{ background: '#fff', boxShadow: '0 1px 6px rgba(32,33,36,.28)' }}>
@@ -117,13 +129,15 @@ function Escribiendo({ progreso, desde, hasta }: { progreso: MotionValue<number>
   )
 }
 
-export function ChatEnVivo({ progreso }: { progreso: MotionValue<number> }) {
+export function ChatEnVivo(_: { progreso?: MotionValue<number> }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const progreso = useProgresoPropio(ref)
   // Tramos: cliente 0.10 · escribiendo 0.14-0.22 · ia 0.22 · cliente 0.30 · escribiendo 0.34-0.42 · ia 0.42
   const T = [0.1, 0.22, 0.3, 0.42]
   const cita = useTransform(progreso, [0.5, 0.56], [0, 1])
   const citaY = useTransform(progreso, [0.5, 0.56], [8, 0])
   return (
-    <div className="flex items-end gap-6">
+    <div ref={ref} className="flex items-end gap-6">
       <div className="relative w-[300px] h-[620px] rounded-[44px] p-[10px] bg-[#1c1c22]" style={{ boxShadow: '0 40px 90px -30px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12)' }}>
         <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[92px] h-[26px] rounded-full bg-black z-10" />
         <div className="w-full h-full rounded-[34px] overflow-hidden relative">

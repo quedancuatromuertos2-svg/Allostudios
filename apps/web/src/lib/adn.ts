@@ -1,4 +1,4 @@
-// ADN de diseño por sector para las demos Premium y Cinematográfica.
+// ADN de diseño por sector para las demos Pro y Cinematográfica.
 // Cada sector tiene identidad propia (tipografías, paleta, composición de cabecera, materiales),
 // al nivel del sistema de allostudios.net pero sin parecerse a él: allo usa grafito + Outfit + violeta;
 // aquí ninguno repite esa combinación. Las fuentes vienen de Google Fonts.

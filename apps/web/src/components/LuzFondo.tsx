@@ -82,6 +82,10 @@ export default function LuzFondo({ paleta = 'marca', estados, colores }: { palet
       })
     }
 
+    // Último tamaño/color escrito en el DOM por foco: solo se vuelve a escribir cuando cambia de verdad.
+    // Cada escritura de width/background obliga a rasterizar otra vez un círculo con blur(70px); el
+    // transform, en cambio, se compone en la GPU sin repintar. Esto es lo que quitaba fluidez en móvil.
+    const escrito = focos.map(() => [-1, -1, -1, -1])
     const pintar = (now: number) => {
       const seg = (now - t0) / 1000
       // Inercia: cada foco se acerca un 3,5 % por fotograma a su objetivo (≈ 1,5 s para asentarse)
@@ -92,14 +96,19 @@ export default function LuzFondo({ paleta = 'marca', estados, colores }: { palet
         // respiración: deriva lenta (periodos de 23–37 s) para que nunca esté quieta
         const dx = quieto ? 0 : Math.sin(seg / (23 + i * 7)) * 3, dy = quieto ? 0 : Math.cos(seg / (29 + i * 5)) * 3
         el.style.transform = `translate(calc(${(c[0] + dx).toFixed(2)}vw - 50%), calc(${(c[1] + dy).toFixed(2)}vh - 50%))`
-        el.style.width = el.style.height = `${c[2].toFixed(1)}vw`
-        el.style.background = `radial-gradient(circle, rgb(${c[3] | 0},${c[4] | 0},${c[5] | 0}) 0%, transparent 62%)`
+        const e = escrito[i]
+        const s = Math.round(c[2] * 4) / 4, r = c[3] | 0, g = c[4] | 0, b = c[5] | 0
+        if (s !== e[0]) { el.style.width = el.style.height = `${s}vw`; e[0] = s }
+        if (Math.abs(r - e[1]) > 2 || Math.abs(g - e[2]) > 2 || Math.abs(b - e[3]) > 2) {
+          el.style.background = `radial-gradient(circle, rgb(${r},${g},${b}) 0%, transparent 62%)`; e[1] = r; e[2] = g; e[3] = b
+        }
       })
       raf = requestAnimationFrame(pintar)
     }
 
     calcularObjetivo()
-    const onScroll = () => calcularObjetivo()
+    let pendiente = 0
+    const onScroll = () => { if (!pendiente) pendiente = requestAnimationFrame(() => { pendiente = 0; calcularObjetivo() }) }
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     raf = requestAnimationFrame(pintar)

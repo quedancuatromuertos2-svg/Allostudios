@@ -27,8 +27,10 @@ export default function CintaPacks() {
       setActivo(a)
     }
     onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    let raf = 0
+    const enFrame = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; onScroll() }) }
+    window.addEventListener('scroll', enFrame, { passive: true })
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', enFrame) }
   }, [])
 
   return (

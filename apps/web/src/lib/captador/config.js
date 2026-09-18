@@ -30,13 +30,13 @@ module.exports = {
   PACKS: {
     estandar:    { label: 'Estándar',   monthly: 199, pitch: 'web profesional + salir en Google cada mes + reseñas 5★ que se piden solas' },
     pro:         { label: 'Pro', monthly: 349, pitch: 'web premium + Google + reseñas + un asistente de IA que contesta vuestro WhatsApp 24/7' },
-    max:         { label: 'Max',        monthly: 499, pitch: 'todo lo anterior + campañas de Meta y Google Ads gestionadas cada mes' },
+    max:         { label: 'Max',        monthly: 499, pitch: 'todo lo anterior con la web Cinematográfica + campañas de Meta y Google Ads gestionadas cada mes' },
   },
 
   // Webs solas (para quien de verdad solo quiere web). Todo incluido: hosting, cambios y soporte.
   TIERS: {
     arranque: { label: 'Arranque', setup: 0, monthly: 99, pitch: 'la demo que has visto, afinada y online en 7 días' },
-    premium: { label: 'Premium', setup: 0, monthly: 149, pitch: 'animaciones avanzadas, secciones extra, copy profesional y tus reseñas de Google integradas' },
+    premium: { label: 'Pro', setup: 0, monthly: 149, pitch: 'animaciones avanzadas, secciones extra, copy profesional y tus reseñas de Google integradas' },
     cine: { label: 'Cinematográfica', setup: 0, monthly: 249, pitch: 'efecto Apple: tu producto despiezándose al hacer scroll — nadie más en Valencia lo tiene' },
   },
 

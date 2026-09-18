@@ -102,7 +102,7 @@ export default function Home() {
               nodo: <Escena oscuro cuando="8 s" que="Lo que tarda en contestar a las 22:14 un domingo. El primero que responde se lleva la cita." />,
             },
             {
-              titulo: 'Y la web Premium: tus reseñas dentro y acabado de agencia cara.',
+              titulo: 'Y la web Pro: tus reseñas dentro y acabado de agencia cara.',
               sub: 'Animaciones suaves, textos que venden y tus 5★ de Google a la vista. Parece más grande de lo que eres.',
               nodo: <Notificacion app="WhatsApp" titulo="Nueva cita desde la web" texto="Marcos · corte + barba · jueves 17:30. Confirmada. Le mando recordatorio el jueves a las 9." hora="22:15" />, ancho: 2,
             },
@@ -154,7 +154,7 @@ export default function Home() {
             ['Día 3 · 15 minutos', 'Nos das acceso a tu cuenta publicitaria (te guiamos) y decides cuánto invertir al día.'],
             ['Día 10 · 0 minutos', 'Los anuncios ya están en tu zona. A los 7 días, primera lectura. Tú solo atiendes a los que llegan.'],
           ]}
-          bonus={['Todo lo del Pro', 'Creatividades y textos de los anuncios', 'Públicos afinados cada semana', 'Píxel y medición instalados', 'Informe: contactos y coste por contacto', 'Una prueba nueva cada mes']}
+          bonus={['Todo lo del Pro', 'Web Cinematográfica de serie', 'Creatividades y textos de los anuncios', 'Públicos afinados cada semana', 'Píxel y medición instalados', 'Informe: contactos y coste por contacto', 'Una prueba nueva cada mes']}
           dudas={[
             ['¿Cuánto tengo que invertir?', 'Tú lo decides y va en tu cuenta. Con 5-10 € al día ya hay datos para saber qué funciona. Nosotros no tocamos tu dinero: cobramos la gestión, no la inversión.'],
             ['¿Y si los anuncios no traen a nadie?', 'Lo verás en el informe con números, no en promesas. Si a las 3 semanas el coste por contacto no baja, cambiamos el anuncio, el público o la oferta. Es lo que hacemos cada semana.'],

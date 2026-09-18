@@ -11,7 +11,7 @@ import LuzPapel from '@/components/LuzPapel'
 
 export const metadata: Metadata = {
   title: 'Páginas web para negocios locales desde 99 €/mes',
-  description: 'Web Arranque, Premium o Cinematográfica: 0 € de entrada, lista en 7 días, con dominio, hosting, cambios y soporte incluidos. Mira gratis cómo quedaría la tuya.',
+  description: 'Web Arranque, Pro o Cinematográfica: 0 € de entrada, lista en 7 días, con dominio, hosting, cambios y soporte incluidos. Mira gratis cómo quedaría la tuya.',
   alternates: { canonical: '/webs' },
 }
 

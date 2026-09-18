@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, useTransform, type MotionValue } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 /*  Fondos de cada capítulo, ligados al scroll de la sección (progreso 0→1). Cada pack tiene
     el suyo, en su estilo:
@@ -72,15 +73,28 @@ export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
   )
 }
 
-export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>; palabra: string }) {
+export function FondoMax(props: { progreso: MotionValue<number>; palabra: string }) {
+  // En móvil el capítulo es altísimo (todo apilado), así que el mismo progreso 0→1 cubre muchos más
+  // píxeles: la palabra tardaba una pantalla entera en empezar a moverse. Se usan tramos más cortos.
+  const [movil, setMovil] = useState(false)
+  useEffect(() => {
+    const m = window.matchMedia('(max-width: 767px)')
+    const f = () => setMovil(m.matches)
+    f(); m.addEventListener('change', f); return () => m.removeEventListener('change', f)
+  }, [])
+  return <FondoMaxEscena key={movil ? 'm' : 'd'} movil={movil} {...props} />
+}
+
+function FondoMaxEscena({ progreso, palabra, movil }: { progreso: MotionValue<number>; palabra: string; movil: boolean }) {
   // Un solo MAX. Al entrar (progreso ≈ 0,1: la sección ocupa la pantalla) es un titular plano bajo el
   // subtítulo; al bajar se inclina hacia atrás, crece hasta llenar el recuadro y se queda pegado a la
   // pantalla mientras dura el capítulo. Cuando el mosaico y la caja pasan por encima, baja a un quinto.
-  const escala = useTransform(progreso, [0.06, 0.16, 0.42, 0.95], [0.27, 0.3, 1, 1.03])
-  const giro = useTransform(progreso, [0.14, 0.24, 0.5], [0, 55, 4])
-  const y = useTransform(progreso, [0.06, 0.16, 0.5, 0.95], ['0%', '0%', '-14%', '-24%'])
-  const opacidad = useTransform(progreso, [0, 0.04, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
-  const brillo = useTransform(progreso, [0.16, 0.9], ['120%', '-20%'])
+  const k = movil ? 0.42 : 1 // en móvil todo ocurre en menos de la mitad del recorrido
+  const escala = useTransform(progreso, [0.06 * k, 0.16 * k, 0.42 * k, 0.95], [movil ? 0.5 : 0.27, movil ? 0.55 : 0.3, 1, 1.03])
+  const giro = useTransform(progreso, [0.14 * k, 0.24 * k, 0.5 * k], [0, 55, 4])
+  const y = useTransform(progreso, [0.06 * k, 0.16 * k, 0.5 * k, 0.95], ['0%', '0%', '-14%', '-24%'])
+  const opacidad = useTransform(progreso, [0, 0.04 * k, 0.3 * k, 0.4 * k, 1], [0, 1, 1, 0.22, 0.16])
+  const brillo = useTransform(progreso, [0.16 * k, 0.9], ['120%', '-20%'])
   // Diseño «Apple»: titanio pulido, monocromo, con la luz de la marca solo como reflejo ambiental.
   // Nada de cromo naranja ni líneas técnicas: superficie limpia, un brillo que la recorre y un reflejo suave.
   // Naranja anodizado (el naranja de la marca tratado como el titanio de Apple): claro arriba, denso en el canto

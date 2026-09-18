@@ -64,7 +64,7 @@ export default function CapituloPack({
   /* Bandeja + núcleo (doble bisel) */
   const Caja = ({ children, className = '' }: { children: ReactNode; className?: string }) => (
     <div className={`rounded-[2rem] p-1.5 ${T.shell} ${className}`}>
-      <div className={`rounded-[calc(2rem-0.375rem)] h-full ${T.core} ${nivel === 3 ? 'backdrop-blur-xl' : ''}`}>{children}</div>
+      <div className={`rounded-[calc(2rem-0.375rem)] h-full ${T.core} ${nivel === 3 ? 'md:backdrop-blur-xl' : ''}`}>{children}</div>
     </div>
   )
   const Entrada = ({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) => (
@@ -99,7 +99,7 @@ export default function CapituloPack({
             <p className={`mt-3 text-[15px] ${T.dim} font-light`}>{quien}</p>
           </Entrada>
           {/* Max: aquí vive la palabra. Es el título y es la animación: nace plana como un titular y al bajar se inclina, crece y llena el recuadro (FondoMax). */}
-          {nivel === 3 && <div className="h-[34vh] md:h-[46vh]" aria-hidden />}
+          {nivel === 3 && <div className="h-[22vh] md:h-[46vh]" aria-hidden />}
         </div>
 
         {/* 2 · Visual */}

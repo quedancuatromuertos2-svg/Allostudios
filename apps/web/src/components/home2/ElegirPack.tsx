@@ -21,12 +21,12 @@ const NIVELES = [
   {
     clave: 'PACK_PRO', nivel: 2, etiqueta: 'El más elegido', nombre: 'Pro',
     dolor: 'Contesto tarde y se van a otro.', visual: <VisualChat compacto />, cap: '#pro', luz: 'haz',
-    rejilla: [['chat', 'Contesta tu WhatsApp', '24/7, en 8 segundos'], ['agenda', 'Citas en tu agenda', 'sin que toques nada'], ['premium', 'Web Premium', 'con tus reseñas dentro'], ['mas', 'Todo lo del Estándar', 'Google + reseñas + informe']],
+    rejilla: [['chat', 'Contesta tu WhatsApp', '24/7, en 8 segundos'], ['agenda', 'Citas en tu agenda', 'sin que toques nada'], ['premium', 'Web Pro', 'con tus reseñas dentro'], ['mas', 'Todo lo del Estándar', 'Google + reseñas + informe']],
   },
   {
     clave: 'PACK_MAX', nivel: 3, etiqueta: 'Que te lleguen clientes', nombre: 'Max',
     dolor: 'Quiero llenar la agenda, no solo estar.', visual: <div className="pt-2"><Retargeting compacto /></div>, cap: '#max', luz: 'prisma',
-    rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['retarget', 'Vuelven a verte', 'el que miró y no reservó'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'web premium + asistente']],
+    rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['retarget', 'Vuelven a verte', 'el que miró y no reservó'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'con web Cinematográfica']],
   },
 ]
 
@@ -123,8 +123,8 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
         {/* Cuadrícula de cristal: qué te da el pack, de un vistazo */}
         <div className="grid grid-cols-2 gap-2 mb-5">
           {t.rejilla.map(([ic, tt, dd]) => (
-            <div key={tt} className={`rounded-2xl p-3 ${oscuro ? 'border border-white/10' : 'border border-ink/[.06]'}`}
-              style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.82)', backdropFilter: 'blur(14px)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 10px 24px -16px rgba(24,24,27,.35), 0 0 0 1px rgba(24,24,27,.04)' }}>
+            <div key={tt} className={`rounded-2xl p-3 md:backdrop-blur-[14px] ${oscuro ? 'border border-white/10' : 'border border-ink/[.06]'}`}
+              style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.82)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 10px 24px -16px rgba(24,24,27,.35), 0 0 0 1px rgba(24,24,27,.04)' }}>
               <div className="w-8 h-8 rounded-[10px] flex items-center justify-center mb-2" style={{ background: `${COLOR[ic] || '#5B5BD6'}${oscuro ? '33' : '1F'}`, boxShadow: `inset 0 0 0 1px ${COLOR[ic] || '#5B5BD6'}33` }}><Icono k={ic} /></div>
               <div className={`text-[12.5px] font-semibold leading-tight ${oscuro ? 'text-white' : 'text-[#18181B]'}`}>{tt}</div>
               <div className={`text-[11px] leading-snug mt-0.5 ${oscuro ? 'text-white/50' : 'text-[#6E6A7C]'}`}>{dd}</div>
@@ -164,10 +164,13 @@ export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
           { c: 'rgba(255,122,42,.55)', s: '44vw', x: ['70%', '84%', '64%'], y: ['48%', '20%', '56%'], d: 37 },
           { c: 'rgba(255,226,176,.35)', s: '30vw', x: ['20%', '34%', '14%'], y: ['60%', '70%', '50%'], d: 29 },
         ].map((l, i) => (
-          <motion.div key={i} animate={{ left: l.x, top: l.y }} transition={{ duration: l.d, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
-            className="absolute rounded-full" style={{ width: l.s, height: l.s, background: `radial-gradient(closest-side, ${l.c}, transparent 70%)`, filter: 'blur(40px)' }} />
+          // Se anima el transform (x/y), no left/top: left/top relayoutan un círculo desenfocado en cada fotograma
+          <motion.div key={i}
+            animate={{ x: l.x.map((v) => `${parseFloat(v) - parseFloat(l.x[0])}vw`), y: l.y.map((v) => `${(parseFloat(v) - parseFloat(l.y[0])) * 0.9}vh`) }}
+            transition={{ duration: l.d, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+            className="absolute rounded-full will-change-transform" style={{ left: l.x[0], top: l.y[0], width: l.s, height: l.s, background: `radial-gradient(closest-side, ${l.c}, transparent 70%)`, filter: 'blur(40px)' }} />
         ))}
-        <div className="absolute inset-0 backdrop-blur-[60px]" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.55) 0%, rgba(11,11,16,.2) 30%, rgba(11,11,16,.3) 70%, rgba(11,11,16,.75) 100%)' }} />
+        <div className="absolute inset-0 md:backdrop-blur-[60px]" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.55) 0%, rgba(11,11,16,.2) 30%, rgba(11,11,16,.3) 70%, rgba(11,11,16,.75) 100%)' }} />
       </div>
       <div className="relative max-w-6xl mx-auto px-4 md:px-12">
         <motion.h2
