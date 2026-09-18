@@ -279,7 +279,7 @@ export default function PricingSection() {
 
             <div>
               <div className="text-[12px] font-semibold tracking-[0.12em] uppercase text-muted mb-4">
-                Servicios sueltos · sin permanencia
+                Servicios sueltos · sin permanencia · se añaden a cualquier pack
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {SERVICIOS.map(s => (

@@ -23,16 +23,17 @@ const PRODUCTOS = [
   { clave: 'WEB_PREMIUM',      nombre: 'Web Premium',              mes: 149, desc: 'Web con animaciones, copy profesional y reseñas integradas. 12 meses.' },
   { clave: 'WEB_CINE',         nombre: 'Web Cinematográfica',      mes: 249, desc: 'Web con scroll cinematográfico y dirección de arte. 12 meses.' },
   { clave: 'CINE_UPGRADE',     nombre: 'Upgrade Cinematográfica',  mes: 100, desc: 'Sustituye la web del pack por la Cinematográfica.' },
+  { clave: 'AEO',              nombre: 'Que la IA te recomiende',  mes: 99,  desc: 'Visibilidad en ChatGPT, Perplexity y Google AI: Bing Places, datos estructurados, directorios e informe mensual. Sin permanencia.', soloMes: true },
 ]
 
 const out = existsSync(SALIDA) ? JSON.parse(readFileSync(SALIDA, 'utf8')) : {}
 for (const p of PRODUCTOS) {
-  if (dry) { console.log('[dry]', p.clave, p.mes, '€/mes ·', p.mes * 10, '€/año'); continue }
+  if (dry) { console.log('[dry]', p.clave, p.mes, '€/mes ·', p.soloMes ? 'solo mensual' : p.mes * 10 + ' €/año'); continue }
   if (out[p.clave]?.mes) { console.log(p.clave, 'ya existe →', out[p.clave].mes); continue }
   const prod = await stripe.products.create({ name: p.nombre, description: p.desc, metadata: { clave: p.clave } })
   const mes = await stripe.prices.create({ product: prod.id, currency: 'eur', unit_amount: p.mes * 100, recurring: { interval: 'month' }, metadata: { clave: p.clave, periodo: 'mes' } })
-  const anio = await stripe.prices.create({ product: prod.id, currency: 'eur', unit_amount: p.mes * 10 * 100, recurring: { interval: 'year' }, metadata: { clave: p.clave, periodo: 'anio' } })
-  out[p.clave] = { product: prod.id, mes: mes.id, anio: anio.id }
-  console.log(p.clave, '→', prod.id, '| mes', mes.id, '| año', anio.id)
+  const anio = p.soloMes ? null : await stripe.prices.create({ product: prod.id, currency: 'eur', unit_amount: p.mes * 10 * 100, recurring: { interval: 'year' }, metadata: { clave: p.clave, periodo: 'anio' } })
+  out[p.clave] = { product: prod.id, mes: mes.id, ...(anio ? { anio: anio.id } : {}) }
+  console.log(p.clave, '→', prod.id, '| mes', mes.id, anio ? '| año ' + anio.id : '| solo mensual')
 }
 if (!dry) console.log('\nJSON:\n' + JSON.stringify(out, null, 2))

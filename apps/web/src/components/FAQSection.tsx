@@ -20,6 +20,11 @@ const faqs = [
     tag: 'Webs',
   },
   {
+    q: '¿Podéis hacer que ChatGPT recomiende mi negocio?',
+    a: 'Sí: es el servicio "Que la IA te recomiende" (99 €/mes, sin permanencia, se añade a cualquier pack). ChatGPT, Perplexity y Google AI recomiendan lo que encuentran en Bing Places, Google Maps, los directorios y las reseñas, y lo que tu web les explica en un formato que entienden. Nos ocupamos de todo eso y cada mes te mandamos un informe con las preguntas reales ("mejor dentista en Benimaclet") y si sales o no.',
+    tag: 'IA',
+  },
+  {
     q: '¿Por qué hay permanencia de 12 meses?',
     a: 'Porque no te cobramos nada por adelantado: la web, el SEO y la configuración del asistente los hacemos nosotros el primer mes y los recuperamos con la cuota. A cambio, sin sorpresas: el precio es cerrado y a los 12 meses sigues mes a mes, sin compromiso. Si prefieres pagar el año por adelantado, te regalamos dos meses.',
     tag: 'Packs',
@@ -38,6 +43,7 @@ const faqs = [
 
 const tagColors: Record<string, string> = {
   'Asistente IA': 'bg-accent/8 text-accent',
+  'IA': 'bg-accent/8 text-accent',
   'Anuncios': 'bg-orange-50 text-orange-600',
   'Webs': 'bg-emerald-50 text-emerald-600',
   'Packs': 'bg-accent/8 text-accent',

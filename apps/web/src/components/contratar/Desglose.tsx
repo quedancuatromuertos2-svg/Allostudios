@@ -24,7 +24,10 @@ export default function Desglose({ art }: { art: Articulo }) {
   const extrasElegidos = extrasDisponibles.filter((e) => extras.includes(e.clave))
   const cuota = art.eur + extrasElegidos.reduce((t, e) => t + e.eur, 0)
   const puedeAnual = !!art.anual
-  const hoy = anual && puedeAnual ? cuota * 10 : cuota
+  // Los extras sin precio anual (p. ej. AEO) se cobran mes a mes aunque el pack se pague por adelantado.
+  const extrasAnuales = extrasElegidos.filter((e) => e.anual).reduce((t, e) => t + e.eur, 0)
+  const extrasMensuales = extrasElegidos.filter((e) => !e.anual).reduce((t, e) => t + e.eur, 0)
+  const hoy = anual && puedeAnual ? (art.eur + extrasAnuales) * 10 + extrasMensuales : cuota
 
   async function pagar(e: React.FormEvent) {
     e.preventDefault()
@@ -120,10 +123,10 @@ export default function Desglose({ art }: { art: Articulo }) {
             <input type="checkbox" className="mt-1" checked={anual} onChange={(e) => setAnual(e.target.checked)} />
             <span className="flex-1">
               <span className="block text-[13.5px] font-semibold text-ink">
-                Pagar el año por adelantado · {eur(cuota * 10)}
+                Pagar el año por adelantado · {eur((art.eur + extrasAnuales) * 10)}
               </span>
               <span className="block text-[12.5px] text-muted mt-0.5">
-                10 cuotas en vez de 12: te ahorras {eur(cuota * 2)}.
+                10 cuotas en vez de 12: te ahorras {eur((art.eur + extrasAnuales) * 2)}.{extrasMensuales ? ` Los extras sin permanencia (${eur(extrasMensuales)}/mes) siguen mes a mes.` : ''}
               </span>
             </span>
           </label>
@@ -136,7 +139,7 @@ export default function Desglose({ art }: { art: Articulo }) {
         <div className="flex items-center justify-between gap-4 py-4 border-b border-border">
           <span className="text-[13.5px] text-dim">Después</span>
           <span className="text-[14px] font-medium text-dim">
-            {anual && puedeAnual ? `${eur(cuota * 10)} cada año` : `${eur(cuota)} cada mes`}
+            {anual && puedeAnual ? `${eur((art.eur + extrasAnuales) * 10)} cada año${extrasMensuales ? ` + ${eur(extrasMensuales)} cada mes` : ''}` : `${eur(cuota)} cada mes`}
           </span>
         </div>
 

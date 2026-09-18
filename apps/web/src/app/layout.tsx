@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   keywords: [
     "diseño web Valencia", "web para negocios Valencia", "agencia digital Valencia",
     "publicidad Meta Ads Valencia", "web por suscripción Valencia", "agencia IA negocios locales",
+    "salir en ChatGPT negocio local", "AEO Valencia", "que la IA recomiende mi negocio",
     "SEO local Valencia", "salir en Google Valencia", "reseñas Google negocios",
     "chatbot WhatsApp negocio", "asistente IA para negocios", "web para peluquería restaurante clínica",
     "más clientes negocio local", "web profesional barata Valencia",

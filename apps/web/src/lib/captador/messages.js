@@ -61,6 +61,12 @@ function serviceCopy(key, lead) {
       proofWord: 'demo',
       price: `${eur(P.monthly)}/mes suelto, o dentro del Pack Crecimiento (${eur(cfg.PACKS.crecimiento.monthly)}/mes con web premium, Google y reseñas)`,
     },
+    aeo: {
+      role: 'hago que ChatGPT y Perplexity recomienden negocios locales de Valencia',
+      value: 'que cuando alguien le pregunte a la IA por un negocio como el vuestro en la zona, salga el vuestro',
+      proofWord: 'informe de visibilidad en IA',
+      price: `${eur(P.monthly)}/mes, sin permanencia; se añade a cualquier pack`,
+    },
     ads: {
       role: 'gestiono campañas de Instagram y Google Ads para negocios locales',
       value: 'llenar la agenda con clientes de Valencia en pocas semanas',

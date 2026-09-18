@@ -44,7 +44,7 @@ const mes = (clave: string) => ID[clave]?.mes || `PENDIENTE_${clave}_MES`
 const anio = (clave: string, eurMes: number) => ({ eur: eurMes * 10, priceId: ID[clave]?.anio || `PENDIENTE_${clave}_ANIO` })
 
 /* Piezas que forman los packs (para el desglose "por separado") */
-const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS: 79, ASISTENTE: 39, ADS: 199 }
+const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS: 79, ASISTENTE: 39, ADS: 199, AEO: 99 }
 
 export const CATALOGO: Articulo[] = [
   /* ── Packs (la escalera visible en la web) ── */
@@ -53,21 +53,21 @@ export const CATALOGO: Articulo[] = [
     desc: 'Que te encuentren: web profesional, posicionamiento en Google y reseñas que llegan solas.',
     priceId: mes('PACK_PRESENCIA'), anual: anio('PACK_PRESENCIA', 199),
     incluye: ['Web Arranque con hosting, cambios y soporte', 'SEO local cada mes', 'Reseñas 5★ automatizadas'],
-    sumaSuelto: P.WEB_ARRANQUE + P.SEO + P.RESENAS, extras: ['CINE_UPGRADE'],
+    sumaSuelto: P.WEB_ARRANQUE + P.SEO + P.RESENAS, extras: ['CINE_UPGRADE', 'AEO'],
   },
   {
     clave: 'PACK_CRECIMIENTO', nombre: 'Pack Crecimiento', eur: 349, cobro: 'mes', tipo: 'pack', permanencia: 12,
     desc: 'Que te encuentren y te respondan: web premium, Google y un asistente de IA que atiende tu WhatsApp 24/7.',
     priceId: mes('PACK_CRECIMIENTO'), anual: anio('PACK_CRECIMIENTO', 349),
     incluye: ['Web Premium: animaciones, copy y tus reseñas integradas', 'SEO local cada mes', 'Reseñas 5★ automatizadas', 'Asistente de IA en WhatsApp 24/7'],
-    sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE, extras: ['CINE_UPGRADE'],
+    sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE, extras: ['CINE_UPGRADE', 'AEO'],
   },
   {
     clave: 'PACK_TODO', nombre: 'Pack Todo', eur: 499, cobro: 'mes', tipo: 'pack', permanencia: 12,
     desc: 'Que te lleguen clientes: todo lo del Crecimiento más campañas de Meta y Google Ads gestionadas cada mes.',
     priceId: mes('PACK_TODO'), anual: anio('PACK_TODO', 499),
     incluye: ['Todo lo del Pack Crecimiento', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
-    sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['CINE_UPGRADE'],
+    sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['CINE_UPGRADE', 'AEO'],
   },
 
   /* ── Webs solas (para quien de verdad solo quiere web) ── */
@@ -106,6 +106,11 @@ export const CATALOGO: Articulo[] = [
     priceId: 'price_1U9rzSAtD7Uqmi3UVn1WseUF',
   },
   {
+    clave: 'AEO', nombre: 'Que la IA te recomiende', eur: P.AEO, cobro: 'mes', tipo: 'servicio',
+    desc: 'Cuando alguien le pregunte a ChatGPT, Perplexity o Google por un negocio como el tuyo en tu zona, que salga el tuyo. Ficha en Bing, datos para la IA en tu web, directorios y un informe mensual con las preguntas reales.',
+    priceId: mes('AEO'),
+  },
+  {
     clave: 'RESENAS', nombre: 'Reseñas 5★ en Google', eur: P.RESENAS, cobro: 'mes', tipo: 'servicio',
     desc: 'Sistema para pedir reseñas a tus clientes contentos, automatizado.',
     priceId: 'price_1U9rzTAtD7Uqmi3UfZZZarF5',
@@ -139,7 +144,7 @@ export const LUZ_PRODUCTO: Record<string, string> = {
   PACK_PRESENCIA: 'faro', PACK_CRECIMIENTO: 'haz', PACK_TODO: 'prisma',
   WEB_ARRANQUE: 'velo', WEB_PREMIUM: 'aura', WEB_CINE: 'eclipse', CINE_UPGRADE: 'espectro',
   CAPTACION: 'cometa', CAPTACION_PRO: 'doble',
-  ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama',
+  ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama', AEO: 'lente',
 }
 export const luzDe = (clave: string) => LUZ_PRODUCTO[clave] || 'faro'
 

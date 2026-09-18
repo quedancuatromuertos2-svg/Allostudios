@@ -47,6 +47,7 @@ module.exports = {
     resenas: { label: 'Reseñas 5★ en Google',       emoji: '⭐', setup: 0, monthly: 79 },
     chatbot: { label: 'Asistente IA en WhatsApp',   emoji: '💬', setup: 0, monthly: 39 },
     ads:     { label: 'Campañas Meta / Google Ads', emoji: '🎯', setup: 0, monthly: 199 },
+    aeo:     { label: 'Que la IA te recomiende',   emoji: '🤖', setup: 0, monthly: 99 },
   },
 
   // Si publicas la carpeta demos/ en internet (Vercel/Netlify), pon aquí la URL base

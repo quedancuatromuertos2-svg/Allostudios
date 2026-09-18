@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
   const extras = (Array.isArray(d?.extras) ? d.extras : [])
     .map((c: unknown) => porClave(String(c)))
     .filter((e): e is NonNullable<typeof e> => !!e && (art.extras || []).includes(e.clave))
+  // Un extra sin precio anual (AEO) va siempre mensual, aunque el pack se pague por adelantado.
   const precioDe = (a: typeof art) => (anual && a.anual ? a.anual.priceId : a.priceId)
   if ([art, ...extras].some((a) => sinStripe(precioDe(a)))) {
     return NextResponse.json({ error: 'Este producto todavía no está activado para el pago. Escríbenos por WhatsApp y lo activamos al momento.' }, { status: 503 })

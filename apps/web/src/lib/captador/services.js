@@ -43,6 +43,13 @@ function recommendServices(lead, web) {
     out.push({ key: 'chatbot', fit: 49, reason: 'un asistente por WhatsApp 24/7 evita que perdáis a quien escribe de noche o en fin de semana' });
   }
 
+  // --- AEO: que ChatGPT/Perplexity recomienden el negocio (extra vendible a cualquiera con reseñas) ---
+  if ((lead.rating || 0) >= 4 || (lead.reviews || 0) >= 20) {
+    out.push({ key: 'aeo', fit: 58, reason: 'cuando alguien le pregunta a ChatGPT por un negocio como el vuestro en la zona, hoy no salís' });
+  } else {
+    out.push({ key: 'aeo', fit: 40, reason: 'ChatGPT y Perplexity ya recomiendan negocios de la zona y el vuestro no aparece' });
+  }
+
   // --- ADS (solo si ya tienen web decente a la que enviar tráfico) ---
   if (lead.website && web && !web.broken) {
     out.push({ key: 'ads', fit: 43, reason: 'con campañas en Instagram/Google podríais llenar la agenda en semanas' });
