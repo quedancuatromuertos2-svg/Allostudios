@@ -125,13 +125,13 @@ export default function DemoGeneratorSection() {
             </motion.span>
 
             <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink text-balance">
-              Mira cómo quedaría la web de tu negocio.
+              Hoy alguien te ha buscado y no te ha encontrado. Mira lo que se ha perdido.
             </motion.h2>
 
             <motion.p variants={fadeUp} className="mt-5 text-[1.05rem] text-dim font-light leading-relaxed max-w-lg text-pretty">
-              Escribe el nombre de tu negocio y te la generamos al momento — con tus reseñas
-              de Google, tus fotos y tus datos reales. Si no tienes web (o tienes una
-              anticuada), esto es justo lo que estás perdiendo.
+              Escribe el nombre de tu negocio y te generamos tu web al momento, con tus reseñas
+              de Google, tus fotos y tus datos reales. Gratis, sin registro. Si te gusta, la dejamos
+              funcionando en 7 días con 0 € de entrada.
             </motion.p>
 
             <motion.form variants={fadeUp} onSubmit={submit} className="mt-8 lg rounded-2xl p-5 md:p-6">

@@ -11,7 +11,7 @@ const outfit = Outfit({ subsets: ["latin"], weight: ["600", "700"], variable: "-
 export const metadata: Metadata = {
   metadataBase: new URL("https://allostudios.net"),
   title: {
-    default: "AlloStudios — Webs, Instagram y Anuncios para negocios locales de Valencia",
+    default: "AlloStudios — Deja de perder clientes que te buscan y no te encuentran",
     template: "%s | AlloStudios",
   },
   icons: {
@@ -58,14 +58,14 @@ export const metadata: Metadata = {
     url: "https://allostudios.net",
     siteName: "AlloStudios",
     images: [{ url: "https://allostudios.net/marca/og.jpg", width: 1200, height: 630, alt: "allo." }],
-    title: "AlloStudios — Web, Google y asistente de IA para negocios locales",
+    title: "AlloStudios — Deja de perder clientes que te buscan y no te encuentran",
     description:
       "Tu negocio, lleno. Tu marketing, resuelto. Web, SEO local, anuncios y un asistente de IA que responde tu WhatsApp 24/7 — packs desde 199 €/mes, 0 € de entrada. Pide tu demo gratis.",
   },
   twitter: {
     card: "summary_large_image",
     images: ["https://allostudios.net/marca/og.jpg"],
-    title: "AlloStudios — Marketing para tu negocio local",
+    title: "AlloStudios — Que te encuentren, que te contesten, que te lleguen clientes",
     description:
       "Webs profesionales, gestión de Instagram, anuncios y asistente de IA para negocios de Valencia. Pide tu demo gratis por WhatsApp.",
     creator: "@allostudios",

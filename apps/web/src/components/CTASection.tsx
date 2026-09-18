@@ -35,14 +35,14 @@ export default function CTASection() {
         <motion.h2 variants={item}
           className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance"
         >
-          Tu negocio, captando clientes solo.
+          Los clientes que hoy se te escapan, mañana te llaman.
         </motion.h2>
 
         {/* Sub */}
         <motion.p variants={item}
           className="mt-5 text-lg text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty"
         >
-          Web nueva, arriba en Google y un asistente que contesta tu WhatsApp por ti. Tú solo cierras.
+          Que te encuentren, que te contesten y que te lleguen. 0 € de entrada, una cuota al mes.
           Empieza viendo tu web gratis: sin registro, sin tarjeta.
         </motion.p>
 

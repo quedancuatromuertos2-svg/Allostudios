@@ -89,13 +89,13 @@ export default function WebsSection() {
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} >
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
             <div>
-              <motion.span variants={fadeUp} className="eyebrow block mb-5">Webs premium a medida</motion.span>
+              <motion.span variants={fadeUp} className="eyebrow block mb-5">Una web que no parece de plantilla</motion.span>
               <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
-                Cada negocio, su propia web.<br />Ninguna se parece a otra.
+                Si tu web parece de plantilla,<br />el cliente piensa que tu negocio también.
               </motion.h2>
             </div>
             <motion.p variants={fadeUp} className="text-dim font-light text-[14px] max-w-sm md:text-right">
-              Tres conceptos publicados para tres sectores. Entra y tócalas: son webs de verdad.
+              Tres conceptos publicados para tres sectores. Entra y tócalas: así de distinta puede ser la tuya.
             </motion.p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">

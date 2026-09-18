@@ -7,7 +7,7 @@ const steps = [
   {
     n: '01',
     title: 'Cuéntanos tu negocio',
-    desc: 'Nos pasas tu marca, lo que ofreces y tu zona. Preparamos tu estrategia de contenido y el calendario del primer mes. Te guiamos paso a paso.',
+    desc: 'Eliges tu pack y pagas la primera cuota (0 € de entrada). Nos pasas tu logo, tus fotos, tus servicios y tu zona por WhatsApp. Nada más.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
@@ -17,8 +17,8 @@ const steps = [
   },
   {
     n: '02',
-    title: 'Publicamos y respondemos',
-    desc: 'Creamos y publicamos tu contenido cada semana, y el asistente de IA atiende tu WhatsApp: horarios, precios, dudas y peticiones de cita, y te avisa cuando hay que hablar contigo.',
+    title: 'En 7 días, funcionando',
+    desc: 'Tu web publicada, tu ficha de Google al día, las reseñas pidiéndose solas y, si va en tu pack, el asistente contestando tu WhatsApp. Tú solo apruebas.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -28,14 +28,14 @@ const steps = [
   },
   {
     n: '03',
-    title: 'Crece sin límites',
-    desc: 'Recibe un informe mensual, más visibilidad y más clientes. Y cuando quieras, escalamos con campañas de anuncios en Meta y Google.',
+    title: 'Cada mes, más clientes',
+    desc: 'Cada mes trabajamos tu Google, tus reseñas y tu asistente, y el día 28 te mandamos 5 líneas: qué ha entrado y qué ha cambiado. Cuando quieras más, añadimos anuncios.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
       </svg>
     ),
-    detail: 'Tu negocio crece incluso mientras duermes.',
+    detail: 'Si un mes no ves nada, nos lo dices. Somos nosotros los que tenemos que renovar tu confianza.',
   },
 ]
 
@@ -60,14 +60,14 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            En marcha en<br /><span className="acento">una semana</span>.
+            Dejas de perder clientes<br />en <span className="acento">una semana</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Sin equipos técnicos. Sin instalaciones. Funciona desde el primer día.
+            Sin técnicos, sin aprender herramientas y sin pagar nada por adelantado. Tú nos cuentas tu negocio; del resto nos encargamos.
           </motion.p>
         </div>
 

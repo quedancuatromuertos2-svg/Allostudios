@@ -32,14 +32,14 @@ export default function SectoresSection() {
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-[clamp(1.6rem,3vw,2.1rem)] font-semibold text-ink"
           >
-            Pensado para cómo trabajas tú.
+            Si vives de que te llamen, esto es para ti.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.14 }}
             className="mt-3 text-dim font-light text-sm max-w-sm mx-auto"
           >
-            Si vives de captar y atender clientes, AlloStudios trabaja para tu negocio.
+            Peluquerías, clínicas, restaurantes, talleres… negocios que pierden clientes cada semana por no aparecer o por no contestar a tiempo.
           </motion.p>
         </div>
 

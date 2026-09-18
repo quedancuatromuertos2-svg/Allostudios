@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const faqs = [
   {
+    q: '¿Sois otra agencia de IA?',
+    a: 'No. Somos la gente que hace que un negocio local deje de perder clientes: que te encuentren cuando te buscan, que alguien conteste cuando te escriben y que cada mes entren caras nuevas. Usamos IA donde ahorra horas (el asistente de WhatsApp, el informe de Google), pero lo que te vendemos es el resultado, no la tecnología. Y lo ves antes de pagar: tu web hecha, gratis, en 30 segundos.',
+    tag: 'General',
+  },
+  {
     q: '¿Cómo funciona el asistente de IA en WhatsApp?',
     a: 'Un asistente de IA responde los mensajes de WhatsApp de tu negocio 24/7: contesta dudas de tus productos o servicios, cualifica al interesado, capta su contacto y agenda la cita. Cuando hace falta, te avisa para que entres tú.',
     tag: 'Asistente IA',

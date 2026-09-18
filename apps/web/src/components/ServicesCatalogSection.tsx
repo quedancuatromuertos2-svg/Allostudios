@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion'
 
 const services = [
-  { key: 'Anuncios Meta y Google', d: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>', desc: 'Campañas para llenar tu agenda de interesados de tu zona. Tú pones la inversión, nosotros la gestión.', price: '199 €/mes + inversión · o en el Pack Todo' },
-  { key: 'Asistente IA 24/7', d: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>', desc: 'Un asistente que responde tu WhatsApp 24/7: horarios, precios, dudas y peticiones de cita. Te avisa cuando hay que hablar contigo.', price: '39 €/mes · o en el Pack Crecimiento' },
-  { key: 'Web profesional', d: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>', desc: 'Web a medida, rapidísima y optimizada para convertir visitas en clientes. 0 € de entrada.', price: 'Desde 99 €/mes' },
-  { key: 'Que la IA te recomiende', d: '<path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 4 2.5 5.5S10 17 10 18h4c0-1 .5-2 1.5-3.5S18 11.5 18 9a6 6 0 0 0-6-6z"/><path d="M10 21h4"/>', desc: 'Cuando alguien le pregunta a ChatGPT, Perplexity o Google por un negocio como el tuyo en tu zona, que salga el tuyo. Con informe mensual de las preguntas reales.', price: '99 €/mes · se añade a cualquier pack' },
-  { key: 'SEO local en Google', d: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', desc: 'Aparece el primero en Google cuando alguien busca tu servicio en tu zona.', price: '99 €/mes · o en cualquier pack' },
-  { key: 'Reseñas 5★ en Google', d: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>', desc: 'Un sistema para conseguir más reseñas de 5 estrellas y subir en el mapa de Google.', price: '79 €/mes · o en cualquier pack' },
+  { key: 'Anuncios Meta y Google', d: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>', desc: 'Tienes semanas flojas y no sabes de dónde sacar clientes. Campañas en Meta y Google que traen gente de tu zona, con informe de qué entró y qué costó. Tú pones la inversión, nosotros la gestión.', price: '199 €/mes + inversión · o en el Pack Todo' },
+  { key: 'Asistente IA 24/7', d: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>', desc: 'Te escriben a las 22:00, contestas al día siguiente y ya han reservado en otro sitio. Un asistente responde tu WhatsApp al momento: horarios, precios, dudas y citas. Te avisa solo cuando hace falta una persona.', price: '39 €/mes · o en el Pack Crecimiento' },
+  { key: 'Web profesional', d: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>', desc: 'Te buscan en Google, entran en tu web (o no la tienes) y se van. Una web a medida, rápida y pensada para que te escriban. 0 € de entrada, lista en 7 días.', price: 'Desde 99 €/mes' },
+  { key: 'Que la IA te recomiende', d: '<path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 4 2.5 5.5S10 17 10 18h4c0-1 .5-2 1.5-3.5S18 11.5 18 9a6 6 0 0 0-6-6z"/><path d="M10 21h4"/>', desc: 'Cada vez más gente pregunta a ChatGPT "¿qué dentista me recomiendas en Benimaclet?". Hoy sale otro. Hacemos que salgas tú y te lo demostramos cada mes con las preguntas reales.', price: '99 €/mes · se añade a cualquier pack' },
+  { key: 'SEO local en Google', d: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', desc: 'Buscan tu servicio en tu barrio y en la primera pantalla sale la competencia. Trabajo mensual en tu ficha de Google y tu web para que salgas tú.', price: '99 €/mes · o en cualquier pack' },
+  { key: 'Reseñas 5★ en Google', d: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>', desc: 'Tienes 12 reseñas y el de al lado 140: la gente elige al de 140. Un sistema que pide la reseña a cada cliente contento sin que tengas que perseguir a nadie.', price: '79 €/mes · o en cualquier pack' },
 ]
 
 function pick(servicio: string) {
@@ -26,21 +26,21 @@ export default function ServicesCatalogSection() {
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             className="eyebrow block mb-4"
           >
-            Servicios
+            Lo que te está costando clientes
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            Todo lo que tu negocio<br />necesita para <span className="acento">crecer online</span>.
+            Cada semana pierdes clientes<br />por cosas que <span className="acento">se arreglan</span>.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-xl mx-auto"
           >
-            Elige lo que necesitas. Lo montamos y lo gestionamos por ti — tú solo cierras ventas.
+            No te vendemos "IA". Te quitamos cada uno de estos agujeros. Elige el tuyo; lo montamos y lo llevamos nosotros.
           </motion.p>
         </div>
 

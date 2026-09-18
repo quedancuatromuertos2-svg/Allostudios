@@ -86,14 +86,14 @@ export default function ContactFormSection() {
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
-            Contrata o pide tu propuesta gratis.
+            Cuéntanos qué se te escapa. Te decimos cómo se arregla.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Déjanos tus datos y el servicio que te interesa. Te respondemos en menos de 24h con todo claro.
+            Déjanos tus datos y lo que te interesa. Te respondemos en menos de 24 h con el pack que te encaja y sin rodeos.
           </motion.p>
         </div>
 

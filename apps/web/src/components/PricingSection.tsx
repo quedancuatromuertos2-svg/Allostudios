@@ -91,8 +91,8 @@ export default function PricingSection() {
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Precio cerrado, sin costes ocultos. 12 meses y después mes a mes.
-            Si pagas el año por adelantado, dos meses gratis.
+            Cada pack arregla una cosa: que te encuentren, que te contesten, que te lleguen clientes.
+            Precio cerrado, 12 meses y después mes a mes. Año por adelantado: dos meses gratis.
           </motion.p>
         </div>
 

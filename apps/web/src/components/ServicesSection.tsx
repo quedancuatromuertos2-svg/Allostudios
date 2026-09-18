@@ -317,7 +317,7 @@ export default function ServicesSection() {
                 transition={{ duration: 0.85, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance mb-5"
               >
-                Cada mensaje,<br />respondido al instante.
+                El que te escribe a las 22:00<br />no espera a mañana.
               </motion.h2>
 
               <motion.p
@@ -326,9 +326,9 @@ export default function ServicesSection() {
                 transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
               >
-                Un asistente de IA responde tu WhatsApp en segundos: horarios,
-                precios, dudas y peticiones de cita. Cuando hay que hablar contigo,
-                te avisa — mientras tú atiendes, vendes o descansas.
+                Mientras atiendes, cortas el pelo o cenas, alguien te pregunta por WhatsApp
+                y se va al primero que contesta. Un asistente responde en segundos: horarios,
+                precios, dudas y citas. Y te avisa solo cuando hace falta que entres tú.
               </motion.p>
 
               <motion.ul
@@ -415,7 +415,7 @@ export default function ServicesSection() {
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                   </svg>
-                  Automatización total
+                  Sin trabajo para ti
                 </div>
               </motion.div>
 
@@ -425,7 +425,7 @@ export default function ServicesSection() {
                 transition={{ duration: 0.85, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className="text-headline font-semibold text-ink leading-[1.1] tracking-[-0.03em] text-balance mb-5"
               >
-                Todo conectado.<br />Nada manual.
+                Tú no tienes que aprender nada.<br />Ni tocar nada.
               </motion.h2>
 
               <motion.p
@@ -434,9 +434,9 @@ export default function ServicesSection() {
                 transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[16px] text-dim font-light leading-relaxed mb-8 max-w-lg"
               >
-                Conecta tu IA con WhatsApp, Google Calendar y tu CRM.
-                Los flujos automáticos reparten los leads a tu equipo, envían información
-                y hacen seguimiento — sin que toques nada.
+                Lo conectamos nosotros con tu WhatsApp de siempre y tu agenda. Las citas
+                caen en tu calendario, los interesados quedan apuntados y el seguimiento se
+                hace solo. Tú sigues trabajando como hasta ahora, con la agenda más llena.
               </motion.p>
 
               <motion.div
