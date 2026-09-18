@@ -1,18 +1,22 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, type ReactNode } from 'react'
 import { eur } from '@/lib/precios'
+import { Timeline } from './Piezas'
 
-/*  Un capítulo por pack, como una página de producto de Apple: el nombre enorme, la
-    frase del dolor debajo, un solo visual, tres fichas con un número cada una y el
-    precio al final. Una idea por pantalla. Alterna papel (claro) y grafito (oscuro)
-    con la luz de la marca de cada pack.                                              */
+/*  Un capítulo por pack, como una página de producto de Apple:
+      1. el nombre enorme y la frase del dolor (en boca del dueño),
+      2. un solo visual grande con parallax,
+      3. un mosaico de piezas de producto (ficha de Google, notificación, agenda, anuncio…):
+         cada pieza cuenta UNA cosa y el dueño se ve dentro,
+      4. la caja de compra: precio, qué lleva, qué pasa en los 7 días siguientes y el botón.
+    Alterna papel (claro) y grafito (oscuro) con la luz de la marca de cada pack.       */
 
-export type Ficha = { n: string; t: string; d: string }
+export type Pieza = { titulo: string; sub?: string; nodo: ReactNode; ancho?: 1 | 2; alto?: 'normal' | 'alto' }
 
 export default function CapituloPack({
-  id, numero, nombre, dolor, quien, luz, oscuro, visual, fichas, precio, incluye, url, destacado,
+  id, numero, nombre, dolor, quien, luz, oscuro, visual, mosaico, precio, incluye, timeline, url, destacado, notaVisual,
 }: {
   id: string
   numero: string
@@ -22,106 +26,116 @@ export default function CapituloPack({
   luz: string
   oscuro?: boolean
   visual: ReactNode
-  fichas: Ficha[]
+  notaVisual?: string
+  mosaico: Pieza[]
   precio: number
   incluye: string[]
+  timeline: [string, string][]
   url: string
   destacado?: boolean
 }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const escala = useTransform(scrollYProgress, [0, 0.35], [0.9, 1])
+  const subida = useTransform(scrollYProgress, [0, 0.35], [60, 0])
+  const luzY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+
   const fondo = oscuro ? 'relative overflow-hidden' : 'papel papel-orbe relative overflow-hidden'
   const tInk = oscuro ? 'text-white' : 'text-ink'
   const tDim = oscuro ? 'text-white/60' : 'text-dim'
   const tMuted = oscuro ? 'text-white/40' : 'text-muted'
-  const ficha = oscuro ? 'bg-white/[.06] border border-white/10' : 'lg'
+  const tile = oscuro ? 'bg-white/[.06] border border-white/10' : 'lg'
 
   return (
-    <section id={id} className={`${fondo} py-section`}>
+    <section id={id} ref={ref} className={`${fondo} py-section`}>
       {oscuro && (
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <div className="absolute inset-0 opacity-[.55]" style={{ backgroundImage: `url(/marca/luces/${luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.85) 0%, rgba(11,11,16,.35) 40%, rgba(11,11,16,.9) 100%)' }} />
+          <motion.div style={{ y: luzY, backgroundImage: `url(/marca/luces/${luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="absolute -inset-[10%] opacity-[.6]" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.88) 0%, rgba(11,11,16,.3) 38%, rgba(11,11,16,.55) 70%, rgba(11,11,16,.94) 100%)' }} />
         </div>
       )}
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-12">
-        {/* Nombre + dolor */}
+        {/* 1 · Nombre + dolor */}
         <div className="text-center max-w-3xl mx-auto">
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className={`text-[11.5px] font-semibold tracking-[0.16em] uppercase ${tMuted} mb-6 font-mono`}
-          >
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            className={`text-[11.5px] font-semibold tracking-[0.16em] uppercase ${tMuted} mb-6 font-mono`}>
             Pack {numero}{destacado ? ' · El más elegido' : ''}
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className={`font-display text-[clamp(3.4rem,9vw,7.5rem)] leading-[.95] font-semibold tracking-[-0.045em] ${tInk}`}
+            className={`font-display text-[clamp(3.6rem,10vw,8.5rem)] leading-[.92] font-semibold tracking-[-0.05em] ${tInk}`}
           >
             {nombre}<span className="acento">.</span>
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            transition={{ delay: 0.15, duration: 0.8 }}
-            className={`mt-7 text-[clamp(1.35rem,2.6vw,1.9rem)] leading-snug font-medium tracking-[-0.02em] ${tInk} text-balance`}
+            initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15, duration: 0.8 }}
+            className={`mt-7 text-[clamp(1.4rem,2.8vw,2.1rem)] leading-snug font-medium tracking-[-0.025em] ${tInk} text-balance`}
           >
             «{dolor}»
           </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-            className={`mt-3 text-[15px] ${tDim} font-light`}
-          >
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+            className={`mt-3 text-[15px] ${tDim} font-light`}>
             {quien}
           </motion.p>
         </div>
 
-        {/* Visual */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: .97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.3 }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-14 md:mt-20 flex justify-center"
-        >
+        {/* 2 · Visual grande con parallax */}
+        <motion.div style={{ scale: escala, y: subida }} className="mt-14 md:mt-20 flex flex-col items-center">
           {visual}
+          {notaVisual && <p className={`mt-6 text-[12px] ${tMuted} text-center`}>{notaVisual}</p>}
         </motion.div>
 
-        {/* Fichas: un número, una idea */}
-        <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {fichas.map((f, i) => (
+        {/* 3 · Mosaico de piezas */}
+        <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {mosaico.map((p, i) => (
             <motion.div
-              key={f.t}
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className={`${ficha} rounded-2xl p-7 md:p-8`}
+              key={p.titulo}
+              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: (i % 3) * 0.08, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              className={`${tile} rounded-[22px] p-6 md:p-8 flex flex-col ${p.ancho === 2 ? 'md:col-span-2' : ''} ${p.alto === 'alto' ? 'md:row-span-2' : ''}`}
             >
-              <div className={`font-display text-[clamp(2.4rem,4.5vw,3.6rem)] leading-none font-semibold tracking-[-0.04em] ${tInk}`}>{f.n}</div>
-              <div className={`mt-4 text-[16px] font-semibold ${tInk}`}>{f.t}</div>
-              <p className={`mt-1.5 text-[13.5px] ${tDim} font-light leading-relaxed`}>{f.d}</p>
+              <div className="mb-6">
+                <h3 className={`font-display text-[clamp(1.35rem,2.2vw,1.7rem)] leading-tight font-semibold tracking-[-0.025em] ${tInk} text-balance`}>{p.titulo}</h3>
+                {p.sub && <p className={`mt-2 text-[14px] ${tDim} font-light leading-relaxed max-w-md`}>{p.sub}</p>}
+              </div>
+              <div className="mt-auto flex justify-center md:justify-start">{p.nodo}</div>
             </motion.div>
           ))}
         </div>
 
-        {/* Precio + qué lleva + botones */}
+        {/* 4 · Caja de compra */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className={`mt-10 rounded-2xl ${oscuro ? 'bg-white/[.06] border border-white/10' : 'lg'} p-7 md:p-9 grid md:grid-cols-[1fr_auto] gap-8 items-center`}
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          className={`mt-6 rounded-[22px] ${tile} overflow-hidden`}
         >
-          <div>
-            <div className="flex items-end gap-2">
-              <span className={`font-display text-[clamp(2.6rem,5vw,4rem)] leading-none font-semibold tracking-[-0.04em] ${tInk}`}>{eur(precio)}</span>
-              <span className={`pb-2 text-[15px] ${tDim}`}>/mes · 0 € de entrada</span>
+          <div className="grid lg:grid-cols-[1.1fr_1fr]">
+            <div className="p-7 md:p-10">
+              <p className={`text-[11.5px] font-semibold tracking-[0.16em] uppercase ${tMuted} font-mono`}>Pack {nombre}</p>
+              <div className="mt-3 flex items-end gap-2 flex-wrap">
+                <span className={`font-display text-[clamp(3rem,6vw,4.8rem)] leading-none font-semibold tracking-[-0.045em] ${tInk}`}>{eur(precio)}</span>
+                <span className={`pb-2 text-[15px] ${tDim}`}>/mes</span>
+                <span className={`pb-2 ml-2 text-[13px] font-semibold px-3 py-1 rounded-full ${oscuro ? 'bg-white/10 text-white' : 'bg-accent-light text-accent'}`}>0 € de entrada</span>
+              </div>
+              <ul className={`mt-6 grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-[14px] ${tDim}`}>
+                {incluye.map((x) => (
+                  <li key={x} className="flex items-start gap-2.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="text-accent shrink-0 mt-[3px]"><path d="m5 12 5 5L20 7" /></svg>
+                    {x}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <a href={url} className="btn-accent justify-center rounded-full px-8 py-4 text-[15px]">Contratar {nombre}</a>
+                <a href="#tu-web" className={`inline-flex items-center justify-center rounded-full px-6 py-4 text-[14px] font-semibold border ${oscuro ? 'border-white/20 text-white hover:bg-white/10' : 'border-ink/15 text-ink hover:bg-ink/5'} transition-colors`}>Ver mi web gratis antes</a>
+              </div>
+              <p className={`mt-4 text-[12px] ${tMuted}`}>12 meses y después mes a mes · año por adelantado: dos meses gratis · contrato claro, lo lees antes de pagar</p>
             </div>
-            <ul className={`mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[13.5px] ${tDim}`}>
-              {incluye.map((x) => (
-                <li key={x} className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />{x}
-                </li>
-              ))}
-            </ul>
-            <p className={`mt-4 text-[12px] ${tMuted}`}>12 meses y después mes a mes · si pagas el año por adelantado, dos meses gratis</p>
-          </div>
-          <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
-            <a href={url} className="btn-accent justify-center rounded-full px-8 py-4 text-[15px]">Contratar {nombre}</a>
-            <a href="#tu-web" className={`text-center text-[13.5px] font-medium underline underline-offset-4 ${tDim} hover:${tInk}`}>Ver mi web gratis antes</a>
+            <div className={`p-7 md:p-10 ${oscuro ? 'bg-white/[.04] border-l border-white/10' : 'bg-ink/[.03] border-l border-ink/[.06]'}`}>
+              <p className={`text-[11.5px] font-semibold tracking-[0.16em] uppercase ${tMuted} font-mono mb-6`}>Qué pasa cuando contratas</p>
+              <Timeline oscuro={oscuro} pasos={timeline} />
+            </div>
           </div>
         </motion.div>
       </div>
