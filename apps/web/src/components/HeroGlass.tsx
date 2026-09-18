@@ -6,9 +6,9 @@ import CristalHero from './CristalHero'
 // Cabecera elegida el 17/09/2026 (propuesta B): dolor general + «tranquilo, nos encargamos» + datos
 const TITULO = 'Estás perdiendo clientes'
 const TITULO_GRAD = 'que ni sabes que existían.'
-const SUB = 'Miran tu web, escriben por Instagram, llaman fuera de horario… y se van a otro. Tranquilo: de eso nos encargamos nosotros. Web nueva en 7 días, Instagram gestionado y un asistente que contesta tu WhatsApp 24/7.'
+const SUB = 'Miran tu web, te buscan en Google, escriben fuera de horario… y se van a otro. Tranquilo: de eso nos encargamos nosotros. Web nueva en 7 días, arriba en Google y un asistente que contesta tu WhatsApp 24/7.'
 const datos = [
-  { valor: 'Desde 499 €', texto: 'web completa, pago único' },
+  { valor: '0 € entrada', texto: 'una cuota al mes, desde 99 €' },
   { valor: '7 días', texto: 'de encargo a web publicada' },
   { valor: 'Gratis antes', texto: 'ves tu web y luego decides' },
 ]

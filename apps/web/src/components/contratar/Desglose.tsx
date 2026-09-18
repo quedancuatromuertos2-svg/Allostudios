@@ -1,22 +1,29 @@
 'use client'
 
 import { useState } from 'react'
-import { type Articulo, eur } from '@/lib/precios'
+import { type Articulo, eur, porClave } from '@/lib/precios'
 
 /*  Desglose y botón de pago.
 
     La regla que pidió Frangel: que en todo momento se vea qué se paga hoy y
-    qué se paga después. El pago único va primero; la mensualidad se activa
-    cuando se entrega el trabajo, no antes.                                  */
+    qué se paga después. Con el modelo de suscripción (18/09/2026) es sencillo:
+    0 € de entrada, hoy pagas la primera cuota y cada mes la misma. Packs y
+    webs llevan 12 meses de permanencia; el año por adelantado son 10 cuotas.  */
 
-export default function Desglose({ art, mantenimiento }: { art: Articulo; mantenimiento?: Articulo }) {
+export default function Desglose({ art }: { art: Articulo }) {
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
   const [negocio, setNegocio] = useState('')
   const [telefono, setTelefono] = useState('')
   const [email, setEmail] = useState('')
+  const [anual, setAnual] = useState(false)
+  const [extras, setExtras] = useState<string[]>([])
 
-  const esMensual = art.cobro === 'mes'
+  const extrasDisponibles = (art.extras || []).map(porClave).filter((e): e is Articulo => !!e)
+  const extrasElegidos = extrasDisponibles.filter((e) => extras.includes(e.clave))
+  const cuota = art.eur + extrasElegidos.reduce((t, e) => t + e.eur, 0)
+  const puedeAnual = !!art.anual
+  const hoy = anual && puedeAnual ? cuota * 10 : cuota
 
   async function pagar(e: React.FormEvent) {
     e.preventDefault()
@@ -26,7 +33,7 @@ export default function Desglose({ art, mantenimiento }: { art: Articulo; manten
       const r = await fetch('/api/pago', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clave: art.clave, negocio, telefono, email }),
+        body: JSON.stringify({ clave: art.clave, negocio, telefono, email, periodo: anual ? 'anio' : 'mes', extras }),
       })
       const d = await r.json()
       if (!r.ok || !d.url) throw new Error(d.error || 'No se pudo abrir el pago')
@@ -40,6 +47,15 @@ export default function Desglose({ art, mantenimiento }: { art: Articulo; manten
   const input =
     'w-full px-4 py-3 rounded-xl border border-border bg-white text-[14px] text-ink placeholder:text-muted focus:border-accent outline-none transition-colors'
 
+  const condiciones = [
+    'Entrada: 0 €. Hoy pagas la primera cuota y empezamos',
+    art.permanencia
+      ? `${art.permanencia} meses de permanencia; después, mes a mes sin compromiso`
+      : 'Sin permanencia: te das de baja cuando quieras',
+    'Pago seguro con Stripe · no guardamos tu tarjeta',
+    'Factura automática a tu email',
+  ]
+
   return (
     <div className="grid lg:grid-cols-[1fr_0.95fr] gap-6 items-start">
       {/* ── El desglose ── */}
@@ -50,49 +66,83 @@ export default function Desglose({ art, mantenimiento }: { art: Articulo; manten
           <div>
             <div className="text-[15px] font-semibold text-ink">{art.nombre}</div>
             <div className="text-[12.5px] text-muted mt-0.5">
-              {esMensual ? 'Suscripción mensual' : 'Pago único'}
+              {art.permanencia ? `Suscripción · ${art.permanencia} meses` : 'Suscripción mensual'}
             </div>
           </div>
           <div className="text-right shrink-0">
             <div className="font-display text-[1.9rem] leading-none font-semibold text-ink tracking-[-0.03em]">
               {eur(art.eur)}
             </div>
-            {esMensual && <div className="text-[12px] text-muted mt-1">al mes</div>}
+            <div className="text-[12px] text-muted mt-1">al mes</div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 py-4 border-b border-border">
-          <span className="text-[13.5px] font-semibold text-ink">Hoy pagas</span>
-          <span className="text-[17px] font-semibold text-accent">{eur(art.eur)}</span>
-        </div>
+        {art.incluye && (
+          <ul className="py-4 border-b border-border space-y-2">
+            {art.incluye.map((t) => (
+              <li key={t} className="flex items-start gap-2.5 text-[13px] text-dim">
+                <Check />
+                {t}
+              </li>
+            ))}
+            {art.sumaSuelto && art.sumaSuelto > art.eur && (
+              <li className="text-[12px] text-muted pt-1">
+                Por separado serían {eur(art.sumaSuelto)}/mes. Ahorras {eur(art.sumaSuelto - art.eur)} cada mes.
+              </li>
+            )}
+          </ul>
+        )}
 
-        {mantenimiento && (
-          <div className="py-4 border-b border-border">
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-[13.5px] text-dim">Después, {mantenimiento.nombre.toLowerCase()}</span>
-              <span className="text-[14px] font-medium text-dim">{eur(mantenimiento.eur)}/mes</span>
-            </div>
-            <p className="text-[12.5px] text-muted mt-2 leading-relaxed">
-              <strong className="text-dim font-semibold">No lo pagas ahora.</strong> Cuando te
-              entreguemos la web te mandamos el enlace para activarlo. Así no pagas mantenimiento
-              de algo que todavía no existe.
-            </p>
+        {extrasDisponibles.length > 0 && (
+          <div className="py-4 border-b border-border space-y-2">
+            {extrasDisponibles.map((e) => (
+              <label key={e.clave} className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  checked={extras.includes(e.clave)}
+                  onChange={(ev) =>
+                    setExtras((xs) => (ev.target.checked ? [...xs, e.clave] : xs.filter((x) => x !== e.clave)))
+                  }
+                />
+                <span className="flex-1">
+                  <span className="block text-[13.5px] font-semibold text-ink">{e.nombre} · +{eur(e.eur)}/mes</span>
+                  <span className="block text-[12.5px] text-muted mt-0.5">{e.desc}</span>
+                </span>
+              </label>
+            ))}
           </div>
         )}
 
-        <ul className="mt-5 space-y-2.5">
-          {[
-            esMensual ? 'Se cobra automáticamente cada mes' : 'Un solo cobro, no se repite',
-            'Sin permanencia: te das de baja cuando quieras',
-            'Pago seguro con Stripe · no guardamos tu tarjeta',
-            'Factura automática a tu email',
-          ].map((t) => (
-            <li key={t} className="flex items-start gap-2.5 text-[13px] text-dim">
-              <span className="mt-[3px] w-4 h-4 shrink-0 rounded-full bg-accent-light text-accent flex items-center justify-center">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m5 12 5 5L20 7" />
-                </svg>
+        {puedeAnual && (
+          <label className="flex items-start gap-3 cursor-pointer py-4 border-b border-border">
+            <input type="checkbox" className="mt-1" checked={anual} onChange={(e) => setAnual(e.target.checked)} />
+            <span className="flex-1">
+              <span className="block text-[13.5px] font-semibold text-ink">
+                Pagar el año por adelantado · {eur(cuota * 10)}
               </span>
+              <span className="block text-[12.5px] text-muted mt-0.5">
+                10 cuotas en vez de 12: te ahorras {eur(cuota * 2)}.
+              </span>
+            </span>
+          </label>
+        )}
+
+        <div className="flex items-center justify-between gap-4 py-4 border-b border-border">
+          <span className="text-[13.5px] font-semibold text-ink">Hoy pagas</span>
+          <span className="text-[17px] font-semibold text-accent">{eur(hoy)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4 py-4 border-b border-border">
+          <span className="text-[13.5px] text-dim">Después</span>
+          <span className="text-[14px] font-medium text-dim">
+            {anual && puedeAnual ? `${eur(cuota * 10)} cada año` : `${eur(cuota)} cada mes`}
+          </span>
+        </div>
+
+        <ul className="mt-5 space-y-2.5">
+          {condiciones.map((t) => (
+            <li key={t} className="flex items-start gap-2.5 text-[13px] text-dim">
+              <Check />
               {t}
             </li>
           ))}
@@ -123,7 +173,7 @@ export default function Desglose({ art, mantenimiento }: { art: Articulo; manten
 
         <button type="submit" disabled={cargando}
           className="btn-accent w-full justify-center py-4 text-[15px] rounded-full disabled:opacity-60">
-          {cargando ? 'Abriendo el pago…' : `Pagar ${eur(art.eur)}${esMensual ? '/mes' : ''}`}
+          {cargando ? 'Abriendo el pago…' : `Pagar ${eur(hoy)}${anual && puedeAnual ? '/año' : '/mes'}`}
           {!cargando && (
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
               <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -134,8 +184,20 @@ export default function Desglose({ art, mantenimiento }: { art: Articulo; manten
         <p className="text-[11.5px] text-muted text-center leading-relaxed">
           Te lleva a la pantalla segura de Stripe. Tus datos de tarjeta no pasan por nuestra web
           en ningún momento.
+          {art.permanencia ? ` Al pagar aceptas los ${art.permanencia} meses de permanencia (` : ' ('}
+          <a href="/terminos" className="underline">condiciones</a>).
         </p>
       </form>
     </div>
+  )
+}
+
+function Check() {
+  return (
+    <span className="mt-[3px] w-4 h-4 shrink-0 rounded-full bg-accent-light text-accent flex items-center justify-center">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m5 12 5 5L20 7" />
+      </svg>
+    </span>
   )
 }

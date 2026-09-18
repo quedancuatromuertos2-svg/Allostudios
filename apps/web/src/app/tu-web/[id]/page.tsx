@@ -10,9 +10,9 @@ import { adnDe, type ADN } from '@/lib/adn'
 // Niveles de la demo = las tres tarifas de web. Cada nivel suma sobre el anterior, sin quitar nada.
 export type Nivel = 'arranque' | 'premium' | 'cine'
 const NIVELES: { k: Nivel; n: string; p: string; d: string }[] = [
-  { k: 'arranque', n: 'Arranque', p: '499 €', d: 'Web completa con tus datos reales' },
-  { k: 'premium', n: 'Premium', p: '790 €', d: 'Luz de fondo, cristal y animaciones' },
-  { k: 'cine', n: 'Cinematográfica', p: '1.490 €', d: 'Cabecera de cristal en vivo y dirección de arte' },
+  { k: 'arranque', n: 'Arranque', p: '99 €/mes', d: 'Web completa con tus datos reales' },
+  { k: 'premium', n: 'Premium', p: '149 €/mes', d: 'Luz de fondo, cristal y animaciones' },
+  { k: 'cine', n: 'Cinematográfica', p: '249 €/mes', d: 'Cabecera de cristal en vivo y dirección de arte' },
 ]
 function nivelDe(v: unknown): Nivel { return v === 'premium' || v === 'cine' ? v : 'arranque' }
 
@@ -511,7 +511,7 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
           <a href={wa} target="_blank" rel="noreferrer" className="dm-btn dm-btn-white dm-btn-lg">Solicitar presupuesto</a>
           <p className="dm-final-note">Sin compromiso · Respuesta en menos de 24 h</p>
         </div>
-        <p className="dm-foot">allostudios.net · Webs · Instagram · Anuncios · Asistente IA en WhatsApp</p>
+        <p className="dm-foot">allostudios.net · Webs · Google · Anuncios · Asistente IA en WhatsApp</p>
       </section>
 
       </main>

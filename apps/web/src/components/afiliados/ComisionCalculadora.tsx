@@ -3,21 +3,25 @@
 import { useState } from 'react'
 
 const PRESETS = [
-  { label: 'Web Arranque', ticket: 499 },
-  { label: 'Web Premium', ticket: 790 },
-  { label: 'Web + IA + redes', ticket: 1000 },
-  { label: 'Web Cinematográfica', ticket: 1490 },
+  { label: 'Solo web', ticket: 99 },
+  { label: 'Pack Presencia', ticket: 199 },
+  { label: 'Pack Crecimiento', ticket: 349 },
+  { label: 'Pack Todo', ticket: 499 },
 ]
+
+const MESES = 12
+const PCT = 0.2
 
 const eur = (n: number) =>
   n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
 export default function ComisionCalculadora({ compact = false }: { compact?: boolean }) {
-  const [ticket, setTicket] = useState(499)
+  const [ticket, setTicket] = useState(349)
   const [ventas, setVentas] = useState(4)
 
-  const comision = Math.round(ticket * 0.3)
-  const mes = comision * ventas
+  const comision = Math.round(ticket * PCT)          // al mes, por cliente
+  const porCliente = comision * MESES                // lo que deja un cliente en su primer año
+  const mes = comision * ventas * MESES               // con `ventas` clientes al mes, en régimen (a los 12 meses)
 
   return (
     <div className={`lg rounded-2xl ${compact ? 'p-5' : 'p-6 md:p-8'}`}>
@@ -33,7 +37,7 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
                 : 'border-border text-dim hover:text-ink hover:border-ink/30'
             }`}
           >
-            {p.label} · {eur(p.ticket)}
+            {p.label} · {eur(p.ticket)}/mes
           </button>
         ))}
       </div>}
@@ -41,26 +45,26 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
       <div className="grid sm:grid-cols-2 gap-6">
         <div>
           <label htmlFor="af-ticket" className="block text-[12.5px] font-medium text-dim mb-2">
-            Ticket que cierras
+            Cuota del pack que cierras
           </label>
           <div className="flex items-center gap-3">
             <input
               id="af-ticket"
               type="range"
-              min={149}
-              max={3000}
-              step={1}
+              min={99}
+              max={599}
+              step={10}
               value={ticket}
               onChange={(e) => setTicket(Number(e.target.value))}
               className="flex-1 accent-accent"
             />
-            <span className="text-[15px] font-semibold text-ink tabular-nums w-[86px] text-right">{eur(ticket)}</span>
+            <span className="text-[15px] font-semibold text-ink tabular-nums w-[96px] text-right">{eur(ticket)}/mes</span>
           </div>
         </div>
 
         <div>
           <label htmlFor="af-ventas" className="block text-[12.5px] font-medium text-dim mb-2">
-            Ventas al mes
+            Clientes que cierras al mes
           </label>
           <div className="flex items-center gap-3">
             <input
@@ -80,19 +84,19 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
 
       <div className={`grid sm:grid-cols-2 gap-5 border-t border-border ${compact ? 'mt-5 pt-5' : 'mt-7 pt-7'}`}>
         <div>
-          <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Por venta</div>
+          <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Por cliente</div>
           <div className={`font-display leading-none font-semibold text-accent tracking-[-0.03em] ${compact ? 'text-[2rem]' : 'text-[2.4rem]'}`}>
-            {eur(comision)}
+            {eur(porCliente)}
           </div>
-          <p className="text-[12.5px] text-muted mt-1.5">30 % del ticket, íntegro para ti</p>
+          <p className="text-[12.5px] text-muted mt-1.5">{eur(comision)} al mes × 12 meses (20 % de la cuota)</p>
         </div>
         <div>
-          <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Al mes</div>
+          <div className="text-[12px] uppercase tracking-[0.14em] text-muted font-semibold mb-1.5">Al mes, en un año</div>
           <div className={`font-display leading-none font-semibold text-ink tracking-[-0.03em] ${compact ? 'text-[2rem]' : 'text-[2.4rem]'}`}>
             {eur(mes)}
           </div>
           <p className="text-[12.5px] text-muted mt-1.5">
-            con {ventas} {ventas === 1 ? 'venta' : 'ventas'} cerradas
+            cerrando {ventas} {ventas === 1 ? 'cliente' : 'clientes'} al mes durante 12 meses
           </p>
         </div>
       </div>

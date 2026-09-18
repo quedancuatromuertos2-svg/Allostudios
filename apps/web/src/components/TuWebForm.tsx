@@ -118,9 +118,9 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
         <label className="block text-[13px] font-medium text-dim mb-1.5">Tipo de web que quieres ver</label>
         <div className="grid grid-cols-3 gap-2">
           {[
-            ['arranque', 'Arranque', '499 €'],
-            ['premium', 'Premium', '790 €'],
-            ['cine', 'Cinematográfica', '1.490 €'],
+            ['arranque', 'Arranque', '99 €/mes'],
+            ['premium', 'Premium', '149 €/mes'],
+            ['cine', 'Cinematográfica', '249 €/mes'],
           ].map(([v, n, p], i) => (
             <label key={v} className="nivel-opcion cursor-pointer rounded-xl border border-border bg-canvas px-3 py-3 text-center transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-light">
               <input type="radio" name="nivel" value={v} defaultChecked={i === 0} className="sr-only" />

@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   description:
-    "AlloStudios: agencia digital para negocios locales de Valencia. Webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local y un asistente de IA que responde tu WhatsApp 24/7. Pide tu demo gratis.",
+    "AlloStudios: agencia digital para negocios locales de Valencia. Web profesional, SEO local, reseñas, anuncios de Meta y Google y un asistente de IA que responde tu WhatsApp 24/7. Packs desde 199 €/mes con 0 € de entrada. Pide tu demo gratis.",
   keywords: [
     "diseño web Valencia", "web para negocios Valencia", "agencia digital Valencia",
-    "gestión de Instagram Valencia", "community manager Valencia", "publicidad Meta Ads Valencia",
+    "publicidad Meta Ads Valencia", "web por suscripción Valencia", "agencia IA negocios locales",
     "SEO local Valencia", "salir en Google Valencia", "reseñas Google negocios",
     "chatbot WhatsApp negocio", "asistente IA para negocios", "web para peluquería restaurante clínica",
     "más clientes negocio local", "web profesional barata Valencia",
@@ -57,9 +57,9 @@ export const metadata: Metadata = {
     url: "https://allostudios.net",
     siteName: "AlloStudios",
     images: [{ url: "https://allostudios.net/marca/og.jpg", width: 1200, height: 630, alt: "allo." }],
-    title: "AlloStudios — Webs, Instagram y Anuncios para negocios locales",
+    title: "AlloStudios — Web, Google y asistente de IA para negocios locales",
     description:
-      "Tu negocio, lleno. Tu marketing, resuelto. Webs desde 499 €, gestión de Instagram, anuncios y un asistente de IA que responde tu WhatsApp 24/7 — para negocios locales de Valencia. Pide tu demo gratis.",
+      "Tu negocio, lleno. Tu marketing, resuelto. Web, SEO local, anuncios y un asistente de IA que responde tu WhatsApp 24/7 — packs desde 199 €/mes, 0 € de entrada. Pide tu demo gratis.",
   },
   twitter: {
     card: "summary_large_image",
@@ -100,7 +100,7 @@ export default function RootLayout({
                 logo: "https://allostudios.net/marca/icono-claro-512.png",
                 image: "https://allostudios.net/marca/icono-claro-256.png",
                 description:
-                  "Agencia digital para negocios locales de Valencia: webs profesionales desde 499 €, gestión de Instagram, anuncios de Meta y Google, SEO local, reseñas y asistente de IA 24/7.",
+                  "Agencia digital para negocios locales de Valencia: web profesional, SEO local, reseñas, anuncios de Meta y Google y asistente de IA 24/7. Packs por suscripción desde 199 €/mes, 0 € de entrada.",
                 areaServed: { "@type": "City", name: "Valencia" },
                 priceRange: "€€",
                 telephone: "+34-695-868-793",
@@ -136,31 +136,31 @@ export default function RootLayout({
                 offers: [
                   {
                     "@type": "Offer",
-                    name: "Web Arranque",
-                    price: "499",
-                    priceCurrency: "EUR",
-                    description: "Web profesional a medida en 7 días, con tu marca, más 49 €/mes de hosting, cambios y soporte. Demo gratis antes de pagar.",
-                  },
-                  {
-                    "@type": "Offer",
-                    name: "Web Premium",
-                    price: "790",
-                    priceCurrency: "EUR",
-                    description: "Web con animaciones premium, copy profesional y tus reseñas de Google integradas, más 49 €/mes.",
-                  },
-                  {
-                    "@type": "Offer",
-                    name: "Web Cinematográfica",
-                    price: "1490",
-                    priceCurrency: "EUR",
-                    description: "Web con efecto Apple: tu producto cobra vida con el scroll. 100% a medida, más 79 €/mes.",
-                  },
-                  {
-                    "@type": "Offer",
-                    name: "Gestión de Instagram",
+                    name: "Pack Presencia",
                     price: "199",
                     priceCurrency: "EUR",
-                    description: "Contenido profesional cada semana, publicado por nosotros. Desde 199 €/mes, sin permanencia.",
+                    description: "Web profesional + SEO local mensual + reseñas 5★ automatizadas. 199 €/mes, 0 € de entrada, 12 meses.",
+                  },
+                  {
+                    "@type": "Offer",
+                    name: "Pack Crecimiento",
+                    price: "349",
+                    priceCurrency: "EUR",
+                    description: "Web Premium + SEO local + reseñas + asistente de IA en WhatsApp 24/7. 349 €/mes, 0 € de entrada, 12 meses.",
+                  },
+                  {
+                    "@type": "Offer",
+                    name: "Pack Todo",
+                    price: "499",
+                    priceCurrency: "EUR",
+                    description: "Todo lo del Pack Crecimiento más campañas de Meta y Google Ads gestionadas. 499 €/mes, 0 € de entrada, 12 meses.",
+                  },
+                  {
+                    "@type": "Offer",
+                    name: "Web Arranque",
+                    price: "99",
+                    priceCurrency: "EUR",
+                    description: "Web profesional a medida en 7 días con hosting, cambios y soporte incluidos. 99 €/mes, 0 € de entrada. Demo gratis antes de pagar.",
                   },
                 ],
               }),
@@ -179,7 +179,7 @@ export default function RootLayout({
                     name: "¿Qué hace AlloStudios exactamente?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Somos una agencia digital para negocios locales de Valencia. Hacemos tu web profesional, gestionamos tu Instagram, ponemos en marcha tus anuncios de Meta y Google, te subimos en Google (SEO local y reseñas) y montamos un asistente de IA que responde tu WhatsApp 24/7. Un único partner para todo lo que te trae clientes.",
+                      text: "Somos una agencia digital para negocios locales de Valencia. Hacemos tu web profesional, te subimos en Google (SEO local y reseñas), ponemos en marcha tus anuncios de Meta y Google y montamos un asistente de IA que responde tu WhatsApp 24/7. Un único partner para todo lo que te trae clientes.",
                     },
                   },
                   {
@@ -192,10 +192,10 @@ export default function RootLayout({
                   },
                   {
                     "@type": "Question",
-                    name: "¿Cuánto cuesta una web con AlloStudios?",
+                    name: "¿Cuánto cuesta AlloStudios?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Tenemos tres niveles: Arranque por 499 € + 49 €/mes (todo incluido), Premium por 790 € con animaciones y reseñas integradas, y Cinematográfica desde 1.490 € con el efecto de scroll estilo Apple. Todos sin permanencia y con hosting, cambios y soporte incluidos.",
+                      text: "Por suscripción, con 0 € de entrada y 12 meses de permanencia. Tres packs: Presencia (199 €/mes: web + SEO local + reseñas), Crecimiento (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Todo (499 €/mes: lo anterior más campañas de Meta y Google Ads). Solo la web, desde 99 €/mes con hosting, cambios y soporte incluidos.",
                     },
                   },
                   {
@@ -211,7 +211,7 @@ export default function RootLayout({
                     name: "¿Hay permanencia?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "No. Ninguno de nuestros servicios tiene permanencia. Te quedas con nosotros porque los resultados te compensan, no porque un contrato te obligue.",
+                      text: "Los packs y las webs tienen 12 meses de permanencia porque no cobramos nada por adelantado; pasado el año, sigues mes a mes sin compromiso. Los servicios sueltos (SEO local, reseñas, asistente, anuncios) no tienen permanencia.",
                     },
                   },
                 ],

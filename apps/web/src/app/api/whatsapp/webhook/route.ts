@@ -10,7 +10,7 @@ QUÉ VENDE ALLOSTUDIOS:
 - Recepcionista IA por voz para inmobiliarias: atiende llamadas 24/7, cualifica leads (compra/alquiler, zona, presupuesto) y agenda visitas
 - Plan Starter: 399€/mes (1.500 min incluidos, ~375 llamadas)
 - Plan Professional: 599€/mes (2.250 min incluidos, ~560 llamadas)
-- También páginas web inmobiliarias premium desde 790€
+- También páginas web profesionales por suscripción desde 99 €/mes (0 € de entrada)
 - Para: agencias inmobiliarias, agentes independientes, promotoras, alquiler vacacional y administración de fincas
 - Argumento clave: un lead inmobiliario vale miles de euros en comisión; perderlo por no coger el teléfono es carísimo. Marta cuesta mucho menos que una recepcionista.
 

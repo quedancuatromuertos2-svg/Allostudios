@@ -51,19 +51,20 @@ export async function POST(req: NextRequest) {
     .eq('stripe_session_id', s.id)
 
   // Aviso al equipo por el mismo canal que el resto de solicitudes
-  const importe = art ? eur(art.eur) : `${((s.amount_total || 0) / 100).toFixed(0)} €`
-  const recurrente = art?.cobro === 'mes'
+  const anual = s.metadata?.periodo === 'anio'
+  const extras = String(s.metadata?.extras || '').split(',').filter(Boolean)
+  const importe = s.amount_total ? eur(s.amount_total / 100) : art ? eur(art.eur) : '—'
+  const periodo = anual ? '/año (año por adelantado)' : '/mes'
+  const detalle = `${art?.nombre || clave}${extras.length ? ` + ${extras.join(', ')}` : ''}`
   sendLeadEmail({
     nombre: `[PAGO] ${negocio || email || 'Cliente'}`,
     telefono: telefono || '—',
     email: email || undefined,
-    servicio: `${art?.nombre || clave} · ${importe}${recurrente ? '/mes' : ''}`,
+    servicio: `${detalle} · ${importe}${periodo}`,
     inmobiliaria: negocio || undefined,
     mensaje:
-      `PAGO CONFIRMADO de ${importe}${recurrente ? ' al mes (suscripción activa)' : ' (pago único)'}. ` +
-      (art?.acompana
-        ? `Al entregar, mándale el enlace del mantenimiento: allostudios.net/contratar/${art.acompana.toLowerCase()}. `
-        : '') +
+      `PAGO CONFIRMADO de ${importe}${periodo} (suscripción activa). ` +
+      (art?.permanencia ? `Permanencia ${art.permanencia} meses. ` : '') +
       `Sesión de Stripe: ${s.id}`,
   }).catch(() => {})
 
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
   const alertPhone = process.env.ALERT_WHATSAPP
   if (apikey && alertPhone) {
     const texto =
-      `💸 PAGO en allostudios.net\n${art?.nombre || clave}\n${importe}${recurrente ? '/mes' : ' pago único'}\n` +
+      `💸 PAGO en allostudios.net\n${detalle}\n${importe}${periodo}\n` +
       `${negocio || ''} ${email || ''}`
     fetch(
       `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(alertPhone)}&text=${encodeURIComponent(texto)}&apikey=${encodeURIComponent(apikey)}`,

@@ -21,27 +21,28 @@ export default function TerminosPage() {
 
           <section>
             <h2 className="text-[17px] font-semibold text-ink mb-3">1. Objeto</h2>
-            <p>Los presentes Términos y Condiciones regulan el acceso y uso de la plataforma <strong>AlloStudios</strong> (en adelante, "la Plataforma"), disponible en <a href="https://allostudios.net" className="text-accent hover:underline">allostudios.net</a>, que proporciona servicios de asistente de voz con inteligencia artificial para negocios.</p>
+            <p>Los presentes Términos y Condiciones regulan el acceso y uso de la plataforma <strong>AlloStudios</strong> (en adelante, "la Plataforma"), disponible en <a href="https://allostudios.net" className="text-accent hover:underline">allostudios.net</a>, que presta servicios digitales para negocios locales: diseño y mantenimiento de páginas web, posicionamiento local en Google, sistemas de reseñas, gestión de campañas publicitarias y asistentes de inteligencia artificial para WhatsApp, contratados por suscripción.</p>
           </section>
 
           <section>
             <h2 className="text-[17px] font-semibold text-ink mb-3">2. Acceso y registro</h2>
-            <p>Para acceder a la Plataforma es necesario crear una cuenta y contratar uno de los planes disponibles. El usuario debe ser mayor de 18 años y proporcionar información veraz durante el registro. Es responsable de mantener la confidencialidad de sus credenciales.</p>
+            <p>La contratación se realiza en allostudios.net/contratar mediante pasarela de pago segura (Stripe), sin necesidad de crear una cuenta. El cliente debe ser mayor de 18 años, actuar en nombre de un negocio y proporcionar información veraz (nombre del negocio, teléfono y email de facturación).</p>
           </section>
 
           <section>
             <h2 className="text-[17px] font-semibold text-ink mb-3">3. Planes y facturación</h2>
-            <p>AlloStudios ofrece los siguientes planes de suscripción:</p>
+            <p>Todos los servicios se contratan por suscripción, sin pago inicial (0 € de entrada). La primera cuota se cobra en el momento de la contratación y las siguientes cada mes en la misma fecha. Los precios vigentes son los publicados en allostudios.net/contratar en el momento de la contratación:</p>
             <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Starter:</strong> 399€/mes — 1.500 minutos de llamada incluidos</li>
-              <li><strong>Professional:</strong> 599€/mes — 2.250 minutos de llamada incluidos</li>
+              <li><strong>Packs</strong> (Presencia, Crecimiento, Todo) y <strong>webs</strong> (Arranque, Premium, Cinematográfica): cuota mensual con un <strong>compromiso de permanencia de 12 meses</strong> desde la fecha de contratación. Transcurridos los 12 meses, la suscripción continúa mes a mes sin permanencia.</li>
+              <li><strong>Servicios sueltos</strong> (SEO local, reseñas, asistente de IA, campañas, captación): cuota mensual sin permanencia.</li>
+              <li><strong>Pago anual anticipado:</strong> opcionalmente, packs y webs pueden abonarse por adelantado por el importe de 10 cuotas mensuales, que cubre 12 meses de servicio.</li>
             </ul>
-            <p className="mt-2">El exceso de minutos se factura a <strong>0,25€/min</strong> y el servicio nunca se corta. Los precios incluyen IVA cuando corresponda. La facturación es mensual recurrente. Puedes cancelar en cualquier momento desde el panel de control.</p>
+            <p className="mt-2">La inversión publicitaria en Meta o Google no está incluida en ninguna cuota y la abona el cliente directamente a la plataforma correspondiente. Los precios se muestran sin IVA salvo indicación contraria; el IVA aplicable se refleja en la factura, que se emite automáticamente por email en cada cobro.</p>
           </section>
 
           <section>
-            <h2 className="text-[17px] font-semibold text-ink mb-3">4. Periodo de prueba</h2>
-            <p>Todos los planes incluyen un periodo de prueba gratuita de <strong>7 días</strong>, previo registro de un método de pago válido. Si no cancelas antes de que finalice el periodo de prueba, se iniciará la facturación regular.</p>
+            <h2 className="text-[17px] font-semibold text-ink mb-3">4. Demo previa y entrega</h2>
+            <p>Antes de contratar, el cliente puede ver una demo gratuita de su web en allostudios.net/tu-web, sin compromiso. Tras la contratación, AlloStudios entrega la web en un plazo orientativo de 7 días laborables desde que recibe del cliente el material necesario (fotos, textos, accesos). El resto de servicios del pack se ponen en marcha durante el primer mes.</p>
           </section>
 
           <section>
@@ -72,7 +73,7 @@ export default function TerminosPage() {
 
           <section>
             <h2 className="text-[17px] font-semibold text-ink mb-3">9. Cancelación</h2>
-            <p>Puedes cancelar tu suscripción en cualquier momento desde el panel de control. La cancelación será efectiva al final del periodo de facturación en curso. No se realizan reembolsos por el periodo restante.</p>
+            <p>Los servicios sin permanencia pueden cancelarse en cualquier momento escribiendo a hola@allostudios.net o por WhatsApp; la cancelación es efectiva al final del periodo de facturación en curso. En packs y webs, la cancelación anticipada dentro de los 12 meses de permanencia conlleva el abono de las cuotas pendientes hasta completar dicho periodo, dado que AlloStudios no cobra el trabajo inicial por adelantado. No se realizan reembolsos por el periodo restante ni de los pagos anuales anticipados. Al finalizar la relación, la web deja de estar publicada; el cliente puede solicitar una copia de sus contenidos (textos e imágenes aportados).</p>
           </section>
 
           <section>

@@ -9,14 +9,14 @@ import LuzFondo from '@/components/LuzFondo'
 import { ESTADOS_INTERIOR } from '@/lib/luces'
 
 export function generateStaticParams() {
-  return CATALOGO.map((a) => ({ clave: a.clave.toLowerCase() }))
+  return CATALOGO.filter((a) => a.tipo !== 'extra').map((a) => ({ clave: a.clave.toLowerCase() }))
 }
 
 export function generateMetadata({ params }: { params: { clave: string } }): Metadata {
   const art = porClave(params.clave.toUpperCase())
   if (!art) return { title: 'Contratar — AlloStudios' }
   return {
-    title: `Contratar ${art.nombre} — ${eur(art.eur)}${art.cobro === 'mes' ? '/mes' : ''}`,
+    title: `Contratar ${art.nombre} — ${eur(art.eur)}/mes`,
     description: art.desc,
     alternates: { canonical: `https://allostudios.net/contratar/${art.clave.toLowerCase()}` },
   }
@@ -30,8 +30,7 @@ export default function ContratarArticuloPage({
   searchParams?: { cancelado?: string }
 }) {
   const art = porClave(params.clave.toUpperCase())
-  if (!art) notFound()
-  const mant = art.acompana ? porClave(art.acompana) : undefined
+  if (!art || art.tipo === 'extra') notFound()
 
   return (
     <div className="tema-oscuro">
@@ -62,7 +61,7 @@ export default function ContratarArticuloPage({
             </p>
           )}
 
-          <Desglose art={art} mantenimiento={mant} />
+          <Desglose art={art} />
         </div>
       </main>
       <Footer />

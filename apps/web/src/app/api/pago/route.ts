@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { supabaseAdmin } from '@/lib/supabase'
-import { porClave } from '@/lib/precios'
+import { porClave, sinStripe } from '@/lib/precios'
 
 export const runtime = 'nodejs'
 
@@ -12,6 +12,18 @@ export async function POST(req: NextRequest) {
   const d = await req.json().catch(() => ({}))
   const art = porClave(String(d?.clave || ''))
   if (!art) return NextResponse.json({ error: 'Ese servicio no existe' }, { status: 400 })
+
+  // Periodo: cuota mensual o el año por adelantado (10 cuotas). Extras: p. ej. la web Cinematográfica en un pack.
+  const anual = d?.periodo === 'anio' && !!art.anual
+  const extras = (Array.isArray(d?.extras) ? d.extras : [])
+    .map((c: unknown) => porClave(String(c)))
+    .filter((e): e is NonNullable<typeof e> => !!e && (art.extras || []).includes(e.clave))
+  const precioDe = (a: typeof art) => (anual && a.anual ? a.anual.priceId : a.priceId)
+  if ([art, ...extras].some((a) => sinStripe(precioDe(a)))) {
+    return NextResponse.json({ error: 'Este producto todavía no está activado para el pago. Escríbenos por WhatsApp y lo activamos al momento.' }, { status: 503 })
+  }
+  const totalMes = art.eur + extras.reduce((t, e) => t + e.eur, 0)
+  const importeCent = (anual ? totalMes * 10 : totalMes) * 100
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json({ error: 'Pagos no configurados' }, { status: 503 })
@@ -29,27 +41,29 @@ export async function POST(req: NextRequest) {
     .insert({
       clave: art.clave,
       nombre: art.nombre,
-      importe_cent: art.eur * 100,
+      importe_cent: importeCent,
       cobro: art.cobro,
       email, telefono, negocio,
+      notas: [anual ? 'Año por adelantado' : '', extras.length ? `Extras: ${extras.map((e) => e.clave).join(', ')}` : ''].filter(Boolean).join(' · ') || null,
     })
     .select('id')
     .single()
 
   try {
     const sesion = await stripe.checkout.sessions.create({
-      mode: art.cobro === 'mes' ? 'subscription' : 'payment',
-      line_items: [{ price: art.priceId, quantity: 1 }],
+      mode: 'subscription',
+      line_items: [art, ...extras].map((a) => ({ price: precioDe(a), quantity: 1 })),
       locale: 'es',
       customer_email: email || undefined,
       success_url: `${origen}/gracias?s={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origen}/contratar/${art.clave.toLowerCase()}?cancelado=1`,
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      metadata: { clave: art.clave, pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '' },
-      ...(art.cobro === 'mes'
-        ? { subscription_data: { metadata: { clave: art.clave, pedidoId: pedido?.id || '' } } }
-        : { payment_intent_data: { metadata: { clave: art.clave, pedidoId: pedido?.id || '' } } }),
+      metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '' },
+      subscription_data: {
+        metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '' },
+        ...(art.permanencia ? { description: `${art.nombre} · permanencia ${art.permanencia} meses` } : {}),
+      },
     })
 
     if (pedido?.id) {

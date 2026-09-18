@@ -139,7 +139,7 @@ export default function WebsSection() {
                 Ver precios y contratar
                 <span className="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 transition-transform duration-500 group-hover:translate-x-1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
               </a>
-              <span className="text-[12px] text-muted">Desglose claro · sin permanencia</span>
+              <span className="text-[12px] text-muted">0 € de entrada · desglose claro</span>
             </motion.div>
           </div>
           <motion.ol variants={fadeUp} className="rasgos grid sm:grid-cols-2 gap-x-8 gap-y-4">

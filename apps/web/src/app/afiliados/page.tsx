@@ -8,12 +8,12 @@ import { ESTADOS_INTERIOR } from '@/lib/luces'
 import LuzPapel from '@/components/LuzPapel'
 
 export const metadata: Metadata = {
-  title: 'Programa de comerciales — gana el 30 % de cada venta',
+  title: 'Programa de comerciales — gana el 20 % de cada cuota durante un año',
   description:
-    'Vende webs y servicios digitales a negocios locales y llévate el 30 % de cada ticket. Nosotros ponemos los leads, la demo ya hecha, el guion y toda la producción. Tú solo llamas y cierras. 100 % remoto, sin inversión.',
+    'Vende packs por suscripción a negocios locales y llévate el 20 % de cada cuota durante los 12 primeros meses. Nosotros ponemos los leads, la demo ya hecha, el guion y toda la producción. Tú solo llamas y cierras. 100 % remoto, sin inversión.',
   alternates: { canonical: 'https://allostudios.net/afiliados' },
   openGraph: {
-    title: 'Gana el 30 % de cada venta — Programa de comerciales de AlloStudios',
+    title: 'Gana el 20 % de cada cuota durante un año — Programa de comerciales de AlloStudios',
     description: 'Te damos los leads con la demo ya hecha y el guion. Tú solo llamas y cierras. 100 % remoto y sin invertir un euro.',
     url: 'https://allostudios.net/afiliados',
   },
@@ -40,8 +40,8 @@ const pasos = [
   },
   {
     n: '04',
-    t: 'Cobras el 30 %',
-    d: 'El cliente paga a AlloStudios y tú cobras el día 5 del mes siguiente. Nosotros producimos, entregamos y mantenemos la web.',
+    t: 'Cobras el 20 % cada mes',
+    d: 'El cliente paga su cuota a AlloStudios y tú cobras tu parte el día 5 del mes siguiente, durante 12 meses. Nosotros producimos, entregamos y mantenemos todo.',
   },
 ]
 
@@ -67,15 +67,15 @@ const reglas = [
   },
   {
     t: 'La comisión se gana cuando el cliente paga',
-    d: 'No al firmar, no al prometer. Cuando el dinero entra, tu 30 % es tuyo.',
+    d: 'No al firmar, no al prometer. Cada cuota que entra, tu 20 % es tuyo.',
   },
   {
     t: 'Se paga el día 5 del mes siguiente',
     d: 'Contra factura tuya. Fecha fija, sin sorpresas ni "te lo paso la semana que viene".',
   },
   {
-    t: 'El 30 % es del primer pago',
-    d: 'Del ticket que cierres. La cuota mensual de mantenimiento se queda en AlloStudios: es lo que paga el soporte, el hosting y los cambios de por vida.',
+    t: 'El 20 % es de cada cuota, 12 meses',
+    d: 'No de un pago único: del pack que cierres cobras cada mes mientras el cliente paga, durante el primer año. Un Pack Crecimiento son 70 € al mes para ti; 840 € por cliente.'
   },
   {
     t: 'Nunca dos comerciales al mismo lead',
@@ -102,7 +102,7 @@ const faqs = [
   },
   {
     q: '¿Cuánto tardo en cobrar la primera comisión?',
-    a: 'Depende de lo que tardes en cerrar. Una web se cierra normalmente en 2-3 contactos. En cuanto el cliente paga, tu comisión entra en la liquidación del día 5 siguiente.',
+    a: 'Depende de lo que tardes en cerrar. Un pack se cierra normalmente en 2-3 contactos. En cuanto el cliente paga su primera cuota, tu comisión entra en la liquidación del día 5 siguiente, y así cada mes durante un año.',
   },
   {
     q: '¿Puedo vender fuera de Valencia?',
@@ -135,7 +135,7 @@ export default function AfiliadosPage() {
             </h1>
             <p className="mt-6 text-[1.08rem] text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty">
               Te damos negocios locales ya filtrados, con su web de muestra ya generada y el guion
-              de llamada. Cierras la venta y te llevas el <strong className="text-ink font-semibold">30 % del ticket</strong>.
+              de llamada. Cierras la venta y te llevas el <strong className="text-ink font-semibold">20 % de cada cuota durante 12 meses</strong>.
               Sin invertir un euro y desde donde quieras.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-9">
@@ -161,17 +161,17 @@ export default function AfiliadosPage() {
             <div className="text-center mb-10">
               <span className="eyebrow block mb-4">Lo que se gana</span>
               <h2 className="text-headline font-semibold text-ink text-balance">
-                El 30 % de todo lo que cierres.
+                El 20 % de cada cuota, durante un año.
               </h2>
               <p className="mt-4 text-dim font-light max-w-lg mx-auto">
-                No hay tramos, ni objetivos, ni letra pequeña. Cuanto más caro vendas, más te llevas.
+                No hay tramos, ni objetivos, ni letra pequeña. Cada cliente que cierras te paga 12 meses.
                 Mueve las barras y míralo tú mismo.
               </p>
             </div>
             <ComisionCalculadora />
             <p className="text-[12px] text-muted text-center mt-5 max-w-lg mx-auto">
-              Sobre el primer pago de cada cliente. La cuota mensual de mantenimiento (49 €/mes) cubre
-              hosting, cambios y soporte, y se queda en AlloStudios.
+              Sobre cada cuota que paga el cliente durante sus 12 primeros meses. Si paga el año por
+              adelantado, cobras tu 20 % de golpe.
             </p>
           </div>
         </section>

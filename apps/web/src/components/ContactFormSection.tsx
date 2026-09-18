@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const SERVICIOS = [
-  'Web profesional',
+  'Pack Presencia (web + Google + reseñas)',
+  'Pack Crecimiento (+ asistente IA en WhatsApp)',
+  'Pack Todo (+ anuncios Meta / Google)',
+  'Solo la web',
   'Web Cinematográfica (efecto Apple)',
-  'Gestión de Instagram',
-  'Anuncios Meta / Google',
   'Asistente IA en WhatsApp',
-  'SEO local + Reseñas Google',
-  'Pack Completo',
+  'Anuncios Meta / Google',
   'No estoy seguro',
 ]
 
@@ -29,7 +29,7 @@ function Field({ name, label, required, type = 'text' }: { name: string; label: 
 }
 
 export default function ContactFormSection() {
-  const [servicio, setServicio] = useState('Gestión de Instagram')
+  const [servicio, setServicio] = useState('Pack Crecimiento (+ asistente IA en WhatsApp)')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

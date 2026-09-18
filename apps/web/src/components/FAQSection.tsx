@@ -5,53 +5,42 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const faqs = [
   {
-    q: '¿Qué hacéis exactamente con el Instagram de mi negocio?',
-    a: 'Lo llevamos entero: creamos el contenido (carruseles, posts educativos, reels), escribimos los textos, lo diseñamos con tu marca y lo publicamos cada semana. Tú solo nos pasas las fotos de tu negocio y das el visto bueno.',
-    tag: 'Instagram',
-  },
-  {
-    q: '¿En cuánto tiempo veo resultados?',
-    a: 'Empezamos a publicar la primera semana. El alcance y la imagen profesional mejoran desde el primer mes, y los clientes van llegando a medida que tu cuenta gana constancia y autoridad. Si quieres acelerarlo, lo combinamos con campañas de anuncios.',
-    tag: 'Instagram',
-  },
-  {
     q: '¿Cómo funciona el asistente de IA en WhatsApp?',
     a: 'Un asistente de IA responde los mensajes de WhatsApp de tu negocio 24/7: contesta dudas de tus productos o servicios, cualifica al interesado, capta su contacto y agenda la cita. Cuando hace falta, te avisa para que entres tú.',
     tag: 'Asistente IA',
   },
   {
     q: '¿Hacéis también campañas de anuncios (Meta Ads)?',
-    a: 'Sí. Gestionamos tus campañas en Instagram y Facebook para captar más clientes. La inversión en anuncios la pones tú desde tu propia cuenta; nosotros nos encargamos de las creatividades, la segmentación y la optimización para que cada euro rinda.',
+    a: 'Sí. Gestionamos tus campañas en Meta (Instagram y Facebook) y Google para captar clientes de tu zona. La inversión en anuncios la pones tú desde tu propia cuenta; nosotros nos encargamos de las creatividades, la segmentación y la optimización para que cada euro rinda. Va incluido en el Pack Todo o suelto por 199 €/mes.',
     tag: 'Anuncios',
   },
   {
-    q: '¿Cuánto cuesta una web y qué incluye?',
-    a: 'Tenemos tres niveles: Arranque (499 € + 49 €/mes) con diseño a medida, móvil, SEO local y todo incluido; Premium (790 €) con animaciones y tus reseñas de Google; y Cinematográfica (desde 1.490 €) con el efecto de scroll estilo Apple. Todos sin permanencia. Y lo mejor: te enseñamos una demo real de tu web ANTES de que pagues nada.',
+    q: '¿Cuánto cuesta y qué incluye?',
+    a: 'Funcionamos por suscripción: 0 € de entrada y una cuota mensual con 12 meses de permanencia. Tres packs: Presencia (199 €/mes: web + SEO local + reseñas), Crecimiento (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Todo (499 €/mes: lo anterior más campañas de Meta y Google Ads). Si solo quieres la web, desde 99 €/mes con hosting, cambios y soporte incluidos. Y la demo real de tu web la ves ANTES de pagar nada.',
     tag: 'Webs',
   },
   {
-    q: '¿Puedo juntar varios servicios en un solo plan?',
-    a: 'Sí, y es lo más rentable. El Pack Completo reúne la web, la gestión de Instagram, los anuncios y el asistente de IA en WhatsApp — todo con un único partner y un solo interlocutor.',
-    tag: 'Pack Completo',
+    q: '¿Por qué hay permanencia de 12 meses?',
+    a: 'Porque no te cobramos nada por adelantado: la web, el SEO y la configuración del asistente los hacemos nosotros el primer mes y los recuperamos con la cuota. A cambio, sin sorpresas: el precio es cerrado y a los 12 meses sigues mes a mes, sin compromiso. Si prefieres pagar el año por adelantado, te regalamos dos meses.',
+    tag: 'Packs',
   },
   {
     q: '¿Tengo que daros acceso a mis cuentas?',
-    a: 'Para publicar y responder necesitamos acceso a tu Instagram (y a tu cuenta publicitaria si haces anuncios). Te guiamos en cada paso y tú mantienes siempre la propiedad de tus cuentas.',
+    a: 'Solo lo imprescindible: tu ficha de Google para el SEO y las reseñas, el WhatsApp del negocio para el asistente y tu cuenta publicitaria si haces anuncios. Te guiamos en cada paso y tú mantienes siempre la propiedad de tus cuentas.',
     tag: 'General',
   },
   {
     q: '¿Puedo cancelar cuando quiera?',
-    a: 'Sí, siempre. Sin contratos, sin permanencia. Nos avisas y dejamos de facturarte al final del período en curso.',
+    a: 'Los servicios sueltos, sí: nos avisas y dejamos de facturarte al final del mes en curso. Los packs y las webs tienen 12 meses de permanencia porque la entrada es 0 €; pasado el año, cancelas cuando quieras.',
     tag: 'General',
   },
 ]
 
 const tagColors: Record<string, string> = {
-  'Instagram': 'bg-blue-50 text-blue-600',
   'Asistente IA': 'bg-accent/8 text-accent',
   'Anuncios': 'bg-orange-50 text-orange-600',
   'Webs': 'bg-emerald-50 text-emerald-600',
-  'Pack Completo': 'bg-accent/8 text-accent',
+  'Packs': 'bg-accent/8 text-accent',
   'General': 'bg-surface text-muted',
 }
 

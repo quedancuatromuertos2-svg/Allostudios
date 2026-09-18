@@ -33,7 +33,7 @@ export default function CristalPreview() {
             Que te encuentren. Que te escriban. <span>Que compren.</span>
           </h1>
           <p className="ct-sub">
-            Webs, Instagram, anuncios y un asistente de IA que responde 24/7 para negocios
+            Webs, Google, anuncios y un asistente de IA que responde 24/7 para negocios
             locales de Valencia. Te enseñamos tu web <strong>antes</strong> de que pagues nada.
           </p>
           <div className="ct-ctas">

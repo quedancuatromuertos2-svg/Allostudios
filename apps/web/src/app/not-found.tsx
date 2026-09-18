@@ -16,7 +16,7 @@ export const metadata: Metadata = {
  */
 const atajos = [
   { href: '/tu-web', titulo: 'Ver tu web gratis', texto: 'Escribe el nombre de tu negocio y te generamos una demo real.' },
-  { href: '/contratar', titulo: 'Precios y contratar', texto: 'Webs desde 499 €, Instagram desde 199 €/mes. Sin permanencia.' },
+  { href: '/contratar', titulo: 'Precios y contratar', texto: 'Packs desde 199 €/mes, webs desde 99 €/mes. 0 € de entrada.' },
   { href: '/afiliados', titulo: 'Programa de comerciales', texto: 'Llévate el 30 % de cada venta que cierres.' },
 ]
 

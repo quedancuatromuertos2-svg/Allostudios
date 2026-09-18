@@ -48,7 +48,7 @@ function LiveCallCard() {
             </svg>
           </div>
           <div className="flex-1">
-            <div className="text-[13px] font-semibold text-ink">Instagram · Mensaje directo</div>
+            <div className="text-[13px] font-semibold text-ink">WhatsApp · Chat del negocio</div>
             <div className="flex items-center gap-1.5 mt-0.5">
               <motion.div
                 className="w-1.5 h-1.5 rounded-full bg-green-500"
@@ -339,10 +339,10 @@ export default function ServicesSection() {
                 {[
                   'Responde en segundos, 24/7',
                   'Visitas agendadas en tu Google Calendar',
-                  'Cualificación del lead: compra/alquiler, presupuesto y zona',
+                  'Cualifica al interesado: qué necesita, cuándo y presupuesto',
                   'Resumen de cada conversación enviado al instante',
                   'Responde con el tono y la marca de tu negocio',
-                  'En Instagram, WhatsApp y tu web — sin cambiar nada',
+                  'En tu WhatsApp de siempre — sin cambiar de número',
                 ].map(f => (
                   <motion.li key={f} variants={lineItem} className="flex items-center gap-3 text-[14px] text-dim">
                     <div className="w-5 h-5 rounded-full bg-accent-light flex items-center justify-center shrink-0">

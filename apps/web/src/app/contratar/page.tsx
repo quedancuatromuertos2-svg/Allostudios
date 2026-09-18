@@ -2,23 +2,61 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import { CATALOGO, eur, porClave, luzDe } from '@/lib/precios'
+import { CATALOGO, PACKS, WEBS, SERVICIOS, eur, luzDe, type Articulo } from '@/lib/precios'
 import LuzFondo from '@/components/LuzFondo'
 import { ESTADOS_INTERIOR } from '@/lib/luces'
 
 export const metadata: Metadata = {
-  title: 'Contratar tu web, Instagram o captación',
+  title: 'Contratar tu pack, tu web o un servicio',
   description:
-    'Contrata tu web, tu Instagram o la captación de clientes online, con pago seguro y sin permanencia.',
+    'Contrata tu pack, tu web o un servicio suelto online, con pago seguro, 0 € de entrada y una cuota mensual clara.',
   alternates: { canonical: 'https://allostudios.net/contratar' },
 }
 
-// Las mensualidades que acompañan a una web no se listan sueltas: se activan
-// al entregar, con el enlace que le mandamos al cliente.
-const ACOMPANANTES = new Set(CATALOGO.map((a) => a.acompana).filter(Boolean) as string[])
+// El upgrade Cinematográfica no se lista suelto: se añade dentro del pago de un pack.
+void CATALOGO
+
+function Grupo({ titulo, nota, items }: { titulo: string; nota: string; items: Articulo[] }) {
+  return (
+    <div className="mb-12">
+      <div className="mb-5">
+        <h2 className="text-[17px] font-semibold text-ink">{titulo}</h2>
+        <p className="text-[13px] text-muted mt-1">{nota}</p>
+      </div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {items.map((a) => (
+          <Link
+            key={a.clave}
+            href={`/contratar/${a.clave.toLowerCase()}`}
+            className="card p-2 pb-6 flex flex-col hover:-translate-y-0.5 transition-transform duration-300"
+          >
+            <div className="h-28 rounded-[14px] mb-5" style={{ backgroundImage: `url(/marca/luces/${luzDe(a.clave)}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+            <div className="px-4 flex flex-col flex-1">
+              <h3 className="text-[16px] font-semibold text-ink">{a.nombre}</h3>
+              <p className="text-[13px] text-dim font-light leading-relaxed mt-2 flex-1">{a.desc}</p>
+              <div className="mt-5 pt-4 border-t border-border">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-display text-[1.7rem] leading-none font-semibold text-ink tracking-[-0.03em]">
+                    {eur(a.eur)}
+                  </span>
+                  <span className="text-[12.5px] text-muted">al mes</span>
+                </div>
+                <p className="text-[12px] text-muted mt-1.5">
+                  {a.permanencia ? `0 € de entrada · ${a.permanencia} meses` : 'Sin permanencia'}
+                </p>
+                <span className="btn-accent w-full justify-center mt-4 rounded-full text-[13.5px] py-3">
+                  Ver desglose
+                </span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function ContratarPage() {
-  const principales = CATALOGO.filter((a) => !ACOMPANANTES.has(a.clave))
 
   return (
     <div className="tema-oscuro">
@@ -32,45 +70,14 @@ export default function ContratarPage() {
               Elige tu servicio y págalo aquí mismo.
             </h1>
             <p className="mt-4 text-dim font-light max-w-lg mx-auto">
-              Sin llamadas, sin transferencias y sin permanencia. Antes de pagar verás
-              exactamente qué pagas hoy y qué se cobra después.
+              Sin llamadas ni transferencias: 0 € de entrada y una cuota mensual clara. Antes de
+              pagar verás exactamente qué pagas hoy y qué se cobra después.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {principales.map((a) => {
-              const mant = a.acompana ? porClave(a.acompana) : undefined
-              return (
-                <Link
-                  key={a.clave}
-                  href={`/contratar/${a.clave.toLowerCase()}`}
-                  className="card p-2 pb-6 flex flex-col hover:-translate-y-0.5 transition-transform duration-300"
-                >
-                  <div className="h-28 rounded-[14px] mb-5" style={{ backgroundImage: `url(/marca/luces/${luzDe(a.clave)}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                  <div className="px-4 flex flex-col flex-1">
-                  <h2 className="text-[16px] font-semibold text-ink">{a.nombre}</h2>
-                  <p className="text-[13px] text-dim font-light leading-relaxed mt-2 flex-1">{a.desc}</p>
-                  <div className="mt-5 pt-4 border-t border-border">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-display text-[1.7rem] leading-none font-semibold text-ink tracking-[-0.03em]">
-                        {eur(a.eur)}
-                      </span>
-                      <span className="text-[12.5px] text-muted">
-                        {a.cobro === 'mes' ? 'al mes' : 'pago único'}
-                      </span>
-                    </div>
-                    {mant && (
-                      <p className="text-[12px] text-muted mt-1.5">+ {eur(mant.eur)}/mes al entregar</p>
-                    )}
-                    <span className="btn-accent w-full justify-center mt-4 rounded-full text-[13.5px] py-3">
-                      Ver desglose
-                    </span>
-                  </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
+          <Grupo titulo="Packs" nota="Lo que recomendamos: todo en una cuota, 0 € de entrada y 12 meses de permanencia." items={PACKS} />
+          <Grupo titulo="Solo la web" nota="Para quien de verdad solo quiere web. Hosting, cambios y soporte incluidos, 12 meses." items={WEBS} />
+          <Grupo titulo="Servicios sueltos" nota="Se añaden a cualquier pack o se contratan solos. Sin permanencia." items={SERVICIOS} />
 
           <p className="text-[12.5px] text-muted text-center mt-10 max-w-xl mx-auto">
             ¿No sabes cuál te encaja?{' '}
