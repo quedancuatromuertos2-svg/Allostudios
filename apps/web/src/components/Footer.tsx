@@ -13,7 +13,7 @@ const anchorLinks = {
 }
 
 const pageLinks = {
-  Legal: [['Privacidad', '/privacidad'], ['Términos', '/terminos'], ['Cookies', '/cookies']],
+  Legal: [['Privacidad', '/privacidad'], ['Términos', '/terminos'], ['Contrato', '/contrato'], ['Cookies', '/cookies']],
   'Trabaja con nosotros': [['Programa de comerciales', '/afiliados']],
 }
 

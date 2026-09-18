@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { supabaseAdmin } from '@/lib/supabase'
 import { porClave, sinStripe } from '@/lib/precios'
+import { CONTRATO_VERSION } from '@/lib/contrato'
 
 export const runtime = 'nodejs'
 
@@ -25,11 +26,18 @@ export async function POST(req: NextRequest) {
   const totalMes = art.eur + extras.reduce((t, e) => t + e.eur, 0)
   const importeCent = (anual ? totalMes * 10 : totalMes) * 100
 
+  // Sin contrato aceptado no hay pago: queda registrado quién, cuándo, desde dónde y qué versión.
+  if (!d?.aceptaContrato) {
+    return NextResponse.json({ error: 'Marca la casilla de aceptación del contrato para continuar.' }, { status: 400 })
+  }
+  const ua = (req.headers.get('user-agent') || '').slice(0, 200)
+
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json({ error: 'Pagos no configurados' }, { status: 503 })
   }
 
   const origen = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'https://allostudios.net'
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null
   const negocio = String(d?.negocio || '').trim().slice(0, 120) || null
   const telefono = String(d?.telefono || '').trim().slice(0, 40) || null
   const email = String(d?.email || '').trim().slice(0, 160) || null
@@ -45,6 +53,10 @@ export async function POST(req: NextRequest) {
       cobro: art.cobro,
       email, telefono, negocio,
       notas: [anual ? 'Año por adelantado' : '', extras.length ? `Extras: ${extras.map((e) => e.clave).join(', ')}` : ''].filter(Boolean).join(' · ') || null,
+      contrato_version: CONTRATO_VERSION,
+      contrato_aceptado_at: new Date().toISOString(),
+      contrato_ip: ip,
+      contrato_ua: ua,
     })
     .select('id')
     .single()
@@ -59,7 +71,12 @@ export async function POST(req: NextRequest) {
       cancel_url: `${origen}/contratar/${art.clave.toLowerCase()}?cancelado=1`,
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '' },
+      metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '', contrato: CONTRATO_VERSION },
+      custom_text: {
+        submit: { message: art.permanencia
+          ? `Al pagar confirmas el contrato de suscripción (versión ${CONTRATO_VERSION}): ${art.permanencia} meses de permanencia, 0 € de entrada. Copia en allostudios.net/contrato.`
+          : `Al pagar confirmas el contrato de suscripción (versión ${CONTRATO_VERSION}), sin permanencia. Copia en allostudios.net/contrato.` },
+      },
       subscription_data: {
         metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '' },
         ...(art.permanencia ? { description: `${art.nombre} · permanencia ${art.permanencia} meses` } : {}),

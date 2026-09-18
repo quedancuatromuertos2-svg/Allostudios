@@ -129,3 +129,38 @@ export async function sendTrialEndingEmail(to: string, businessName: string, day
 </html>`
   await send(to, `Tu prueba de AlloStudios termina en ${daysLeft} ${daysLeft === 1 ? "día" : "días"}`, html)
 }
+
+
+// Copia del contrato de suscripción al cliente, nada más pagar (webhook de Stripe).
+export async function sendContratoEmail(opts: {
+  to: string
+  negocio?: string | null
+  producto: string
+  cuota: string
+  permanencia?: number
+  anual?: boolean
+  version: string
+  enlace: string
+}) {
+  const html = `
+<!DOCTYPE html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FAFAF9;margin:0;padding:32px 20px;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;border:1px solid #E8E8E4;overflow:hidden;">
+    <div style="background:#16161a;padding:24px 32px;">
+      <h1 style="color:#fff;margin:0;font-size:18px;font-weight:700;">allo. — Tu contrato y tu recibo</h1>
+    </div>
+    <div style="padding:28px 32px;color:#1a1a1a;font-size:15px;line-height:1.6;">
+      <p style="margin:0 0 14px;">Hola${opts.negocio ? `, ${opts.negocio}` : ''}. Pago recibido: ya estamos con ello. Te escribimos por WhatsApp hoy mismo para pedirte lo poco que necesitamos.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;margin:0 0 18px;">
+        <tr><td style="padding:8px 10px;border:1px solid #eee;color:#666;width:38%;">Contratado</td><td style="padding:8px 10px;border:1px solid #eee;"><strong>${opts.producto}</strong></td></tr>
+        <tr><td style="padding:8px 10px;border:1px solid #eee;color:#666;">Cuota</td><td style="padding:8px 10px;border:1px solid #eee;">${opts.cuota}${opts.anual ? ' (año por adelantado)' : ''}</td></tr>
+        <tr><td style="padding:8px 10px;border:1px solid #eee;color:#666;">Entrada</td><td style="padding:8px 10px;border:1px solid #eee;">0 €</td></tr>
+        <tr><td style="padding:8px 10px;border:1px solid #eee;color:#666;">Permanencia</td><td style="padding:8px 10px;border:1px solid #eee;">${opts.permanencia ? `${opts.permanencia} meses; después, mes a mes` : 'Sin permanencia'}</td></tr>
+        <tr><td style="padding:8px 10px;border:1px solid #eee;color:#666;">Contrato</td><td style="padding:8px 10px;border:1px solid #eee;">Versión ${opts.version}, aceptado al pagar</td></tr>
+      </table>
+      <p style="margin:0 0 20px;"><a href="${opts.enlace}" style="display:inline-block;background:#5B5BD6;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;">Ver y guardar el contrato (PDF)</a></p>
+      <p style="color:#666;font-size:13px;margin:0;">La factura de Stripe te llega en otro email. Cualquier duda: hola@allostudios.net o WhatsApp +34 695 868 793.</p>
+    </div>
+  </div>
+</body></html>`
+  await send(opts.to, `Tu contrato con AlloStudios — ${opts.producto}`, html)
+}

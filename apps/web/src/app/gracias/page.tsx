@@ -23,7 +23,7 @@ export default function GraciasPage() {
             Pago recibido. Ya estamos con ello.
           </h1>
           <p className="mt-4 text-dim font-light leading-relaxed">
-            Te acabamos de enviar la factura por email. Te escribimos por WhatsApp
+            Te acabamos de enviar por email la factura y una copia de tu contrato. Te escribimos por WhatsApp
             <strong className="text-ink font-semibold"> hoy mismo</strong> para pedirte lo poco que
             necesitamos: tus fotos, tus textos y poco más.
           </p>

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 import { supabaseAdmin } from '@/lib/supabase'
-import { sendLeadEmail } from '@/lib/email'
+import { sendLeadEmail, sendContratoEmail } from '@/lib/email'
+import { CONTRATO_VERSION } from '@/lib/contrato'
 import { porClave, eur } from '@/lib/precios'
 
 export const runtime = 'nodejs'
@@ -26,6 +27,11 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // Vida de la suscripción: impagos y bajas avisan al equipo y quedan en el pedido.
+  if (evento.type === 'invoice.payment_failed' || evento.type === 'customer.subscription.deleted' || evento.type === 'customer.subscription.updated') {
+    await eventoSuscripcion(evento)
+    return NextResponse.json({ recibido: true })
+  }
   if (evento.type !== 'checkout.session.completed') {
     return NextResponse.json({ recibido: true })
   }
@@ -68,6 +74,26 @@ export async function POST(req: NextRequest) {
       `Sesión de Stripe: ${s.id}`,
   }).catch(() => {})
 
+  // Copia del contrato al cliente (con sus datos en el enlace, para que lo guarde en PDF)
+  if (email) {
+    const q = new URLSearchParams({ pack: clave.toLowerCase(), fecha: new Date().toLocaleDateString('es-ES') })
+    if (extras.includes('CINE_UPGRADE')) q.set('cine', '1')
+    if (anual) q.set('anual', '1')
+    if (negocio) q.set('negocio', negocio)
+    if (email) q.set('email', email)
+    if (telefono) q.set('telefono', telefono)
+    sendContratoEmail({
+      to: email,
+      negocio,
+      producto: detalle,
+      cuota: `${importe}${periodo}`,
+      permanencia: art?.permanencia,
+      anual,
+      version: String(s.metadata?.contrato || CONTRATO_VERSION),
+      enlace: `https://allostudios.net/contrato?${q.toString()}`,
+    }).catch(() => {})
+  }
+
   const apikey = process.env.CALLMEBOT_APIKEY
   const alertPhone = process.env.ALERT_WHATSAPP
   if (apikey && alertPhone) {
@@ -80,4 +106,55 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ recibido: true })
+}
+
+// Impago, baja programada o baja efectiva de una suscripción: aviso al equipo y estado en `pedidos`.
+async function eventoSuscripcion(evento: Stripe.Event) {
+  let subId = ''
+  let titulo = ''
+  let estado = ''
+  let detalle = ''
+  if (evento.type === 'invoice.payment_failed') {
+    const inv = evento.data.object as Stripe.Invoice
+    subId = typeof inv.subscription === 'string' ? inv.subscription : inv.subscription?.id || ''
+    titulo = '⚠️ IMPAGO de cuota'
+    estado = 'impago'
+    detalle = `${inv.customer_email || ''} · ${((inv.amount_due || 0) / 100).toFixed(0)} € · intento ${inv.attempt_count || 1}. Stripe reintenta; si no entra, aplica la cláusula 4 (suspender la web).`
+  } else if (evento.type === 'customer.subscription.deleted') {
+    const sub = evento.data.object as Stripe.Subscription
+    subId = sub.id
+    titulo = '🛑 BAJA efectiva de suscripción'
+    estado = 'baja'
+    detalle = `Suscripción ${sub.id} cancelada. Comprueba la permanencia: si no ha cumplido 12 meses, reclama las cuotas pendientes (cláusula 4).`
+  } else {
+    const sub = evento.data.object as Stripe.Subscription
+    if (!sub.cancel_at_period_end) return
+    subId = sub.id
+    titulo = '⏳ BAJA programada (fin de periodo)'
+    estado = 'baja_programada'
+    detalle = `El cliente ha pedido cancelar al final del periodo. Llámale antes de que venza.`
+  }
+
+  const { data: pedido } = subId
+    ? await supabaseAdmin.from('pedidos').select('id, negocio, email, telefono, nombre, pagado_at').eq('stripe_subscription_id', subId).maybeSingle()
+    : { data: null }
+  if (pedido?.id) {
+    await supabaseAdmin.from('pedidos').update({ estado, notas: `${titulo} ${new Date().toISOString().slice(0, 10)}` }).eq('id', pedido.id)
+  }
+  const quien = pedido ? `${pedido.negocio || pedido.email || ''} (${pedido.nombre || ''}, alta ${String(pedido.pagado_at || '').slice(0, 10)})` : `sub ${subId}`
+  sendLeadEmail({
+    nombre: `[SUSCRIPCIÓN] ${titulo}`,
+    telefono: pedido?.telefono || '—',
+    email: pedido?.email || undefined,
+    servicio: titulo,
+    inmobiliaria: pedido?.negocio || undefined,
+    mensaje: `${quien}. ${detalle}`,
+  }).catch(() => {})
+  const apikey = process.env.CALLMEBOT_APIKEY
+  const alertPhone = process.env.ALERT_WHATSAPP
+  if (apikey && alertPhone) {
+    fetch(
+      `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(alertPhone)}&text=${encodeURIComponent(`${titulo}\n${quien}\n${detalle}`)}&apikey=${encodeURIComponent(apikey)}`,
+    ).catch(() => {})
+  }
 }

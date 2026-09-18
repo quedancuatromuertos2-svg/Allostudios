@@ -18,6 +18,7 @@ export default function Desglose({ art }: { art: Articulo }) {
   const [email, setEmail] = useState('')
   const [anual, setAnual] = useState(false)
   const [extras, setExtras] = useState<string[]>([])
+  const [acepta, setAcepta] = useState(false)
 
   const extrasDisponibles = (art.extras || []).map(porClave).filter((e): e is Articulo => !!e)
   const extrasElegidos = extrasDisponibles.filter((e) => extras.includes(e.clave))
@@ -33,7 +34,7 @@ export default function Desglose({ art }: { art: Articulo }) {
       const r = await fetch('/api/pago', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clave: art.clave, negocio, telefono, email, periodo: anual ? 'anio' : 'mes', extras }),
+        body: JSON.stringify({ clave: art.clave, negocio, telefono, email, periodo: anual ? 'anio' : 'mes', extras, aceptaContrato: acepta }),
       })
       const d = await r.json()
       if (!r.ok || !d.url) throw new Error(d.error || 'No se pudo abrir el pago')
@@ -169,9 +170,23 @@ export default function Desglose({ art }: { art: Articulo }) {
           <p className="text-[11.5px] text-muted mt-1.5">Donde te llega la factura. Si lo dejas vacío te lo pide Stripe.</p>
         </div>
 
+        <label className="flex items-start gap-3 cursor-pointer text-[12.5px] text-dim leading-relaxed">
+          <input type="checkbox" required className="mt-1" checked={acepta} onChange={(e) => setAcepta(e.target.checked)} />
+          <span>
+            He leído y acepto el{' '}
+            <a
+              href={`/contrato?pack=${art.clave.toLowerCase()}${extras.includes('CINE_UPGRADE') ? '&cine=1' : ''}${anual && puedeAnual ? '&anual=1' : ''}${negocio ? `&negocio=${encodeURIComponent(negocio)}` : ''}`}
+              target="_blank" rel="noopener noreferrer" className="underline text-ink"
+            >
+              contrato de suscripción
+            </a>
+            {art.permanencia ? ` (${art.permanencia} meses de permanencia, 0 € de entrada)` : ' (sin permanencia)'}. Recibiré una copia por email.
+          </span>
+        </label>
+
         {error && <p className="text-[13px] text-red-500">{error}</p>}
 
-        <button type="submit" disabled={cargando}
+        <button type="submit" disabled={cargando || !acepta}
           className="btn-accent w-full justify-center py-4 text-[15px] rounded-full disabled:opacity-60">
           {cargando ? 'Abriendo el pago…' : `Pagar ${eur(hoy)}${anual && puedeAnual ? '/año' : '/mes'}`}
           {!cargando && (
@@ -184,8 +199,6 @@ export default function Desglose({ art }: { art: Articulo }) {
         <p className="text-[11.5px] text-muted text-center leading-relaxed">
           Te lleva a la pantalla segura de Stripe. Tus datos de tarjeta no pasan por nuestra web
           en ningún momento.
-          {art.permanencia ? ` Al pagar aceptas los ${art.permanencia} meses de permanencia (` : ' ('}
-          <a href="/terminos" className="underline">condiciones</a>).
         </p>
       </form>
     </div>

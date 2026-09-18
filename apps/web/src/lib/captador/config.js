@@ -20,30 +20,33 @@ module.exports = {
   },
 
   // Tus tarifas (salen en los mensajes de cierre y en las estadísticas).
+  // Modelo de suscripción (18/09/2026): 0 € de entrada, cuota mensual, 12 meses de permanencia.
   PRICES: {
-    web: 499,        // € pago único por la web
-    monthly: 49,     // €/mes mantenimiento (hosting + cambios + soporte)
+    web: 0,          // € de entrada (ya no hay pago único)
+    monthly: 199,    // €/mes del pack de entrada (Presencia) — base de las estadísticas de MRR
   },
 
-  // Escalera de 3 niveles para la web (anclaje: el de 400 pasa a ser "la opción prudente"
-  // y un 20-30% elegirá el del medio). La razón del precio bajo: cartera de lanzamiento.
+  // Packs: la escalera que se vende. Cada uno lleva la web dentro; el cliente compra un resultado.
+  PACKS: {
+    presencia:   { label: 'Presencia',   monthly: 199, pitch: 'web profesional + salir en Google cada mes + reseñas 5★ que se piden solas' },
+    crecimiento: { label: 'Crecimiento', monthly: 349, pitch: 'web premium + Google + reseñas + un asistente de IA que contesta vuestro WhatsApp 24/7' },
+    todo:        { label: 'Todo',        monthly: 499, pitch: 'todo lo anterior + campañas de Meta y Google Ads gestionadas cada mes' },
+  },
+
+  // Webs solas (para quien de verdad solo quiere web). Todo incluido: hosting, cambios y soporte.
   TIERS: {
-    arranque: { label: 'Arranque', setup: 499, monthly: 49, pitch: 'la demo que has visto, afinada y online en 7 días' },
-    premium: { label: 'Premium', setup: 790, monthly: 49, pitch: 'animaciones avanzadas, secciones extra, copy profesional y tus reseñas de Google integradas' },
-    cine: { label: 'Cinematográfica', setup: 1490, monthly: 79, pitch: 'efecto Apple: tu producto despiezándose al hacer scroll — nadie más en Valencia lo tiene' },
+    arranque: { label: 'Arranque', setup: 0, monthly: 99, pitch: 'la demo que has visto, afinada y online en 7 días' },
+    premium: { label: 'Premium', setup: 0, monthly: 149, pitch: 'animaciones avanzadas, secciones extra, copy profesional y tus reseñas de Google integradas' },
+    cine: { label: 'Cinematográfica', setup: 0, monthly: 249, pitch: 'efecto Apple: tu producto despiezándose al hacer scroll — nadie más en Valencia lo tiene' },
   },
 
-  // Catálogo de servicios que vendes (no solo webs). El motor recomienda el que
-  // mejor encaja con cada negocio, aunque ya tenga web. Edita precios a tu gusto.
+  // Servicios sueltos (sin permanencia). No se gestionan cuentas de Instagram: Allo es agencia de IA/digital.
   SERVICES: {
-    web:            { label: 'Web nueva / rediseño',     emoji: '🌐', setup: 499, monthly: 49 },
-    redes:          { label: 'Gestión de Instagram',     emoji: '📸', setup: 0,   monthly: 199 },
-    seo:            { label: 'SEO — salir en Google',     emoji: '🔎', setup: 199, monthly: 99 },
-    reservas:       { label: 'Reserva de cita online',    emoji: '📅', setup: 149, monthly: 0 },
-    resenas:        { label: 'Reseñas 5★ en Google',      emoji: '⭐', setup: 0,   monthly: 79 },
-    chatbot:        { label: 'Chatbot WhatsApp 24/7',     emoji: '💬', setup: 199, monthly: 39 },
-    ads:            { label: 'Campañas Meta / Google Ads', emoji: '🎯', setup: 0,  monthly: 199 },
-    automatizacion: { label: 'Automatizaciones',          emoji: '⚙️', setup: 149, monthly: 0 },
+    web:     { label: 'Web nueva / rediseño',      emoji: '🌐', setup: 0, monthly: 99 },
+    seo:     { label: 'SEO — salir en Google',      emoji: '🔎', setup: 0, monthly: 99 },
+    resenas: { label: 'Reseñas 5★ en Google',       emoji: '⭐', setup: 0, monthly: 79 },
+    chatbot: { label: 'Asistente IA en WhatsApp',   emoji: '💬', setup: 0, monthly: 39 },
+    ads:     { label: 'Campañas Meta / Google Ads', emoji: '🎯', setup: 0, monthly: 199 },
   },
 
   // Si publicas la carpeta demos/ en internet (Vercel/Netlify), pon aquí la URL base
