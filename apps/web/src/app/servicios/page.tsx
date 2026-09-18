@@ -23,7 +23,7 @@ export default function Servicios() {
       <LuzPapel />
       <Navigation />
       <main className="relative z-10 pt-20">
-        <ServicesCatalogSection />
+        <ServicesCatalogSection titular="h1" />
         <Complementos />
         <SectoresSection />
         <HowItWorksSection />

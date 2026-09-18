@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
-  description: "Términos y condiciones de uso de la plataforma AlloStudios.",
+  description: "Condiciones de contratación de AlloStudios: packs y webs por suscripción con 0 € de entrada y 12 meses de permanencia, servicios sueltos sin permanencia.",
+  alternates: { canonical: "/terminos" },
 }
 
 export default function TerminosPage() {

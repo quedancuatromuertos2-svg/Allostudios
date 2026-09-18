@@ -36,7 +36,7 @@ export default function HeroGlass() {
               Agencia digital · Valencia
             </motion.div>
             <motion.h1 variants={item} className="lg-h hero-h1">
-              {TITULO}
+              {TITULO}{' '}
               <span className="lg-grad block">{TITULO_GRAD}</span>
             </motion.h1>
             <motion.p variants={item} className="hero-sub text-dim">{SUB}</motion.p>

@@ -81,7 +81,8 @@ const fadeUp = {
   lista numerada y, debajo, la prueba: las tres webs de concepto reales. Sustituye a la maqueta
   de navegador con datos falsos y al apartado «Trabajo reciente» separado.
 */
-export default function WebsSection() {
+export default function WebsSection({ titular = 'h2' }: { titular?: 'h1' | 'h2' }) {
+  const H = titular === 'h1' ? motion.h1 : motion.h2
   return (
     <section id="webs" className="webs relative overflow-hidden py-[clamp(5rem,12vw,10rem)]">
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
@@ -90,9 +91,9 @@ export default function WebsSection() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
             <div>
               <motion.span variants={fadeUp} className="eyebrow block mb-5">Una web que no parece de plantilla</motion.span>
-              <motion.h2 variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
+              <H variants={fadeUp} className="text-headline font-semibold text-ink leading-[1.08] tracking-[-0.03em] text-balance">
                 Si tu web parece de plantilla,<br />el cliente piensa que tu negocio también.
-              </motion.h2>
+              </H>
             </div>
             <motion.p variants={fadeUp} className="text-dim font-light text-[14px] max-w-sm md:text-right">
               Tres conceptos publicados para tres sectores. Entra y tócalas: así de distinta puede ser la tuya.

@@ -16,7 +16,8 @@ function pick(servicio: string) {
   document.querySelector('#contratar')?.scrollIntoView({ behavior: 'smooth' })
 }
 
-export default function ServicesCatalogSection() {
+export default function ServicesCatalogSection({ titular = 'h2' }: { titular?: 'h1' | 'h2' }) {
+  const H = titular === 'h1' ? motion.h1 : motion.h2
   return (
     <section id="catalogo" className="papel relative py-section overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
@@ -28,13 +29,13 @@ export default function ServicesCatalogSection() {
           >
             Lo que te está costando clientes
           </motion.span>
-          <motion.h2
+          <H
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.08 }}
             className="font-display text-headline font-semibold text-ink text-balance"
           >
             Cada semana pierdes clientes<br />por cosas que <span className="acento">se arreglan</span>.
-          </motion.h2>
+          </H>
           <motion.p
             initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ delay: 0.16 }}

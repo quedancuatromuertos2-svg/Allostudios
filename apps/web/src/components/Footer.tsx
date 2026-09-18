@@ -55,9 +55,9 @@ export default function Footer() {
               <ul className="space-y-3">
                 {items.map(([label, href]) => (
                   <li key={label}>
-                    <button onClick={() => go(href)} className="text-[13px] text-dim hover:text-ink transition-colors duration-200">
+                    <a href={href} onClick={(e) => { e.preventDefault(); go(href) }} className="text-[13px] text-dim hover:text-ink transition-colors duration-200">
                       {label}
-                    </button>
+                    </a>
                   </li>
                 ))}
               </ul>

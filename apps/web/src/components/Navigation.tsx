@@ -41,7 +41,7 @@ export default function Navigation({ links = LINKS }: { links?: NavLink[] }) {
     setTimeout(() => {
       const target = document.querySelector(href)
       // Si la sección no está en esta página (ej. /tu-web), volvemos a la home con el ancla
-      if (!target) { window.location.href = `/${href}`; return }
+      if (!target) { window.location.href = href === '#tu-web' ? '/tu-web' : `/${href}`; return }
       target.scrollIntoView({ behavior: 'smooth' })
     }, open ? 200 : 0)
   }
@@ -93,12 +93,12 @@ export default function Navigation({ links = LINKS }: { links?: NavLink[] }) {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-2.5">
-            <button
-              onClick={() => go('#tu-web')}
+            <a
+              href="/tu-web" onClick={(e) => { e.preventDefault(); go('#tu-web') }}
               className="btn-accent text-[13px] px-5 py-2.5 rounded-full whitespace-nowrap"
             >
               Mira tu web gratis
-            </button>
+            </a>
           </div>
 
           {/* Mobile hamburger */}
@@ -148,12 +148,12 @@ export default function Navigation({ links = LINKS }: { links?: NavLink[] }) {
                 )
               })}
               <div className="pt-3 mt-1 border-t border-border/60">
-                <button
-                  onClick={() => go('#tu-web')}
+                <a
+                  href="/tu-web" onClick={(e) => { e.preventDefault(); go('#tu-web') }}
                   className="w-full btn-accent justify-center rounded-full text-[14px] py-3.5 text-center"
                 >
                   Mira tu web gratis
-                </button>
+                </a>
               </div>
             </div>
           </motion.div>

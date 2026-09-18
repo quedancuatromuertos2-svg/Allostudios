@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Política de Cookies",
   description: "Política de cookies de AlloStudios. Qué cookies usamos y cómo gestionarlas.",
+  alternates: { canonical: "/cookies" },
 }
 
 export default function CookiesPage() {

@@ -10,12 +10,13 @@ import LuzPapel from '@/components/LuzPapel'
 export const metadata: Metadata = {
   title: 'Programa de comerciales — gana el 20 % de cada cuota durante un año',
   description:
-    'Vende packs por suscripción a negocios locales y llévate el 20 % de cada cuota durante los 12 primeros meses. Nosotros ponemos los leads, la demo ya hecha, el guion y toda la producción. Tú solo llamas y cierras. 100 % remoto, sin inversión.',
+    'Vende packs por suscripción a negocios locales y cobra el 20 % de cada cuota durante 12 meses. Leads, demo y guion los ponemos nosotros. Tú solo llamas.',
   alternates: { canonical: 'https://allostudios.net/afiliados' },
   openGraph: {
     title: 'Gana el 20 % de cada cuota durante un año — Programa de comerciales de AlloStudios',
     description: 'Te damos los leads con la demo ya hecha y el guion. Tú solo llamas y cierras. 100 % remoto y sin invertir un euro.',
     url: 'https://allostudios.net/afiliados',
+    images: [{ url: 'https://allostudios.net/marca/og.jpg', width: 1200, height: 630, alt: 'allo.' }],
   },
 }
 
@@ -131,7 +132,7 @@ export default function AfiliadosPage() {
               Programa de comerciales
             </span>
             <h1 className="font-display text-display font-semibold text-ink text-balance">
-              Tú solo llamas.<br />Nosotros hacemos el resto.
+              Tú solo llamas.{' '}<br />Nosotros hacemos el resto.
             </h1>
             <p className="mt-6 text-[1.08rem] text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty">
               Te damos negocios locales ya filtrados, con su web de muestra ya generada y el guion

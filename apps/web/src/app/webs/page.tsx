@@ -22,7 +22,7 @@ export default function Webs() {
       <LuzPapel />
       <Navigation />
       <main className="relative z-10 pt-20">
-        <WebsSection />
+        <WebsSection titular="h1" />
         {/* La tienda de la home, abierta en «Solo la web» */}
         <ElegirPack inicial={1} />
         <DemoGeneratorSection />

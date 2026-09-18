@@ -11,7 +11,7 @@ const outfit = Outfit({ subsets: ["latin"], weight: ["600", "700"], variable: "-
 export const metadata: Metadata = {
   metadataBase: new URL("https://allostudios.net"),
   title: {
-    default: "AlloStudios — Deja de perder clientes que te buscan y no te encuentran",
+    default: "AlloStudios — Web, Google y WhatsApp para negocios locales",
     template: "%s | AlloStudios",
   },
   icons: {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   description:
-    "AlloStudios: agencia digital para negocios locales de Valencia. Web profesional, SEO local, reseñas, anuncios de Meta y Google y un asistente de IA que responde tu WhatsApp 24/7. Packs desde 199 €/mes con 0 € de entrada. Pide tu demo gratis.",
+    "Deja de perder clientes: web en 7 días, salir en Google, reseñas y un asistente que contesta tu WhatsApp 24/7. Packs desde 199 €/mes, 0 € de entrada. Valencia.",
   keywords: [
     "diseño web Valencia", "web para negocios Valencia", "agencia digital Valencia",
     "publicidad Meta Ads Valencia", "web por suscripción Valencia", "agencia IA negocios locales",

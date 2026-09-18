@@ -19,6 +19,10 @@ Disallow: /ai-config/
 Disallow: /analytics/
 Disallow: /team/
 Disallow: /manual/
+Disallow: /panel/
+Disallow: /login
+Disallow: /register
+Disallow: /gracias
 Disallow: /widget/
 
 Sitemap: https://allostudios.net/sitemap.xml

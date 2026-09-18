@@ -3,8 +3,9 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Privacidad',
-  robots: { index: false, follow: true },
+  title: 'Política de privacidad',
+  description: 'Qué datos recogemos en allostudios.net (formulario, generador de demos y contratación), para qué los usamos y cómo ejercer tus derechos.',
+  alternates: { canonical: '/privacidad' },
 }
 
 // Política de privacidad básica (RGPD) para el formulario público y el generador de demos.
@@ -16,7 +17,7 @@ export default function PrivacidadPage() {
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-32">
         <h1 className="font-display text-headline font-semibold text-ink mb-8">Política de privacidad</h1>
         <div className="space-y-5 text-dim font-light text-[15px] leading-relaxed">
-          <p><strong className="text-ink">Responsable del tratamiento:</strong> AlloStudios (Ángel) · NIF [NIF] · Valencia (España). Contacto: <a className="underline" href="mailto:hola.allostudios@gmail.com">hola.allostudios@gmail.com</a>.</p>
+          <p><strong className="text-ink">Responsable del tratamiento:</strong> AlloStudios (Ángel) · NIF [NIF] · Valencia (España). Contacto: <a className="underline" href="mailto:hola@allostudios.net">hola@allostudios.net</a>.</p>
 
           <p><strong className="text-ink">Qué datos recogemos:</strong> los que nos facilitas en nuestros formularios — nombre del negocio, ciudad, sector, teléfono/WhatsApp y, si lo aportas, email. Para generar la demo de tu web consultamos datos públicos de tu negocio en Google (nombre, reseñas, dirección, foto y teléfono públicos de tu ficha).</p>
 
@@ -28,7 +29,7 @@ export default function PrivacidadPage() {
 
           <p><strong className="text-ink">Cesión a terceros:</strong> no vendemos ni cedemos tus datos. Usamos proveedores tecnológicos (alojamiento y envío de avisos) que solo los tratan por cuenta nuestra.</p>
 
-          <p><strong className="text-ink">Tus derechos:</strong> puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos escribiéndonos a <a className="underline" href="mailto:hola.allostudios@gmail.com">hola.allostudios@gmail.com</a>. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
+          <p><strong className="text-ink">Tus derechos:</strong> puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos escribiéndonos a <a className="underline" href="mailto:hola@allostudios.net">hola@allostudios.net</a>. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
 
           <p className="text-muted text-[13px] pt-4">Última actualización: agosto de 2026.</p>
         </div>
