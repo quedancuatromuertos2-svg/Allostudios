@@ -41,7 +41,7 @@ function serviceCopy(key, lead) {
       role: 'diseñador web aquí en Valencia',
       value: 'te dejo una web nueva funcionando esta misma semana',
       proofWord: 'demo',
-      price: `0 € de entrada y desde ${eur(P.monthly)}/mes con todo incluido (hosting, cambios y soporte); o el Pack Presencia a ${eur(cfg.PACKS.presencia.monthly)}/mes con Google y reseñas`,
+      price: `0 € de entrada y desde ${eur(P.monthly)}/mes con todo incluido (hosting, cambios y soporte); o el Pack Estándar a ${eur(cfg.PACKS.estandar.monthly)}/mes con Google y reseñas`,
     },
     seo: {
       role: 'ayudo a negocios de Valencia a salir los primeros en Google',
@@ -59,7 +59,7 @@ function serviceCopy(key, lead) {
       role: 'monto asistentes de IA para WhatsApp que atienden a los clientes 24/7',
       value: 'no perder nunca a quien escribe de noche o en fin de semana: responde, resuelve dudas y agenda la cita',
       proofWord: 'demo',
-      price: `${eur(P.monthly)}/mes suelto, o dentro del Pack Crecimiento (${eur(cfg.PACKS.crecimiento.monthly)}/mes con web premium, Google y reseñas)`,
+      price: `${eur(P.monthly)}/mes suelto, o dentro del Pack Pro (${eur(cfg.PACKS.pro.monthly)}/mes con web premium, Google y reseñas)`,
     },
     aeo: {
       role: 'hago que ChatGPT y Perplexity recomienden negocios locales de Valencia',
@@ -71,7 +71,7 @@ function serviceCopy(key, lead) {
       role: 'gestiono campañas de Instagram y Google Ads para negocios locales',
       value: 'llenar la agenda con clientes de Valencia en pocas semanas',
       proofWord: 'propuesta',
-      price: `${eur(P.monthly)}/mes de gestión + la inversión en anuncios que decidáis; o dentro del Pack Todo (${eur(cfg.PACKS.todo.monthly)}/mes con todo)`,
+      price: `${eur(P.monthly)}/mes de gestión + la inversión en anuncios que decidáis; o dentro del Pack Max (${eur(cfg.PACKS.max.monthly)}/mes con todo)`,
     },
   };
   return { ...P, ...(map[key] || map.web) };
@@ -87,9 +87,9 @@ function buildMessages(lead, service) {
     cine: { setup: 0, monthly: 249, pitch: 'efecto Apple con tu producto' },
   };
   const PK = cfg.PACKS || {
-    presencia: { monthly: 199, pitch: 'web + Google + reseñas' },
-    crecimiento: { monthly: 349, pitch: 'web premium + Google + reseñas + asistente IA en WhatsApp' },
-    todo: { monthly: 499, pitch: 'todo + campañas de Meta y Google Ads' },
+    estandar: { monthly: 199, pitch: 'web + Google + reseñas' },
+    pro:         { monthly: 349, pitch: 'web premium + Google + reseñas + asistente IA en WhatsApp' },
+    max: { monthly: 499, pitch: 'todo + campañas de Meta y Google Ads' },
   };
   const key = service || lead.bestService || 'web';
   const c = serviceCopy(key, lead);
@@ -153,9 +153,9 @@ function buildMessages(lead, service) {
   // ── INTERESADO: escalera de 3 niveles (web) + razón del precio + cita concreta ──
   const interesado = isWeb
     ? `¡Genial! 🙌 Funciona como una suscripción: 0 € de entrada, una cuota al mes y 12 meses; después, mes a mes. Tres packs:\n\n` +
-      `🥉 PRESENCIA — ${PK.presencia.monthly} €/mes: ${PK.presencia.pitch}.\n` +
-      `🥈 CRECIMIENTO — ${PK.crecimiento.monthly} €/mes: ${PK.crecimiento.pitch}.\n` +
-      `🥇 TODO — ${PK.todo.monthly} €/mes: ${PK.todo.pitch}.\n\n` +
+      `🥉 ESTÁNDAR — ${PK.estandar.monthly} €/mes: ${PK.estandar.pitch}.\n` +
+      `🥈 PRO — ${PK.pro.monthly} €/mes: ${PK.pro.pitch}.\n` +
+      `🥇 MAX — ${PK.max.monthly} €/mes: ${PK.max.pitch}.\n\n` +
       `Si solo queréis la web: desde ${T.arranque.monthly} €/mes con hosting, cambios y soporte incluidos. Y si pagáis el año por adelantado, dos meses gratis.\n` +
       `Esta semana me caben 2 proyectos. ¿Hablamos 10 minutos? ¿Mañana a las 10:30 o mejor a las 17:00?`
     : `¡Genial! 🙌 Te lo cuento simple:\n` +
@@ -175,13 +175,13 @@ function buildMessages(lead, service) {
     `1) "Hola, buenos días, ¿${nombre}? Soy ${firstName}, diseñador web aquí en Valencia. ¿Está el dueño/la dueña? Es medio minuto."\n\n` +
     `2) SI COGE RECEPCIÓN / NO ESTÁ:\n"Nada urgente: ${isWeb ? `he preparado una demo de página web para ${nombre} — ya está hecha, solo quiero enseñarla` : `tengo una propuesta de ${lc(c.label)} para ${nombre}`}. ¿Me da un WhatsApp o email donde mandarla? ¿O a qué hora encuentro al responsable?"\n\n` +
     `3) SI SE PONE EL DUEÑO:\n"Le llamo porque ${hook}. ${isWeb ? `Le he preparado una demo de cómo quedaría su web — ya está hecha, verla es gratis` : `Me dedico a ${c.value}`}. ¿Le mando el enlace por WhatsApp? ¿A qué número?"\n\n` +
-    `4) SI PREGUNTA PRECIO:\n"${isWeb ? `Sin entrada: una cuota al mes. La web sola desde ${T.arranque.monthly} €/mes con todo incluido, o el pack con Google y reseñas por ${PK.presencia.monthly} €/mes` : c.price}. Pero primero vea${isWeb ? ' la demo' : 'lo'}, que verlo es gratis y sin compromiso."\n\n` +
+    `4) SI PREGUNTA PRECIO:\n"${isWeb ? `Sin entrada: una cuota al mes. La web sola desde ${T.arranque.monthly} €/mes con todo incluido, o el pack con Google y reseñas por ${PK.estandar.monthly} €/mes` : c.price}. Pero primero vea${isWeb ? ' la demo' : 'lo'}, que verlo es gratis y sin compromiso."\n\n` +
     `5) CIERRE SIEMPRE: apunta el WhatsApp → envía la demo → marca el lead como Interesado.`;
 
   // ── OBJECIONES: respuestas rápidas (copiar la que toque) ──
   const objeciones =
     `«YA TENEMOS WEB»\n→ "La vi, sí. Justo por eso os escribo: [si es vieja] una web que no sale en Google o se ve mal en el móvil os quita clientes cada día. Os paso la demo, la comparáis en 30 segundos y me decís."\n\n` +
-    `«¿CUÁNTO CUESTA?»\n→ "${isWeb ? `0 € de entrada y una cuota al mes: la web sola desde ${T.arranque.monthly} €/mes con todo incluido, o el Pack Presencia por ${PK.presencia.monthly} €/mes con Google y reseñas` : c.price}. Sale a unos ${Math.round((isWeb ? PK.presencia.monthly : (c.monthly || PK.presencia.monthly)) / 30)} € al día y trabaja para vosotros 24/7. Y ver la ${c.proofWord} es gratis."\n\n` +
+    `«¿CUÁNTO CUESTA?»\n→ "${isWeb ? `0 € de entrada y una cuota al mes: la web sola desde ${T.arranque.monthly} €/mes con todo incluido, o el Pack Estándar por ${PK.estandar.monthly} €/mes con Google y reseñas` : c.price}. Sale a unos ${Math.round((isWeb ? PK.estandar.monthly : (c.monthly || PK.estandar.monthly)) / 30)} € al día y trabaja para vosotros 24/7. Y ver la ${c.proofWord} es gratis."\n\n` +
     `«ES CARO»\n→ "Con que os traiga UN cliente al mes ya está pagado. Y no ponéis nada por adelantado: el trabajo inicial lo hacemos nosotros y lo recuperamos con la cuota. Por eso hay 12 meses; luego es mes a mes."\n\n` +
     `«¿PERMANENCIA?»\n→ "12 meses, porque la entrada es 0 €: la web y la puesta en marcha las pagamos nosotros el primer mes. Pasado el año, seguís mes a mes y os vais cuando queráis. Y si pagáis el año por adelantado, dos meses gratis."\n\n` +
     `«NO TENGO TIEMPO»\n→ "Por eso lo hice yo antes de escribirte: ya está hecho. Verlo son 30 segundos, te lo paso y lo miras cuando puedas. Tú solo me dices qué cambiarías."\n\n` +

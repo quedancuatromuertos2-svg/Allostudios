@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { PACKS, WEBS, SERVICIOS, eur } from '@/lib/precios'
 
 /*  Escalera de packs (18/09/2026): 0 € de entrada, cuota mensual, 12 meses.
-    Presencia (que te encuentren) → Crecimiento (que te respondan) → Todo (que te lleguen clientes).
+    Estándar (que te encuentren) → Pro (que te respondan) → Max (que te lleguen clientes).
     Debajo, las webs solas y los servicios sueltos. Los importes salen del catálogo (precios.ts).   */
 
 function CheckIcon({ dark }: { dark?: boolean }) {
@@ -28,7 +28,7 @@ const waBase = 'https://wa.me/34695868793?text='
 
 /* Textos de venta de cada pack (lo que el cliente consigue, no la lista técnica) */
 const VENTA: Record<string, { etiqueta: string; para: string; puntos: string[] }> = {
-  PACK_PRESENCIA: {
+  PACK_ESTANDAR: {
     etiqueta: 'Que te encuentren',
     para: 'Para el negocio que hoy no aparece cuando lo buscan.',
     puntos: [
@@ -39,7 +39,7 @@ const VENTA: Record<string, { etiqueta: string; para: string; puntos: string[] }
       'Hosting, cambios y soporte incluidos',
     ],
   },
-  PACK_CRECIMIENTO: {
+  PACK_PRO: {
     etiqueta: 'Que te respondan',
     para: 'Para el que pierde clientes por no contestar a tiempo.',
     puntos: [
@@ -50,11 +50,11 @@ const VENTA: Record<string, { etiqueta: string; para: string; puntos: string[] }
       'Prioridad de entrega y soporte',
     ],
   },
-  PACK_TODO: {
+  PACK_MAX: {
     etiqueta: 'Que te lleguen clientes',
     para: 'Para el que quiere llenar la agenda, no solo estar.',
     puntos: [
-      'Todo lo del Pack Crecimiento',
+      'Todo lo del Pack Pro',
       'Campañas de Meta y Google Ads gestionadas cada mes',
       'Creatividades, públicos y optimización semanal',
       'Informe mensual: qué entró y qué costó',
@@ -106,10 +106,10 @@ export default function PricingSection() {
           >
             <div className="lg flex flex-col h-full rounded-2xl p-7">
               <div className="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase mb-5 w-fit text-emerald-600 bg-emerald-50">
-                {VENTA.PACK_PRESENCIA.etiqueta}
+                {VENTA.PACK_ESTANDAR.etiqueta}
               </div>
-              <div className="text-[21px] font-semibold text-ink mb-0.5">Presencia</div>
-              <p className="text-[13px] text-dim font-light mb-6">{VENTA.PACK_PRESENCIA.para}</p>
+              <div className="text-[21px] font-semibold text-ink mb-0.5">Estándar</div>
+              <p className="text-[13px] text-dim font-light mb-6">{VENTA.PACK_ESTANDAR.para}</p>
 
               <div className="mb-7">
                 <div className="flex items-end gap-1">
@@ -120,14 +120,14 @@ export default function PricingSection() {
               </div>
 
               <a
-                href="/contratar/pack_presencia"
+                href="/contratar/pack_estandar"
                 className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
               >
                 Contratar · ver desglose
               </a>
 
               <ul className="space-y-3 flex-1">
-                {VENTA.PACK_PRESENCIA.puntos.map(f => (
+                {VENTA.PACK_ESTANDAR.puntos.map(f => (
                   <li key={f} className="flex items-start gap-2.5 text-[13px] text-dim">
                     <CheckIcon />
                     {f}
@@ -160,10 +160,10 @@ export default function PricingSection() {
 
               <div className="relative z-10 flex flex-col h-full p-7 pt-8">
                 <div className="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase mb-5 w-fit text-white/60 bg-white/10">
-                  {VENTA.PACK_CRECIMIENTO.etiqueta}
+                  {VENTA.PACK_PRO.etiqueta}
                 </div>
-                <div className="text-[21px] font-semibold text-white mb-0.5">Crecimiento</div>
-                <p className="text-[13px] text-white/45 font-light mb-6">{VENTA.PACK_CRECIMIENTO.para}</p>
+                <div className="text-[21px] font-semibold text-white mb-0.5">Pro</div>
+                <p className="text-[13px] text-white/45 font-light mb-6">{VENTA.PACK_PRO.para}</p>
 
                 <div className="mb-7">
                   <div className="flex items-end gap-1">
@@ -174,7 +174,7 @@ export default function PricingSection() {
                 </div>
 
                 <a
-                  href="/contratar/pack_crecimiento"
+                  href="/contratar/pack_pro"
                   className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-accent hover:bg-accent-dark text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
                   style={{ boxShadow: '0 4px 24px rgba(91,91,214,0.35)' }}
                 >
@@ -182,11 +182,11 @@ export default function PricingSection() {
                 </a>
 
                 <div className="mb-5 p-3 rounded-xl bg-white/5 border border-white/8">
-                  <div className="text-[11px] text-white/40 font-medium tracking-[0.08em] uppercase">Todo lo de Presencia, más:</div>
+                  <div className="text-[11px] text-white/40 font-medium tracking-[0.08em] uppercase">Todo lo del Estándar, más:</div>
                 </div>
 
                 <ul className="space-y-3 flex-1">
-                  {VENTA.PACK_CRECIMIENTO.puntos.map(f => (
+                  {VENTA.PACK_PRO.puntos.map(f => (
                     <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/65">
                       <CheckIcon dark />
                       {f}
@@ -204,10 +204,10 @@ export default function PricingSection() {
           >
             <div className="lg flex flex-col h-full rounded-2xl p-7">
               <div className="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.1em] uppercase mb-5 w-fit text-accent bg-accent-light">
-                {VENTA.PACK_TODO.etiqueta}
+                {VENTA.PACK_MAX.etiqueta}
               </div>
-              <div className="text-[21px] font-semibold text-ink mb-0.5">Todo</div>
-              <p className="text-[13px] text-dim font-light mb-6">{VENTA.PACK_TODO.para}</p>
+              <div className="text-[21px] font-semibold text-ink mb-0.5">Max</div>
+              <p className="text-[13px] text-dim font-light mb-6">{VENTA.PACK_MAX.para}</p>
 
               <div className="mb-7">
                 <div className="flex items-end gap-1">
@@ -218,14 +218,14 @@ export default function PricingSection() {
               </div>
 
               <a
-                href="/contratar/pack_todo"
+                href="/contratar/pack_max"
                 className="w-full py-3.5 rounded-full text-[13.5px] font-semibold mb-7 bg-ink hover:bg-zinc-800 text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
               >
                 Contratar · ver desglose
               </a>
 
               <ul className="space-y-3 flex-1">
-                {VENTA.PACK_TODO.puntos.map(f => (
+                {VENTA.PACK_MAX.puntos.map(f => (
                   <li key={f} className="flex items-start gap-2.5 text-[13px] text-dim">
                     <CheckIcon />
                     {f}

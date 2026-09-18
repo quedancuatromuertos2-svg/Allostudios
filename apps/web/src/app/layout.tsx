@@ -137,24 +137,24 @@ export default function RootLayout({
                 offers: [
                   {
                     "@type": "Offer",
-                    name: "Pack Presencia",
+                    name: "Pack Estándar",
                     price: "199",
                     priceCurrency: "EUR",
                     description: "Web profesional + SEO local mensual + reseñas 5★ automatizadas. 199 €/mes, 0 € de entrada, 12 meses.",
                   },
                   {
                     "@type": "Offer",
-                    name: "Pack Crecimiento",
+                    name: "Pack Pro",
                     price: "349",
                     priceCurrency: "EUR",
                     description: "Web Premium + SEO local + reseñas + asistente de IA en WhatsApp 24/7. 349 €/mes, 0 € de entrada, 12 meses.",
                   },
                   {
                     "@type": "Offer",
-                    name: "Pack Todo",
+                    name: "Pack Max",
                     price: "499",
                     priceCurrency: "EUR",
-                    description: "Todo lo del Pack Crecimiento más campañas de Meta y Google Ads gestionadas. 499 €/mes, 0 € de entrada, 12 meses.",
+                    description: "Todo lo del Pack Pro más campañas de Meta y Google Ads gestionadas. 499 €/mes, 0 € de entrada, 12 meses.",
                   },
                   {
                     "@type": "Offer",
@@ -196,7 +196,7 @@ export default function RootLayout({
                     name: "¿Cuánto cuesta AlloStudios?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Por suscripción, con 0 € de entrada y 12 meses de permanencia. Tres packs: Presencia (199 €/mes: web + SEO local + reseñas), Crecimiento (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Todo (499 €/mes: lo anterior más campañas de Meta y Google Ads). Solo la web, desde 99 €/mes con hosting, cambios y soporte incluidos.",
+                      text: "Por suscripción, con 0 € de entrada y 12 meses de permanencia. Tres packs: Estándar (199 €/mes: web + SEO local + reseñas), Pro (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Max (499 €/mes: lo anterior más campañas de Meta y Google Ads). Solo la web, desde 99 €/mes con hosting, cambios y soporte incluidos.",
                     },
                   },
                   {

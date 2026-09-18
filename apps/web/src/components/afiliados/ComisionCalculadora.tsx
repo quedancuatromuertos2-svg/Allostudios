@@ -4,9 +4,9 @@ import { useState } from 'react'
 
 const PRESETS = [
   { label: 'Solo web', ticket: 99 },
-  { label: 'Pack Presencia', ticket: 199 },
-  { label: 'Pack Crecimiento', ticket: 349 },
-  { label: 'Pack Todo', ticket: 499 },
+  { label: 'Pack Estándar', ticket: 199 },
+  { label: 'Pack Pro', ticket: 349 },
+  { label: 'Pack Max', ticket: 499 },
 ]
 
 const MESES = 12

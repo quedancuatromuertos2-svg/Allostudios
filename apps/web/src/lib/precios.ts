@@ -49,24 +49,24 @@ const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS:
 export const CATALOGO: Articulo[] = [
   /* ── Packs (la escalera visible en la web) ── */
   {
-    clave: 'PACK_PRESENCIA', nombre: 'Pack Presencia', eur: 199, cobro: 'mes', tipo: 'pack', permanencia: 12,
+    clave: 'PACK_ESTANDAR', nombre: 'Pack Estándar', eur: 199, cobro: 'mes', tipo: 'pack', permanencia: 12,
     desc: 'Que te encuentren: web profesional, posicionamiento en Google y reseñas que llegan solas.',
-    priceId: mes('PACK_PRESENCIA'), anual: anio('PACK_PRESENCIA', 199),
+    priceId: mes('PACK_ESTANDAR'), anual: anio('PACK_ESTANDAR', 199),
     incluye: ['Web Arranque con hosting, cambios y soporte', 'SEO local cada mes', 'Reseñas 5★ automatizadas'],
     sumaSuelto: P.WEB_ARRANQUE + P.SEO + P.RESENAS, extras: ['CINE_UPGRADE', 'AEO'],
   },
   {
-    clave: 'PACK_CRECIMIENTO', nombre: 'Pack Crecimiento', eur: 349, cobro: 'mes', tipo: 'pack', permanencia: 12,
+    clave: 'PACK_PRO', nombre: 'Pack Pro', eur: 349, cobro: 'mes', tipo: 'pack', permanencia: 12,
     desc: 'Que te encuentren y te respondan: web premium, Google y un asistente de IA que atiende tu WhatsApp 24/7.',
-    priceId: mes('PACK_CRECIMIENTO'), anual: anio('PACK_CRECIMIENTO', 349),
+    priceId: mes('PACK_PRO'), anual: anio('PACK_PRO', 349),
     incluye: ['Web Premium: animaciones, copy y tus reseñas integradas', 'SEO local cada mes', 'Reseñas 5★ automatizadas', 'Asistente de IA en WhatsApp 24/7'],
     sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE, extras: ['CINE_UPGRADE', 'AEO'],
   },
   {
-    clave: 'PACK_TODO', nombre: 'Pack Todo', eur: 499, cobro: 'mes', tipo: 'pack', permanencia: 12,
-    desc: 'Que te lleguen clientes: todo lo del Crecimiento más campañas de Meta y Google Ads gestionadas cada mes.',
-    priceId: mes('PACK_TODO'), anual: anio('PACK_TODO', 499),
-    incluye: ['Todo lo del Pack Crecimiento', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
+    clave: 'PACK_MAX', nombre: 'Pack Max', eur: 499, cobro: 'mes', tipo: 'pack', permanencia: 12,
+    desc: 'Que te lleguen clientes: todo lo del Pro más campañas de Meta y Google Ads gestionadas cada mes.',
+    priceId: mes('PACK_MAX'), anual: anio('PACK_MAX', 499),
+    incluye: ['Todo lo del Pack Pro', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
     sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['CINE_UPGRADE', 'AEO'],
   },
 
@@ -141,7 +141,7 @@ export const sinStripe = (priceId: string) => priceId.startsWith('PENDIENTE_')
 
 // Luz de la marca que acompaña a cada producto (imágenes en public/marca/luces/<luz>.jpg, generadas en MARCA-ALLOSTUDIOS/fondos)
 export const LUZ_PRODUCTO: Record<string, string> = {
-  PACK_PRESENCIA: 'faro', PACK_CRECIMIENTO: 'haz', PACK_TODO: 'prisma',
+  PACK_ESTANDAR: 'faro', PACK_PRO: 'haz', PACK_MAX: 'prisma',
   WEB_ARRANQUE: 'velo', WEB_PREMIUM: 'aura', WEB_CINE: 'eclipse', CINE_UPGRADE: 'espectro',
   CAPTACION: 'cometa', CAPTACION_PRO: 'doble',
   ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama', AEO: 'lente',

@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const SERVICIOS = [
-  'Pack Presencia (web + Google + reseñas)',
-  'Pack Crecimiento (+ asistente IA en WhatsApp)',
-  'Pack Todo (+ anuncios Meta / Google)',
+  'Pack Estándar (web + Google + reseñas)',
+  'Pack Pro (+ asistente IA en WhatsApp)',
+  'Pack Max (+ anuncios Meta / Google)',
   'Solo la web',
   'Web Cinematográfica (efecto Apple)',
   'Asistente IA en WhatsApp',
@@ -29,7 +29,7 @@ function Field({ name, label, required, type = 'text' }: { name: string; label: 
 }
 
 export default function ContactFormSection() {
-  const [servicio, setServicio] = useState('Pack Crecimiento (+ asistente IA en WhatsApp)')
+  const [servicio, setServicio] = useState('Pack Pro (+ asistente IA en WhatsApp)')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

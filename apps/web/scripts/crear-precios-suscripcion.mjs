@@ -16,9 +16,9 @@ const dry = process.argv.includes('--dry')
 const stripe = new Stripe(key, { apiVersion: '2024-06-20' })
 
 const PRODUCTOS = [
-  { clave: 'PACK_PRESENCIA',   nombre: 'Pack Presencia',           mes: 199, desc: 'Web Arranque + SEO local mensual + Reseñas 5★. 12 meses de permanencia.' },
-  { clave: 'PACK_CRECIMIENTO', nombre: 'Pack Crecimiento',         mes: 349, desc: 'Web Premium + SEO local + Reseñas + Asistente de IA en WhatsApp 24/7. 12 meses.' },
-  { clave: 'PACK_TODO',        nombre: 'Pack Todo',                mes: 499, desc: 'Pack Crecimiento + campañas de Meta y Google Ads gestionadas (inversión aparte). 12 meses.' },
+  { clave: 'PACK_ESTANDAR',   nombre: 'Pack Estándar',           mes: 199, desc: 'Web Arranque + SEO local mensual + Reseñas 5★. 12 meses de permanencia.' },
+  { clave: 'PACK_PRO', nombre: 'Pack Pro',         mes: 349, desc: 'Web Premium + SEO local + Reseñas + Asistente de IA en WhatsApp 24/7. 12 meses.' },
+  { clave: 'PACK_MAX',        nombre: 'Pack Max',                mes: 499, desc: 'Pack Pro + campañas de Meta y Google Ads gestionadas (inversión aparte). 12 meses.' },
   { clave: 'WEB_ARRANQUE',     nombre: 'Web Arranque',             mes: 99,  desc: 'Web profesional a medida con hosting, cambios y soporte. 12 meses de permanencia.' },
   { clave: 'WEB_PREMIUM',      nombre: 'Web Premium',              mes: 149, desc: 'Web con animaciones, copy profesional y reseñas integradas. 12 meses.' },
   { clave: 'WEB_CINE',         nombre: 'Web Cinematográfica',      mes: 249, desc: 'Web con scroll cinematográfico y dirección de arte. 12 meses.' },

@@ -33,7 +33,7 @@ export default function TerminosPage() {
             <h2 className="text-[17px] font-semibold text-ink mb-3">3. Planes y facturación</h2>
             <p>Todos los servicios se contratan por suscripción, sin pago inicial (0 € de entrada). La primera cuota se cobra en el momento de la contratación y las siguientes cada mes en la misma fecha. Los precios vigentes son los publicados en allostudios.net/contratar en el momento de la contratación:</p>
             <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Packs</strong> (Presencia, Crecimiento, Todo) y <strong>webs</strong> (Arranque, Premium, Cinematográfica): cuota mensual con un <strong>compromiso de permanencia de 12 meses</strong> desde la fecha de contratación. Transcurridos los 12 meses, la suscripción continúa mes a mes sin permanencia.</li>
+              <li><strong>Packs</strong> (Estándar, Pro, Max) y <strong>webs</strong> (Arranque, Premium, Cinematográfica): cuota mensual con un <strong>compromiso de permanencia de 12 meses</strong> desde la fecha de contratación. Transcurridos los 12 meses, la suscripción continúa mes a mes sin permanencia.</li>
               <li><strong>Servicios sueltos</strong> (SEO local, reseñas, asistente de IA, campañas, captación): cuota mensual sin permanencia.</li>
               <li><strong>Pago anual anticipado:</strong> opcionalmente, packs y webs pueden abonarse por adelantado por el importe de 10 cuotas mensuales, que cubre 12 meses de servicio.</li>
             </ul>

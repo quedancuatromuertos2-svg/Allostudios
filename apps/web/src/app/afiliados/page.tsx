@@ -75,7 +75,7 @@ const reglas = [
   },
   {
     t: 'El 20 % es de cada cuota, 12 meses',
-    d: 'No de un pago único: del pack que cierres cobras cada mes mientras el cliente paga, durante el primer año. Un Pack Crecimiento son 70 € al mes para ti; 840 € por cliente.'
+    d: 'No de un pago único: del pack que cierres cobras cada mes mientras el cliente paga, durante el primer año. Un Pack Pro son 70 € al mes para ti; 840 € por cliente.'
   },
   {
     t: 'Nunca dos comerciales al mismo lead',

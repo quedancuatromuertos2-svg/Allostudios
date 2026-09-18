@@ -16,10 +16,10 @@ export const metadata: Metadata = {
     Tres usos:
     · Lectura antes de pagar (enlace desde el desglose de /contratar).
     · Copia con los datos rellenos tras el pago (enlace del email).
-    · Impresión para la venta presencial (?pack=crecimiento&negocio=...&print=1): sale con
+    · Impresión para la venta presencial (?pack=pro&negocio=...&print=1): sale con
       portada, cláusulas y bloques de firma. El cliente lo firma y paga en /contratar desde el móvil.
 
-    Parámetros: pack (clave del catálogo, p. ej. pack_crecimiento o crecimiento), cine=1 (upgrade),
+    Parámetros: pack (clave del catálogo, p. ej. pack_pro o pro), cine=1 (upgrade),
     anual=1, negocio, titular, nif, direccion, email, telefono, fecha.                             */
 
 type SP = Record<string, string | string[] | undefined>

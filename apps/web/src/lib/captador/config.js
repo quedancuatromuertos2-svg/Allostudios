@@ -23,14 +23,14 @@ module.exports = {
   // Modelo de suscripción (18/09/2026): 0 € de entrada, cuota mensual, 12 meses de permanencia.
   PRICES: {
     web: 0,          // € de entrada (ya no hay pago único)
-    monthly: 199,    // €/mes del pack de entrada (Presencia) — base de las estadísticas de MRR
+    monthly: 199,    // €/mes del pack de entrada (Estándar) — base de las estadísticas de MRR
   },
 
   // Packs: la escalera que se vende. Cada uno lleva la web dentro; el cliente compra un resultado.
   PACKS: {
-    presencia:   { label: 'Presencia',   monthly: 199, pitch: 'web profesional + salir en Google cada mes + reseñas 5★ que se piden solas' },
-    crecimiento: { label: 'Crecimiento', monthly: 349, pitch: 'web premium + Google + reseñas + un asistente de IA que contesta vuestro WhatsApp 24/7' },
-    todo:        { label: 'Todo',        monthly: 499, pitch: 'todo lo anterior + campañas de Meta y Google Ads gestionadas cada mes' },
+    estandar:    { label: 'Estándar',   monthly: 199, pitch: 'web profesional + salir en Google cada mes + reseñas 5★ que se piden solas' },
+    pro:         { label: 'Pro', monthly: 349, pitch: 'web premium + Google + reseñas + un asistente de IA que contesta vuestro WhatsApp 24/7' },
+    max:         { label: 'Max',        monthly: 499, pitch: 'todo lo anterior + campañas de Meta y Google Ads gestionadas cada mes' },
   },
 
   // Webs solas (para quien de verdad solo quiere web). Todo incluido: hosting, cambios y soporte.

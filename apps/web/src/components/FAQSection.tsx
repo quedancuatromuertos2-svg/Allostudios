@@ -16,12 +16,12 @@ const faqs = [
   },
   {
     q: '¿Hacéis también campañas de anuncios (Meta Ads)?',
-    a: 'Sí. Gestionamos tus campañas en Meta (Instagram y Facebook) y Google para captar clientes de tu zona. La inversión en anuncios la pones tú desde tu propia cuenta; nosotros nos encargamos de las creatividades, la segmentación y la optimización para que cada euro rinda. Va incluido en el Pack Todo o suelto por 199 €/mes.',
+    a: 'Sí. Gestionamos tus campañas en Meta (Instagram y Facebook) y Google para captar clientes de tu zona. La inversión en anuncios la pones tú desde tu propia cuenta; nosotros nos encargamos de las creatividades, la segmentación y la optimización para que cada euro rinda. Va incluido en el Pack Max o suelto por 199 €/mes.',
     tag: 'Anuncios',
   },
   {
     q: '¿Cuánto cuesta y qué incluye?',
-    a: 'Funcionamos por suscripción: 0 € de entrada y una cuota mensual con 12 meses de permanencia. Tres packs: Presencia (199 €/mes: web + SEO local + reseñas), Crecimiento (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Todo (499 €/mes: lo anterior más campañas de Meta y Google Ads). Si solo quieres la web, desde 99 €/mes con hosting, cambios y soporte incluidos. Y la demo real de tu web la ves ANTES de pagar nada.',
+    a: 'Funcionamos por suscripción: 0 € de entrada y una cuota mensual con 12 meses de permanencia. Tres packs: Estándar (199 €/mes: web + SEO local + reseñas), Pro (349 €/mes: web premium + SEO + reseñas + asistente de IA en WhatsApp) y Max (499 €/mes: lo anterior más campañas de Meta y Google Ads). Si solo quieres la web, desde 99 €/mes con hosting, cambios y soporte incluidos. Y la demo real de tu web la ves ANTES de pagar nada.',
     tag: 'Webs',
   },
   {
