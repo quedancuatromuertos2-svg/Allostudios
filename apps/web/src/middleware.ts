@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse, type NextRequest } from "next/server"
+import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server"
 
 /**
  * Rutas que EXIGEN sesión iniciada.
@@ -68,7 +68,7 @@ function redirectAppSubdomain(req: NextRequest) {
   }
 }
 
-export default clerkMiddleware(
+const conClerk = clerkMiddleware(
   async (auth, req) => {
     const subdirectRedirect = redirectAppSubdomain(req)
     if (subdirectRedirect) return subdirectRedirect
@@ -88,6 +88,19 @@ export default clerkMiddleware(
   },
   { publishableKey: "pk_live_Y2xlcmsuYWxsb3N0dWRpb3MubmV0JA" }
 )
+
+/**
+ * Si el entorno no tiene CLERK_SECRET_KEY (los despliegues de vista previa de Vercel no la
+ * tienen), clerkMiddleware revienta con MIDDLEWARE_INVOCATION_FAILED en TODAS las rutas,
+ * también en las públicas. En ese caso, las rutas públicas pasan sin Clerk y solo las
+ * protegidas van al login. En producción la clave existe y todo va por Clerk como siempre.
+ */
+export default function middleware(req: NextRequest, ev: NextFetchEvent) {
+  if (!process.env.CLERK_SECRET_KEY && !isProtectedRoute(req)) {
+    return redirectAppSubdomain(req) ?? NextResponse.next()
+  }
+  return conClerk(req, ev)
+}
 
 export const config = {
   matcher: ["/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|mp4|webm|mov|m4v|avif)).*)", "/(api|trpc)(.*)"],
