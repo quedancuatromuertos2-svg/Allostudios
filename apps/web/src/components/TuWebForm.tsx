@@ -31,9 +31,11 @@ type Props = {
   /* Precarga desde el generador de la home (/#tu-web) */
   defaultNegocio?: string
   defaultCiudad?: string
+  /* Nivel de web preseleccionado (viene del capítulo del pack) */
+  defaultNivel?: string
 }
 
-export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valencia' }: Props) {
+export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valencia', defaultNivel = 'arranque' }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -123,7 +125,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
             ['cine', 'Cinematográfica', '249 €/mes'],
           ].map(([v, n, p], i) => (
             <label key={v} className="nivel-opcion cursor-pointer rounded-xl border border-border bg-canvas px-3 py-3 text-center transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-light">
-              <input type="radio" name="nivel" value={v} defaultChecked={i === 0} className="sr-only" />
+              <input type="radio" name="nivel" value={v} defaultChecked={v === defaultNivel || (i === 0 && !defaultNivel)} className="sr-only" />
               <span className="block text-[13px] font-semibold text-ink leading-tight">{n}</span>
               <span className="block text-[11px] text-muted mt-0.5">{p}</span>
             </label>

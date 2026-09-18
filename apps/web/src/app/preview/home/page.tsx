@@ -42,7 +42,7 @@ export default function PreviewHome() {
 
         {/* ── ESTÁNDAR: que te encuentren ── */}
         <CapituloPack
-          id="estandar" numero="01" nombre="Estándar" clave="PACK_ESTANDAR"
+          id="estandar" numero="01" nombre="Estándar" clave="PACK_ESTANDAR" demo="arranque"
           dolor="Trabajo bien y no me encuentran."
           quien="Para el negocio que hoy no aparece cuando lo buscan, o aparece con tres fotos y sin horario."
           efecto="busqueda"
@@ -84,7 +84,7 @@ export default function PreviewHome() {
 
         {/* ── PRO: que te contesten ── */}
         <CapituloPack
-          id="pro" numero="02" nombre="Pro" clave="PACK_PRO" destacado oscuro nivel={2}
+          id="pro" numero="02" nombre="Pro" clave="PACK_PRO" destacado oscuro nivel={2} demo="premium"
           dolor="Contesto tarde y se van a otro."
           quien="Para el que está cortando el pelo, con un paciente o en cocina cuando le escriben."
           efecto="chat"
@@ -126,7 +126,7 @@ export default function PreviewHome() {
 
         {/* ── MAX: que te lleguen clientes ── */}
         <CapituloPack
-          id="max" numero="03" nombre="Max" clave="PACK_MAX" oscuro nivel={3}
+          id="max" numero="03" nombre="Max" clave="PACK_MAX" oscuro nivel={3} demo="cine"
           dolor="Quiero llenar la agenda, no solo estar."
           quien="Para el que tiene semanas flojas y ya ha quemado dinero en anuncios que no trajeron a nadie."
           visual={<VisualInforme />}

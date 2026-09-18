@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { WEBS, porClave, eur } from '@/lib/precios'
 import { VisualChat, VisualInforme, VisualWeb } from './Visuales'
+import CristalHero from '../CristalHero'
 
 /*  "Elige tu pack" — la tienda (como "Comprar un iPhone"): título, pestañas y tres
     tarjetas. Cuanto más caro, más premium la presentación: Estándar es papel blanco,
@@ -42,10 +43,14 @@ const ICONOS: Record<string, string> = {
   euro: '<path d="M18 7a7 7 0 1 0 0 10"/><path d="M4 10h10M4 14h10"/>',
   control: '<path d="M4 12h16"/><circle cx="14" cy="12" r="3"/><path d="M4 6h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="18" r="2"/>',
 }
-function Icono({ k, oscuro }: { k: string; oscuro?: boolean }) {
+const COLOR: Record<string, string> = {
+  web: '#5B5BD6', google: '#4285F4', estrella: '#F5B301', informe: '#FF7A2A', chat: '#25D366', agenda: '#7C7CE8',
+  premium: '#FF4FA3', mas: '#FF9A5C', ads: '#FF4FA3', euro: '#34A853', control: '#5B5BD6',
+}
+function Icono({ k }: { k: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
-      className={oscuro ? 'text-white/85' : 'text-accent'} dangerouslySetInnerHTML={{ __html: ICONOS[k] }} />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={COLOR[k] || '#5B5BD6'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+      dangerouslySetInnerHTML={{ __html: ICONOS[k] }} />
   )
 }
 
@@ -62,7 +67,7 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
       initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
       transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -6 }}
-      className={`group relative rounded-[26px] flex flex-col overflow-hidden ${oscuro ? 'text-white' : 'text-ink'}`}
+      className={`group relative rounded-[26px] flex flex-col overflow-hidden ${oscuro ? 'text-white' : 'text-[#18181B]'}`}
       style={
         t.nivel === 1
           ? { background: '#fff', boxShadow: '0 1px 0 rgba(24,24,27,.04), 0 28px 60px -34px rgba(24,24,27,.28)' }
@@ -95,7 +100,7 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
             <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 45%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>Pack Max</span>
           ) : `Pack ${t.nombre}`}
         </h3>
-        <p className={`mt-2 text-[14px] ${oscuro ? 'text-white/65' : 'text-dim'}`}>«{t.dolor}»</p>
+        <p className={`mt-2 text-[14px] ${oscuro ? 'text-white/65' : 'text-[#4E4A5E]'}`}>«{t.dolor}»</p>
       </div>
 
       {/* El producto */}
@@ -112,24 +117,24 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
           {t.rejilla.map(([ic, tt, dd]) => (
             <div key={tt} className={`rounded-2xl p-3 ${oscuro ? 'border border-white/10' : 'border border-ink/[.06]'}`}
               style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.7)', backdropFilter: 'blur(14px)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 8px 20px -14px rgba(24,24,27,.25)' }}>
-              <div className={`w-8 h-8 rounded-[10px] flex items-center justify-center mb-2 ${oscuro ? 'bg-white/10' : 'bg-accent/10'}`}><Icono k={ic} oscuro={oscuro} /></div>
-              <div className={`text-[12.5px] font-semibold leading-tight ${oscuro ? 'text-white' : 'text-ink'}`}>{tt}</div>
-              <div className={`text-[11px] leading-snug mt-0.5 ${oscuro ? 'text-white/50' : 'text-muted'}`}>{dd}</div>
+              <div className="w-8 h-8 rounded-[10px] flex items-center justify-center mb-2" style={{ background: `${COLOR[ic] || '#5B5BD6'}${oscuro ? '33' : '1F'}`, boxShadow: `inset 0 0 0 1px ${COLOR[ic] || '#5B5BD6'}33` }}><Icono k={ic} /></div>
+              <div className={`text-[12.5px] font-semibold leading-tight ${oscuro ? 'text-white' : 'text-[#18181B]'}`}>{tt}</div>
+              <div className={`text-[11px] leading-snug mt-0.5 ${oscuro ? 'text-white/50' : 'text-[#6E6A7C]'}`}>{dd}</div>
             </div>
           ))}
         </div>
         <div className="flex items-baseline gap-1.5">
           <span className="font-display text-[1.9rem] leading-none font-semibold tracking-[-0.03em]">{eur(p.eur)}</span>
-          <span className={`text-[13px] ${oscuro ? 'text-white/55' : 'text-muted'}`}>/mes · 0 € de entrada</span>
+          <span className={`text-[13px] ${oscuro ? 'text-white/55' : 'text-[#6E6A7C]'}`}>/mes · 0 € de entrada</span>
         </div>
-        <p className={`text-[12px] mt-1 ${oscuro ? 'text-white/45' : 'text-muted'}`}>o {fmt(p.eur * 10)} €/año pagando por adelantado (2 meses gratis)</p>
+        <p className={`text-[12px] mt-1 ${oscuro ? 'text-white/45' : 'text-[#6E6A7C]'}`}>o {fmt(p.eur * 10)} €/año pagando por adelantado (2 meses gratis)</p>
         <div className="mt-5 flex items-center gap-4">
           <button type="button" onClick={(e) => ir(e, `/contratar/${t.clave.toLowerCase()}`)}
-            className={`rounded-full text-[13.5px] font-semibold px-5 py-2.5 transition-transform hover:-translate-y-0.5 ${t.nivel === 3 ? 'text-white' : t.nivel === 2 ? 'bg-accent text-white' : 'bg-ink text-white'}`}
+            className={`rounded-full text-[13.5px] font-semibold px-5 py-2.5 transition-transform hover:-translate-y-0.5 ${t.nivel === 3 ? 'text-white' : t.nivel === 2 ? 'bg-accent text-white' : 'bg-[#18181B] text-white'}`}
             style={t.nivel === 3 ? { background: 'linear-gradient(90deg,#FF7A2A,#FF4FA3)', boxShadow: '0 8px 24px -8px rgba(255,122,42,.7)' } : undefined}>
             Contratar
           </button>
-          <span className={`text-[13.5px] font-medium ${oscuro ? 'text-white/80' : 'text-accent'} group-hover:underline underline-offset-4`}>Más información ›</span>
+          <span className={`text-[13.5px] font-medium ${oscuro ? 'text-white/80' : 'text-[#5B5BD6]'} group-hover:underline underline-offset-4`}>Más información ›</span>
         </div>
       </div>
     </motion.a>
@@ -142,28 +147,33 @@ export default function ElegirPack() {
   const ads = porClave('ADS')!
 
   return (
-    <section id="elegir" className="papel relative py-section overflow-hidden">
-      <div className="relative max-w-6xl mx-auto px-6 md:px-12">
+    <section id="elegir" className="relative py-24 md:py-36 overflow-hidden" style={{ background: '#0E0B14' }}>
+      {/* La persiana de cristal del hero, con la luz de la marca derivando detrás */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute inset-0 hero-escenario-plano"><CristalHero texto="" /></div>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(14,11,20,.55) 0%, rgba(14,11,20,.25) 30%, rgba(14,11,20,.35) 70%, rgba(14,11,20,.9) 100%)' }} />
+      </div>
+      <div className="relative max-w-6xl mx-auto px-4 md:px-12">
         <motion.h2
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="font-display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.02] font-semibold tracking-[-0.04em] text-ink max-w-2xl"
+          className="font-display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.02] font-semibold tracking-[-0.04em] text-white max-w-2xl"
         >
           Elige<br />tu pack.
         </motion.h2>
 
-        <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-b border-ink/10 pb-3 text-[14.5px]">
+        <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-b border-white/15 pb-3 text-[14.5px]">
           {PESTANAS.map((p, i) => (
             <button key={p} type="button" onClick={() => setTab(i)}
-              className={`pb-1 transition-colors ${tab === i ? 'text-ink font-semibold border-b-2 border-ink -mb-[14px] pb-3' : 'text-dim hover:text-ink'}`}>
+              className={`pb-1 transition-colors ${tab === i ? 'text-white font-semibold border-b-2 border-white -mb-[14px] pb-3' : 'text-white/55 hover:text-white'}`}>
               {p}
             </button>
           ))}
         </div>
 
-        <p className="mt-8 text-[clamp(1.2rem,2vw,1.5rem)] font-semibold text-ink tracking-[-0.02em]">
-          {tab === 0 && <>Todos los packs. <span className="text-muted font-medium">Elige el tuyo; cada uno arregla una cosa.</span></>}
-          {tab === 1 && <>Solo la web. <span className="text-muted font-medium">Todo incluido, 0 € de entrada.</span></>}
-          {tab === 2 && <>Complementos. <span className="text-muted font-medium">Se añaden a cualquier pack.</span></>}
+        <p className="mt-8 text-[clamp(1.2rem,2vw,1.5rem)] font-semibold text-white tracking-[-0.02em]">
+          {tab === 0 && <>Todos los packs. <span className="text-white/55 font-medium">Elige el tuyo; cada uno arregla una cosa.</span></>}
+          {tab === 1 && <>Solo la web. <span className="text-white/55 font-medium">Todo incluido, 0 € de entrada.</span></>}
+          {tab === 2 && <>Complementos. <span className="text-white/55 font-medium">Se añaden a cualquier pack.</span></>}
         </p>
 
         {tab === 0 && (
@@ -177,17 +187,17 @@ export default function ElegirPack() {
             {WEBS.map((w, i) => (
               <motion.div key={w.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                 className="rounded-[26px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 28px 60px -34px rgba(24,24,27,.28)' }}>
-                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted">Solo web · {i === 2 ? 'la más impactante' : i === 1 ? 'la más elegida' : 'la esencial'}</p>
-                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-ink">{w.nombre.replace('Web ', '')}</h3>
-                <p className="mt-2 text-[13.5px] text-dim flex-1">{w.desc}</p>
+                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#6E6A7C]">Solo web · {i === 2 ? 'la más impactante' : i === 1 ? 'la más elegida' : 'la esencial'}</p>
+                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-[#18181B]">{w.nombre.replace('Web ', '')}</h3>
+                <p className="mt-2 text-[13.5px] text-[#4E4A5E] flex-1">{w.desc}</p>
                 <div className="mt-6 flex items-baseline gap-1.5">
-                  <span className="font-display text-[1.9rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(w.eur)}</span>
-                  <span className="text-[13px] text-muted">/mes · 0 € de entrada</span>
+                  <span className="font-display text-[1.9rem] leading-none font-semibold text-[#18181B] tracking-[-0.03em]">{eur(w.eur)}</span>
+                  <span className="text-[13px] text-[#6E6A7C]">/mes · 0 € de entrada</span>
                 </div>
-                <a href={`/contratar/${w.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-ink text-white text-[13.5px] font-semibold px-5 py-2.5">Contratar</a>
+                <a href={`/contratar/${w.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-[#18181B] text-white text-[13.5px] font-semibold px-5 py-2.5">Contratar</a>
               </motion.div>
             ))}
-            <p className="md:col-span-3 text-[13px] text-muted">En cualquier pack puedes cambiar la web por la Cinematográfica por +100 €/mes.</p>
+            <p className="md:col-span-3 text-[13px] text-white/55">En cualquier pack puedes cambiar la web por la Cinematográfica por +100 €/mes.</p>
           </div>
         )}
 
@@ -196,21 +206,21 @@ export default function ElegirPack() {
             {[aeo, ads].map((a, i) => (
               <motion.div key={a.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                 className="rounded-[26px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 28px 60px -34px rgba(24,24,27,.28)' }}>
-                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted">Complemento · sin permanencia</p>
-                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-ink">{a.nombre}</h3>
-                <p className="mt-2 text-[13.5px] text-dim flex-1">{a.desc}</p>
+                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#6E6A7C]">Complemento · sin permanencia</p>
+                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-[#18181B]">{a.nombre}</h3>
+                <p className="mt-2 text-[13.5px] text-[#4E4A5E] flex-1">{a.desc}</p>
                 <div className="mt-6 flex items-baseline gap-1.5">
-                  <span className="font-display text-[1.9rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(a.eur)}</span>
-                  <span className="text-[13px] text-muted">/mes{a.clave === 'ADS' ? ' + inversión' : ''}</span>
+                  <span className="font-display text-[1.9rem] leading-none font-semibold text-[#18181B] tracking-[-0.03em]">{eur(a.eur)}</span>
+                  <span className="text-[13px] text-[#6E6A7C]">/mes{a.clave === 'ADS' ? ' + inversión' : ''}</span>
                 </div>
-                <a href={`/contratar/${a.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-ink text-white text-[13.5px] font-semibold px-5 py-2.5">Añadir</a>
+                <a href={`/contratar/${a.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-[#18181B] text-white text-[13.5px] font-semibold px-5 py-2.5">Añadir</a>
               </motion.div>
             ))}
           </div>
         )}
 
-        <p className="mt-8 text-[13px] text-muted">
-          ¿No sabes cuál? <a href="#compara" className="underline underline-offset-4 text-ink">Compara los tres</a> o <a href="#tu-web" className="underline underline-offset-4 text-ink">mira tu web gratis</a> antes de decidir.
+        <p className="mt-8 text-[13px] text-white/55">
+          ¿No sabes cuál? <a href="#compara" className="underline underline-offset-4 text-white">Compara los tres</a> o <a href="#tu-web" className="underline underline-offset-4 text-white">mira tu web gratis</a> antes de decidir.
         </p>
       </div>
     </section>

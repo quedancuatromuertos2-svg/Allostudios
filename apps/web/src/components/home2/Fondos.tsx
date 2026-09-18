@@ -59,11 +59,13 @@ export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
 }
 
 export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>; palabra: string }) {
-  const escala = useTransform(progreso, [0.05, 0.45, 0.95], [0.5, 1, 1.04])
-  const giro = useTransform(progreso, [0.05, 0.55], [52, 4])
-  const y = useTransform(progreso, [0.05, 0.95], ['4%', '-22%'])
-  // Brilla entera mientras está sola; cuando el mosaico y la caja de compra pasan por encima, baja a un tercio
-  const opacidad = useTransform(progreso, [0, 0.12, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
+  // Nace del título (pequeña, tumbada, donde estaba «Max.»), se levanta y crece hasta llenar el recuadro.
+  const escala = useTransform(progreso, [0.08, 0.42, 0.95], [0.34, 1, 1.03])
+  const giro = useTransform(progreso, [0.08, 0.5], [58, 4])
+  const y = useTransform(progreso, [0.08, 0.95], ['-2%', '-24%'])
+  // Aparece cuando el título se disuelve; cuando el mosaico y la caja pasan por encima, baja a un quinto
+  const opacidad = useTransform(progreso, [0.07, 0.16, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
+  const barridoY = useTransform(progreso, [0.12, 0.6], ['-10%', '110%'])
   const brillo = useTransform(progreso, [0.1, 0.9], ['120%', '-20%'])
   const metal = {
     background: 'linear-gradient(180deg, #FFF1E6 0%, #FFCFAE 18%, #FF9A5C 36%, #8E3A1F 50%, #FFB07A 58%, #C9542A 74%, #3A1610 100%)',
@@ -84,6 +86,10 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
           <span className="relative block text-[46vw] md:text-[40vw]" style={metal}>{palabra}</span>
           {/* brillo que recorre las letras */}
           <motion.span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'linear-gradient(100deg, transparent 40%, rgba(255,255,255,.8) 50%, transparent 60%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
+          {/* tecnológico: contorno fino desplazado (como un plano de CAD) y líneas de barrido sobre el metal */}
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,.28)', transform: 'translate(-.6%, -1.2%)' }}>{palabra}</span>
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'repeating-linear-gradient(180deg, rgba(255,255,255,.14) 0 1px, transparent 1px 9px)', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'overlay' }}>{palabra}</span>
+          <motion.span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,.9) 50%, transparent 100%)', backgroundSize: '100% 12%', backgroundRepeat: 'no-repeat', backgroundPositionY: barridoY, WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
           {/* reflejo en el suelo */}
           <span className="absolute left-0 right-0 top-full block text-[46vw] md:text-[40vw]" style={{ ...metal, transform: 'scaleY(-.55) translateY(8%)', transformOrigin: '50% 0%', opacity: .28, filter: 'blur(3px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)' }}>{palabra}</span>
         </motion.div>

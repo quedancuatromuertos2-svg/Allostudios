@@ -21,7 +21,7 @@ const RESULTADOS = [
   { n: 'Peluquería Unisex Sol', r: '4,1', v: 37, d: 'Russafa · Cierra 19:00' },
 ]
 
-export function BusquedaEnVivo({ progreso }: { progreso: MotionValue<number> }) {
+export function BusquedaEnVivo({ progreso, sinMovil }: { progreso: MotionValue<number>; sinMovil?: boolean }) {
   // Tramos del scroll: 0.05-0.22 se escribe · 0.22-0.32 aparecen resultados · 0.32-0.5 el cliente sube al 1
   const letras = useTransform(progreso, [0.05, 0.22], [0, QUERY.length])
   const texto = useTransform(letras, (n) => QUERY.slice(0, Math.round(n)))
@@ -38,7 +38,7 @@ export function BusquedaEnVivo({ progreso }: { progreso: MotionValue<number> }) 
   return (
     <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
       {/* Google */}
-      <div className="w-full max-w-[420px]">
+      <div className="w-full max-w-[520px]">
         <div className="rounded-full px-5 py-3.5 flex items-center gap-3" style={{ background: '#fff', boxShadow: '0 1px 6px rgba(32,33,36,.28)' }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" strokeWidth="2.2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
           <div className="flex-1 text-[16px] text-[#202124] flex items-center">
@@ -78,8 +78,8 @@ export function BusquedaEnVivo({ progreso }: { progreso: MotionValue<number> }) 
         <p className="mt-3 text-[12px] text-muted">Así es como te encuentran: ficha completa, reseñas y una web que Google entiende.</p>
       </div>
 
-      {/* La web en el móvil */}
-      <VisualWeb />
+      {/* La web en el móvil (si no hay panel de demo al lado) */}
+      {!sinMovil && <VisualWeb />}
     </div>
   )
 }

@@ -107,7 +107,7 @@ const FILAS = [
 ]
 export function VisualInforme({ compacto }: { compacto?: boolean }) {
   return (
-    <div className={`w-full max-w-[560px] rounded-[22px] p-7 md:p-9 ${compacto ? 'origin-top scale-[.78] mx-6 bg-[#F2F1EE]' : 'lg'}`} style={compacto ? { boxShadow: '0 24px 50px -24px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05)' } : undefined}>
+    <div className={`w-full max-w-[560px] rounded-[22px] p-7 md:p-9 ${compacto ? 'origin-top scale-[.78] mx-6 bg-[#F2F1EE] [&_.text-ink]:text-[#18181B] [&_.text-dim]:text-[#4E4A5E] [&_.text-muted]:text-[#6E6A7C] [&_.divide-ink\/10>*]:border-black/10' : 'lg'}`} style={compacto ? { boxShadow: '0 24px 50px -24px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05)' } : undefined}>
       <div className="flex items-baseline justify-between">
         <div>
           <p className="text-[11px] font-mono tracking-[0.14em] uppercase text-muted">Informe · 28 de octubre</p>

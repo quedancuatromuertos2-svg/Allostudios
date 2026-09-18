@@ -5,6 +5,7 @@ import { useRef, type ReactNode } from 'react'
 import { eur, porClave } from '@/lib/precios'
 import { BusquedaEnVivo, ChatEnVivo } from './Animadas'
 import { FondoEstandar, FondoPro, FondoMax } from './Fondos'
+import DemoPack, { type NivelDemo } from './DemoPack'
 
 /*  Un capítulo por pack. Estructura de venta (no de catálogo):
       1. Nombre + dolor en boca del dueño + para quién.
@@ -20,7 +21,7 @@ export type Pieza = { titulo: string; sub?: string; nodo: ReactNode; ancho?: 1 |
 const EASE = [0.32, 0.72, 0, 1] as const
 
 export default function CapituloPack({
-  id, numero, nombre, clave, dolor, quien, oscuro, visual, efecto, mosaico, resultado, esfuerzo, bonus, dudas, url, destacado, nivel = 1,
+  id, numero, nombre, clave, dolor, quien, oscuro, visual, efecto, mosaico, resultado, esfuerzo, bonus, dudas, url, destacado, nivel = 1, demo,
 }: {
   id: string
   numero: string
@@ -44,12 +45,18 @@ export default function CapituloPack({
   url: string
   destacado?: boolean
   nivel?: 1 | 2 | 3
+  /** nivel de web que enseña el panel de demo de la derecha */
+  demo: NivelDemo
 }) {
   const art = porClave(clave)!
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const escala = useTransform(scrollYProgress, [0, 0.3], [0.92, 1])
   const subida = useTransform(scrollYProgress, [0, 0.3], [48, 0])
+  // Max: el título se disuelve hacia abajo y crece mientras nace la palabra grande del fondo (una se convierte en la otra)
+  const tituloOp = useTransform(scrollYProgress, [0.06, 0.15], [1, 0])
+  const tituloEsc = useTransform(scrollYProgress, [0.06, 0.16], [1, 1.9])
+  const tituloY = useTransform(scrollYProgress, [0.06, 0.16], ['0%', '55%'])
 
   const T = oscuro
     ? { ink: 'text-white', dim: 'text-white/60', muted: 'text-white/40', line: 'border-white/10', shell: 'bg-white/[.04] ring-1 ring-white/10', core: 'bg-[rgba(18,17,24,.78)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)]' }
@@ -82,15 +89,17 @@ export default function CapituloPack({
         {/* 1 · Nombre + dolor */}
         <div className="text-center max-w-3xl mx-auto">
           <Entrada><Pill><span className={`w-1.5 h-1.5 rounded-full ${nivel === 3 ? 'bg-[#FF7A2A]' : 'bg-accent'}`} />Pack {numero}{destacado ? ' · el más elegido' : nivel === 3 ? ' · todo incluido' : ''}</Pill></Entrada>
-          <motion.h2
-            initial={{ opacity: 0, y: 36, filter: 'blur(10px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }} transition={{ duration: 1, ease: EASE }}
-            className={`mt-7 font-display text-[clamp(3.6rem,10vw,8.5rem)] leading-[.92] font-semibold tracking-[-0.05em] ${T.ink}`}
-          >
-            {nivel === 3
-              ? <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 50%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>{nombre}.</span>
-              : <>{nombre}<span className="acento">.</span></>}
-          </motion.h2>
+          <motion.div style={nivel === 3 ? { opacity: tituloOp, scale: tituloEsc, y: tituloY, transformOrigin: '50% 100%' } : undefined}>
+            <motion.h2
+              initial={{ opacity: 0, y: 36, filter: 'blur(10px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true }} transition={{ duration: 1, ease: EASE }}
+              className={`mt-7 font-display text-[clamp(3.6rem,10vw,8.5rem)] leading-[.92] font-semibold tracking-[-0.05em] ${T.ink}`}
+            >
+              {nivel === 3
+                ? <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 50%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>{nombre}.</span>
+                : <>{nombre}<span className="acento">.</span></>}
+            </motion.h2>
+          </motion.div>
           <Entrada delay={0.15}>
             <p className={`mt-7 text-[clamp(1.4rem,2.8vw,2.1rem)] leading-snug font-medium tracking-[-0.025em] ${T.ink} text-balance`}>«{dolor}»</p>
             <p className={`mt-3 text-[15px] ${T.dim} font-light`}>{quien}</p>
@@ -98,9 +107,14 @@ export default function CapituloPack({
         </div>
 
         {/* 2 · Visual */}
-        <motion.div style={{ scale: escala, y: subida }} className={`${nivel === 3 ? 'mt-[22vh] md:mt-[26vh]' : 'mt-16 md:mt-24'} flex justify-center`}>
-          {efecto === 'busqueda' ? <BusquedaEnVivo progreso={scrollYProgress} /> : efecto === 'chat' ? <ChatEnVivo progreso={scrollYProgress} /> : visual}
-        </motion.div>
+        <div className={`${nivel === 3 ? 'mt-[30vh] md:mt-[36vh]' : 'mt-16 md:mt-24'} grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-8 items-start`}>
+          <motion.div style={{ scale: escala, y: subida }} className="flex justify-center lg:justify-start min-w-0">
+            {efecto === 'busqueda' ? <BusquedaEnVivo progreso={scrollYProgress} sinMovil /> : efecto === 'chat' ? <ChatEnVivo progreso={scrollYProgress} /> : visual}
+          </motion.div>
+          <div className="flex justify-center lg:justify-end">
+            <DemoPack nivel={demo} pack={nombre} oscuro={oscuro} nivel3={nivel === 3} />
+          </div>
+        </div>
 
         {/* 3 · Qué consigues */}
         <div className="mt-24 md:mt-32">
