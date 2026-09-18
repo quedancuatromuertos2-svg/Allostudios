@@ -15,6 +15,7 @@ import PruebaMercado from '@/components/home2/PruebaMercado'
 import CapituloPack from '@/components/home2/CapituloPack'
 import ComparaPacks from '@/components/home2/ComparaPacks'
 import Complementos from '@/components/home2/Complementos'
+import ElegirPack from '@/components/home2/ElegirPack'
 import { VisualWeb, VisualChat, VisualInforme } from '@/components/home2/Visuales'
 import { FichaGoogle, Notificacion, Agenda, Anuncio, CostePorContacto, Escena } from '@/components/home2/Piezas'
 import { porClave } from '@/lib/precios'
@@ -41,6 +42,7 @@ export default function PreviewHome() {
       <main className="relative z-10">
         <HeroGlass />
         <PruebaMercado />
+        <ElegirPack />
 
         {/* ── ESTÁNDAR: que te encuentren ── */}
         <CapituloPack

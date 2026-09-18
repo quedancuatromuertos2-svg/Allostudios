@@ -8,10 +8,10 @@ import { motion } from 'framer-motion'
     Max      → el informe del día 28.                                            */
 
 /* ── Marco de móvil compartido ── */
-function Movil({ children, oscuro }: { children: React.ReactNode; oscuro?: boolean }) {
+function Movil({ children, oscuro, escala = 1 }: { children: React.ReactNode; oscuro?: boolean; escala?: number }) {
   return (
-    <div className={`relative w-[300px] h-[620px] rounded-[44px] p-[10px] ${oscuro ? 'bg-[#1c1c22]' : 'bg-[#18181B]'}`}
-      style={{ boxShadow: '0 40px 90px -30px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12)' }}>
+    <div className={`relative w-[300px] h-[620px] rounded-[44px] p-[10px] origin-top ${oscuro ? 'bg-[#1c1c22]' : 'bg-[#18181B]'}`}
+      style={{ boxShadow: '0 40px 90px -30px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12)', transform: escala !== 1 ? `scale(${escala})` : undefined }}>
       <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[92px] h-[26px] rounded-full bg-black z-10" />
       <div className="w-full h-full rounded-[34px] overflow-hidden bg-white relative">{children}</div>
     </div>
@@ -19,7 +19,14 @@ function Movil({ children, oscuro }: { children: React.ReactNode; oscuro?: boole
 }
 
 /* ── ESTÁNDAR: la web de concepto, en vivo ── */
-export function VisualWeb() {
+export function VisualWeb({ compacto }: { compacto?: boolean }) {
+  if (compacto) {
+    return (
+      <Movil escala={0.62}>
+        <iframe src="https://concepto-navaja.vercel.app" title="Web de concepto" className="w-[390px] h-[806px] origin-top-left border-0" style={{ transform: 'scale(0.718)' }} loading="lazy" />
+      </Movil>
+    )
+  }
   return (
     <div className="flex items-end gap-6">
       <Movil>
@@ -47,10 +54,8 @@ const CHAT = [
   { de: 'cliente', hora: '22:15', txt: 'A las 17:30. Soy Marcos' },
   { de: 'ia', hora: '22:15', txt: 'Hecho, Marcos: mañana 17:30, corte + barba. Estamos en C/ Sueca 14 (Ruzafa). Te mando un recordatorio por la mañana 👋' },
 ]
-export function VisualChat() {
+function ChatPantalla() {
   return (
-    <div className="flex items-end gap-6">
-      <Movil oscuro>
         <div className="h-full flex flex-col bg-[#0b141a]">
           <div className="flex items-center gap-3 px-4 pt-11 pb-3 bg-[#1f2c34]">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent to-[#FF7A2A]" />
@@ -76,7 +81,13 @@ export function VisualChat() {
             <div className="h-9 rounded-full bg-[#2a3942] px-4 flex items-center text-[12px] text-white/40">Escribe un mensaje</div>
           </div>
         </div>
-      </Movil>
+  )
+}
+export function VisualChat({ compacto }: { compacto?: boolean }) {
+  if (compacto) return <Movil oscuro escala={0.62}><ChatPantalla /></Movil>
+  return (
+    <div className="flex items-end gap-6">
+      <Movil oscuro><ChatPantalla /></Movil>
       <div className="hidden md:block max-w-[220px] pb-10">
         <p className="text-[12px] font-mono tracking-[0.12em] uppercase text-white/45">Ejemplo real de conversación</p>
         <p className="mt-2 text-[14px] text-white/65 font-light leading-relaxed">El dueño estaba cenando. La cita quedó en su agenda y él se enteró por la mañana.</p>
@@ -94,9 +105,9 @@ const FILAS = [
   ['Anuncios · contactos', '41', '4,7 € cada uno'],
   ['Reseñas nuevas', '11', '4,9 ★'],
 ]
-export function VisualInforme() {
+export function VisualInforme({ compacto }: { compacto?: boolean }) {
   return (
-    <div className="w-full max-w-[560px] lg rounded-[22px] p-7 md:p-9">
+    <div className={`w-full max-w-[560px] rounded-[22px] p-7 md:p-9 ${compacto ? 'origin-top scale-[.78] mx-6 bg-[#F2F1EE]' : 'lg'}`} style={compacto ? { boxShadow: '0 24px 50px -24px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05)' } : undefined}>
       <div className="flex items-baseline justify-between">
         <div>
           <p className="text-[11px] font-mono tracking-[0.14em] uppercase text-muted">Informe · 28 de octubre</p>
