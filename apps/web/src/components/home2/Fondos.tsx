@@ -69,19 +69,20 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
   const brillo = useTransform(progreso, [0.16, 0.9], ['120%', '-20%'])
   // Diseño «Apple»: titanio pulido, monocromo, con la luz de la marca solo como reflejo ambiental.
   // Nada de cromo naranja ni líneas técnicas: superficie limpia, un brillo que la recorre y un reflejo suave.
+  // Naranja anodizado (el naranja de la marca tratado como el titanio de Apple): claro arriba, denso en el canto
   const titanio = {
-    background: 'linear-gradient(180deg, #FFFFFF 0%, #E9E9EC 18%, #B9B9BF 40%, #7C7C83 52%, #D2D2D7 64%, #9A9AA1 82%, #4E4E55 100%)',
+    background: 'linear-gradient(180deg, #FFE3CF 0%, #FFC29A 16%, #FF8F4A 38%, #C8491A 52%, #FFA366 64%, #E2622A 82%, #6A2410 100%)',
     WebkitBackgroundClip: 'text', color: 'transparent',
   } as const
   return (
     <div className="absolute inset-0 pointer-events-none overflow-clip" aria-hidden style={{ background: 'radial-gradient(120% 70% at 50% 100%, #15131b 0%, #0c0c11 55%, #0b0b10 100%)' }}>
       {/* luz ambiental de la marca, muy tenue, que respira */}
       <motion.div animate={{ opacity: [0.35, 0.6, 0.35] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute inset-0" style={{ background: 'radial-gradient(45% 32% at 42% 52%, rgba(91,91,214,.35), transparent 70%), radial-gradient(40% 30% at 62% 48%, rgba(255,122,42,.22), transparent 70%)' }} />
+        className="absolute inset-0" style={{ background: 'radial-gradient(45% 32% at 42% 52%, rgba(255,122,42,.32), transparent 70%), radial-gradient(40% 30% at 62% 48%, rgba(255,79,163,.16), transparent 70%)' }} />
       {/* escenario con perspectiva: pegado a la pantalla mientras dura el capítulo */}
       <div className="sticky top-0 h-screen w-full flex items-start justify-center overflow-hidden" style={{ perspective: '760px' }}>
-        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 0%' }}
-          className="relative mt-[38vh] md:mt-[40vh] font-display font-semibold leading-none tracking-[-0.075em] select-none whitespace-nowrap">
+        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 0%', fontFamily: 'var(--font-geist-sans), Inter, -apple-system, "SF Pro Display", system-ui, sans-serif' }}
+          className="relative mt-[38vh] md:mt-[40vh] font-bold leading-none tracking-[-0.065em] select-none whitespace-nowrap">
           {/* sombra de contacto, suave */}
           <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'rgba(0,0,0,.6)', transform: 'translateY(3%) scaleY(.94)', filter: 'blur(18px)' }}>{palabra}</span>
           {/* titanio */}
@@ -91,7 +92,7 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
           {/* brillo que recorre las letras, lento y blanco */}
           <motion.span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'linear-gradient(100deg, transparent 42%, rgba(255,255,255,.55) 50%, transparent 58%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
           {/* reflejo de la marca en la superficie (violeta → naranja), apenas */}
-          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ background: 'linear-gradient(100deg, rgba(91,91,214,.35) 0%, transparent 45%, rgba(255,122,42,.28) 100%)', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'soft-light' }}>{palabra}</span>
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ background: 'linear-gradient(100deg, rgba(255,255,255,.35) 0%, transparent 45%, rgba(255,79,163,.25) 100%)', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'soft-light' }}>{palabra}</span>
           {/* reflejo en el suelo */}
           <span className="absolute left-0 right-0 top-full block text-[46vw] md:text-[40vw]" style={{ ...titanio, transform: 'scaleY(-.5) translateY(6%)', transformOrigin: '50% 0%', opacity: .18, filter: 'blur(4px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 55%)' }}>{palabra}</span>
         </motion.div>
