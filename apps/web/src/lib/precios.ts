@@ -149,7 +149,7 @@ export const LUZ_PRODUCTO: Record<string, string> = {
   PACK_ESTANDAR: 'faro', PACK_PRO: 'haz', PACK_MAX: 'prisma',
   WEB_ARRANQUE: 'velo', WEB_PREMIUM: 'aura', WEB_CINE: 'eclipse', CINE_UPGRADE: 'espectro',
   CAPTACION: 'cometa', CAPTACION_PRO: 'doble',
-  ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama', AEO: 'lente',
+  ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama', AEO: 'espectro',
 }
 export const luzDe = (clave: string) => LUZ_PRODUCTO[clave] || 'faro'
 

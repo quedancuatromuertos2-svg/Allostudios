@@ -125,8 +125,11 @@ export function Anuncio() {
           <div className="text-[11px] text-[#111]/50">Publicidad · Ruzafa, a 400 m</div>
         </div>
       </div>
-      <div className="px-4 pb-3 text-[13px] leading-snug">¿Sin hueco para cortarte esta semana? Reserva en 20 segundos, sin llamar. Primera visita −20 %.</div>
-      <div className="h-32" style={{ background: 'radial-gradient(90% 80% at 30% 30%, #2a4d3d 0%, #0f1f18 70%)' }} />
+      <div className="px-4 pb-3 text-[13px] leading-snug">Corte clásico y afeitado a navaja, sin prisa y con cita. Esta semana, primera visita a 19 €. Reserva en 20 segundos, sin llamar 👇</div>
+      <div className="relative h-40 overflow-hidden">
+        <img src="/marca/trabajo/navaja-foto-1.webp" alt="" className="w-full h-full object-cover" />
+        <span className="absolute left-3 bottom-3 text-[11px] font-semibold tracking-wide uppercase text-white/90 bg-black/45 backdrop-blur px-2 py-1 rounded-md">Ruzafa · desde 19 €</span>
+      </div>
       <div className="px-4 py-3 flex items-center justify-between bg-[#f0f2f5]">
         <div>
           <div className="text-[10.5px] uppercase tracking-wide text-[#111]/50">navaja.allostudios.net</div>

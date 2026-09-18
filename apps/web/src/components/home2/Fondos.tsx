@@ -60,11 +60,11 @@ export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
 
 export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>; palabra: string }) {
   // Nace del título (pequeña, tumbada, donde estaba «Max.»), se levanta y crece hasta llenar el recuadro.
-  const escala = useTransform(progreso, [0.08, 0.42, 0.95], [0.34, 1, 1.03])
-  const giro = useTransform(progreso, [0.08, 0.5], [58, 4])
-  const y = useTransform(progreso, [0.08, 0.95], ['-2%', '-24%'])
-  // Aparece cuando el título se disuelve; cuando el mosaico y la caja pasan por encima, baja a un quinto
-  const opacidad = useTransform(progreso, [0.07, 0.16, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
+  const escala = useTransform(progreso, [0.11, 0.42, 0.95], [0.4, 1, 1.03])
+  const giro = useTransform(progreso, [0.11, 0.5], [58, 4])
+  const y = useTransform(progreso, [0.11, 0.95], ['6%', '-22%'])
+  // Nace cuando el título ya se ha ido del todo; cuando el mosaico y la caja pasan por encima, baja a un quinto
+  const opacidad = useTransform(progreso, [0.115, 0.19, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
   const barridoY = useTransform(progreso, [0.12, 0.6], ['-10%', '110%'])
   const brillo = useTransform(progreso, [0.1, 0.9], ['120%', '-20%'])
   const metal = {

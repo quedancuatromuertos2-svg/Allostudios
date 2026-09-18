@@ -496,3 +496,9 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .nav-claro .hover\:text-ink:hover{color:#18181B}
 .tema-oscuro .nav-claro .hover\:bg-surface\/80:hover{background-color:rgba(24,24,27,.06)}
 .tema-oscuro .nav-claro .hover\:bg-accent-light\/70:hover{background-color:rgba(91,91,214,.12)}
+
+/* ── Opciones seleccionadas (radio/checkbox con :has) en tema oscuro: el fondo claro de Tailwind
+   dejaba texto blanco sobre lavanda. Aquí: fondo del acento, texto blanco. (18/09/2026) ── */
+.tema-oscuro .nivel-opcion:has(:checked){background-color:#5B5BD6;border-color:#5B5BD6;box-shadow:0 12px 30px -12px rgba(91,91,214,.7)}
+.tema-oscuro .nivel-opcion:has(:checked) span{color:#fff}
+.tema-oscuro .nivel-opcion:has(:checked) .text-muted{color:rgba(255,255,255,.75)}

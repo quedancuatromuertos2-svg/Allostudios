@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { WEBS, porClave, eur } from '@/lib/precios'
 import { VisualChat, VisualInforme, VisualWeb } from './Visuales'
-import CristalHero from '../CristalHero'
 
 /*  "Elige tu pack" — la tienda (como "Comprar un iPhone"): título, pestañas y tres
     tarjetas. Cuanto más caro, más premium la presentación: Estándar es papel blanco,
@@ -70,12 +69,19 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
       className={`group relative rounded-[26px] flex flex-col overflow-hidden ${oscuro ? 'text-white' : 'text-[#18181B]'}`}
       style={
         t.nivel === 1
-          ? { background: '#fff', boxShadow: '0 1px 0 rgba(24,24,27,.04), 0 28px 60px -34px rgba(24,24,27,.28)' }
+          ? { background: 'linear-gradient(180deg,#FFFFFF 0%,#F7F5F2 100%)', boxShadow: '0 0 0 1px rgba(255,255,255,.6), 0 0 0 6px rgba(255,255,255,.06), 0 40px 80px -36px rgba(0,0,0,.6), inset 0 1px 0 #fff' }
           : t.nivel === 2
             ? { background: 'linear-gradient(160deg,#17171d 0%,#1b1a2b 55%,#141420 100%)', boxShadow: '0 0 0 1px rgba(255,255,255,.08), 0 40px 80px -36px rgba(91,91,214,.55)' }
             : { background: '#0b0b10', boxShadow: '0 0 0 1px rgba(255,255,255,.1), 0 0 0 6px rgba(255,122,42,.06), 0 50px 100px -40px rgba(255,122,42,.55), 0 40px 80px -36px rgba(91,91,214,.5)' }
       }
     >
+      {/* Estándar: un halo cálido de la luz «faro» arriba, muy tenue, para que no sea una tarjeta plana */}
+      {t.nivel === 1 && (
+        <div className="absolute inset-x-0 top-0 h-72 pointer-events-none" aria-hidden>
+          <div className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'url(/marca/luces/faro.jpg)', backgroundSize: 'cover', backgroundPosition: 'center 30%' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.7) 60%, #fff 100%)' }} />
+        </div>
+      )}
       {/* Luz de fondo: Pro tenue, Max a toda tarjeta */}
       {oscuro && (
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -116,7 +122,7 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
         <div className="grid grid-cols-2 gap-2 mb-5">
           {t.rejilla.map(([ic, tt, dd]) => (
             <div key={tt} className={`rounded-2xl p-3 ${oscuro ? 'border border-white/10' : 'border border-ink/[.06]'}`}
-              style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.7)', backdropFilter: 'blur(14px)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 8px 20px -14px rgba(24,24,27,.25)' }}>
+              style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.82)', backdropFilter: 'blur(14px)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 10px 24px -16px rgba(24,24,27,.35), 0 0 0 1px rgba(24,24,27,.04)' }}>
               <div className="w-8 h-8 rounded-[10px] flex items-center justify-center mb-2" style={{ background: `${COLOR[ic] || '#5B5BD6'}${oscuro ? '33' : '1F'}`, boxShadow: `inset 0 0 0 1px ${COLOR[ic] || '#5B5BD6'}33` }}><Icono k={ic} /></div>
               <div className={`text-[12.5px] font-semibold leading-tight ${oscuro ? 'text-white' : 'text-[#18181B]'}`}>{tt}</div>
               <div className={`text-[11px] leading-snug mt-0.5 ${oscuro ? 'text-white/50' : 'text-[#6E6A7C]'}`}>{dd}</div>
@@ -147,11 +153,19 @@ export default function ElegirPack() {
   const ads = porClave('ADS')!
 
   return (
-    <section id="elegir" className="relative py-24 md:py-36 overflow-hidden" style={{ background: '#0E0B14' }}>
-      {/* La persiana de cristal del hero, con la luz de la marca derivando detrás */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute inset-0 hero-escenario-plano"><CristalHero texto="" /></div>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(14,11,20,.55) 0%, rgba(14,11,20,.25) 30%, rgba(14,11,20,.35) 70%, rgba(14,11,20,.9) 100%)' }} />
+    <section id="elegir" className="relative py-24 md:py-36 overflow-hidden">
+      {/* Luces de la marca moviéndose (como al principio de la página), sin estrías, bajo un velo de cristal */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        {[
+          { c: 'rgba(91,91,214,.75)', s: '62vw', x: ['-12%', '8%', '-6%'], y: ['-10%', '18%', '-4%'], d: 26 },
+          { c: 'rgba(255,79,163,.6)', s: '48vw', x: ['52%', '36%', '58%'], y: ['10%', '40%', '6%'], d: 31 },
+          { c: 'rgba(255,122,42,.55)', s: '44vw', x: ['70%', '84%', '64%'], y: ['48%', '20%', '56%'], d: 37 },
+          { c: 'rgba(255,226,176,.35)', s: '30vw', x: ['20%', '34%', '14%'], y: ['60%', '70%', '50%'], d: 29 },
+        ].map((l, i) => (
+          <motion.div key={i} animate={{ left: l.x, top: l.y }} transition={{ duration: l.d, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+            className="absolute rounded-full" style={{ width: l.s, height: l.s, background: `radial-gradient(closest-side, ${l.c}, transparent 70%)`, filter: 'blur(40px)' }} />
+        ))}
+        <div className="absolute inset-0 backdrop-blur-[60px]" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.55) 0%, rgba(11,11,16,.2) 30%, rgba(11,11,16,.3) 70%, rgba(11,11,16,.75) 100%)' }} />
       </div>
       <div className="relative max-w-6xl mx-auto px-4 md:px-12">
         <motion.h2

@@ -54,9 +54,9 @@ export default function CapituloPack({
   const escala = useTransform(scrollYProgress, [0, 0.3], [0.92, 1])
   const subida = useTransform(scrollYProgress, [0, 0.3], [48, 0])
   // Max: el título se disuelve hacia abajo y crece mientras nace la palabra grande del fondo (una se convierte en la otra)
-  const tituloOp = useTransform(scrollYProgress, [0.06, 0.15], [1, 0])
-  const tituloEsc = useTransform(scrollYProgress, [0.06, 0.16], [1, 1.9])
-  const tituloY = useTransform(scrollYProgress, [0.06, 0.16], ['0%', '55%'])
+  const tituloOp = useTransform(scrollYProgress, [0.05, 0.115], [1, 0])
+  const tituloEsc = useTransform(scrollYProgress, [0.05, 0.13], [1, 2.4])
+  const tituloY = useTransform(scrollYProgress, [0.05, 0.13], ['0%', '120%'])
 
   const T = oscuro
     ? { ink: 'text-white', dim: 'text-white/60', muted: 'text-white/40', line: 'border-white/10', shell: 'bg-white/[.04] ring-1 ring-white/10', core: 'bg-[rgba(18,17,24,.78)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)]' }
