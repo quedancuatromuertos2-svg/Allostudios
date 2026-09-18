@@ -149,8 +149,8 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
   )
 }
 
-export default function ElegirPack() {
-  const [tab, setTab] = useState(0)
+export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
+  const [tab, setTab] = useState(inicial)
   const aeo = porClave('AEO')!
   const ads = porClave('ADS')!
 

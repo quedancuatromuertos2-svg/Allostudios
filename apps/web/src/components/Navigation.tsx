@@ -6,24 +6,16 @@ import { LogoFull } from './Logo'
 
 export type NavLink = { label: string; href: string; highlight?: boolean; page?: boolean }
 
-// Home actual (catálogo de servicios)
-const LINKS_CATALOGO: NavLink[] = [
-  { label: 'Servicios', href: '#catalogo' },
-  { label: 'Páginas Web', href: '#webs' },
-  { label: 'Precios', href: '#precios' },
-  { label: 'Contratar', href: '/contratar', page: true, highlight: true },
-  { label: 'Comerciales', href: '/afiliados', page: true },
-]
-// Home nueva (tres packs): las anclas apuntan a sus apartados
-export const LINKS_PACKS: NavLink[] = [
+// Packs es un ancla de la home (desde otra página, `go` vuelve a /#elegir); el resto son páginas
+export const LINKS: NavLink[] = [
   { label: 'Packs', href: '#elegir' },
-  { label: 'Compara', href: '#compara' },
-  { label: 'Complementos', href: '#complementos' },
+  { label: 'Páginas Web', href: '/webs', page: true },
+  { label: 'Servicios', href: '/servicios', page: true },
   { label: 'Contratar', href: '/contratar', page: true, highlight: true },
   { label: 'Comerciales', href: '/afiliados', page: true },
 ]
 
-export default function Navigation({ links = LINKS_CATALOGO }: { links?: NavLink[] }) {
+export default function Navigation({ links = LINKS }: { links?: NavLink[] }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 

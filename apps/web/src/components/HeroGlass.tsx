@@ -47,7 +47,7 @@ export default function HeroGlass() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </span>
               </a>
-              <a href="#precios" className="lg btn-secundario rounded-full font-semibold text-ink">Ver planes</a>
+              <a href="#elegir" className="lg btn-secundario rounded-full font-semibold text-ink">Ver planes</a>
               <a href={wa} target="_blank" rel="noopener noreferrer" className="hero-wa text-muted hover:text-ink underline underline-offset-4 transition-colors">o hablar por WhatsApp</a>
             </motion.div>
             <motion.div variants={item} className="hero-datos grid grid-cols-3">

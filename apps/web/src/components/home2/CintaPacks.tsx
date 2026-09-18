@@ -33,14 +33,15 @@ export default function CintaPacks() {
 
   return (
     <div
-      className={`fixed left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ${visible ? 'top-[84px] opacity-100' : 'top-[60px] opacity-0 pointer-events-none'}`}
+      className={`hidden md:block fixed left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ${visible ? 'top-[84px] opacity-100' : 'top-[60px] opacity-0 pointer-events-none'}`}
     >
-      <nav className="lg rounded-full px-2 py-1.5 flex items-center gap-1 text-[12.5px] font-medium">
+      {/* Pastilla oscura fija: se lee igual sobre los apartados oscuros y sobre el papel claro. En móvil no cabe; el menú ya lleva los enlaces. */}
+      <nav className="rounded-full px-2 py-1.5 flex items-center gap-1 text-[12.5px] font-medium bg-[rgba(16,15,22,.72)] backdrop-blur-xl ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_12px_30px_-16px_rgba(0,0,0,.6)]">
         {ITEMS.map(([id, label]) => (
           <a
             key={id}
             href={`#${id}`}
-            className={`px-3.5 py-1.5 rounded-full transition-colors ${activo === id ? 'bg-ink text-white' : 'text-dim hover:text-ink'}`}
+            className={`px-3.5 py-1.5 rounded-full transition-colors ${activo === id ? 'bg-white text-[#18181B]' : 'text-white/65 hover:text-white'}`}
           >
             {label}
           </a>

@@ -9,7 +9,7 @@ const SOCIAL_LINKS = [
 ]
 
 const anchorLinks = {
-  Producto: [['Servicios', '#servicios'], ['Tu web gratis', '#tu-web'], ['Cómo funciona', '#como'], ['Precios', '#precios'], ['FAQ', '#faq']],
+  Producto: [['Packs', '/#elegir'], ['Páginas web', '/webs'], ['Servicios sueltos', '/servicios'], ['Tu web gratis', '/tu-web'], ['FAQ', '/#faq']],
 }
 
 const pageLinks = {
@@ -19,9 +19,11 @@ const pageLinks = {
 
 export default function Footer() {
   const go = (href: string) => {
-    const target = document.querySelector(href)
-    // Si la sección no está en esta página (ej. /tu-web), volvemos a la home con el ancla
-    if (!target) { window.location.href = `/${href}`; return }
+    // Enlaces a página (/webs, /#elegir): si el ancla está en esta misma página, baja suave; si no, navega
+    const ancla = href.includes('#') ? '#' + href.split('#')[1] : ''
+    const ruta = href.split('#')[0]
+    const target = ancla && (ruta === '' || ruta === '/' || ruta === window.location.pathname) ? document.querySelector(ancla) : null
+    if (!target) { window.location.href = href.startsWith('/') ? href : `/${href}`; return }
     target.scrollIntoView({ behavior: 'smooth' })
   }
 
