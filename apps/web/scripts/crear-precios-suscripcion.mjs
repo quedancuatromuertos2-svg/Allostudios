@@ -1,6 +1,8 @@
 // Crea en Stripe los productos del modelo de suscripción (18/09/2026): packs, webs y upgrade Cinematográfica.
 // Cada uno con precio mensual y precio anual por adelantado (= 10 cuotas, 2 meses gratis).
-// Uso: node --env-file=.env.local scripts/crear-precios-suscripcion.mjs [--dry]
+// Uso: node --env-file=.env.local scripts/crear-precios-suscripcion.mjs [--dry] [--archivar]
+//   --archivar: además, archiva en Stripe los productos del modelo antiguo (pagos únicos, mantenimientos, Instagram)
+//              para que no se puedan cobrar por error. Los precios antiguos quedan inactivos; el historial se conserva.
 // Solo imprime los ids; los precios son inmutables en Stripe, así que se ejecuta UNA vez.
 import Stripe from 'stripe'
 import { writeFileSync, readFileSync, existsSync } from 'node:fs'
