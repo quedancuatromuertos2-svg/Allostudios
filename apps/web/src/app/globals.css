@@ -463,6 +463,13 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .papel-violeta h2 .acento{color:#5B5BD6}
 .tema-oscuro .papel .card,.tema-oscuro .papel .bg-white{background-color:rgba(255,255,255,.78);border-color:rgba(24,24,27,.08);box-shadow:0 20px 50px -30px rgba(60,30,60,.3);backdrop-filter:none}
 .tema-oscuro .papel .bg-ink{background-color:#18181B;backdrop-filter:none}
+/* formularios sobre papel (claro): tinta oscura, campo blanco, placeholder gris. Sin esto los campos heredaban
+   el color blanco de la regla de inputs del tema oscuro y no se veía lo que escribías (19/09/2026, /afiliados) */
+/* :is(*,.bg-white.text-ink) solo sube la especificidad por encima de la regla «input.bg-white.text-ink» de arriba */
+.tema-oscuro .papel :is(input,textarea,select):is(*,.bg-white.text-ink){color:#18181B;background-color:rgba(255,255,255,.85);border-color:rgba(24,24,27,.12);caret-color:#18181B}
+.tema-oscuro .papel :is(input,textarea):is(*,.bg-white.text-ink)::placeholder{color:#8B879A}
+.tema-oscuro .papel :is(input,textarea,select):is(*,.bg-white.text-ink):focus{background-color:#fff}
+.tema-oscuro .papel input:-webkit-autofill{-webkit-text-fill-color:#18181B;-webkit-box-shadow:0 0 0 1000px #fff inset}
 .tema-oscuro .papel .bg-accent-light{background-color:rgba(91,91,214,.12)}
 .tema-oscuro .papel .border-border,.tema-oscuro .papel .border-border\/60{border-color:rgba(24,24,27,.1)}
 .tema-oscuro .papel .text-ink\/70{color:rgba(24,24,27,.7)}
