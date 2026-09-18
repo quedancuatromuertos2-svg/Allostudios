@@ -5,6 +5,7 @@ import { useRef, type ReactNode } from 'react'
 import { eur } from '@/lib/precios'
 import { Timeline } from './Piezas'
 import { BusquedaEnVivo, ChatEnVivo } from './Animadas'
+import { FondoEstandar, FondoPro, FondoMax } from './Fondos'
 
 /*  Un capítulo por pack, como una página de producto de Apple:
       1. el nombre enorme y la frase del dolor (en boca del dueño),
@@ -43,45 +44,17 @@ export default function CapituloPack({
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const escala = useTransform(scrollYProgress, [0, 0.35], [0.9, 1])
   const subida = useTransform(scrollYProgress, [0, 0.35], [60, 0])
-  const luzY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
-  // La palabra de fondo: vista desde abajo (rotateX), crece con el scroll hasta llenar el recuadro.
-  const palabraEscala = useTransform(scrollYProgress, [0, 0.5, 1], [0.45, 1, 1.06])
-  const palabraGiro = useTransform(scrollYProgress, [0, 0.6], [42, 10])
-  const palabraY = useTransform(scrollYProgress, [0, 1], ['22%', '-6%'])
-  const palabraOpacidad = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.4])
 
-  const fondo = oscuro ? 'relative overflow-hidden' : 'papel papel-orbe relative overflow-hidden'
+  const fondo = oscuro ? 'relative overflow-clip' : 'papel relative overflow-clip'
   const tInk = oscuro ? 'text-white' : 'text-ink'
   const tDim = oscuro ? 'text-white/60' : 'text-dim'
   const tMuted = oscuro ? 'text-white/40' : 'text-muted'
-  const tile = oscuro ? 'bg-white/[.06] border border-white/10' : 'lg'
+  const tile = nivel === 3 ? 'border border-white/10 backdrop-blur-xl bg-[rgba(14,12,18,.72)]' : oscuro ? 'bg-white/[.06] border border-white/10' : 'lg'
 
   return (
     <section id={id} ref={ref} className={`${fondo} py-section`}>
-      {oscuro && (
-        <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <motion.div style={{ y: luzY, backgroundImage: `url(/marca/luces/${luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} className={`absolute -inset-[10%] ${nivel === 3 ? 'opacity-[.85]' : 'opacity-[.6]'}`} />
-          <div className="absolute inset-0" style={{ background: nivel === 3 ? 'linear-gradient(180deg, rgba(11,11,16,.8) 0%, rgba(11,11,16,.15) 35%, rgba(11,11,16,.5) 70%, rgba(11,11,16,.96) 100%)' : 'linear-gradient(180deg, rgba(11,11,16,.88) 0%, rgba(11,11,16,.3) 38%, rgba(11,11,16,.55) 70%, rgba(11,11,16,.94) 100%)' }} />
-          {nivel === 3 && <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute inset-0" style={{ background: 'radial-gradient(50% 35% at 50% 42%, rgba(255,122,42,.35), transparent 70%)' }} />}
-        </div>
-      )}
-
-      {/* Palabra de fondo con perspectiva (solo Max): vista desde abajo, crece con el scroll hasta llenar el recuadro */}
-      {nivel === 3 && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-start justify-center" aria-hidden style={{ perspective: '800px' }}>
-          <motion.div
-            style={{ scale: palabraEscala, rotateX: palabraGiro, y: palabraY, opacity: palabraOpacidad, transformOrigin: '50% 100%' }}
-            className="mt-[6vh] font-display font-semibold leading-none tracking-[-0.06em] select-none whitespace-nowrap"
-          >
-            <span
-              className="block text-[48vw] md:text-[44vw]"
-              style={{ background: 'linear-gradient(180deg, rgba(255,205,170,.9) 0%, rgba(255,122,42,.6) 40%, rgba(255,79,163,.12) 78%, rgba(255,79,163,0) 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}
-            >
-              {nombre.toUpperCase()}
-            </span>
-          </motion.div>
-        </div>
-      )}
+      {/* Fondo propio de cada pack */}
+      {nivel === 3 ? <FondoMax progreso={scrollYProgress} palabra={nombre.toUpperCase()} /> : oscuro ? <FondoPro progreso={scrollYProgress} /> : <FondoEstandar progreso={scrollYProgress} />}
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
         {/* 1 · Nombre + dolor */}
@@ -110,7 +83,7 @@ export default function CapituloPack({
         </div>
 
         {/* 2 · Visual grande con parallax */}
-        <motion.div style={{ scale: escala, y: subida }} className="mt-14 md:mt-20 flex flex-col items-center relative">
+        <motion.div style={{ scale: escala, y: subida }} className={`${nivel === 3 ? 'mt-[34vh] md:mt-[40vh]' : 'mt-14 md:mt-20'} flex flex-col items-center relative`}>
           {nivel === 3 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[420px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(closest-side, rgba(255,122,42,.35), rgba(91,91,214,.15) 60%, transparent)', filter: 'blur(40px)' }} />}
           {efecto === 'busqueda' ? <BusquedaEnVivo progreso={scrollYProgress} /> : efecto === 'chat' ? <ChatEnVivo progreso={scrollYProgress} /> : visual}
           {notaVisual && <p className={`mt-6 text-[12px] ${tMuted} text-center`}>{notaVisual}</p>}

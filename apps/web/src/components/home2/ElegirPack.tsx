@@ -15,19 +15,39 @@ const NIVELES = [
   {
     clave: 'PACK_ESTANDAR', nivel: 1, etiqueta: 'Que te encuentren', nombre: 'Estándar',
     dolor: 'Trabajo bien y no me encuentran.', visual: <VisualWeb compacto />, cap: '#estandar', luz: 'faro',
-    puntos: ['Web en 7 días', 'Arriba en Google', 'Reseñas solas'],
+    rejilla: [['web', 'Web en 7 días', 'con tu marca, móvil'], ['google', 'Arriba en Google', 'ficha trabajada cada mes'], ['estrella', 'Reseñas 5★', 'se piden solas'], ['informe', 'Informe día 28', 'qué ha cambiado']],
   },
   {
     clave: 'PACK_PRO', nivel: 2, etiqueta: 'El más elegido', nombre: 'Pro',
     dolor: 'Contesto tarde y se van a otro.', visual: <VisualChat compacto />, cap: '#pro', luz: 'haz',
-    puntos: ['Todo lo del Estándar', 'Contesta tu WhatsApp 24/7', 'Web Premium'],
+    rejilla: [['chat', 'Contesta tu WhatsApp', '24/7, en 8 segundos'], ['agenda', 'Citas en tu agenda', 'sin que toques nada'], ['premium', 'Web Premium', 'con tus reseñas dentro'], ['mas', 'Todo lo del Estándar', 'Google + reseñas + informe']],
   },
   {
     clave: 'PACK_MAX', nivel: 3, etiqueta: 'Que te lleguen clientes', nombre: 'Max',
     dolor: 'Quiero llenar la agenda, no solo estar.', visual: <VisualInforme compacto />, cap: '#max', luz: 'prisma',
-    puntos: ['Todo lo del Pro', 'Anuncios en tu zona', 'Informe: qué entró y qué costó'],
+    rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['euro', 'Qué entró y qué costó', 'coste por contacto'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'web premium + asistente']],
   },
 ]
+
+const ICONOS: Record<string, string> = {
+  web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  google: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  estrella: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  informe: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  chat: '<path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-4.6A8 8 0 1 1 21 12z"/>',
+  agenda: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/>',
+  premium: '<path d="m12 3 3 6 6 .8-4.5 4.2 1.2 6L12 17l-5.7 3 1.2-6L3 9.8 9 9z"/>',
+  mas: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+  ads: '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  euro: '<path d="M18 7a7 7 0 1 0 0 10"/><path d="M4 10h10M4 14h10"/>',
+  control: '<path d="M4 12h16"/><circle cx="14" cy="12" r="3"/><path d="M4 6h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="18" r="2"/>',
+}
+function Icono({ k, oscuro }: { k: string; oscuro?: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+      className={oscuro ? 'text-white/85' : 'text-accent'} dangerouslySetInnerHTML={{ __html: ICONOS[k] }} />
+  )
+}
 
 const PESTANAS = ['Todos los packs', 'Solo la web', 'Complementos']
 const fmt = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 0 })
@@ -79,7 +99,7 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
       </div>
 
       {/* El producto */}
-      <div className="relative h-[290px] overflow-hidden flex items-start justify-center mt-5">
+      <div className="relative h-[230px] overflow-hidden flex items-start justify-center mt-5">
         {t.nivel === 3 && <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[420px] h-[240px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(closest-side, rgba(255,122,42,.35), transparent)', filter: 'blur(30px)' }} />}
         <div className="absolute inset-x-0 bottom-0 h-28 z-10" style={{ background: oscuro ? `linear-gradient(180deg, rgba(11,11,16,0), ${t.nivel === 3 ? '#0b0b10' : '#141420'})` : 'linear-gradient(180deg, rgba(255,255,255,0), #fff)' }} />
         <div className="transition-transform duration-700 group-hover:-translate-y-2">{t.visual}</div>
@@ -87,9 +107,17 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
 
       {/* Puntos + precio */}
       <div className="relative px-7 pb-7 mt-auto">
-        <ul className={`flex flex-wrap gap-x-4 gap-y-1.5 text-[12.5px] mb-5 ${oscuro ? 'text-white/70' : 'text-dim'}`}>
-          {t.puntos.map((x) => <li key={x} className="flex items-center gap-1.5"><span className={`w-1.5 h-1.5 rounded-full ${t.nivel === 3 ? 'bg-[#FF7A2A]' : 'bg-accent'}`} />{x}</li>)}
-        </ul>
+        {/* Cuadrícula de cristal: qué te da el pack, de un vistazo */}
+        <div className="grid grid-cols-2 gap-2 mb-5">
+          {t.rejilla.map(([ic, tt, dd]) => (
+            <div key={tt} className={`rounded-2xl p-3 ${oscuro ? 'border border-white/10' : 'border border-ink/[.06]'}`}
+              style={{ background: oscuro ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.7)', backdropFilter: 'blur(14px)', boxShadow: oscuro ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'inset 0 1px 0 #fff, 0 8px 20px -14px rgba(24,24,27,.25)' }}>
+              <div className={`w-8 h-8 rounded-[10px] flex items-center justify-center mb-2 ${oscuro ? 'bg-white/10' : 'bg-accent/10'}`}><Icono k={ic} oscuro={oscuro} /></div>
+              <div className={`text-[12.5px] font-semibold leading-tight ${oscuro ? 'text-white' : 'text-ink'}`}>{tt}</div>
+              <div className={`text-[11px] leading-snug mt-0.5 ${oscuro ? 'text-white/50' : 'text-muted'}`}>{dd}</div>
+            </div>
+          ))}
+        </div>
         <div className="flex items-baseline gap-1.5">
           <span className="font-display text-[1.9rem] leading-none font-semibold tracking-[-0.03em]">{eur(p.eur)}</span>
           <span className={`text-[13px] ${oscuro ? 'text-white/55' : 'text-muted'}`}>/mes · 0 € de entrada</span>
