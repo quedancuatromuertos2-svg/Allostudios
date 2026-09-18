@@ -39,41 +39,31 @@ export function FondoEstandar({ progreso }: { progreso: MotionValue<number> }) {
 }
 
 export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
-  const giro = useTransform(progreso, [0, 1], [-14, 12])
-  const giro2 = useTransform(progreso, [0, 1], [16, -10])
-  const barrido = useTransform(progreso, [0.1, 0.9], ['-30%', '130%'])
+  // La luz «haz» de la marca (el triángulo que baja del cielo): parallax lento, escala sutil y una
+  // franja de luz que barre la pantalla. Nada sintético encima: la imagen ya es el fondo.
+  const y = useTransform(progreso, [0, 1], ['-6%', '6%'])
+  const esc = useTransform(progreso, [0, 1], [1.08, 1.18])
+  const barrido = useTransform(progreso, [0.15, 0.85], ['-20%', '120%'])
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-clip" aria-hidden style={{ background: 'radial-gradient(120% 80% at 50% 0%, #1b1a2e 0%, #0e0e15 60%, #0b0b10 100%)' }}>
-     <div className="sticky top-0 h-screen w-full overflow-hidden">
-      {/* haces: bandas suaves (sin recortes), giran despacio con el scroll */}
-      <motion.div style={{ rotate: giro, transformOrigin: '50% 0%' }} className="absolute left-1/2 -translate-x-1/2 -top-[10%] w-[34vw] h-[150%]">
-        <div className="w-full h-full" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(91,91,214,.5) 50%, transparent 100%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, transparent 90%)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, transparent 90%)', filter: 'blur(28px)' }} />
-      </motion.div>
-      <motion.div style={{ rotate: giro2, transformOrigin: '50% 0%' }} className="absolute left-1/2 -translate-x-1/2 -top-[10%] w-[18vw] h-[150%]">
-        <div className="w-full h-full" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,122,42,.45) 50%, transparent 100%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.3) 55%, transparent 90%)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.3) 55%, transparent 90%)', filter: 'blur(34px)' }} />
-      </motion.div>
-      {/* punto de luz arriba, de donde salen los haces */}
-      <div className="absolute left-1/2 -translate-x-1/2 -top-[6%] w-[40vw] h-[30vh] rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(255,255,255,.35), rgba(91,91,214,.25) 40%, transparent 75%)', filter: 'blur(30px)' }} />
-      {/* franja que barre */}
-      <motion.div style={{ top: barrido }} className="absolute inset-x-0 h-[22vh]"
-      >
-        <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, transparent, rgba(255,255,255,.06) 50%, transparent)', filter: 'blur(6px)' }} />
-      </motion.div>
-      {/* cristal: líneas finas horizontales muy tenues */}
-      <div className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'repeating-linear-gradient(180deg, rgba(255,255,255,.06) 0 1px, transparent 1px 7px)' }} />
-      <div className="absolute inset-0 opacity-[.28] mix-blend-overlay" style={{ backgroundImage: GRANO }} />
-     </div>
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.7) 0%, transparent 25%, transparent 70%, rgba(11,11,16,.9) 100%)' }} />
+    <div className="absolute inset-0 pointer-events-none overflow-clip" aria-hidden style={{ background: '#0b0b10' }}>
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        <motion.div style={{ y, scale: esc, backgroundImage: 'url(/marca/luces/haz.jpg)', backgroundSize: 'cover', backgroundPosition: 'center 30%' }} className="absolute -inset-[8%] opacity-[.92]" />
+        <motion.div style={{ top: barrido }} className="absolute inset-x-0 h-[18vh]">
+          <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, transparent, rgba(255,255,255,.07) 50%, transparent)', filter: 'blur(4px)' }} />
+        </motion.div>
+        <div className="absolute inset-0 opacity-[.22] mix-blend-overlay" style={{ backgroundImage: GRANO }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.82) 0%, rgba(11,11,16,.25) 30%, rgba(11,11,16,.45) 65%, rgba(11,11,16,.94) 100%)' }} />
+      </div>
     </div>
   )
 }
 
 export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>; palabra: string }) {
-  const escala = useTransform(progreso, [0.05, 0.5, 0.95], [0.38, 0.92, 1.06])
-  const giro = useTransform(progreso, [0.05, 0.6], [50, 6])
-  const y = useTransform(progreso, [0.05, 0.95], ['30%', '0%'])
+  const escala = useTransform(progreso, [0.05, 0.45, 0.95], [0.5, 1, 1.04])
+  const giro = useTransform(progreso, [0.05, 0.55], [52, 4])
+  const y = useTransform(progreso, [0.05, 0.95], ['4%', '-22%'])
   // Brilla entera mientras está sola; cuando el mosaico y la caja de compra pasan por encima, baja a un tercio
-  const opacidad = useTransform(progreso, [0, 0.12, 0.42, 0.62, 1], [0, 1, 0.95, 0.32, 0.22])
+  const opacidad = useTransform(progreso, [0, 0.12, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
   const brillo = useTransform(progreso, [0.1, 0.9], ['120%', '-20%'])
   const metal = {
     background: 'linear-gradient(180deg, #FFF1E6 0%, #FFCFAE 18%, #FF9A5C 36%, #8E3A1F 50%, #FFB07A 58%, #C9542A 74%, #3A1610 100%)',
@@ -87,15 +77,15 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
       {/* escenario con perspectiva: pegado a la pantalla mientras dura el capítulo */}
       <div className="sticky top-0 h-screen w-full flex items-start justify-center overflow-hidden" style={{ perspective: '760px' }}>
         <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 100%' }}
-          className="relative mt-[14vh] font-display font-semibold leading-none tracking-[-0.07em] select-none whitespace-nowrap">
+          className="relative mt-[2vh] md:mt-[4vh] font-display font-semibold leading-none tracking-[-0.07em] select-none whitespace-nowrap">
           {/* sombra proyectada */}
-          <span className="absolute inset-0 block text-[48vw] md:text-[44vw]" style={{ color: 'rgba(0,0,0,.55)', transform: 'translateY(2.5%) scaleY(.96)', filter: 'blur(14px)' }}>{palabra}</span>
+          <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'rgba(0,0,0,.55)', transform: 'translateY(2.5%) scaleY(.96)', filter: 'blur(14px)' }}>{palabra}</span>
           {/* metal */}
-          <span className="relative block text-[48vw] md:text-[44vw]" style={metal}>{palabra}</span>
+          <span className="relative block text-[46vw] md:text-[40vw]" style={metal}>{palabra}</span>
           {/* brillo que recorre las letras */}
-          <motion.span className="absolute inset-0 block text-[48vw] md:text-[44vw]" style={{ backgroundImage: 'linear-gradient(100deg, transparent 40%, rgba(255,255,255,.8) 50%, transparent 60%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
+          <motion.span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ backgroundImage: 'linear-gradient(100deg, transparent 40%, rgba(255,255,255,.8) 50%, transparent 60%)', backgroundSize: '300% 100%', backgroundPositionX: brillo, backgroundRepeat: 'no-repeat', WebkitBackgroundClip: 'text', color: 'transparent', mixBlendMode: 'screen' }}>{palabra}</motion.span>
           {/* reflejo en el suelo */}
-          <span className="absolute left-0 right-0 top-full block text-[48vw] md:text-[44vw]" style={{ ...metal, transform: 'scaleY(-.55) translateY(8%)', transformOrigin: '50% 0%', opacity: .28, filter: 'blur(3px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)' }}>{palabra}</span>
+          <span className="absolute left-0 right-0 top-full block text-[46vw] md:text-[40vw]" style={{ ...metal, transform: 'scaleY(-.55) translateY(8%)', transformOrigin: '50% 0%', opacity: .28, filter: 'blur(3px)', WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)', maskImage: 'linear-gradient(180deg, rgba(0,0,0,.9), transparent 60%)' }}>{palabra}</span>
         </motion.div>
       </div>
       {/* suelo: línea de horizonte y niebla */}
