@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { WEBS, porClave, eur } from '@/lib/precios'
-import { VisualChat, VisualInforme, VisualWeb } from './Visuales'
+import { VisualChat, VisualWeb } from './Visuales'
+import { Retargeting } from './Piezas'
 
 /*  "Elige tu pack" — la tienda (como "Comprar un iPhone"): título, pestañas y tres
     tarjetas. Cuanto más caro, más premium la presentación: Estándar es papel blanco,
@@ -24,8 +25,8 @@ const NIVELES = [
   },
   {
     clave: 'PACK_MAX', nivel: 3, etiqueta: 'Que te lleguen clientes', nombre: 'Max',
-    dolor: 'Quiero llenar la agenda, no solo estar.', visual: <VisualInforme compacto />, cap: '#max', luz: 'prisma',
-    rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['euro', 'Qué entró y qué costó', 'coste por contacto'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'web premium + asistente']],
+    dolor: 'Quiero llenar la agenda, no solo estar.', visual: <div className="pt-2"><Retargeting compacto /></div>, cap: '#max', luz: 'prisma',
+    rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['retarget', 'Vuelven a verte', 'el que miró y no reservó'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'web premium + asistente']],
   },
 ]
 
@@ -40,11 +41,12 @@ const ICONOS: Record<string, string> = {
   mas: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
   ads: '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
   euro: '<path d="M18 7a7 7 0 1 0 0 10"/><path d="M4 10h10M4 14h10"/>',
+  retarget: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="m10 12 2 2 4-4"/>',
   control: '<path d="M4 12h16"/><circle cx="14" cy="12" r="3"/><path d="M4 6h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="18" r="2"/>',
 }
 const COLOR: Record<string, string> = {
   web: '#5B5BD6', google: '#4285F4', estrella: '#F5B301', informe: '#FF7A2A', chat: '#25D366', agenda: '#7C7CE8',
-  premium: '#FF4FA3', mas: '#FF9A5C', ads: '#FF4FA3', euro: '#34A853', control: '#5B5BD6',
+  premium: '#FF4FA3', mas: '#FF9A5C', ads: '#FF4FA3', euro: '#34A853', control: '#5B5BD6', retarget: '#FF7A2A',
 }
 function Icono({ k }: { k: string }) {
   return (

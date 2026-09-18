@@ -59,14 +59,15 @@ export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
 }
 
 export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>; palabra: string }) {
-  // Nace del título (pequeña, tumbada, donde estaba «Max.»), se levanta y crece hasta llenar el recuadro.
-  const escala = useTransform(progreso, [0.11, 0.42, 0.95], [0.4, 1, 1.03])
-  const giro = useTransform(progreso, [0.11, 0.5], [58, 4])
-  const y = useTransform(progreso, [0.11, 0.95], ['6%', '-22%'])
-  // Nace cuando el título ya se ha ido del todo; cuando el mosaico y la caja pasan por encima, baja a un quinto
-  const opacidad = useTransform(progreso, [0.115, 0.19, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
-  const barridoY = useTransform(progreso, [0.12, 0.6], ['-10%', '110%'])
-  const brillo = useTransform(progreso, [0.1, 0.9], ['120%', '-20%'])
+  // Un solo MAX. Al entrar (progreso ≈ 0,1: la sección ocupa la pantalla) es un titular plano bajo el
+  // subtítulo; al bajar se inclina hacia atrás, crece hasta llenar el recuadro y se queda pegado a la
+  // pantalla mientras dura el capítulo. Cuando el mosaico y la caja pasan por encima, baja a un quinto.
+  const escala = useTransform(progreso, [0.06, 0.16, 0.42, 0.95], [0.27, 0.3, 1, 1.03])
+  const giro = useTransform(progreso, [0.14, 0.24, 0.5], [0, 55, 4])
+  const y = useTransform(progreso, [0.06, 0.16, 0.5, 0.95], ['0%', '0%', '-14%', '-24%'])
+  const opacidad = useTransform(progreso, [0, 0.04, 0.3, 0.4, 1], [0, 1, 1, 0.22, 0.16])
+  const barridoY = useTransform(progreso, [0.16, 0.6], ['-10%', '110%'])
+  const brillo = useTransform(progreso, [0.16, 0.9], ['120%', '-20%'])
   const metal = {
     background: 'linear-gradient(180deg, #FFF1E6 0%, #FFCFAE 18%, #FF9A5C 36%, #8E3A1F 50%, #FFB07A 58%, #C9542A 74%, #3A1610 100%)',
     WebkitBackgroundClip: 'text', color: 'transparent',
@@ -78,8 +79,8 @@ export function FondoMax({ progreso, palabra }: { progreso: MotionValue<number>;
         className="absolute inset-0" style={{ background: 'radial-gradient(55% 40% at 50% 60%, rgba(255,122,42,.45), rgba(255,79,163,.12) 55%, transparent 75%)' }} />
       {/* escenario con perspectiva: pegado a la pantalla mientras dura el capítulo */}
       <div className="sticky top-0 h-screen w-full flex items-start justify-center overflow-hidden" style={{ perspective: '760px' }}>
-        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 100%' }}
-          className="relative mt-[2vh] md:mt-[4vh] font-display font-semibold leading-none tracking-[-0.07em] select-none whitespace-nowrap">
+        <motion.div style={{ scale: escala, rotateX: giro, y, opacity: opacidad, transformOrigin: '50% 0%' }}
+          className="relative mt-[38vh] md:mt-[40vh] font-display font-semibold leading-none tracking-[-0.07em] select-none whitespace-nowrap">
           {/* sombra proyectada */}
           <span className="absolute inset-0 block text-[46vw] md:text-[40vw]" style={{ color: 'rgba(0,0,0,.55)', transform: 'translateY(2.5%) scaleY(.96)', filter: 'blur(14px)' }}>{palabra}</span>
           {/* metal */}

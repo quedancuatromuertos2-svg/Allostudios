@@ -53,10 +53,6 @@ export default function CapituloPack({
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const escala = useTransform(scrollYProgress, [0, 0.3], [0.92, 1])
   const subida = useTransform(scrollYProgress, [0, 0.3], [48, 0])
-  // Max: el título se disuelve hacia abajo y crece mientras nace la palabra grande del fondo (una se convierte en la otra)
-  const tituloOp = useTransform(scrollYProgress, [0.05, 0.115], [1, 0])
-  const tituloEsc = useTransform(scrollYProgress, [0.05, 0.13], [1, 2.4])
-  const tituloY = useTransform(scrollYProgress, [0.05, 0.13], ['0%', '120%'])
 
   const T = oscuro
     ? { ink: 'text-white', dim: 'text-white/60', muted: 'text-white/40', line: 'border-white/10', shell: 'bg-white/[.04] ring-1 ring-white/10', core: 'bg-[rgba(18,17,24,.78)] shadow-[inset_0_1px_1px_rgba(255,255,255,.12)]' }
@@ -89,25 +85,25 @@ export default function CapituloPack({
         {/* 1 · Nombre + dolor */}
         <div className="text-center max-w-3xl mx-auto">
           <Entrada><Pill><span className={`w-1.5 h-1.5 rounded-full ${nivel === 3 ? 'bg-[#FF7A2A]' : 'bg-accent'}`} />Pack {numero}{destacado ? ' · el más elegido' : nivel === 3 ? ' · todo incluido' : ''}</Pill></Entrada>
-          <motion.div style={nivel === 3 ? { opacity: tituloOp, scale: tituloEsc, y: tituloY, transformOrigin: '50% 100%' } : undefined}>
+          {nivel !== 3 && (
             <motion.h2
               initial={{ opacity: 0, y: 36, filter: 'blur(10px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true }} transition={{ duration: 1, ease: EASE }}
               className={`mt-7 font-display text-[clamp(3.6rem,10vw,8.5rem)] leading-[.92] font-semibold tracking-[-0.05em] ${T.ink}`}
             >
-              {nivel === 3
-                ? <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 50%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>{nombre}.</span>
-                : <>{nombre}<span className="acento">.</span></>}
+              {nombre}<span className="acento">.</span>
             </motion.h2>
-          </motion.div>
+          )}
           <Entrada delay={0.15}>
             <p className={`mt-7 text-[clamp(1.4rem,2.8vw,2.1rem)] leading-snug font-medium tracking-[-0.025em] ${T.ink} text-balance`}>«{dolor}»</p>
             <p className={`mt-3 text-[15px] ${T.dim} font-light`}>{quien}</p>
           </Entrada>
+          {/* Max: aquí vive la palabra. Es el título y es la animación: nace plana como un titular y al bajar se inclina, crece y llena el recuadro (FondoMax). */}
+          {nivel === 3 && <div className="h-[34vh] md:h-[46vh]" aria-hidden />}
         </div>
 
         {/* 2 · Visual */}
-        <div className={`${nivel === 3 ? 'mt-[30vh] md:mt-[36vh]' : 'mt-16 md:mt-24'} grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-8 items-start`}>
+        <div className={`${nivel === 3 ? 'mt-[10vh] md:mt-[14vh]' : 'mt-16 md:mt-24'} grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-8 items-start`}>
           <motion.div style={{ scale: escala, y: subida }} className="flex justify-center lg:justify-start min-w-0">
             {efecto === 'busqueda' ? <BusquedaEnVivo progreso={scrollYProgress} sinMovil /> : efecto === 'chat' ? <ChatEnVivo progreso={scrollYProgress} /> : visual}
           </motion.div>

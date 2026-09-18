@@ -17,7 +17,7 @@ import ComparaPacks from '@/components/home2/ComparaPacks'
 import Complementos from '@/components/home2/Complementos'
 import ElegirPack from '@/components/home2/ElegirPack'
 import { VisualInforme } from '@/components/home2/Visuales'
-import { FichaGoogle, Notificacion, Agenda, Anuncio, CostePorContacto, Escena } from '@/components/home2/Piezas'
+import { FichaGoogle, Notificacion, Agenda, Anuncio, Retargeting, Escena } from '@/components/home2/Piezas'
 
 export const metadata: Metadata = {
   title: 'Home nueva (vista previa)',
@@ -138,9 +138,9 @@ export default function PreviewHome() {
               nodo: <Anuncio />,
             },
             {
-              titulo: 'Sabes lo que cuesta cada persona que te escribe.',
-              sub: 'No "impresiones" ni "alcance": contactos y lo que ha costado cada uno. Si sube, lo arreglamos; si baja, subimos.',
-              nodo: <CostePorContacto oscuro />, ancho: 2,
+              titulo: 'El que miró tu web y no reservó, vuelve a verte. Hasta que reserva.',
+              sub: 'Solo en Max: retargeting. Quien entra desde Google y se va sin pedir cita ve tu anuncio durante 7 días. Es donde está la mitad de las reservas.',
+              nodo: <Retargeting />, ancho: 2,
             },
             {
               titulo: 'La inversión la decides tú y va en tu cuenta.',

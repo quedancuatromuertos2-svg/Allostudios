@@ -174,3 +174,32 @@ export function Escena({ oscuro, cuando, que }: { oscuro?: boolean; cuando: stri
     </div>
   )
 }
+
+/* ── Solo en Max: retargeting. El que entró en tu web y no reservó vuelve a verte, hasta que reserva ── */
+const PASOS_RT = [
+  ['Lun · 19:40', 'Laura entra en tu web desde Google', 'mira precios, no reserva', false],
+  ['Mar · 13:10', 'Ve tu anuncio en Instagram', '«¿Sin hueco esta semana? Reserva en 20 s»', false],
+  ['Mié · 09:05', 'Reserva: corte + barba, jueves 17:30', 'sin que tú hicieras nada', true],
+] as const
+export function Retargeting({ compacto }: { compacto?: boolean }) {
+  return (
+    <motion.div {...ap(0.1)} className={`w-full ${compacto ? 'max-w-[300px]' : 'max-w-[380px]'} rounded-2xl p-4 text-white`}
+      style={{ background: 'linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03))', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.14), 0 24px 50px -24px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08)' }}>
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-[10px] uppercase tracking-[0.18em] font-semibold text-[#FF9A5C]">Solo en Max</span>
+        <span className="text-[10.5px] text-white/45">Retargeting · 7 días</span>
+      </div>
+      <div className="relative pl-5">
+        <span className="absolute left-[7px] top-2 bottom-2 w-px" style={{ background: 'linear-gradient(180deg, rgba(255,122,42,.1), #FF7A2A 50%, rgba(255,122,42,.1))' }} />
+        {PASOS_RT.map(([h, t, d, fin], i) => (
+          <motion.div key={h} initial={{ opacity: 0, x: -8 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 + i * 0.25 }} className={`relative ${i < PASOS_RT.length - 1 ? 'mb-3.5' : ''}`}>
+            <span className={`absolute -left-5 top-[5px] w-[9px] h-[9px] rounded-full ${fin ? 'bg-[#FF7A2A] shadow-[0_0_0_4px_rgba(255,122,42,.25)]' : 'bg-white/30'}`} />
+            <div className="text-[10.5px] text-white/45 tabular-nums">{h}</div>
+            <div className={`text-[13px] leading-snug ${fin ? 'font-semibold text-white' : 'text-white/85'}`}>{t}</div>
+            <div className="text-[11.5px] text-white/50">{d}</div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
