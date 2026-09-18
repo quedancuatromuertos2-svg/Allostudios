@@ -39,20 +39,34 @@ export function FondoEstandar({ progreso }: { progreso: MotionValue<number> }) {
 }
 
 export function FondoPro({ progreso }: { progreso: MotionValue<number> }) {
-  // La luz «haz» de la marca (el triángulo que baja del cielo): parallax lento, escala sutil y una
-  // franja de luz que barre la pantalla. Nada sintético encima: la imagen ya es el fondo.
-  const y = useTransform(progreso, [0, 1], ['-6%', '6%'])
-  const esc = useTransform(progreso, [0, 1], [1.08, 1.18])
-  const barrido = useTransform(progreso, [0.15, 0.85], ['-20%', '120%'])
+  // La luz «haz» de la marca (el triángulo), tratada como una escena: parallax lento, respiración, un foco
+  // que barre y velos muy largos (nada corta en seco). Encima, grano fino y una bruma abajo para asentar.
+  const y = useTransform(progreso, [0, 1], ['-5%', '5%'])
+  const esc = useTransform(progreso, [0, 1], [1.06, 1.16])
+  const barrido = useTransform(progreso, [0.1, 0.9], ['-30%', '130%'])
+  const focoX = useTransform(progreso, [0, 1], ['-8%', '8%'])
   return (
     <div className="absolute inset-0 pointer-events-none overflow-clip" aria-hidden style={{ background: '#0b0b10' }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <motion.div style={{ y, scale: esc, backgroundImage: 'url(/marca/luces/haz.jpg)', backgroundSize: 'cover', backgroundPosition: 'center 30%' }} className="absolute -inset-[8%] opacity-[.92]" />
-        <motion.div style={{ top: barrido }} className="absolute inset-x-0 h-[18vh]">
-          <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, transparent, rgba(255,255,255,.07) 50%, transparent)', filter: 'blur(4px)' }} />
+        {/* la luz de la marca */}
+        <motion.div style={{ y, scale: esc, backgroundImage: 'url(/marca/luces/haz.jpg)', backgroundSize: 'cover', backgroundPosition: 'center 32%' }} className="absolute -inset-[8%]" />
+        {/* respiración: la luz sube y baja de intensidad muy despacio */}
+        <motion.div animate={{ opacity: [0.0, 0.22, 0.0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0" style={{ background: 'radial-gradient(40% 45% at 50% 30%, rgba(255,255,255,.35), transparent 70%)' }} />
+        {/* foco que se desplaza con el scroll: un halo violeta que cruza la escena */}
+        <motion.div style={{ x: focoX }} className="absolute inset-0" >
+          <div className="absolute left-1/2 top-[18%] -translate-x-1/2 w-[70vw] h-[60vh] rounded-full" style={{ background: 'radial-gradient(closest-side, rgba(91,91,214,.28), rgba(255,79,163,.1) 55%, transparent 75%)', filter: 'blur(50px)' }} />
         </motion.div>
-        <div className="absolute inset-0 opacity-[.22] mix-blend-overlay" style={{ backgroundImage: GRANO }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.82) 0%, rgba(11,11,16,.25) 30%, rgba(11,11,16,.45) 65%, rgba(11,11,16,.94) 100%)' }} />
+        {/* franja de luz que barre */}
+        <motion.div style={{ top: barrido }} className="absolute inset-x-0 h-[22vh]">
+          <div className="w-full h-full" style={{ background: 'linear-gradient(180deg, transparent, rgba(255,255,255,.05) 50%, transparent)', filter: 'blur(10px)' }} />
+        </motion.div>
+        {/* grano fino */}
+        <div className="absolute inset-0 opacity-[.16] mix-blend-overlay" style={{ backgroundImage: GRANO }} />
+        {/* velos largos: nada corta en seco. Arriba para el titular, abajo para asentar la caja de compra */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.9) 0%, rgba(11,11,16,.62) 12%, rgba(11,11,16,.28) 28%, rgba(11,11,16,.14) 45%, rgba(11,11,16,.3) 62%, rgba(11,11,16,.6) 80%, rgba(11,11,16,.95) 100%)' }} />
+        {/* bruma lateral: oscurece los bordes para que la luz se lea en el centro */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(11,11,16,.55) 0%, rgba(11,11,16,0) 28%, rgba(11,11,16,0) 72%, rgba(11,11,16,.55) 100%)' }} />
       </div>
     </div>
   )
