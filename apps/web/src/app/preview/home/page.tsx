@@ -16,7 +16,7 @@ import CapituloPack from '@/components/home2/CapituloPack'
 import ComparaPacks from '@/components/home2/ComparaPacks'
 import Complementos from '@/components/home2/Complementos'
 import ElegirPack from '@/components/home2/ElegirPack'
-import { VisualWeb, VisualChat, VisualInforme } from '@/components/home2/Visuales'
+import { VisualInforme } from '@/components/home2/Visuales'
 import { FichaGoogle, Notificacion, Agenda, Anuncio, CostePorContacto, Escena } from '@/components/home2/Piezas'
 import { porClave } from '@/lib/precios'
 
@@ -50,7 +50,7 @@ export default function PreviewHome() {
           dolor="Trabajo bien y no me encuentran."
           quien="Para el negocio que hoy no aparece cuando lo buscan, o aparece con tres fotos y sin horario."
           luz="faro"
-          visual={<VisualWeb />}
+          efecto="busqueda"
           mosaico={[
             {
               titulo: 'Cuando alguien busca «barbería Ruzafa», sales tú. Con horario, fotos y el botón de reservar.',
@@ -81,11 +81,11 @@ export default function PreviewHome() {
 
         {/* ── PRO: que te contesten ── */}
         <CapituloPack
-          id="pro" numero="02" nombre="Pro" destacado oscuro
+          id="pro" numero="02" nombre="Pro" destacado oscuro nivel={2}
           dolor="Contesto tarde y se van a otro."
           quien="Para el que está cortando el pelo, con un paciente o en cocina cuando le escriben."
           luz="haz"
-          visual={<VisualChat />}
+          efecto="chat"
           mosaico={[
             {
               titulo: 'Te enteras por la mañana. La cita ya está en tu agenda.',
@@ -116,10 +116,10 @@ export default function PreviewHome() {
 
         {/* ── MAX: que te lleguen clientes ── */}
         <CapituloPack
-          id="max" numero="03" nombre="Max"
+          id="max" numero="03" nombre="Max" oscuro nivel={3}
           dolor="Quiero llenar la agenda, no solo estar."
           quien="Para el que tiene semanas flojas y ya ha quemado dinero en anuncios que no trajeron a nadie."
-          luz="prisma"
+          luz="aura"
           visual={<VisualInforme />}
           mosaico={[
             {
@@ -130,12 +130,12 @@ export default function PreviewHome() {
             {
               titulo: 'Sabes lo que cuesta cada persona que te escribe.',
               sub: 'No "impresiones" ni "alcance": contactos y lo que ha costado cada uno. Si sube, lo arreglamos; si baja, subimos.',
-              nodo: <CostePorContacto />, ancho: 2,
+              nodo: <CostePorContacto oscuro />, ancho: 2,
             },
             {
               titulo: 'La inversión la decides tú y va en tu cuenta.',
               sub: 'Desde 5 € al día. La subes, la bajas o la paras cuando quieras. Nosotros ponemos la gestión.',
-              nodo: <Escena cuando="Tú decides" que="Tu tarjeta, tu cuenta publicitaria, tu límite. Nunca tocamos tu dinero." />, ancho: 2,
+              nodo: <Escena oscuro cuando="Tú decides" que="Tu tarjeta, tu cuenta publicitaria, tu límite. Nunca tocamos tu dinero." />, ancho: 2,
             },
             {
               titulo: 'Y el día 28, cinco líneas.',

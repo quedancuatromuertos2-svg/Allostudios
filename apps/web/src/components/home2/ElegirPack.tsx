@@ -2,20 +2,111 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { PACKS, WEBS, porClave, eur } from '@/lib/precios'
+import { WEBS, porClave, eur } from '@/lib/precios'
 import { VisualChat, VisualInforme, VisualWeb } from './Visuales'
 
-/*  "Elige tu pack" — la tienda de Apple ("Comprar un iPhone"): título grande, una línea de
-    pestañas y tres tarjetas iguales con etiqueta, nombre, el producto y precio. Cada
-    tarjeta lleva a su capítulo (más información) o directo a contratar.               */
+/*  "Elige tu pack" — la tienda (como "Comprar un iPhone"): título, pestañas y tres
+    tarjetas. Cuanto más caro, más premium la presentación: Estándar es papel blanco,
+    Pro es cristal oscuro con la luz de la marca, Max es cinematográfico (luz a toda
+    tarjeta, nombre en degradado, brillo que respira). La tarjeta entera lleva a su
+    capítulo; el botón, a contratar.                                                    */
 
-const TARJETAS = [
-  { clave: 'PACK_ESTANDAR', etiqueta: 'Que te encuentren', color: 'text-emerald-600', nombre: 'Estándar', dolor: 'Trabajo bien y no me encuentran.', visual: <VisualWeb compacto />, cap: '#estandar' },
-  { clave: 'PACK_PRO', etiqueta: 'El más elegido', color: 'text-[#FF7A2A]', nombre: 'Pro', dolor: 'Contesto tarde y se van a otro.', visual: <VisualChat compacto />, cap: '#pro' },
-  { clave: 'PACK_MAX', etiqueta: 'Que te lleguen clientes', color: 'text-accent', nombre: 'Max', dolor: 'Quiero llenar la agenda, no solo estar.', visual: <VisualInforme compacto />, cap: '#max' },
+const NIVELES = [
+  {
+    clave: 'PACK_ESTANDAR', nivel: 1, etiqueta: 'Que te encuentren', nombre: 'Estándar',
+    dolor: 'Trabajo bien y no me encuentran.', visual: <VisualWeb compacto />, cap: '#estandar', luz: 'faro',
+    puntos: ['Web en 7 días', 'Arriba en Google', 'Reseñas solas'],
+  },
+  {
+    clave: 'PACK_PRO', nivel: 2, etiqueta: 'El más elegido', nombre: 'Pro',
+    dolor: 'Contesto tarde y se van a otro.', visual: <VisualChat compacto />, cap: '#pro', luz: 'haz',
+    puntos: ['Todo lo del Estándar', 'Contesta tu WhatsApp 24/7', 'Web Premium'],
+  },
+  {
+    clave: 'PACK_MAX', nivel: 3, etiqueta: 'Que te lleguen clientes', nombre: 'Max',
+    dolor: 'Quiero llenar la agenda, no solo estar.', visual: <VisualInforme compacto />, cap: '#max', luz: 'prisma',
+    puntos: ['Todo lo del Pro', 'Anuncios en tu zona', 'Informe: qué entró y qué costó'],
+  },
 ]
 
 const PESTANAS = ['Todos los packs', 'Solo la web', 'Complementos']
+const fmt = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 0 })
+
+function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
+  const p = porClave(t.clave)!
+  const oscuro = t.nivel >= 2
+  const ir = (e: React.MouseEvent, url: string) => { e.preventDefault(); e.stopPropagation(); window.location.href = url }
+  return (
+    <motion.a
+      href={t.cap}
+      initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+      transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -6 }}
+      className={`group relative rounded-[26px] flex flex-col overflow-hidden ${oscuro ? 'text-white' : 'text-ink'}`}
+      style={
+        t.nivel === 1
+          ? { background: '#fff', boxShadow: '0 1px 0 rgba(24,24,27,.04), 0 28px 60px -34px rgba(24,24,27,.28)' }
+          : t.nivel === 2
+            ? { background: 'linear-gradient(160deg,#17171d 0%,#1b1a2b 55%,#141420 100%)', boxShadow: '0 0 0 1px rgba(255,255,255,.08), 0 40px 80px -36px rgba(91,91,214,.55)' }
+            : { background: '#0b0b10', boxShadow: '0 0 0 1px rgba(255,255,255,.1), 0 0 0 6px rgba(255,122,42,.06), 0 50px 100px -40px rgba(255,122,42,.55), 0 40px 80px -36px rgba(91,91,214,.5)' }
+      }
+    >
+      {/* Luz de fondo: Pro tenue, Max a toda tarjeta */}
+      {oscuro && (
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <div className={`absolute inset-0 transition-transform duration-[1400ms] group-hover:scale-110 ${t.nivel === 3 ? 'opacity-[.75]' : 'opacity-[.35]'}`}
+            style={{ backgroundImage: `url(/marca/luces/${t.luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+          <div className="absolute inset-0" style={{ background: t.nivel === 3 ? 'linear-gradient(180deg, rgba(11,11,16,.2) 0%, rgba(11,11,16,.55) 45%, rgba(11,11,16,.95) 100%)' : 'linear-gradient(180deg, rgba(11,11,16,.5) 0%, rgba(11,11,16,.9) 100%)' }} />
+          {t.nivel === 3 && (
+            <motion.div animate={{ opacity: [0.25, 0.6, 0.25] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -inset-20" style={{ background: 'radial-gradient(60% 40% at 50% 15%, rgba(255,122,42,.45), transparent 70%)' }} />
+          )}
+        </div>
+      )}
+
+      <div className="relative px-7 pt-7">
+        <div className="flex items-center justify-between">
+          <p className={`text-[11px] font-bold tracking-[0.1em] uppercase ${t.nivel === 1 ? 'text-emerald-600' : t.nivel === 2 ? 'text-[#FF9A5C]' : 'text-white/80'}`}>{t.etiqueta}</p>
+          {t.nivel === 3 && <span className="text-[10.5px] font-semibold tracking-[0.12em] uppercase px-2.5 py-1 rounded-full" style={{ background: 'linear-gradient(90deg,#FF7A2A,#FF4FA3)', color: '#fff' }}>Todo incluido</span>}
+          {t.nivel === 2 && <span className="text-[10.5px] font-semibold tracking-[0.12em] uppercase px-2.5 py-1 rounded-full bg-white/10 text-white/80">Recomendado</span>}
+        </div>
+        <h3 className={`mt-3 font-display leading-[.95] font-semibold tracking-[-0.04em] ${t.nivel === 3 ? 'text-[clamp(2.6rem,4vw,3.4rem)]' : 'text-[clamp(2rem,3vw,2.6rem)]'}`}>
+          {t.nivel === 3 ? (
+            <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 45%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>Pack Max</span>
+          ) : `Pack ${t.nombre}`}
+        </h3>
+        <p className={`mt-2 text-[14px] ${oscuro ? 'text-white/65' : 'text-dim'}`}>«{t.dolor}»</p>
+      </div>
+
+      {/* El producto */}
+      <div className="relative h-[290px] overflow-hidden flex items-start justify-center mt-5">
+        {t.nivel === 3 && <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[420px] h-[240px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(closest-side, rgba(255,122,42,.35), transparent)', filter: 'blur(30px)' }} />}
+        <div className="absolute inset-x-0 bottom-0 h-28 z-10" style={{ background: oscuro ? `linear-gradient(180deg, rgba(11,11,16,0), ${t.nivel === 3 ? '#0b0b10' : '#141420'})` : 'linear-gradient(180deg, rgba(255,255,255,0), #fff)' }} />
+        <div className="transition-transform duration-700 group-hover:-translate-y-2">{t.visual}</div>
+      </div>
+
+      {/* Puntos + precio */}
+      <div className="relative px-7 pb-7 mt-auto">
+        <ul className={`flex flex-wrap gap-x-4 gap-y-1.5 text-[12.5px] mb-5 ${oscuro ? 'text-white/70' : 'text-dim'}`}>
+          {t.puntos.map((x) => <li key={x} className="flex items-center gap-1.5"><span className={`w-1.5 h-1.5 rounded-full ${t.nivel === 3 ? 'bg-[#FF7A2A]' : 'bg-accent'}`} />{x}</li>)}
+        </ul>
+        <div className="flex items-baseline gap-1.5">
+          <span className="font-display text-[1.9rem] leading-none font-semibold tracking-[-0.03em]">{eur(p.eur)}</span>
+          <span className={`text-[13px] ${oscuro ? 'text-white/55' : 'text-muted'}`}>/mes · 0 € de entrada</span>
+        </div>
+        <p className={`text-[12px] mt-1 ${oscuro ? 'text-white/45' : 'text-muted'}`}>o {fmt(p.eur * 10)} €/año pagando por adelantado (2 meses gratis)</p>
+        <div className="mt-5 flex items-center gap-4">
+          <button type="button" onClick={(e) => ir(e, `/contratar/${t.clave.toLowerCase()}`)}
+            className={`rounded-full text-[13.5px] font-semibold px-5 py-2.5 transition-transform hover:-translate-y-0.5 ${t.nivel === 3 ? 'text-white' : t.nivel === 2 ? 'bg-accent text-white' : 'bg-ink text-white'}`}
+            style={t.nivel === 3 ? { background: 'linear-gradient(90deg,#FF7A2A,#FF4FA3)', boxShadow: '0 8px 24px -8px rgba(255,122,42,.7)' } : undefined}>
+            Contratar
+          </button>
+          <span className={`text-[13.5px] font-medium ${oscuro ? 'text-white/80' : 'text-accent'} group-hover:underline underline-offset-4`}>Más información ›</span>
+        </div>
+      </div>
+    </motion.a>
+  )
+}
 
 export default function ElegirPack() {
   const [tab, setTab] = useState(0)
@@ -32,7 +123,6 @@ export default function ElegirPack() {
           Elige<br />tu pack.
         </motion.h2>
 
-        {/* Pestañas */}
         <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-b border-ink/10 pb-3 text-[14.5px]">
           {PESTANAS.map((p, i) => (
             <button key={p} type="button" onClick={() => setTab(i)}
@@ -43,84 +133,49 @@ export default function ElegirPack() {
         </div>
 
         <p className="mt-8 text-[clamp(1.2rem,2vw,1.5rem)] font-semibold text-ink tracking-[-0.02em]">
-          {tab === 0 && <>Todos los packs. <span className="text-muted font-medium">Elige el tuyo.</span></>}
+          {tab === 0 && <>Todos los packs. <span className="text-muted font-medium">Elige el tuyo; cada uno arregla una cosa.</span></>}
           {tab === 1 && <>Solo la web. <span className="text-muted font-medium">Todo incluido, 0 € de entrada.</span></>}
           {tab === 2 && <>Complementos. <span className="text-muted font-medium">Se añaden a cualquier pack.</span></>}
         </p>
 
-        {/* Packs */}
         {tab === 0 && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {TARJETAS.map((t, i) => {
-              const p = porClave(t.clave)!
-              return (
-                <motion.div
-                  key={t.clave}
-                  initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-[22px] flex flex-col overflow-hidden"
-                  style={{ background: '#fff', boxShadow: '0 1px 0 rgba(24,24,27,.04), 0 24px 50px -30px rgba(24,24,27,.25)' }}
-                >
-                  <div className="px-7 pt-7">
-                    <p className={`text-[11px] font-bold tracking-[0.08em] uppercase ${t.color}`}>{t.etiqueta}</p>
-                    <h3 className="mt-2 font-display text-[clamp(1.7rem,2.6vw,2.1rem)] leading-tight font-semibold tracking-[-0.03em] text-ink">Pack {t.nombre}</h3>
-                    <p className="mt-1 text-[13.5px] text-dim">«{t.dolor}»</p>
-                  </div>
-                  <div className="h-[300px] relative overflow-hidden flex items-start justify-center mt-4">
-                    <div className="absolute inset-x-0 bottom-0 h-24 z-10" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0), #fff)' }} />
-                    {t.visual}
-                  </div>
-                  <div className="px-7 pb-7 mt-auto">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-display text-[1.7rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(p.eur)}</span>
-                      <span className="text-[13px] text-muted">/mes · 0 € de entrada</span>
-                    </div>
-                    <p className="text-[12px] text-muted mt-1">o {eur(p.eur * 10)}/año pagando por adelantado</p>
-                    <div className="mt-5 flex items-center gap-4">
-                      <a href={`/contratar/${t.clave.toLowerCase()}`} className="rounded-full bg-accent text-white text-[13.5px] font-semibold px-5 py-2.5 hover:-translate-y-0.5 transition-transform">Contratar</a>
-                      <a href={t.cap} className="text-[13.5px] font-medium text-accent hover:underline underline-offset-4">Más información ›</a>
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+            {NIVELES.map((t, i) => <Tarjeta key={t.clave} t={t} i={i} />)}
           </div>
         )}
 
-        {/* Solo la web */}
         {tab === 1 && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             {WEBS.map((w, i) => (
               <motion.div key={w.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                className="rounded-[22px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 24px 50px -30px rgba(24,24,27,.25)' }}>
-                <p className="text-[11px] font-bold tracking-[0.08em] uppercase text-muted">Solo web</p>
-                <h3 className="mt-2 font-display text-[1.8rem] leading-tight font-semibold tracking-[-0.03em] text-ink">{w.nombre}</h3>
+                className="rounded-[26px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 28px 60px -34px rgba(24,24,27,.28)' }}>
+                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted">Solo web · {i === 2 ? 'la más impactante' : i === 1 ? 'la más elegida' : 'la esencial'}</p>
+                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-ink">{w.nombre.replace('Web ', '')}</h3>
                 <p className="mt-2 text-[13.5px] text-dim flex-1">{w.desc}</p>
                 <div className="mt-6 flex items-baseline gap-1.5">
-                  <span className="font-display text-[1.7rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(w.eur)}</span>
-                  <span className="text-[13px] text-muted">/mes</span>
+                  <span className="font-display text-[1.9rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(w.eur)}</span>
+                  <span className="text-[13px] text-muted">/mes · 0 € de entrada</span>
                 </div>
-                <a href={`/contratar/${w.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-accent text-white text-[13.5px] font-semibold px-5 py-2.5">Contratar</a>
+                <a href={`/contratar/${w.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-ink text-white text-[13.5px] font-semibold px-5 py-2.5">Contratar</a>
               </motion.div>
             ))}
             <p className="md:col-span-3 text-[13px] text-muted">En cualquier pack puedes cambiar la web por la Cinematográfica por +100 €/mes.</p>
           </div>
         )}
 
-        {/* Complementos */}
         {tab === 2 && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             {[aeo, ads].map((a, i) => (
               <motion.div key={a.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                className="rounded-[22px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 24px 50px -30px rgba(24,24,27,.25)' }}>
-                <p className="text-[11px] font-bold tracking-[0.08em] uppercase text-muted">Complemento · sin permanencia</p>
-                <h3 className="mt-2 font-display text-[1.8rem] leading-tight font-semibold tracking-[-0.03em] text-ink">{a.nombre}</h3>
+                className="rounded-[26px] p-7 flex flex-col" style={{ background: '#fff', boxShadow: '0 28px 60px -34px rgba(24,24,27,.28)' }}>
+                <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-muted">Complemento · sin permanencia</p>
+                <h3 className="mt-3 font-display text-[2rem] leading-tight font-semibold tracking-[-0.035em] text-ink">{a.nombre}</h3>
                 <p className="mt-2 text-[13.5px] text-dim flex-1">{a.desc}</p>
                 <div className="mt-6 flex items-baseline gap-1.5">
-                  <span className="font-display text-[1.7rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(a.eur)}</span>
+                  <span className="font-display text-[1.9rem] leading-none font-semibold text-ink tracking-[-0.03em]">{eur(a.eur)}</span>
                   <span className="text-[13px] text-muted">/mes{a.clave === 'ADS' ? ' + inversión' : ''}</span>
                 </div>
-                <a href={`/contratar/${a.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-accent text-white text-[13.5px] font-semibold px-5 py-2.5">Añadir</a>
+                <a href={`/contratar/${a.clave.toLowerCase()}`} className="mt-5 self-start rounded-full bg-ink text-white text-[13.5px] font-semibold px-5 py-2.5">Añadir</a>
               </motion.div>
             ))}
           </div>
@@ -129,7 +184,6 @@ export default function ElegirPack() {
         <p className="mt-8 text-[13px] text-muted">
           ¿No sabes cuál? <a href="#compara" className="underline underline-offset-4 text-ink">Compara los tres</a> o <a href="#tu-web" className="underline underline-offset-4 text-ink">mira tu web gratis</a> antes de decidir.
         </p>
-        <span className="hidden">{PACKS.length}</span>
       </div>
     </section>
   )

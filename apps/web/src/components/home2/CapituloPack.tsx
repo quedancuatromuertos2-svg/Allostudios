@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { eur } from '@/lib/precios'
 import { Timeline } from './Piezas'
+import { BusquedaEnVivo, ChatEnVivo } from './Animadas'
 
 /*  Un capítulo por pack, como una página de producto de Apple:
       1. el nombre enorme y la frase del dolor (en boca del dueño),
@@ -16,7 +17,7 @@ import { Timeline } from './Piezas'
 export type Pieza = { titulo: string; sub?: string; nodo: ReactNode; ancho?: 1 | 2; alto?: 'normal' | 'alto' }
 
 export default function CapituloPack({
-  id, numero, nombre, dolor, quien, luz, oscuro, visual, mosaico, precio, incluye, timeline, url, destacado, notaVisual,
+  id, numero, nombre, dolor, quien, luz, oscuro, visual, efecto, mosaico, precio, incluye, timeline, url, destacado, notaVisual, nivel = 1,
 }: {
   id: string
   numero: string
@@ -25,7 +26,9 @@ export default function CapituloPack({
   quien: string
   luz: string
   oscuro?: boolean
-  visual: ReactNode
+  visual?: ReactNode
+  /** Visual animado con el scroll de la sección (sustituye a `visual`): la búsqueda de Google o el chat */
+  efecto?: 'busqueda' | 'chat'
   notaVisual?: string
   mosaico: Pieza[]
   precio: number
@@ -33,12 +36,19 @@ export default function CapituloPack({
   timeline: [string, string][]
   url: string
   destacado?: boolean
+  /** 1 papel · 2 cristal oscuro · 3 cinematográfico (luz a toda pantalla, nombre en degradado, brillo) */
+  nivel?: 1 | 2 | 3
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const escala = useTransform(scrollYProgress, [0, 0.35], [0.9, 1])
   const subida = useTransform(scrollYProgress, [0, 0.35], [60, 0])
   const luzY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+  // La palabra de fondo: vista desde abajo (rotateX), crece con el scroll hasta llenar el recuadro.
+  const palabraEscala = useTransform(scrollYProgress, [0, 0.5, 1], [0.45, 1, 1.06])
+  const palabraGiro = useTransform(scrollYProgress, [0, 0.6], [42, 10])
+  const palabraY = useTransform(scrollYProgress, [0, 1], ['22%', '-6%'])
+  const palabraOpacidad = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.4])
 
   const fondo = oscuro ? 'relative overflow-hidden' : 'papel papel-orbe relative overflow-hidden'
   const tInk = oscuro ? 'text-white' : 'text-ink'
@@ -50,24 +60,42 @@ export default function CapituloPack({
     <section id={id} ref={ref} className={`${fondo} py-section`}>
       {oscuro && (
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <motion.div style={{ y: luzY, backgroundImage: `url(/marca/luces/${luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} className="absolute -inset-[10%] opacity-[.6]" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(11,11,16,.88) 0%, rgba(11,11,16,.3) 38%, rgba(11,11,16,.55) 70%, rgba(11,11,16,.94) 100%)' }} />
+          <motion.div style={{ y: luzY, backgroundImage: `url(/marca/luces/${luz}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} className={`absolute -inset-[10%] ${nivel === 3 ? 'opacity-[.85]' : 'opacity-[.6]'}`} />
+          <div className="absolute inset-0" style={{ background: nivel === 3 ? 'linear-gradient(180deg, rgba(11,11,16,.8) 0%, rgba(11,11,16,.15) 35%, rgba(11,11,16,.5) 70%, rgba(11,11,16,.96) 100%)' : 'linear-gradient(180deg, rgba(11,11,16,.88) 0%, rgba(11,11,16,.3) 38%, rgba(11,11,16,.55) 70%, rgba(11,11,16,.94) 100%)' }} />
+          {nivel === 3 && <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute inset-0" style={{ background: 'radial-gradient(50% 35% at 50% 42%, rgba(255,122,42,.35), transparent 70%)' }} />}
         </div>
       )}
 
-      <div className="relative max-w-6xl mx-auto px-6 md:px-12">
+      {/* Palabra de fondo con perspectiva (solo Max): vista desde abajo, crece con el scroll hasta llenar el recuadro */}
+      {nivel === 3 && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-start justify-center" aria-hidden style={{ perspective: '800px' }}>
+          <motion.div
+            style={{ scale: palabraEscala, rotateX: palabraGiro, y: palabraY, opacity: palabraOpacidad, transformOrigin: '50% 100%' }}
+            className="mt-[6vh] font-display font-semibold leading-none tracking-[-0.06em] select-none whitespace-nowrap"
+          >
+            <span
+              className="block text-[48vw] md:text-[44vw]"
+              style={{ background: 'linear-gradient(180deg, rgba(255,205,170,.9) 0%, rgba(255,122,42,.6) 40%, rgba(255,79,163,.12) 78%, rgba(255,79,163,0) 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}
+            >
+              {nombre.toUpperCase()}
+            </span>
+          </motion.div>
+        </div>
+      )}
+
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
         {/* 1 · Nombre + dolor */}
         <div className="text-center max-w-3xl mx-auto">
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             className={`text-[11.5px] font-semibold tracking-[0.16em] uppercase ${tMuted} mb-6 font-mono`}>
-            Pack {numero}{destacado ? ' · El más elegido' : ''}
+            Pack {numero}{destacado ? ' · El más elegido' : ''}{nivel === 3 ? ' · Todo incluido' : ''}
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className={`font-display text-[clamp(3.6rem,10vw,8.5rem)] leading-[.92] font-semibold tracking-[-0.05em] ${tInk}`}
           >
-            {nombre}<span className="acento">.</span>
+            {nivel === 3 ? <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 50%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>{nombre}.</span> : <>{nombre}<span className="acento">.</span></>}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15, duration: 0.8 }}
@@ -82,8 +110,9 @@ export default function CapituloPack({
         </div>
 
         {/* 2 · Visual grande con parallax */}
-        <motion.div style={{ scale: escala, y: subida }} className="mt-14 md:mt-20 flex flex-col items-center">
-          {visual}
+        <motion.div style={{ scale: escala, y: subida }} className="mt-14 md:mt-20 flex flex-col items-center relative">
+          {nivel === 3 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[420px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(closest-side, rgba(255,122,42,.35), rgba(91,91,214,.15) 60%, transparent)', filter: 'blur(40px)' }} />}
+          {efecto === 'busqueda' ? <BusquedaEnVivo progreso={scrollYProgress} /> : efecto === 'chat' ? <ChatEnVivo progreso={scrollYProgress} /> : visual}
           {notaVisual && <p className={`mt-6 text-[12px] ${tMuted} text-center`}>{notaVisual}</p>}
         </motion.div>
 
@@ -92,7 +121,7 @@ export default function CapituloPack({
           {mosaico.map((p, i) => (
             <motion.div
               key={p.titulo}
-              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}
+              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: (i % 3) * 0.08, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
               className={`${tile} rounded-[22px] p-6 md:p-8 flex flex-col ${p.ancho === 2 ? 'md:col-span-2' : ''} ${p.alto === 'alto' ? 'md:row-span-2' : ''}`}
             >
@@ -127,7 +156,7 @@ export default function CapituloPack({
                 ))}
               </ul>
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <a href={url} className="btn-accent justify-center rounded-full px-8 py-4 text-[15px]">Contratar {nombre}</a>
+                <a href={url} className={`justify-center rounded-full px-8 py-4 text-[15px] font-semibold inline-flex items-center gap-2 transition-transform hover:-translate-y-0.5 ${nivel === 3 ? 'text-white' : 'btn-accent'}`} style={nivel === 3 ? { background: 'linear-gradient(90deg,#FF7A2A,#FF4FA3)', boxShadow: '0 12px 30px -10px rgba(255,122,42,.7)' } : undefined}>Contratar {nombre}</a>
                 <a href="#tu-web" className={`inline-flex items-center justify-center rounded-full px-6 py-4 text-[14px] font-semibold border ${oscuro ? 'border-white/20 text-white hover:bg-white/10' : 'border-ink/15 text-ink hover:bg-ink/5'} transition-colors`}>Ver mi web gratis antes</a>
               </div>
               <p className={`mt-4 text-[12px] ${tMuted}`}>12 meses y después mes a mes · año por adelantado: dos meses gratis · contrato claro, lo lees antes de pagar</p>

@@ -81,7 +81,30 @@ export default function Desglose({ art }: { art: Articulo }) {
           </div>
         </div>
 
-        {art.incluye && (
+        {art.desglose ? (
+          <div className="py-4 border-b border-border">
+            <p className="text-[11.5px] font-semibold tracking-[0.12em] uppercase text-muted mb-2">Qué lleva y lo que costaría por separado</p>
+            <ul className="divide-y divide-border">
+              {art.desglose.map(([t, e]) => (
+                <li key={t} className="flex items-center justify-between gap-4 py-2 text-[13px]">
+                  <span className="flex items-center gap-2.5 text-dim"><Check />{t}</span>
+                  <span className="text-muted tabular-nums line-through decoration-muted/60">{eur(e)}/mes</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex items-center justify-between gap-4 pt-3 mt-1 border-t border-border text-[13px]">
+              <span className="text-muted">Por separado</span>
+              <span className="text-muted tabular-nums">{eur(art.sumaSuelto || 0)}/mes</span>
+            </div>
+            <div className="flex items-center justify-between gap-4 pt-1.5 text-[13.5px]">
+              <span className="font-semibold text-ink">{art.nombre}</span>
+              <span className="font-semibold text-ink tabular-nums">{eur(art.eur)}/mes</span>
+            </div>
+            {art.sumaSuelto && art.sumaSuelto > art.eur && (
+              <p className="mt-2 text-[12.5px] text-accent font-medium">Ahorras {eur(art.sumaSuelto - art.eur)} cada mes · {eur((art.sumaSuelto - art.eur) * 12)} al año.</p>
+            )}
+          </div>
+        ) : art.incluye && (
           <ul className="py-4 border-b border-border space-y-2">
             {art.incluye.map((t) => (
               <li key={t} className="flex items-start gap-2.5 text-[13px] text-dim">
@@ -89,11 +112,6 @@ export default function Desglose({ art }: { art: Articulo }) {
                 {t}
               </li>
             ))}
-            {art.sumaSuelto && art.sumaSuelto > art.eur && (
-              <li className="text-[12px] text-muted pt-1">
-                Por separado serían {eur(art.sumaSuelto)}/mes. Ahorras {eur(art.sumaSuelto - art.eur)} cada mes.
-              </li>
-            )}
           </ul>
         )}
 

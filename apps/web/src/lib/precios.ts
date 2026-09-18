@@ -34,6 +34,8 @@ export type Articulo = {
   incluye?: string[]
   /** Lo que costaría contratando cada pieza por separado (packs) */
   sumaSuelto?: number
+  /** Desglose en números de lo que lleva el pack: [pieza, €/mes por separado] */
+  desglose?: [string, number][]
   /** Extras que se pueden añadir a este artículo en el checkout */
   extras?: string[]
 }
@@ -54,6 +56,7 @@ export const CATALOGO: Articulo[] = [
     priceId: mes('PACK_ESTANDAR'), anual: anio('PACK_ESTANDAR', 199),
     incluye: ['Web Arranque con hosting, cambios y soporte', 'SEO local cada mes', 'Reseñas 5★ automatizadas'],
     sumaSuelto: P.WEB_ARRANQUE + P.SEO + P.RESENAS, extras: ['CINE_UPGRADE', 'AEO'],
+    desglose: [['Web Arranque (hosting, cambios y soporte)', P.WEB_ARRANQUE], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS]],
   },
   {
     clave: 'PACK_PRO', nombre: 'Pack Pro', eur: 349, cobro: 'mes', tipo: 'pack', permanencia: 12,
@@ -61,6 +64,7 @@ export const CATALOGO: Articulo[] = [
     priceId: mes('PACK_PRO'), anual: anio('PACK_PRO', 349),
     incluye: ['Web Premium: animaciones, copy y tus reseñas integradas', 'SEO local cada mes', 'Reseñas 5★ automatizadas', 'Asistente de IA en WhatsApp 24/7'],
     sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE, extras: ['CINE_UPGRADE', 'AEO'],
+    desglose: [['Web Premium (hosting, cambios y soporte)', P.WEB_PREMIUM], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE]],
   },
   {
     clave: 'PACK_MAX', nombre: 'Pack Max', eur: 499, cobro: 'mes', tipo: 'pack', permanencia: 12,
@@ -68,6 +72,7 @@ export const CATALOGO: Articulo[] = [
     priceId: mes('PACK_MAX'), anual: anio('PACK_MAX', 499),
     incluye: ['Todo lo del Pack Pro', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
     sumaSuelto: P.WEB_PREMIUM + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['CINE_UPGRADE', 'AEO'],
+    desglose: [['Web Premium (hosting, cambios y soporte)', P.WEB_PREMIUM], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE], ['Campañas Meta y Google Ads (gestión)', P.ADS]],
   },
 
   /* ── Webs solas (para quien de verdad solo quiere web) ── */
