@@ -20,6 +20,13 @@ const SECTORES = [
   'Autónomo / Otro',
 ]
 
+/* Tramos de inversión mensual. El valor viaja al lead (email, WhatsApp y Supabase). */
+const PRESUPUESTOS: [string, string][] = [
+  ['<100', 'Menos de 100 €'],
+  ['100-300', '100 – 300 €'],
+  ['>300', 'Más de 300 €'],
+]
+
 type Props = {
   /* Precarga desde el generador de la home (/#tu-web) */
   defaultNegocio?: string
@@ -45,6 +52,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
       ciudad: fd.get('ciudad'),
       sector: fd.get('sector'),
       nivel: fd.get('nivel'),
+      presupuesto: fd.get('presupuesto'),
       telefono: fd.get('telefono'),
       email: fd.get('email'),
       consent: Boolean(fd.get('consent')),
@@ -122,6 +130,20 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
           ))}
         </div>
         <p className="text-[11.5px] text-muted mt-1.5">Luego puedes cambiarlo dentro de la demo.</p>
+      </div>
+
+      {/* Filtro de presupuesto: el lead se autocualifica antes de que nadie le llame */}
+      <div>
+        <label className="block text-[13px] font-medium text-dim mb-1.5">¿Qué te planteas invertir al mes? *</label>
+        <div className="grid grid-cols-3 gap-2">
+          {PRESUPUESTOS.map(([v, n]) => (
+            <label key={v} className="nivel-opcion cursor-pointer rounded-xl border border-border bg-canvas px-3 py-3 text-center transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-light">
+              <input type="radio" name="presupuesto" value={v} required className="sr-only" />
+              <span className="block text-[13px] font-semibold text-ink leading-tight">{n}</span>
+            </label>
+          ))}
+        </div>
+        <p className="text-[11.5px] text-muted mt-1.5">Para proponerte solo lo que te encaja. Sin compromiso.</p>
       </div>
 
       <div>

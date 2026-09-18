@@ -58,8 +58,8 @@ export default function PricingSection() {
             viewport={{ once: true }} transition={{ delay: 0.16 }}
             className="mt-4 text-dim font-light max-w-md mx-auto"
           >
-            Precio de lanzamiento para los primeros 20 negocios de Valencia.
-            Sin permanencia. Sin costes ocultos.
+            Precio cerrado, sin costes ocultos.
+            Hosting, cambios y soporte incluidos.
           </motion.p>
         </div>
 

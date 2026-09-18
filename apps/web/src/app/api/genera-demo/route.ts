@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
     const sector = String(d?.sector || '').trim().slice(0, 60)
     const nivel = ['arranque', 'premium', 'cine'].includes(d?.nivel) ? String(d.nivel) : 'arranque'
     const telefono = String(d?.telefono || '').trim().slice(0, 40)
+    const presupuesto = ['<100', '100-300', '>300'].includes(d?.presupuesto) ? String(d.presupuesto) : null
     const email = String(d?.email || '').trim().slice(0, 120)
     const consent = Boolean(d?.consent)
 
@@ -54,13 +55,18 @@ export async function POST(req: NextRequest) {
     let id: string
     let guardado = true
     try {
-      const { data: row, error } = await supabaseAdmin
+      const base = { negocio, ciudad, sector, telefono, email: email || null, consent, place, ip }
+      let res = await supabaseAdmin
         .from('demo_leads')
-        .insert({ negocio, ciudad, sector, telefono, email: email || null, consent, place, ip })
+        .insert({ ...base, presupuesto })
         .select('id')
         .single()
-      if (error || !row) throw new Error(error?.message || 'insert failed')
-      id = row.id
+      // Si la columna `presupuesto` aún no existe (falta ejecutar demo_leads_presupuesto.sql), guardamos sin ella.
+      if (res.error && /presupuesto/i.test(res.error.message)) {
+        res = await supabaseAdmin.from('demo_leads').insert(base).select('id').single()
+      }
+      if (res.error || !res.data) throw new Error(res.error?.message || 'insert failed')
+      id = res.data.id
     } catch {
       guardado = false
       id = encodeDemo({
@@ -80,6 +86,7 @@ export async function POST(req: NextRequest) {
       email: email || undefined,
       mensaje:
         `Generó su demo en /tu-web (nivel ${nivel}). Ciudad: ${ciudad}. Sector: ${sector || '—'}. ` +
+        `Presupuesto mensual: ${presupuesto || '—'}. ` +
         `Web actual: ${place?.website || 'NO tiene'}. ${place?.rating ? `${place.rating}★ (${place.reviews} reseñas).` : ''}` +
         (guardado ? '' : ' ⚠️ NO guardado en Supabase (falta la tabla demo_leads) — apunta este lead a mano.'),
     }).catch(() => {})
@@ -89,7 +96,7 @@ export async function POST(req: NextRequest) {
     if (apikey && alertPhone) {
       const text =
         `🔥 Demo generada (lead caliente)\n` +
-        `Negocio: ${negocio} (${ciudad}) · nivel ${nivel}\nTel: ${telefono}\n` +
+        `Negocio: ${negocio} (${ciudad}) · nivel ${nivel} · presupuesto ${presupuesto || '—'}\nTel: ${telefono}\n` +
         `${place?.website ? 'YA tiene web' : 'SIN web'} ${place?.rating ? `· ${place.rating}★(${place.reviews})` : ''}`
       fetch(
         `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(alertPhone)}&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(apikey)}`,

@@ -121,7 +121,7 @@ export default function WebsSection() {
           </div>
           <motion.p variants={fadeUp} className="mt-8 text-[13px] text-muted text-center">
             Negocios y datos ficticios, diseño real. La tuya la ves gratis en{' '}
-            <a href="#tu-web" className="text-ink underline underline-offset-4 hover:text-accent transition-colors">20 segundos</a>.
+            <a href="#tu-web" className="text-ink underline underline-offset-4 hover:text-accent transition-colors">30 segundos</a>.
           </motion.p>
         </motion.div>
 
