@@ -31,7 +31,7 @@ export function generateMetadata({ params }: { params: { sector: string } }): Me
 }
 
 /* El mock: la cabecera de una web del sector, en un portátil, con el ADN real del generador */
-function MockWeb({ adn, ej, busqueda }: { adn: (typeof ADNS)[number]; ej: Sector['ejemplo']; busqueda: string }) {
+function MockWeb({ adn, ej, busqueda, digital }: { adn: (typeof ADNS)[number]; ej: Sector['ejemplo']; busqueda: string; digital?: boolean }) {
   return (
     <div className="relative">
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
@@ -40,7 +40,7 @@ function MockWeb({ adn, ej, busqueda }: { adn: (typeof ADNS)[number]; ej: Sector
       <div className="mx-auto mb-4 w-fit max-w-full flex items-center gap-2 rounded-full pl-3 pr-4 py-2 text-[13px]" style={{ background: "#fff", color: "#18181B", boxShadow: "0 10px 30px -14px rgba(0,0,0,.6)" }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4285F4" strokeWidth="2.2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
         <span className="truncate">{busqueda}</span>
-        <span className="ml-2 text-[11px] text-[#1a7f37] font-semibold whitespace-nowrap">· 1.º resultado</span>
+        <span className="ml-2 text-[11px] text-[#1a7f37] font-semibold whitespace-nowrap">{digital ? '· lista en 7 días' : '· 1.º resultado'}</span>
       </div>
       <div className="rounded-[1.4rem] p-1.5 bg-white/[.06] ring-1 ring-white/10">
         <div className="rounded-[calc(1.4rem-0.375rem)] overflow-hidden relative aspect-[16/10]" style={{ background: adn.bg, fontFamily: adn.fuentes.texto }}>
@@ -53,26 +53,26 @@ function MockWeb({ adn, ej, busqueda }: { adn: (typeof ADNS)[number]; ej: Sector
           </div>
           {/* titular */}
           <div className="relative px-5 md:px-7 pt-6 md:pt-10">
-            <div className="text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-white/50 mb-2 md:mb-3">{adn.eyebrow} · Valencia</div>
+            <div className="text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-white/50 mb-2 md:mb-3">{adn.eyebrow}{digital ? ' · SaaS' : ' · Valencia'}</div>
             <div className="text-white leading-[1.05] tracking-[-0.01em] text-[clamp(1.5rem,3.6vw,2.6rem)] max-w-full sm:max-w-[70%]" style={{ fontFamily: adn.fuentes.display, fontWeight: adn.fuentes.displayPeso }}>
               {ej.claim} <em style={{ color: adn.acento, fontStyle: adn.fuentes.display.includes('Serif') ? 'italic' : 'normal' }}>{ej.palabra}</em>
             </div>
             <div className="mt-3 md:mt-4 flex items-center gap-2 text-[10px] md:text-[11px] text-white/70">
-              <span className="text-amber-300">★★★★★</span> 4,9 · 184 reseñas <span className="text-white/35">·</span> Abierto · cierra 20:30
+              {digital ? <>+2.400 equipos <span className="text-white/35">·</span> 4,8 en G2 <span className="text-white/35">·</span> sin tarjeta</> : <><span className="text-amber-300">★★★★★</span> 4,9 · 184 reseñas <span className="text-white/35">·</span> Abierto · cierra 20:30</>}
             </div>
           </div>
           {/* carta */}
           <div className="hidden sm:block absolute right-4 md:right-7 bottom-4 md:bottom-6 w-[46%] md:w-[38%] rounded-xl p-3 md:p-4 text-[10px] md:text-[12px]" style={{ background: adn.papel, color: adn.tinta, boxShadow: '0 30px 60px -30px rgba(0,0,0,.7)' }}>
-            <div className="text-[8.5px] md:text-[9.5px] uppercase tracking-[0.18em] opacity-60 mb-1.5 md:mb-2">Servicios</div>
+            <div className="text-[8.5px] md:text-[9.5px] uppercase tracking-[0.18em] opacity-60 mb-1.5 md:mb-2">{digital ? 'Planes' : 'Servicios'}</div>
             {ej.servicios.map(([n, p]) => (
               <div key={n} className="flex justify-between gap-2 py-1 md:py-1.5 border-t" style={{ borderColor: `${adn.tinta}1a` }}><span>{n}</span><span className="font-semibold" style={{ color: adn.acento2 }}>{p}</span></div>
             ))}
           </div>
           {/* whatsapp */}
-          <div className="absolute left-5 md:left-7 bottom-4 md:bottom-6 flex items-center gap-2 rounded-full bg-[#25D366] text-white pl-2 pr-3 py-1.5 text-[10px] md:text-[11px] font-semibold shadow-lg">
+          {!digital && <div className="absolute left-5 md:left-7 bottom-4 md:bottom-6 flex items-center gap-2 rounded-full bg-[#25D366] text-white pl-2 pr-3 py-1.5 text-[10px] md:text-[11px] font-semibold shadow-lg">
             <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" /></svg></span>
             Reservar por WhatsApp
-          </div>
+          </div>}
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@ export default function SectorPage({ params }: { params: { sector: string } }) {
         <section className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
             <div>
-              <span className="eyebrow block mb-5">Webs para {s.nombre} · Valencia</span>
+              <span className="eyebrow block mb-5">Webs para {s.nombre} · {s.digital ? 'online, desde Valencia' : 'Valencia'}</span>
               <h1 className="font-display text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-ink text-balance">{s.titulo}</h1>
               <p className="mt-5 text-[16px] md:text-[17px] text-dim font-light leading-relaxed max-w-lg">{s.sub}</p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -122,7 +122,7 @@ export default function SectorPage({ params }: { params: { sector: string } }) {
                 <div><strong className="block text-ink text-[15px]">99 €/mes</strong>todo incluido</div>
               </div>
             </div>
-            <MockWeb adn={adn} ej={s.ejemplo} busqueda={s.busqueda} />
+            <MockWeb adn={adn} ej={s.ejemplo} busqueda={s.busqueda} digital={s.digital} />
           </div>
         </section>
 

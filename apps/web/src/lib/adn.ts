@@ -106,6 +106,16 @@ export const ADNS: ADN[] = [
     cristal: { fondo: '#14121A', c1: '#4A3F9B', c2: '#FF6B6B', c3: '#FFC857', c4: '#FFF6E0' },
     cabecera: 'panel', cine: 'aura', carta: false,
   },
+  {
+    // Startups y negocios digitales. Referencia: los shots de «saas landing page dark» y «startup pricing»
+    // de Dribbble (20/09/2026): negro azulado, un solo acento eléctrico, grotesca apretada, cifras grandes.
+    clave: 'startup', nombre: 'Vector', eyebrow: 'Startup',
+    fuentes: { display: "'Space Grotesk', system-ui, sans-serif", texto: "'Inter', system-ui, sans-serif", displayPeso: 700, url: G('family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600') },
+    bg: '#07080F', papel: '#F6F7FB', tinta: '#0B0C14', acento: '#7C5CFF', acento2: '#38E1B0',
+    luz: ['#2B1F7A', '#38E1B0'], luzPapel: ['#DCD6FF', '#CFF7EA'],
+    cristal: { fondo: '#07080F', c1: '#2B1F7A', c2: '#7C5CFF', c3: '#38E1B0', c4: '#EAF7FF' },
+    cabecera: 'centro', cine: 'velocidad', carta: false,
+  },
 ]
 
 export function adnDe(sector: string | null | undefined): ADN {
@@ -118,6 +128,7 @@ export function adnDe(sector: string | null | undefined): ADN {
     s.includes('cafet') ? 'cafeteria' :
     s.includes('gimnas') || s.includes('entren') ? 'gimnasio' :
     s.includes('taller') || s.includes('mecán') ? 'taller' :
-    s.includes('abogad') || s.includes('asesor') || s.includes('inmobil') ? 'despacho' : 'comercio'
+    s.includes('abogad') || s.includes('asesor') || s.includes('inmobil') ? 'despacho' :
+    s.includes('startup') || s.includes('digital') || s.includes('saas') || s.includes('app') || s.includes('online') ? 'startup' : 'comercio'
   return ADNS.find(a => a.clave === k) || ADNS[ADNS.length - 1]
 }

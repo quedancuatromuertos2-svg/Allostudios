@@ -7,7 +7,7 @@ const I = (d: string) => (
 )
 
 // href: la página del sector (/webs/<slug>), la que Google posiciona
-const HREF: Record<string, string> = { 'Peluquerías y estética': '/webs/peluquerias', 'Clínicas y dentistas': '/webs/clinicas', 'Restaurantes y bares': '/webs/restaurantes', 'Gimnasios': '/webs/gimnasios', 'Talleres y reformas': '/webs/talleres', 'Veterinarios': '/webs/clinicas', 'Inmobiliarias': '/webs/despachos', 'Comercios locales': '/webs/tiendas' }
+const HREF: Record<string, string> = { 'Peluquerías y estética': '/webs/peluquerias', 'Clínicas y dentistas': '/webs/clinicas', 'Restaurantes y bares': '/webs/restaurantes', 'Gimnasios': '/webs/gimnasios', 'Talleres y reformas': '/webs/talleres', 'Veterinarios': '/webs/clinicas', 'Inmobiliarias': '/webs/despachos', 'Comercios locales': '/webs/tiendas', 'Startups y digitales': '/webs/startups' }
 const sectores = [
   { name: 'Peluquerías y estética', color: 'text-pink-600', d: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88"/><path d="M14.47 14.48 20 20"/><path d="M8.12 8.12 12 12"/>' },
   { name: 'Clínicas y dentistas', color: 'text-blue-600', d: '<path d="M7 3C4.5 3 3 5 3 7.5c0 2 .8 3 1.5 5S5.5 21 7.5 21c1.8 0 1.4-4 2.5-6 .5-1 1.5-1 2 0 1.1 2 .7 6 2.5 6 2 0 2.3-6.5 3-8.5S21 9.5 21 7.5C21 5 19.5 3 17 3c-2 0-3 1-5 1s-3-1-5-1z"/>' },
@@ -16,6 +16,7 @@ const sectores = [
   { name: 'Talleres y reformas', color: 'text-yellow-700', d: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
   { name: 'Veterinarios', color: 'text-purple-600', d: '<circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>' },
   { name: 'Inmobiliarias', color: 'text-emerald-600', d: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
+  { name: 'Startups y digitales', color: 'text-violet-600', d: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>' },
   { name: 'Comercios locales', color: 'text-red-600', d: '<path d="M2 3h19l-1 9H4z" transform="translate(0 2)"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 5h3l1 9"/>' },
 ]
 

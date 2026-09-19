@@ -16,6 +16,7 @@ export type Sector = {
   dolores: [string, string][]
   lleva: string[]
   faq: [string, string][]
+  digital?: boolean         // sin WhatsApp/horario en el mock (startups)
 }
 
 export const SECTORES: Sector[] = [
@@ -188,6 +189,25 @@ export const SECTORES: Sector[] = [
       ['¿Es una tienda online?', 'No: es tu escaparate en Google con encargos por WhatsApp. Si necesitas vender online con carrito, te lo decimos claro y te proponemos otra cosa.'],
       ['¿Puedo cambiar productos cada semana?', 'Sí, cambios ilimitados en 3 días.'],
       ['¿Cuánto cuesta?', 'Web sola desde 99 €/mes; con Google y reseñas, Pack Estándar 199 €/mes. 0 € de entrada.'],
+    ],
+  },
+  {
+    slug: 'startups', adn: 'startup', sectorForm: 'Startup / Negocio digital', digital: true,
+    nombre: 'startups y negocios digitales', singular: 'una startup',
+    titulo: 'Landing pages para startups y negocios digitales',
+    sub: 'Una landing que explica el producto en cinco segundos, con precios claros y un asistente que responde a los leads a cualquier hora. Lista en 7 días, desde 99 €/mes, 0 € de entrada.',
+    busqueda: 'landing page para mi startup',
+    ejemplo: { nombre: 'Vector', claim: 'Tu producto explicado', palabra: 'en cinco segundos.', servicios: [['Starter', '19 €/mes'], ['Growth', '49 €/mes'], ['Scale', 'a medida']], cta: 'Empieza gratis' },
+    dolores: [
+      ['La landing la hizo el CTO un domingo', 'Y se nota: explica la tecnología, no el problema. Reescribimos el mensaje para el que paga, no para el que programa.'],
+      ['Los leads llegan y nadie contesta hasta el lunes', 'El asistente del Pack Pro responde en 8 segundos, cualifica (tamaño, uso, presupuesto) y agenda la demo en tu calendario.'],
+      ['Precios que no se entienden', 'Tres planes, uno recomendado, toggle mensual/anual y comparativa. Es lo que convierte en cualquier SaaS que funciona.'],
+    ],
+    lleva: ['Mensaje en una frase y prueba en cinco segundos', 'Página de precios con plan recomendado', 'Franja de logos, métricas y testimonios', 'Formulario o demo por WhatsApp/Calendly', 'Analítica y píxeles instalados', 'Dominio, hosting y cambios ilimitados'],
+    faq: [
+      ['¿Trabajáis con startups fuera de Valencia?', 'Sí. Todo el proceso es online: brief por videollamada, entrega en 7 días, cambios por WhatsApp.'],
+      ['¿Podéis integrar mi producto (Stripe, HubSpot, Calendly)?', 'Sí: enlaces, formularios y embeds se integran; si necesitas una web app completa te lo decimos claro y te recomendamos a quién.'],
+      ['¿Por qué por suscripción?', 'Porque una landing no se termina: se prueba, se cambia y se mide. Con 0 € de entrada y cambios ilimitados, iteras cada semana sin volver a pagar un diseño.'],
     ],
   },
 ]

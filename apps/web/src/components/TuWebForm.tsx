@@ -17,6 +17,7 @@ const SECTORES = [
   'Veterinario',
   'Óptica',
   'Tienda / Comercio',
+  'Startup / Negocio digital',
   'Autónomo / Otro',
 ]
 
