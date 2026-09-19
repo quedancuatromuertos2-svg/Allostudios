@@ -17,6 +17,24 @@ export async function GET(req: NextRequest) {
     )
   }
 
+  // ── Asistente de WhatsApp de un negocio (sin sesión Clerk): el estado lleva {asistente, clave} ──
+  try {
+    const st = JSON.parse(Buffer.from(state, "base64url").toString())
+    if (st?.asistente) {
+      const { data: a } = await supabaseAdmin.from("asistentes").select("id, clave_admin").eq("slug", String(st.asistente)).single()
+      if (!a || a.clave_admin !== String(st.clave || "")) return new NextResponse("Enlace no válido", { status: 403 })
+      const appUrl = clean(process.env.NEXT_PUBLIC_APP_URL || "https://allostudios.net").replace(/\/$/, "")
+      const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ code, client_id: clean(process.env.GOOGLE_CLIENT_ID || ""), client_secret: clean(process.env.GOOGLE_CLIENT_SECRET || ""), redirect_uri: `${appUrl}/api/google/callback`, grant_type: "authorization_code" }),
+      })
+      if (!tokenRes.ok) return new NextResponse("Google no ha devuelto el token. Vuelve a abrir el enlace.", { status: 500 })
+      const t = await tokenRes.json()
+      await supabaseAdmin.from("asistentes").update({ google_tokens: { ...t, expiry_date: t.expires_in ? Date.now() + t.expires_in * 1000 : null } }).eq("id", a.id)
+      return new NextResponse("<!doctype html><meta charset=utf-8><body style=\"font-family:system-ui;padding:40px;max-width:520px\"><h2>Agenda conectada ✅</h2><p>Tu asistente ya puede ver tus huecos y dejar las citas en tu Google Calendar. Puedes cerrar esta pestaña.</p>", { headers: { "Content-Type": "text/html; charset=utf-8" } })
+    }
+  } catch { /* no es un estado de asistente: sigue el flujo normal */ }
+
   let businessId: string
   let stateUserId: string
   try {

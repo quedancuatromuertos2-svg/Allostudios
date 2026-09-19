@@ -164,3 +164,21 @@ export async function sendContratoEmail(opts: {
 </body></html>`
   await send(opts.to, `Tu contrato con AlloStudios — ${opts.producto}`, html)
 }
+
+/* Aviso al dueño del negocio cuando su asistente de WhatsApp le pasa una conversación o cierra una cita */
+export async function sendAvisoAsistente(to: string, d: { negocio: string; titulo: string; motivo: string; resumen: string; telefono: string }) {
+  const html = `
+<!DOCTYPE html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FAFAF9;margin:0;padding:32px 20px;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;border:1px solid #E8E8E4;overflow:hidden;">
+    <div style="background:#16161a;padding:22px 32px;"><h1 style="color:#fff;margin:0;font-size:17px;font-weight:700;">${d.negocio} · tu asistente</h1></div>
+    <div style="padding:26px 32px;color:#1a1a1a;font-size:15px;line-height:1.6;">
+      <p style="margin:0 0 6px;font-weight:600;">${d.titulo}</p>
+      <p style="margin:0 0 14px;color:#444;">${d.motivo}</p>
+      <p style="margin:0 0 18px;background:#F4F4F1;border-radius:10px;padding:12px 14px;">${d.resumen || '—'}</p>
+      <a href="https://wa.me/${d.telefono}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:600;padding:11px 18px;border-radius:999px;">Escribir al cliente (+${d.telefono})</a>
+      <p style="color:#999;font-size:12px;margin:22px 0 0;">Te lo manda el asistente de WhatsApp de AlloStudios.</p>
+    </div>
+  </div>
+</body></html>`
+  await send(to, `[${d.negocio}] ${d.titulo}`, html)
+}
