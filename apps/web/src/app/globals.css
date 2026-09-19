@@ -5,8 +5,9 @@
 @tailwind utilities;
 
 :root {
-  /* Inter la sirve next/font (--font-geist-sans); antes se cargaba otra vez desde Google Fonts (72 KB) */
-  --font-inter: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
+  /* OJO: sin var() anidadas aquí: --font-geist-sans (next/font) vive en <body>, no en :root, y una var
+     inválida dejaba TODA la web en serif. La Inter real entra por tailwind (fontFamily.sans). */
+  --font-inter: 'Inter', system-ui, sans-serif;
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
   --card: 0 0% 100%;
