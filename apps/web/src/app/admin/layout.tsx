@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { isAdmin } from "@/lib/admin"
+import ConClerk from "@/components/ConClerk"
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const { userId } = await auth()
@@ -9,6 +10,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!isAdmin(userId)) redirect("/dashboard")
 
   return (
+    <ConClerk>
     <div className="min-h-screen bg-gray-950 text-white flex">
       <aside className="w-56 border-r border-gray-800 flex flex-col p-4 gap-1 shrink-0">
         <div className="px-3 py-4 mb-2">
@@ -31,5 +33,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
       <main className="flex-1 p-8 overflow-y-auto">{children}</main>
     </div>
+    </ConClerk>
   )
 }

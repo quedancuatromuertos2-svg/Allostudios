@@ -400,7 +400,7 @@ body:has(.tema-claro){background:#F2F1EE}
 .tema-oscuro .hero-escenario{--ew:max(100vw,calc(100dvh * 1.7778));--eh:calc(var(--ew) / 1.7778);--u:min(calc(100dvh / 100),calc((100vw - 0.425 * var(--ew) - 64px) / 93));
   position:absolute;right:0;top:50%;transform:translateY(-50%);width:var(--ew);height:var(--eh)}
 /* el cartel cubre toda la pantalla, sin máscaras ni bandas: en 21:9 se recorta un poco arriba y abajo; en 16:10, por la izquierda (la zona oscura) */
-.tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.jpg) center/100% 100% no-repeat}
+.tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal.webp) center/100% 100% no-repeat}
 /* el cartel en vivo (CristalHero.tsx) se funde sobre la imagen fija cuando pinta su primer fotograma */
 .tema-oscuro .hero-vivo{opacity:0;transition:opacity 1.2s ease}
 .tema-oscuro .hero-vivo.listo{opacity:1}
@@ -424,7 +424,7 @@ body:has(.tema-claro){background:#F2F1EE}
 /* móvil: escenario vertical (imagen 9:16 arriba, panel abajo), también fijo entre teléfonos */
 @media (max-width:767px){
   .tema-oscuro .hero-escenario{--ew:100vw;--eh:calc(100vw * 1.7778);--u:calc(var(--eh) / 100);position:relative;left:auto;top:auto;transform:none;height:auto;min-height:100dvh;padding-top:calc(var(--u) * 26)}
-  .tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal-m.jpg) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 70%);mask-image:linear-gradient(180deg,#000 30%,transparent 70%)}
+  .tema-oscuro .hero-cartel-img{background:url(/marca/hero-cristal-m.webp) center top/100% auto no-repeat;-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 70%);mask-image:linear-gradient(180deg,#000 30%,transparent 70%)}
   .tema-oscuro .hero-panel-marco{position:relative;left:auto;top:auto;transform:none;width:auto;margin:0 16px 24px}
   .tema-oscuro .hero-panel{padding:calc(var(--u) * 3.2) calc(var(--u) * 3)}
   .tema-oscuro .hero-h1{font-size:calc(var(--u) * 5.2)}

@@ -23,7 +23,8 @@ export function VisualWeb({ compacto }: { compacto?: boolean }) {
   if (compacto) {
     return (
       <Movil escala={0.62}>
-        <iframe src="https://concepto-navaja.vercel.app" title="Web de concepto" className="w-[390px] h-[806px] origin-top-left border-0" style={{ transform: 'scale(0.718)' }} loading="lazy" />
+        {/* captura real de la web de concepto: pesa 40 KB; el iframe cargaba una web entera arriba de la home */}
+        <img src="/marca/trabajo/navaja-m.jpg" alt="Web de concepto Navaja, barbería" className="w-full h-auto" loading="lazy" decoding="async" />
       </Movil>
     )
   }

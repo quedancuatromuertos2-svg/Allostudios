@@ -511,7 +511,7 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
           <a href={wa} target="_blank" rel="noreferrer" className="dm-btn dm-btn-white dm-btn-lg">Solicitar presupuesto</a>
           <p className="dm-final-note">Sin compromiso · Respuesta en menos de 24 h</p>
         </div>
-        <p className="dm-foot">allostudios.net · Webs · Google · Anuncios · Asistente IA en WhatsApp</p>
+        <p className="dm-foot">Web por <a href="https://allostudios.net" style={{ color: 'inherit', fontWeight: 600, textDecoration: 'none' }}>allo.</a> · Webs · Google · Anuncios · Asistente IA en WhatsApp</p>
       </section>
 
       </main>

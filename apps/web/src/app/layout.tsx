@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { ClerkProvider } from "@clerk/nextjs"
 import { Inter, Outfit } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/providers"
@@ -79,16 +78,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Clerk NO va aquí: las páginas públicas no necesitan su JS (200 KB). Lo pone <ConClerk> en
+  // las zonas con sesión (ver components/ConClerk.tsx).
   return (
-    <ClerkProvider
-      publishableKey="pk_live_Y2xlcmsuYWxsb3N0dWRpb3MubmV0JA"
-      signInUrl="/login"
-      signUpUrl="/register"
-      afterSignInUrl="/panel"
-      afterSignUpUrl="/panel"
-    >
       <html lang="es" suppressHydrationWarning>
         <head>
+          {/* La imagen de la cabecera es el LCP: se pide antes de que el CSS la descubra */}
+          <link rel="preload" as="image" href="/marca/hero-cristal-m.webp" media="(max-width: 767px)" />
+          <link rel="preload" as="image" href="/marca/hero-cristal.webp" media="(min-width: 768px)" />
           {/* Structured Data — LocalBusiness / Agencia */}
           <script
             type="application/ld+json"
@@ -225,6 +222,5 @@ export default function RootLayout({
           <Providers>{children}</Providers>
         </body>
       </html>
-    </ClerkProvider>
   )
 }

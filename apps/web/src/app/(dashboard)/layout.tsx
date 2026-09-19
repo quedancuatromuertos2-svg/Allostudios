@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import { supabaseAdmin } from "@/lib/supabase"
 import { DashboardShell } from "@/components/dashboard/shell"
+import ConClerk from "@/components/ConClerk"
 
 export default async function DashboardLayout({
   children,
@@ -44,6 +45,7 @@ export default async function DashboardLayout({
     status === "past_due"
 
   return (
+    <ConClerk>
     <DashboardShell
       needsBilling={!!needsBilling}
       hasSubscription={!!subscription}
@@ -52,5 +54,6 @@ export default async function DashboardLayout({
     >
       {children}
     </DashboardShell>
+    </ConClerk>
   )
 }
