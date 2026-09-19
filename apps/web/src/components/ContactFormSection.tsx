@@ -54,6 +54,7 @@ export default function ContactFormSection() {
       telefono: fd.get('telefono'),
       email: fd.get('email'),
       servicio,
+      presupuesto: fd.get('presupuesto'),
       mensaje: fd.get('mensaje'),
     }
     try {
@@ -139,6 +140,20 @@ export default function ContactFormSection() {
               >
                 {SERVICIOS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
+            </div>
+
+            {/* Filtro de presupuesto (como Benor): sirve para proponer solo lo que encaja y para priorizar */}
+            <div>
+              <label className="block text-[13px] font-medium text-dim mb-1.5">Lo que puedes dedicar al mes *</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[['<100', 'Menos de 100 €'], ['100-300', '100-300 €'], ['>300', 'Más de 300 €']].map(([v, t], i) => (
+                  <label key={v} className="nivel-opcion lg rounded-xl px-3 py-3 text-center text-[13px] font-medium text-ink cursor-pointer has-[:checked]:ring-2 has-[:checked]:ring-accent">
+                    <input type="radio" name="presupuesto" value={v} defaultChecked={i === 1} className="sr-only" required />
+                    {t}
+                  </label>
+                ))}
+              </div>
+              <p className="text-[12px] text-muted mt-1.5">Para proponerte solo lo que te encaja. Sin compromiso.</p>
             </div>
 
             <div>
