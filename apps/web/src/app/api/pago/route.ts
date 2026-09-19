@@ -32,6 +32,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Marca la casilla de aceptación del contrato para continuar.' }, { status: 400 })
   }
   const ua = (req.headers.get('user-agent') || '').slice(0, 200)
+  // Comercial que trae la venta: campo del formulario (si lo teclea el cliente) o cookie de ?c=<slug>
+  const cookieC = req.headers.get('cookie')?.match(/(?:^|;\s*)allo_c=([a-z0-9-]{2,30})/i)?.[1] || ''
+  const comercial = (String(d?.comercial || '').trim().toLowerCase() || cookieC.toLowerCase()).replace(/[^a-z0-9-]/g, '').slice(0, 30) || null
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json({ error: 'Pagos no configurados' }, { status: 503 })
@@ -58,6 +61,7 @@ export async function POST(req: NextRequest) {
       contrato_aceptado_at: new Date().toISOString(),
       contrato_ip: ip,
       contrato_ua: ua,
+      comercial,
     })
     .select('id')
     .single()
@@ -72,14 +76,14 @@ export async function POST(req: NextRequest) {
       cancel_url: `${origen}/contratar/${art.clave.toLowerCase()}?cancelado=1`,
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '', contrato: CONTRATO_VERSION },
+      metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', negocio: negocio || '', telefono: telefono || '', contrato: CONTRATO_VERSION, comercial: comercial || '' },
       custom_text: {
         submit: { message: art.permanencia
           ? `Al pagar confirmas el contrato de suscripción (versión ${CONTRATO_VERSION}): ${art.permanencia} meses de permanencia, 0 € de entrada. Copia en allostudios.net/contrato.`
           : `Al pagar confirmas el contrato de suscripción (versión ${CONTRATO_VERSION}), sin permanencia. Copia en allostudios.net/contrato.` },
       },
       subscription_data: {
-        metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '' },
+        metadata: { clave: art.clave, extras: extras.map((e) => e.clave).join(','), periodo: anual ? 'anio' : 'mes', pedidoId: pedido?.id || '', comercial: comercial || '' },
         ...(art.permanencia ? { description: `${art.nombre} · permanencia ${art.permanencia} meses` } : {}),
       },
     })

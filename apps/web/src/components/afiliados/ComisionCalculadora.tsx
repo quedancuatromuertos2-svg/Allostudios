@@ -1,29 +1,34 @@
 'use client'
 
 import { useState } from 'react'
+import { ESCALERA, pctParaVenta } from '@/lib/comisiones-reglas'
 
 /*  Cuánto gana un comercial. Tres pasos que se leen de arriba abajo:
       1. Elige el pack que sueles cerrar.
-      2. Di cuántos clientes cierras al mes.
-      3. Mira lo que cobras: por cada cliente (20 % de su cuota, 12 meses) y lo que sumas cada mes.
-    Regla (18/09/2026): 20 % de cada cuota cobrada durante los 12 primeros meses del cliente.        */
+      2. Di cuántos clientes cierras a la semana (la escalera es semanal: 20 % → 25 % desde la 3.ª → 30 % desde la 5.ª).
+      3. Mira lo que cobras: por cada cliente y lo que sumas cada mes.
+    Reglas en lib/comisiones-reglas.ts (misma fuente que el webhook de Stripe y el panel).          */
 
 const PACKS = [
   { label: 'Estándar', cuota: 199 },
   { label: 'Pro', cuota: 349 },
   { label: 'Max', cuota: 499 },
 ]
-const PCT = 0.2
 const MESES = 12
+const SEMANAS_MES = 4.33
 const eur = (n: number) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
 export default function ComisionCalculadora({ compact = false }: { compact?: boolean }) {
   const [pack, setPack] = useState(1)
-  const [clientes, setClientes] = useState(3)
+  const [semana, setSemana] = useState(2)        // ventas por semana
   const cuota = PACKS[pack].cuota
-  const porMes = Math.round(cuota * PCT)          // lo que te deja UN cliente cada mes
+  // Cada venta de la semana lleva su % según la escalera; la media pondera lo que cobras
+  const pcts = Array.from({ length: semana }, (_, i) => pctParaVenta(i + 1))
+  const pctMedio = pcts.reduce((t, p) => t + p, 0) / Math.max(1, semana)
+  const porMes = Math.round(cuota * pctMedio / 100) // lo que te deja UN cliente cada mes (media)
   const porCliente = porMes * MESES               // lo que te deja UN cliente en total
-  const nuevoCadaMes = porMes * clientes          // lo que añades a tu sueldo cada mes que cierras `clientes`
+  const clientes = Math.round(semana * SEMANAS_MES)
+  const nuevoCadaMes = porMes * clientes          // lo que añades a tu sueldo cada mes que cierras así
   const alAno = nuevoCadaMes * MESES              // tu cobro mensual cuando llevas 12 meses cerrando así
 
   const Paso = ({ n, t }: { n: string; t: string }) => (
@@ -49,14 +54,25 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
         </div>
       </div>
 
-      {/* 2 · Clientes al mes */}
+      {/* 2 · Ventas a la semana + escalera */}
       <div>
-        <Paso n="2" t="Clientes que cierras cada mes" />
+        <Paso n="2" t="Ventas que cierras a la semana" />
         <div className="flex items-center gap-4">
-          <input id="af-ventas" type="range" min={1} max={12} step={1} value={clientes} onChange={(e) => setClientes(Number(e.target.value))} className="flex-1 accent-accent" />
-          <span className="text-[26px] font-display font-semibold text-ink tabular-nums w-10 text-right">{clientes}</span>
+          <input id="af-ventas" type="range" min={1} max={7} step={1} value={semana} onChange={(e) => setSemana(Number(e.target.value))} className="flex-1 accent-accent" />
+          <span className="text-[26px] font-display font-semibold text-ink tabular-nums w-10 text-right">{semana}</span>
         </div>
-        <p className="text-[12px] text-muted mt-1">Uno a la semana son 4. Con la demo hecha y los leads filtrados, es un ritmo normal.</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {ESCALERA.map((e) => {
+            const activo = pctParaVenta(semana) === e.pct
+            return (
+              <div key={e.pct} className={`rounded-xl px-3 py-2.5 border text-center transition-colors duration-300 ${activo ? 'border-accent bg-accent/10' : 'border-border'}`}>
+                <div className={`text-[18px] font-display font-semibold leading-none ${activo ? 'text-accent' : 'text-ink'}`}>{e.pct} %</div>
+                <div className="text-[11px] text-muted mt-1 leading-tight">{e.etiqueta}</div>
+              </div>
+            )
+          })}
+        </div>
+        <p className="text-[12px] text-muted mt-2">De lunes a domingo; el lunes se vuelve a empezar. Con {semana} {semana === 1 ? 'venta' : 'ventas'} a la semana tu media es del {pctMedio.toFixed(0)} % y cierras unos {clientes} clientes al mes.</p>
       </div>
 
       {/* 3 · Lo que cobras */}
@@ -67,7 +83,7 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
             <div className="text-[11px] uppercase tracking-[0.14em] text-muted font-semibold">Por cada cliente</div>
             <div className="mt-1.5 font-display text-[2rem] leading-none font-semibold text-accent tracking-[-0.03em]">{eur(porCliente)}</div>
             <p className="text-[12.5px] text-dim mt-2 leading-relaxed">
-              <strong className="text-ink">{eur(porMes)} al mes durante 12 meses.</strong> Es el 20 % de su cuota de {eur(cuota)}. Lo cobras mientras el cliente paga.
+              <strong className="text-ink">{eur(porMes)} al mes durante 12 meses.</strong> Es el {pctMedio.toFixed(0)} % de media de su cuota de {eur(cuota)}. Lo cobras mientras el cliente paga.
             </p>
           </div>
           <div className="lg rounded-xl p-4">
@@ -78,7 +94,7 @@ export default function ComisionCalculadora({ compact = false }: { compact?: boo
             </p>
           </div>
         </div>
-        <p className="text-[12px] text-muted mt-3">Se paga el día 5 de cada mes, contra factura, de las cuotas cobradas el mes anterior. Si el cliente paga el año por adelantado, cobras tu 20 % de golpe.</p>
+        <p className="text-[12px] text-muted mt-3">Se paga el día 5 de cada mes, contra factura, de las cuotas cobradas el mes anterior. Si el cliente paga el año por adelantado, cobras tu parte de golpe. Sigues tus ventas y tu escalera en tu panel.</p>
       </div>
     </div>
   )

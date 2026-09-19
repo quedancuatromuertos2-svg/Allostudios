@@ -8,12 +8,12 @@ import { ESTADOS_INTERIOR } from '@/lib/luces'
 import LuzPapel from '@/components/LuzPapel'
 
 export const metadata: Metadata = {
-  title: 'Programa de comerciales — gana el 20 % de cada cuota durante un año',
+  title: 'Programa de comerciales — del 20 % al 30 % de cada cuota durante un año',
   description:
-    'Vende packs por suscripción a negocios locales y cobra el 20 % de cada cuota durante 12 meses. Leads, demo y guion los ponemos nosotros. Tú solo llamas.',
+    'Vende packs por suscripción a negocios locales y cobra del 20 % al 30 % de cada cuota durante 12 meses. Leads, demo y guion los ponemos nosotros. Tú solo llamas.',
   alternates: { canonical: 'https://allostudios.net/afiliados' },
   openGraph: {
-    title: 'Gana el 20 % de cada cuota durante un año — Programa de comerciales de AlloStudios',
+    title: 'Del 20 % al 30 % de cada cuota durante un año — Programa de comerciales de AlloStudios',
     description: 'Te damos los leads con la demo ya hecha y el guion. Tú solo llamas y cierras. 100 % remoto y sin invertir un euro.',
     url: 'https://allostudios.net/afiliados',
     images: [{ url: 'https://allostudios.net/marca/og.jpg', width: 1200, height: 630, alt: 'allo.' }],
@@ -41,8 +41,8 @@ const pasos = [
   },
   {
     n: '04',
-    t: 'Cobras el 20 % cada mes',
-    d: 'El cliente paga su cuota a AlloStudios y tú cobras tu parte el día 5 del mes siguiente, durante 12 meses. Nosotros producimos, entregamos y mantenemos todo.',
+    t: 'Cobras tu % cada mes',
+    d: 'El cliente paga su cuota a AlloStudios y tú cobras tu parte el día 5 del mes siguiente, durante 12 meses. 20 % de base; 25 % a partir de la tercera venta de la semana y 30 % a partir de la quinta.',
   },
 ]
 
@@ -75,8 +75,8 @@ const reglas = [
     d: 'Contra factura tuya. Fecha fija, sin sorpresas ni "te lo paso la semana que viene".',
   },
   {
-    t: 'El 20 % es de cada cuota, 12 meses',
-    d: 'No de un pago único: del pack que cierres cobras cada mes mientras el cliente paga, durante el primer año. Un Pack Pro son 70 € al mes para ti; 840 € por cliente.'
+    t: 'Es de cada cuota, 12 meses',
+    d: 'No de un pago único: del pack que cierres cobras cada mes mientras el cliente paga, durante el primer año. Un Pack Pro al 20 % son 70 € al mes para ti; 840 € por cliente. Al 30 %, 1.256 €.'
   },
   {
     t: 'Nunca dos comerciales al mismo lead',
@@ -136,7 +136,7 @@ export default function AfiliadosPage() {
             </h1>
             <p className="mt-6 text-[1.08rem] text-dim font-light max-w-xl mx-auto leading-relaxed text-pretty">
               Te damos negocios locales ya filtrados, con su web de muestra ya generada y el guion
-              de llamada. Cierras la venta y te llevas el <strong className="text-ink font-semibold">20 % de cada cuota durante 12 meses</strong>.
+              de llamada. Cierras la venta y te llevas <strong className="text-ink font-semibold">del 20 % al 30 % de cada cuota durante 12 meses</strong>.
               Sin invertir un euro y desde donde quieras.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-9">
@@ -162,17 +162,17 @@ export default function AfiliadosPage() {
             <div className="text-center mb-10">
               <span className="eyebrow block mb-4">Lo que se gana</span>
               <h2 className="text-headline font-semibold text-ink text-balance">
-                El 20 % de cada cuota, durante un año.
+                Del 20 % al 30 % de cada cuota, durante un año.
               </h2>
               <p className="mt-4 text-dim font-light max-w-lg mx-auto">
-                No hay tramos, ni objetivos, ni letra pequeña. Cada cliente que cierras te paga 12 meses.
+                Sin objetivos mínimos ni letra pequeña. Cada cliente que cierras te paga 12 meses, y cuantas más cierras en la misma semana, mayor es tu parte.
                 Mueve las barras y míralo tú mismo.
               </p>
             </div>
             <ComisionCalculadora />
             <p className="text-[12px] text-muted text-center mt-5 max-w-lg mx-auto">
               Sobre cada cuota que paga el cliente durante sus 12 primeros meses. Si paga el año por
-              adelantado, cobras tu 20 % de golpe.
+              adelantado, cobras tu parte de golpe. El % de cada venta se fija al cobrar su primera cuota.
             </p>
           </div>
         </section>

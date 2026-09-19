@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type Articulo, eur, porClave } from '@/lib/precios'
 
 /*  Desglose y botón de pago.
@@ -18,6 +18,9 @@ export default function Desglose({ art }: { art: Articulo }) {
   const [email, setEmail] = useState('')
   const [anual, setAnual] = useState(false)
   const [extras, setExtras] = useState<string[]>([])
+  // código del comercial (cookie allo_c puesta por ?c=<slug>); el cliente puede corregirlo
+  const [comercial, setComercial] = useState('')
+  useEffect(() => { const m = document.cookie.match(/(?:^|;\s*)allo_c=([a-z0-9-]{2,30})/i); if (m) setComercial(m[1]) }, [])
   const [acepta, setAcepta] = useState(false)
 
   const extrasDisponibles = (art.extras || []).map(porClave).filter((e): e is Articulo => !!e)
@@ -37,7 +40,7 @@ export default function Desglose({ art }: { art: Articulo }) {
       const r = await fetch('/api/pago', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clave: art.clave, negocio, telefono, email, periodo: anual ? 'anio' : 'mes', extras, aceptaContrato: acepta }),
+        body: JSON.stringify({ clave: art.clave, negocio, telefono, email, periodo: anual ? 'anio' : 'mes', extras, aceptaContrato: acepta, comercial }),
       })
       const d = await r.json()
       if (!r.ok || !d.url) throw new Error(d.error || 'No se pudo abrir el pago')

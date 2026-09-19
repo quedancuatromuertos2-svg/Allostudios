@@ -13,6 +13,7 @@ export type PanelMember = {
   workspace: string
   role: 'admin' | 'comercial' | 'cliente'
   active: boolean
+  slug?: string | null      // código de comercial (allostudios.net/?c=slug)
   created_at?: string
 }
 

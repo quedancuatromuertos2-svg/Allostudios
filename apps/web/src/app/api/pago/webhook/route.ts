@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 import { supabaseAdmin } from '@/lib/supabase'
 import { sendLeadEmail, sendContratoEmail } from '@/lib/email'
+import { fijarComisionVenta, registrarCuota } from '@/lib/comisiones'
 import { CONTRATO_VERSION } from '@/lib/contrato'
 import { porClave, eur } from '@/lib/precios'
 
@@ -32,6 +33,21 @@ export async function POST(req: NextRequest) {
     await eventoSuscripcion(evento)
     return NextResponse.json({ recibido: true })
   }
+  // Cada cuota cobrada → comisión del comercial (si la venta tiene uno). Idempotente por invoice.
+  if (evento.type === 'invoice.paid') {
+    const inv = evento.data.object as Stripe.Invoice
+    const subId = typeof inv.subscription === 'string' ? inv.subscription : inv.subscription?.id || ''
+    if (subId) {
+      const { data: pedido } = await supabaseAdmin.from('pedidos').select('id, comercial, comision_pct, pagado_at').eq('stripe_subscription_id', subId).maybeSingle()
+      if (pedido?.id && pedido.comercial) {
+        if (!pedido.comision_pct) await fijarComisionVenta(pedido.id, pedido.comercial, new Date((inv.status_transitions?.paid_at || inv.created) * 1000))
+        // base sin IVA: subtotal_excluding_tax si Stripe lo da; si no, amount_paid
+        const base = inv.subtotal_excluding_tax ?? inv.amount_paid ?? 0
+        await registrarCuota({ pedidoId: pedido.id, stripeInvoiceId: inv.id, baseCent: base, cobradoAt: new Date((inv.status_transitions?.paid_at || inv.created) * 1000) }).catch((e) => console.error('comision', e))
+      }
+    }
+    return NextResponse.json({ recibido: true })
+  }
   if (evento.type !== 'checkout.session.completed') {
     return NextResponse.json({ recibido: true })
   }
@@ -55,6 +71,15 @@ export async function POST(req: NextRequest) {
       stripe_subscription_id: typeof s.subscription === 'string' ? s.subscription : null,
     })
     .eq('stripe_session_id', s.id)
+
+  // Venta con comercial: se fija su % (escalera semanal) en el momento del pago
+  {
+    const comercial = String(s.metadata?.comercial || '')
+    if (comercial) {
+      const { data: p } = await supabaseAdmin.from('pedidos').select('id, comision_pct').eq('stripe_session_id', s.id).maybeSingle()
+      if (p?.id && !p.comision_pct) await fijarComisionVenta(p.id, comercial, new Date()).catch((e) => console.error('comision', e))
+    }
+  }
 
   // Aviso al equipo por el mismo canal que el resto de solicitudes
   const anual = s.metadata?.periodo === 'anio'

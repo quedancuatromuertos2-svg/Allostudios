@@ -55,6 +55,7 @@ const isProtectedRoute = createRouteMatcher([
   "/api/panel/assign(.*)",
   "/api/panel/buscar(.*)",
   "/api/panel/leads(.*)",
+  "/api/panel/liquidar(.*)",
   "/api/panel/members(.*)",
   "/api/panel/ruta(.*)",
 ])
@@ -95,11 +96,22 @@ const conClerk = clerkMiddleware(
  * también en las públicas. En ese caso, las rutas públicas pasan sin Clerk y solo las
  * protegidas van al login. En producción la clave existe y todo va por Clerk como siempre.
  */
-export default function middleware(req: NextRequest, ev: NextFetchEvent) {
+/* Atribución de comerciales: allostudios.net/…?c=<slug> deja una cookie de 90 días que el checkout
+   manda a /api/pago y acaba en pedidos.comercial (ver lib/comisiones.ts). */
+function conReferido(req: NextRequest, res: Response | undefined | null | void) {
+  const c = req.nextUrl.searchParams.get("c")
+  if (!c || !/^[a-z0-9-]{2,30}$/i.test(c)) return res ?? undefined
+  const r = (res instanceof NextResponse ? res : NextResponse.next()) as NextResponse
+  r.cookies.set("allo_c", c.toLowerCase(), { maxAge: 60 * 60 * 24 * 90, path: "/", sameSite: "lax" })
+  return r
+}
+
+export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
   if (!process.env.CLERK_SECRET_KEY && !isProtectedRoute(req)) {
-    return redirectAppSubdomain(req) ?? NextResponse.next()
+    return conReferido(req, redirectAppSubdomain(req) ?? NextResponse.next())
   }
-  return conClerk(req, ev)
+  const res = await conClerk(req, ev)
+  return conReferido(req, res) ?? res ?? undefined
 }
 
 export const config = {
