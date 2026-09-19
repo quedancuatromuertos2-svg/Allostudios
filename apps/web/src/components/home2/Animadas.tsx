@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
-import { useRef } from 'react'
+import { animate, motion, useInView, useMotionValue, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { VisualWeb } from './Visuales'
 
 /*  Las animaciones propias de cada capítulo, ligadas al scroll (progreso 0→1 de la sección):
@@ -32,9 +32,13 @@ function useProgresoPropio(ref: React.RefObject<HTMLDivElement | null>) {
 }
 
 export function BusquedaEnVivo({ sinMovil }: { progreso?: MotionValue<number>; sinMovil?: boolean }) {
+  // Se reproduce sola (4 s) en cuanto está en pantalla, una vez: ligada al scroll se quedaba a medias
+  // (el cliente subiendo al puesto 1 encima de otro) cuando el usuario paraba en mitad del tramo.
   const ref = useRef<HTMLDivElement>(null)
-  const progreso = useProgresoPropio(ref)
-  // Tramos del scroll: 0.05-0.22 se escribe · 0.22-0.32 aparecen resultados · 0.32-0.5 el cliente sube al 1
+  const enPantalla = useInView(ref, { once: true, amount: 0.5 })
+  const progreso = useMotionValue(0)
+  useEffect(() => { if (enPantalla) { const c = animate(progreso, 0.6, { duration: 4.2, ease: 'linear', delay: 0.3 }); return () => c.stop() } }, [enPantalla, progreso])
+  // Tramos: 0.05-0.22 se escribe · 0.22-0.32 aparecen resultados · 0.34-0.5 el cliente sube al 1 · 0.5 sello
   const letras = useTransform(progreso, [0.05, 0.22], [0, QUERY.length])
   const texto = useTransform(letras, (n) => QUERY.slice(0, Math.round(n)))
   const cursor = useTransform(progreso, (p) => (p > 0.05 && p < 0.24 ? 1 : 0))
