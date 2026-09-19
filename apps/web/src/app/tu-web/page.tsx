@@ -15,12 +15,13 @@ export const metadata: Metadata = {
 export default function TuWebPage({
   searchParams,
 }: {
-  searchParams?: { negocio?: string; ciudad?: string; nivel?: string }
+  searchParams?: { negocio?: string; ciudad?: string; nivel?: string; sector?: string }
 }) {
   // Datos que llegan del generador de la home (/#tu-web) para no repetir formulario
   const negocio = String(searchParams?.negocio || '').slice(0, 120)
   const ciudad = String(searchParams?.ciudad || '').slice(0, 80) || 'Valencia'
   const nivel = ['arranque', 'premium', 'cine'].includes(String(searchParams?.nivel)) ? String(searchParams?.nivel) : 'arranque'
+  const sector = String(searchParams?.sector || '').slice(0, 60) // viene de /webs/<sector>
 
   return (
     <div className="tema-oscuro">
@@ -42,7 +43,7 @@ export default function TuWebPage({
 
           <div className="hero-bandeja p-1.5 rounded-[1.6rem]">
             <div className="lg rounded-[calc(1.6rem-0.375rem)] p-6 md:p-8">
-              <TuWebForm defaultNegocio={negocio} defaultCiudad={ciudad} defaultNivel={nivel} />
+              <TuWebForm defaultNegocio={negocio} defaultCiudad={ciudad} defaultNivel={nivel} defaultSector={sector} />
             </div>
           </div>
         </div>

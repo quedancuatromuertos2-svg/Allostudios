@@ -6,6 +6,8 @@ const I = (d: string) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: d }} />
 )
 
+// href: la página del sector (/webs/<slug>), la que Google posiciona
+const HREF: Record<string, string> = { 'Peluquerías y estética': '/webs/peluquerias', 'Clínicas y dentistas': '/webs/clinicas', 'Restaurantes y bares': '/webs/restaurantes', 'Gimnasios': '/webs/gimnasios', 'Talleres y reformas': '/webs/talleres', 'Veterinarios': '/webs/clinicas', 'Inmobiliarias': '/webs/despachos', 'Comercios locales': '/webs/tiendas' }
 const sectores = [
   { name: 'Peluquerías y estética', color: 'text-pink-600', d: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88"/><path d="M14.47 14.48 20 20"/><path d="M8.12 8.12 12 12"/>' },
   { name: 'Clínicas y dentistas', color: 'text-blue-600', d: '<path d="M7 3C4.5 3 3 5 3 7.5c0 2 .8 3 1.5 5S5.5 21 7.5 21c1.8 0 1.4-4 2.5-6 .5-1 1.5-1 2 0 1.1 2 .7 6 2.5 6 2 0 2.3-6.5 3-8.5S21 9.5 21 7.5C21 5 19.5 3 17 3c-2 0-3 1-5 1s-3-1-5-1z"/>' },
@@ -45,17 +47,18 @@ export default function SectoresSection() {
 
         <div className="flex flex-wrap justify-center gap-2.5">
           {sectores.map((s, i) => (
-            <motion.div
+            <motion.a
               key={s.name}
+              href={HREF[s.name] || '/webs'}
               initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.045, ease: [0.16, 1, 0.3, 1] }}
-              className="lg flex items-center gap-2 rounded-full px-4 py-2.5 hover:-translate-y-0.5 transition-all duration-200 cursor-default"
+              className="lg flex items-center gap-2 rounded-full px-4 py-2.5 hover:-translate-y-0.5 transition-all duration-200"
             >
               <span className={`leading-none ${s.color}`}>{I(s.d)}</span>
               <span className="text-[13px] font-medium text-ink">{s.name}</span>
-            </motion.div>
+            </motion.a>
           ))}
 
           <motion.a

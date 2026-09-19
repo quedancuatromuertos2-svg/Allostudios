@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { SECTORES } from '@/lib/sectores'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://allostudios.net'
@@ -8,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/tu-web`, lastModified: now, changeFrequency: 'weekly', priority: 0.95 },
     { url: `${base}/webs`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    ...SECTORES.map((s) => ({ url: `${base}/webs/${s.slug}`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.85 })),
     { url: `${base}/servicios`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/contrato`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${base}/contratar`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },

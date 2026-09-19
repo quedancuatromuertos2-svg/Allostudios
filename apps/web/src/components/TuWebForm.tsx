@@ -33,9 +33,10 @@ type Props = {
   defaultCiudad?: string
   /* Nivel de web preseleccionado (viene del capítulo del pack) */
   defaultNivel?: string
+  defaultSector?: string
 }
 
-export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valencia', defaultNivel = 'arranque' }: Props) {
+export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valencia', defaultNivel = 'arranque', defaultSector = '' }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -107,7 +108,7 @@ export default function TuWebForm({ defaultNegocio = '', defaultCiudad = 'Valenc
           <select
             name="sector"
             required
-            defaultValue=""
+            defaultValue={SECTORES.includes(defaultSector) ? defaultSector : ''}
             className="w-full px-4 py-3 rounded-xl border border-border bg-canvas text-[14px] text-ink focus:border-accent outline-none transition-colors"
           >
             <option value="" disabled>Elige…</option>

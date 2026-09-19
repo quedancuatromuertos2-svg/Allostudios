@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation'
 import WebsSection from '@/components/WebsSection'
 import DemoGeneratorSection from '@/components/DemoGeneratorSection'
 import ElegirPack from '@/components/home2/ElegirPack'
+import SectoresSection from '@/components/SectoresSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
@@ -25,6 +26,7 @@ export default function Webs() {
         <WebsSection titular="h1" />
         {/* La tienda de la home, abierta en «Solo la web» */}
         <ElegirPack inicial={1} />
+        <SectoresSection />
         <DemoGeneratorSection />
         <CTASection />
       </main>
