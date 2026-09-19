@@ -127,7 +127,7 @@ export function Anuncio() {
       </div>
       <div className="px-4 pb-3 text-[13px] leading-snug">Corte clásico y afeitado a navaja, sin prisa y con cita. Esta semana, primera visita a 19 €. Reserva en 20 segundos, sin llamar 👇</div>
       <div className="relative h-40 overflow-hidden">
-        <img src="/marca/trabajo/navaja-foto-1.webp" alt="" className="w-full h-full object-cover" />
+        <img src="/marca/trabajo/navaja-foto-1.webp" alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
         <span className="absolute left-3 bottom-3 text-[11px] font-semibold tracking-wide uppercase text-white/90 bg-black/45 backdrop-blur px-2 py-1 rounded-md">Ruzafa · desde 19 €</span>
       </div>
       <div className="px-4 py-3 flex items-center justify-between bg-[#f0f2f5]">

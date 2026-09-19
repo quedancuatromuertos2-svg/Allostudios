@@ -104,9 +104,9 @@ export default function WebsSection({ titular = 'h2' }: { titular?: 'h1' | 'h2' 
               <motion.a key={t.slug} variants={fadeUp} href={t.url} target="_blank" rel="noopener noreferrer"
                 className="trabajo group block rounded-[1.6rem] p-1.5 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1">
                 <div className="relative rounded-[calc(1.6rem-0.375rem)] overflow-hidden aspect-[4/3]">
-                  <img src={`/marca/trabajo/${t.slug}.jpg`} alt={`Web de concepto ${t.nombre}`}
+                  <img src={`/marca/trabajo/${t.slug}.jpg`} alt={`Web de concepto ${t.nombre}`} loading="lazy" decoding="async"
                     className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.03]" />
-                  <img src={`/marca/trabajo/${t.slug}-m.jpg`} alt="" aria-hidden
+                  <img src={`/marca/trabajo/${t.slug}-m.jpg`} alt="" aria-hidden loading="lazy" decoding="async"
                     className="absolute right-4 bottom-0 w-[22%] rounded-t-[10px] shadow-[0_20px_40px_-16px_rgba(0,0,0,.6)] translate-y-3 transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-1" />
                   <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full bg-black/40 text-white/85 backdrop-blur-md">Concepto</span>
                 </div>

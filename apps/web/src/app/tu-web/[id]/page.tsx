@@ -325,6 +325,8 @@ export default async function DemoPage({ params, searchParams }: { params: { id:
         '--luz1': adn.luz[0], '--luz2': adn.luz[1], '--luzp1': adn.luzPapel[0], '--luzp2': adn.luzPapel[1],
       } as React.CSSProperties) : undefined}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      {/* Bricolage: titulares de la demo Arranque (los otros niveles traen su propia display en el ADN) */}
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&display=swap" />
       {premium && <link rel="stylesheet" href={adn.fuentes.url} />}
       {premium && <LuzFondo paleta="sector" colores={{ a: adn.luz[1], b: adn.acento2, c: adn.luz[0], d: adn.luz[0], e: adn.cristal.c4, f: adn.acento, g: adn.cristal.c3, h: adn.luz[1], o: adn.bg }} />}
       {cine && <LuzPapel />}
