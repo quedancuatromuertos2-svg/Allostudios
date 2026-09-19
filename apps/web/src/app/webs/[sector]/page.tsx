@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import ChatAllo from '@/components/ChatAllo'
 import LuzFondo from '@/components/LuzFondo'
 import LuzPapel from '@/components/LuzPapel'
 import CTASection from '@/components/CTASection'
@@ -217,6 +218,7 @@ export default function SectorPage({ params }: { params: { sector: string } }) {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <ChatAllo />
     </div>
   )
 }

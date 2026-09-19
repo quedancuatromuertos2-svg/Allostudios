@@ -7,6 +7,7 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import ChatAllo from '@/components/ChatAllo'
 import LuzFondo from '@/components/LuzFondo'
 import LuzPapel from '@/components/LuzPapel'
 
@@ -31,6 +32,7 @@ export default function Servicios() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <ChatAllo />
     </div>
   )
 }

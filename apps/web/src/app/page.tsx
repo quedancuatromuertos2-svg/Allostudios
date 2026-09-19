@@ -7,6 +7,7 @@ import ComercialesSection from '@/components/ComercialesSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import ChatAllo from '@/components/ChatAllo'
 import LuzFondo from '@/components/LuzFondo'
 import LuzPapel from '@/components/LuzPapel'
 import CintaPacks from '@/components/home2/CintaPacks'
@@ -172,6 +173,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <ChatAllo />
     </div>
   )
 }
