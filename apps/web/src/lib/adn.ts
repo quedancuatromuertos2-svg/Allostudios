@@ -50,7 +50,8 @@ export const ADNS: ADN[] = [
   },
   {
     clave: 'salud', nombre: 'Salvia', eyebrow: 'Salud',
-    fuentes: { display: "'Newsreader', Georgia, serif", texto: "'Karla', system-ui, sans-serif", displayPeso: 500, url: G('family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Karla:wght@400;500;600') },
+    // Sans geométrica limpia (como el concepto Serra): salud = precisión y aire, sin cursivas
+    fuentes: { display: "'Manrope', system-ui, sans-serif", texto: "'Karla', system-ui, sans-serif", displayPeso: 700, url: G('family=Manrope:wght@500;700;800&family=Karla:wght@400;500;600') },
     bg: '#101815', papel: '#F1F4F0', tinta: '#15211B', acento: '#7FA38A', acento2: '#B08A5A',
     luz: ['#2F5D4A', '#7FA38A'], luzPapel: ['#BFD9C6', '#E9DCC0'],
     cristal: { fondo: '#101815', c1: '#2F5D4A', c2: '#7FA38A', c3: '#D9C6A3', c4: '#F5F1E6' },
@@ -58,7 +59,8 @@ export const ADNS: ADN[] = [
   },
   {
     clave: 'restaurante', nombre: 'Brasa', eyebrow: 'Cocina',
-    fuentes: { display: "'Bodoni Moda', 'Didot', serif", texto: "'Jost', system-ui, sans-serif", displayPeso: 500, url: G('family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;1,6..96,500&family=Jost:wght@300;400;500') },
+    // Serif negra y cálida (como el concepto Sequer): cocina = apetito y carácter
+    fuentes: { display: "'Fraunces', Georgia, serif", texto: "'Jost', system-ui, sans-serif", displayPeso: 900, url: G('family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,700,50,1;0,9..144,900,50,1;1,9..144,700,50,1&family=Jost:wght@300;400;500') },
     bg: '#120C0A', papel: '#F3EBE0', tinta: '#22160F', acento: '#E2562B', acento2: '#FFB36B',
     luz: ['#7A2A16', '#E2562B'], luzPapel: ['#FFB36B', '#F0C9A0'],
     cristal: { fondo: '#120C0A', c1: '#7A2A16', c2: '#E2562B', c3: '#FFB36B', c4: '#FFF0D6' },
