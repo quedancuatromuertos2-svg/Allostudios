@@ -48,7 +48,7 @@ const mes = (clave: string) => ID[clave]?.mes || `PENDIENTE_${clave}_MES`
 const anio = (clave: string, eurMes: number) => ({ eur: eurMes * 10, priceId: ID[clave]?.anio || `PENDIENTE_${clave}_ANIO` })
 
 /* Piezas que forman los packs (para el desglose "por separado") */
-const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS: 79, ASISTENTE: 39, ADS: 199, AEO: 99 }
+const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS: 79, ASISTENTE: 149, ADS: 199, AEO: 99 }
 /* Piezas de los packs digitales (no se venden sueltas; sirven para el desglose «por separado») */
 const D = { LANDING: 299, ANALITICA: 149, PRUEBA_SOCIAL: 99, CUALIFICADOR: 249, DEMOS: 99, ADS: 399 }
 
@@ -133,13 +133,13 @@ export const CATALOGO: Articulo[] = [
   /* ── Servicios sueltos (sin permanencia) ── */
   {
     clave: 'ASISTENTE_IA', nombre: 'Asistente de IA en WhatsApp', eur: P.ASISTENTE, cobro: 'mes', tipo: 'servicio',
-    desc: 'Responde el WhatsApp de tu negocio 24/7: horarios, precios, dudas y peticiones de cita. Te avisa cuando hace falta.',
-    priceId: 'price_1U9rzSAtD7Uqmi3UNNQRyt3o',
+    desc: 'Responde el WhatsApp de tu negocio 24/7 con tus precios y horarios, deja la cita en tu Google Calendar y te avisa cuando hace falta una persona.',
+    priceId: mes('ASISTENTE_IA'),
   },
   {
     clave: 'SEO_LOCAL', nombre: 'SEO local', eur: P.SEO, cobro: 'mes', tipo: 'servicio',
     desc: 'Ficha de Google, palabras clave y trabajo mensual para que te encuentren en tu zona y sigas arriba.',
-    priceId: 'price_1U9rzSAtD7Uqmi3UVn1WseUF',
+    priceId: mes('SEO_LOCAL'),
   },
   {
     clave: 'AEO', nombre: 'Que la IA te recomiende', eur: P.AEO, cobro: 'mes', tipo: 'servicio',
@@ -149,22 +149,22 @@ export const CATALOGO: Articulo[] = [
   {
     clave: 'RESENAS', nombre: 'Reseñas 5★ en Google', eur: P.RESENAS, cobro: 'mes', tipo: 'servicio',
     desc: 'Sistema para pedir reseñas a tus clientes contentos, automatizado.',
-    priceId: 'price_1U9rzTAtD7Uqmi3UfZZZarF5',
+    priceId: mes('RESENAS'),
   },
   {
     clave: 'ADS', nombre: 'Campañas Meta y Google Ads', eur: P.ADS, cobro: 'mes', tipo: 'servicio',
     desc: 'Creamos y optimizamos tus anuncios cada mes. La inversión publicitaria va aparte.',
-    priceId: 'price_1U9rzTAtD7Uqmi3U2R8rEgzk',
+    priceId: mes('ADS'),
   },
   {
     clave: 'CAPTACION', nombre: 'Captación de clientes', eur: 249, cobro: 'mes', tipo: 'servicio',
     desc: '40 negocios cualificados al mes de tu zona: teléfono verificado, ficha y motivo por el que te necesitan.',
-    priceId: 'price_1U9qZUAtD7Uqmi3UwN9rzTWx',
+    priceId: mes('CAPTACION'),
   },
   {
     clave: 'CAPTACION_PRO', nombre: 'Captación Pro', eur: 449, cobro: 'mes', tipo: 'servicio',
     desc: '100 negocios cualificados al mes con seguimiento en el panel.',
-    priceId: 'price_1U9qZUAtD7Uqmi3UQbe0OC53',
+    priceId: mes('CAPTACION_PRO'),
   },
 ]
 

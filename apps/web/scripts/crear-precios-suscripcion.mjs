@@ -24,6 +24,17 @@ const PRODUCTOS = [
   { clave: 'WEB_CINE',         nombre: 'Web Cinematográfica',      mes: 249, desc: 'Web con scroll cinematográfico y dirección de arte. 12 meses.' },
   { clave: 'CINE_UPGRADE',     nombre: 'Upgrade Cinematográfica',  mes: 100, desc: 'Sustituye la web del pack por la Cinematográfica.' },
   { clave: 'AEO',              nombre: 'Que la IA te recomiende',  mes: 99,  desc: 'Visibilidad en ChatGPT, Perplexity y Google AI: Bing Places, datos estructurados, directorios e informe mensual. Sin permanencia.', soloMes: true },
+  // Startups y negocios digitales (20/09/2026)
+  { clave: 'PACK_LAUNCH',      nombre: 'Pack Launch',              mes: 399, desc: 'Landing que convierte + analítica y píxeles + prueba social + una iteración semanal. 12 meses, 0 € de entrada.' },
+  { clave: 'PACK_GROWTH',      nombre: 'Pack Growth',              mes: 699, desc: 'Pack Launch + asistente que cualifica leads en web y WhatsApp y agenda demos. 12 meses, 0 € de entrada.' },
+  { clave: 'PACK_SCALE',       nombre: 'Pack Scale',               mes: 999, desc: 'Pack Growth + campañas en Meta, Google y LinkedIn gestionadas (inversión aparte) con informe semanal. 12 meses, 0 € de entrada.' },
+  // Servicios sueltos, sin permanencia (solo cuota mensual)
+  { clave: 'ASISTENTE_IA',     nombre: 'Asistente de IA en WhatsApp', mes: 149, desc: 'Responde tu WhatsApp 24/7 con tus precios y horarios, deja la cita en tu Google Calendar y te avisa cuando hace falta una persona. Sin permanencia.', soloMes: true },
+  { clave: 'SEO_LOCAL',        nombre: 'SEO local',                mes: 99,  desc: 'Ficha de Google trabajada cada mes, palabras clave y contenido para salir en tu zona. Sin permanencia.', soloMes: true },
+  { clave: 'RESENAS',          nombre: 'Reseñas 5★ en Google',      mes: 79,  desc: 'Sistema para pedir reseñas a cada cliente contento, automatizado, y respuesta a todas. Sin permanencia.', soloMes: true },
+  { clave: 'ADS',              nombre: 'Campañas Meta y Google Ads', mes: 199, desc: 'Creamos y optimizamos tus anuncios cada mes con informe. La inversión publicitaria va aparte. Sin permanencia.', soloMes: true },
+  { clave: 'CAPTACION',        nombre: 'Captación de clientes',     mes: 249, desc: '40 negocios cualificados al mes de tu zona: teléfono verificado, ficha y motivo. Sin permanencia.', soloMes: true },
+  { clave: 'CAPTACION_PRO',    nombre: 'Captación Pro',             mes: 449, desc: '100 negocios cualificados al mes con seguimiento en el panel. Sin permanencia.', soloMes: true },
 ]
 
 const out = existsSync(SALIDA) ? JSON.parse(readFileSync(SALIDA, 'utf8')) : {}
