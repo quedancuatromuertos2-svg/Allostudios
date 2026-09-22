@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/webs`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     ...SECTORES.map((s) => ({ url: `${base}/webs/${s.slug}`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.85 })),
     { url: `${base}/servicios`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/startups`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/contrato`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${base}/contratar`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${base}/afiliados`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },

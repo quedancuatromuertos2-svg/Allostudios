@@ -8,12 +8,13 @@ import { useInView } from 'framer-motion'
     en vivo en un móvil) y el generador con el nivel ya elegido: el visitante escribe su negocio
     y ve SU web tal y como quedaría con ese pack.                                                */
 
-export type NivelDemo = 'arranque' | 'premium' | 'cine'
+export type NivelDemo = 'arranque' | 'premium' | 'cine' | 'vector'
 
 const DEMOS: Record<NivelDemo, { url: string; slug: string; nombre: string; sector: string; nota: string }> = {
   arranque: { url: 'https://concepto-navaja.vercel.app', slug: 'navaja', nombre: 'Navaja', sector: 'Barbería · Ruzafa', nota: 'Web Arranque: una página, tu marca, tus precios y el botón de WhatsApp. Lo esencial, bien hecho.' },
   premium: { url: 'https://concepto-serra.vercel.app', slug: 'serra', nombre: 'Clínica Serra', sector: 'Dental · Benimaclet', nota: 'Web Pro: luz de fondo, cristal, animaciones y tus reseñas de Google integradas. Acabado de agencia cara.' },
   cine: { url: 'https://concepto-sequer.vercel.app', slug: 'sequer', nombre: 'Sequer', sector: 'Arrocería · El Palmar', nota: 'Web Cinematográfica: la cabecera a pantalla completa, dirección de arte y scroll de cine.' },
+  vector: { url: 'https://concepto-vector.vercel.app', slug: 'vector', nombre: 'Vector', sector: 'SaaS · producto ficticio', nota: 'Landing de producto: mensaje en una frase, prueba social, planes claros y demo en un clic. ADN «Vector».' },
 }
 
 export default function DemoPack({ nivel, pack, oscuro, nivel3 }: { nivel: NivelDemo; pack: string; oscuro?: boolean; nivel3?: boolean }) {
@@ -55,7 +56,7 @@ export default function DemoPack({ nivel, pack, oscuro, nivel3 }: { nivel: Nivel
           <p className={`text-[13px] ${dim} leading-relaxed`}>{d.nota}</p>
           <form
             className="mt-5"
-            onSubmit={(e) => { e.preventDefault(); window.location.href = `/tu-web?negocio=${encodeURIComponent(negocio)}&nivel=${nivel}` }}
+            onSubmit={(e) => { e.preventDefault(); window.location.href = nivel === 'vector' ? `/tu-web?negocio=${encodeURIComponent(negocio)}&nivel=premium&sector=${encodeURIComponent('Startup / SaaS / software')}` : `/tu-web?negocio=${encodeURIComponent(negocio)}&nivel=${nivel}` }}
           >
             <label className={`block text-[10px] uppercase tracking-[0.2em] font-medium ${muted} mb-2`}>Y la tuya, con el Pack {pack}</label>
             <div className={`flex items-center gap-2 rounded-full p-1.5 pl-4 ${oscuro ? 'bg-white/[.06] ring-1 ring-white/10' : 'bg-white ring-1 ring-black/10'}`}>

@@ -2,6 +2,16 @@
 
 import { motion } from 'framer-motion'
 
+// `url`: la ficha real de contratación (antes el botón solo hacía scroll a un #contratar que no existe en /servicios)
+const URL_DE: Record<string, string> = {
+  'Anuncios Meta y Google': '/contratar/ads',
+  'Asistente IA 24/7': '/contratar/asistente_ia',
+  'Web profesional': '/webs',
+  'Que la IA te recomiende': '/contratar/aeo',
+  'SEO local en Google': '/contratar/seo_local',
+  'Reseñas 5★ en Google': '/contratar/resenas',
+}
+
 const services = [
   { key: 'Anuncios Meta y Google', d: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>', desc: 'Tienes semanas flojas y no sabes de dónde sacar clientes. Campañas en Meta y Google que traen gente de tu zona, con informe de qué entró y qué costó. Tú pones la inversión, nosotros la gestión.', price: '199 €/mes + inversión · o en el Pack Max' },
   { key: 'Asistente IA 24/7', d: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>', desc: 'Te escriben a las 22:00, contestas al día siguiente y ya han reservado en otro sitio. Un asistente responde tu WhatsApp al momento: horarios, precios, dudas y citas. Te avisa solo cuando hace falta una persona.', price: '39 €/mes · o en el Pack Pro' },
@@ -13,7 +23,10 @@ const services = [
 
 function pick(servicio: string) {
   window.dispatchEvent(new CustomEvent('selectService', { detail: servicio }))
-  document.querySelector('#contratar')?.scrollIntoView({ behavior: 'smooth' })
+  // El formulario vive en #contratar (home) o #contacto; si no está en esta página, se va a la home
+  const destino = document.querySelector('#contratar') || document.querySelector('#contacto')
+  if (destino) destino.scrollIntoView({ behavior: 'smooth' })
+  else window.location.href = '/#contratar'
 }
 
 export default function ServicesCatalogSection({ titular = 'h2' }: { titular?: 'h1' | 'h2' }) {
@@ -60,15 +73,15 @@ export default function ServicesCatalogSection({ titular = 'h2' }: { titular?: '
               <p className="text-[13.5px] text-dim font-light leading-relaxed flex-1 mb-5">{s.desc}</p>
               <div className="flex items-center justify-between pt-4 border-t border-border">
                 <span className="text-[14px] font-semibold text-ink">{s.price}</span>
-                <button
-                  onClick={() => pick(s.key)}
+                <a
+                  href={URL_DE[s.key] || '/contratar'}
                   className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent hover:text-accent-dark transition-colors"
                 >
-                  Contratar
+                  {s.key === 'Web profesional' ? 'Ver webs' : 'Contratar'}
                   <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                     <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </button>
+                </a>
               </div>
             </motion.div>
           ))}

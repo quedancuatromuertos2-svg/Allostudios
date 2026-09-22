@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { WEBS, porClave, eur } from '@/lib/precios'
 import { VisualChat, VisualWeb } from './Visuales'
+import { VisualLanding, VisualCualificador, VisualCosteLead } from './VisualesDigital'
 import { Retargeting } from './Piezas'
 
 /*  "Elige tu pack" — la tienda (como "Comprar un iPhone"): título, pestañas y tres
@@ -27,6 +28,25 @@ const NIVELES = [
     clave: 'PACK_MAX', nivel: 3, etiqueta: 'Que te lleguen clientes', nombre: 'Max',
     dolor: 'Quiero llenar la agenda, no solo estar.', visual: <div className="pt-2"><Retargeting compacto /></div>, cap: '#max', luz: 'prisma',
     rejilla: [['ads', 'Anuncios en tu zona', 'Meta y Google, gestionados'], ['retarget', 'Vuelven a verte', 'el que miró y no reservó'], ['control', 'Tú decides la inversión', 'desde 5 €/día, en tu cuenta'], ['mas', 'Todo lo del Pro', 'con web Cinematográfica']],
+  },
+]
+
+/* Startups y negocios digitales: su negocio ES la web. Otros packs (Launch / Growth / Scale), otro precio. */
+const NIVELES_DIGITAL = [
+  {
+    clave: 'PACK_LAUNCH', nivel: 1, etiqueta: 'Que se entienda y convierta', nombre: 'Launch', titulo: 'Pack Launch',
+    dolor: 'La landing la hizo el CTO un domingo.', visual: <VisualLanding />, cap: '/startups#launch', luz: 'velo',
+    rejilla: [['web', 'Landing en 7 días', 'mensaje, planes y CTA'], ['informe', 'Analítica y píxeles', 'eventos instalados'], ['estrella', 'Prueba social', 'logos, testimonios, cifras'], ['control', 'Iteración semanal', 'una prueba de conversión']],
+  },
+  {
+    clave: 'PACK_GROWTH', nivel: 2, etiqueta: 'El más elegido', nombre: 'Growth', titulo: 'Pack Growth',
+    dolor: 'Los leads llegan y nadie contesta hasta el lunes.', visual: <VisualCualificador />, cap: '/startups#growth', luz: 'cometa',
+    rejilla: [['chat', 'Asistente cualificador', 'web + WhatsApp, 24/7'], ['agenda', 'Demos en tu calendario', 'con recordatorio'], ['informe', 'Cada lead resumido', 'a tu CRM o email'], ['mas', 'Todo lo del Launch', 'landing + analítica + prueba social']],
+  },
+  {
+    clave: 'PACK_SCALE', nivel: 3, etiqueta: 'Que lleguen leads cada semana', nombre: 'Scale', titulo: 'Pack Scale',
+    dolor: 'Quemé 3.000 € en ads y no sé qué pasó.', visual: <div className="pt-2"><VisualCosteLead /></div>, cap: '/startups#scale', luz: 'nebulosa',
+    rejilla: [['ads', 'Meta, Google y LinkedIn', 'gestionados cada semana'], ['euro', 'Coste por lead', 'en el informe semanal'], ['web', 'Landings de campaña', 'una por público'], ['mas', 'Todo lo del Growth', 'asistente + demos']],
   },
 ]
 
@@ -58,7 +78,8 @@ function Icono({ k }: { k: string }) {
 const PESTANAS = ['Todos los packs', 'Solo la web', 'Complementos']
 const fmt = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 0 })
 
-function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
+type Nivel = (typeof NIVELES)[number] & { titulo?: string }
+function Tarjeta({ t, i }: { t: Nivel; i: number }) {
   const p = porClave(t.clave)!
   const oscuro = t.nivel >= 2
   const ir = (e: React.MouseEvent, url: string) => { e.preventDefault(); e.stopPropagation(); window.location.href = url }
@@ -105,8 +126,8 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
         </div>
         <h3 className={`mt-3 font-display leading-[.95] font-semibold tracking-[-0.04em] ${t.nivel === 3 ? 'text-[clamp(2.6rem,4vw,3.4rem)]' : 'text-[clamp(2rem,3vw,2.6rem)]'}`}>
           {t.nivel === 3 ? (
-            <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 45%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>Pack Max</span>
-          ) : `Pack ${t.nombre}`}
+            <span style={{ background: 'linear-gradient(90deg,#fff 0%,#FFC2A0 45%,#FF7A2A 100%)', WebkitBackgroundClip: 'text', color: 'transparent' }}>{t.titulo || 'Pack Max'}</span>
+          ) : (t.titulo || `Pack ${t.nombre}`)}
         </h3>
         <p className={`mt-2 text-[14px] ${oscuro ? 'text-white/65' : 'text-[#4E4A5E]'}`}>«{t.dolor}»</p>
       </div>
@@ -149,8 +170,11 @@ function Tarjeta({ t, i }: { t: (typeof NIVELES)[number]; i: number }) {
   )
 }
 
-export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
+export default function ElegirPack({ inicial = 0, segmento: segmentoInicial = 'local', fijo = false }: { inicial?: number; segmento?: 'local' | 'digital'; fijo?: boolean }) {
   const [tab, setTab] = useState(inicial)
+  // Un solo catálogo, dos formas de contarlo: negocios locales (packs Estándar/Pro/Max) o startups y digitales (Launch/Growth/Scale)
+  const [segmento, setSegmento] = useState<'local' | 'digital'>(segmentoInicial)
+  const digital = segmento === 'digital'
   const aeo = porClave('AEO')!
   const ads = porClave('ADS')!
 
@@ -180,8 +204,18 @@ export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
           Elige<br />tu pack.
         </motion.h2>
 
-        <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-b border-white/15 pb-3 text-[14.5px]">
-          {PESTANAS.map((p, i) => (
+        {/* Selector de segmento (como «Mac / iPad»): mismo producto, otro discurso y otro precio */}
+        {!fijo && (
+          <div className="mt-8 inline-flex rounded-full p-1 bg-white/[.06] ring-1 ring-white/10">
+            {([['local', 'Negocios locales'], ['digital', 'Startups y digitales']] as const).map(([k, l]) => (
+              <button key={k} type="button" onClick={() => { setSegmento(k); setTab(0) }}
+                className={`rounded-full px-4 py-2 text-[13.5px] font-semibold transition-colors ${segmento === k ? 'bg-white text-[#18181B]' : 'text-white/65 hover:text-white'}`}>{l}</button>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 border-b border-white/15 pb-3 text-[14.5px]">
+          {(digital ? ['Los tres packs', 'Complementos'] : PESTANAS).map((p, i) => (
             <button key={p} type="button" onClick={() => setTab(i)}
               className={`pb-1 transition-colors ${tab === i ? 'text-white font-semibold border-b-2 border-white -mb-[14px] pb-3' : 'text-white/55 hover:text-white'}`}>
               {p}
@@ -190,18 +224,19 @@ export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
         </div>
 
         <p className="mt-8 text-[clamp(1.2rem,2vw,1.5rem)] font-semibold text-white tracking-[-0.02em]">
-          {tab === 0 && <>Todos los packs. <span className="text-white/55 font-medium">Elige el tuyo; cada uno arregla una cosa.</span></>}
-          {tab === 1 && <>Solo la web. <span className="text-white/55 font-medium">Todo incluido, 0 € de entrada.</span></>}
-          {tab === 2 && <>Complementos. <span className="text-white/55 font-medium">Se añaden a cualquier pack.</span></>}
+          {tab === 0 && !digital && <>Todos los packs. <span className="text-white/55 font-medium">Elige el tuyo; cada uno arregla una cosa.</span></>}
+          {tab === 0 && digital && <>Para startups y negocios digitales. <span className="text-white/55 font-medium">Tu negocio es la web: aquí se trata como tal.</span></>}
+          {tab === 1 && !digital && <>Solo la web. <span className="text-white/55 font-medium">Todo incluido, 0 € de entrada.</span></>}
+          {((tab === 2 && !digital) || (tab === 1 && digital)) && <>Complementos. <span className="text-white/55 font-medium">Se añaden a cualquier pack.</span></>}
         </p>
 
         {tab === 0 && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-            {NIVELES.map((t, i) => <Tarjeta key={t.clave} t={t} i={i} />)}
+          <div key={segmento} className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+            {(digital ? NIVELES_DIGITAL : NIVELES).map((t, i) => <Tarjeta key={t.clave} t={t} i={i} />)}
           </div>
         )}
 
-        {tab === 1 && (
+        {tab === 1 && !digital && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             {WEBS.map((w, i) => (
               <motion.div key={w.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
@@ -220,7 +255,7 @@ export default function ElegirPack({ inicial = 0 }: { inicial?: number }) {
           </div>
         )}
 
-        {tab === 2 && (
+        {((tab === 2 && !digital) || (tab === 1 && digital)) && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             {[aeo, ads].map((a, i) => (
               <motion.div key={a.clave} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}

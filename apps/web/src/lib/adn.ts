@@ -109,12 +109,57 @@ export const ADNS: ADN[] = [
   {
     // Startups y negocios digitales. Referencia: los shots de «saas landing page dark» y «startup pricing»
     // de Dribbble (20/09/2026): negro azulado, un solo acento eléctrico, grotesca apretada, cifras grandes.
-    clave: 'startup', nombre: 'Vector', eyebrow: 'Startup',
+    clave: 'startup', nombre: 'Vector', eyebrow: 'SaaS',
     fuentes: { display: "'Space Grotesk', system-ui, sans-serif", texto: "'Inter', system-ui, sans-serif", displayPeso: 700, url: G('family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600') },
     bg: '#07080F', papel: '#F6F7FB', tinta: '#0B0C14', acento: '#7C5CFF', acento2: '#38E1B0',
     luz: ['#2B1F7A', '#38E1B0'], luzPapel: ['#DCD6FF', '#CFF7EA'],
     cristal: { fondo: '#07080F', c1: '#2B1F7A', c2: '#7C5CFF', c3: '#38E1B0', c4: '#EAF7FF' },
     cabecera: 'centro', cine: 'velocidad', carta: false,
+  },
+  {
+    // App móvil: colores vivos, redondeado, mucho aire; la pantalla del móvil es la protagonista
+    clave: 'app', nombre: 'Pulso', eyebrow: 'App',
+    fuentes: { display: "'Plus Jakarta Sans', system-ui, sans-serif", texto: "'Plus Jakarta Sans', system-ui, sans-serif", displayPeso: 800, url: G('family=Plus+Jakarta+Sans:wght@500;600;800') },
+    bg: '#0D0B1F', papel: '#FFFFFF', tinta: '#12102A', acento: '#FF5C8A', acento2: '#FFC531',
+    luz: ['#4B2ED9', '#FF5C8A'], luzPapel: ['#FFD6E2', '#FFF0B8'],
+    cristal: { fondo: '#0D0B1F', c1: '#4B2ED9', c2: '#FF5C8A', c3: '#FFC531', c4: '#FFF6E8' },
+    cabecera: 'centro', cine: 'aura', carta: false,
+  },
+  {
+    // E-commerce / tienda online: producto grande, fondo claro cálido, botón de compra sin ruido
+    clave: 'ecommerce', nombre: 'Estante', eyebrow: 'Tienda online',
+    fuentes: { display: "'Sora', system-ui, sans-serif", texto: "'Inter', system-ui, sans-serif", displayPeso: 700, url: G('family=Sora:wght@600;700&family=Inter:wght@400;500;600') },
+    bg: '#15130F', papel: '#FAF6F0', tinta: '#1C1915', acento: '#E8531E', acento2: '#1C1915',
+    luz: ['#6B3D22', '#E8531E'], luzPapel: ['#FFD9C6', '#F3E8D8'],
+    cristal: { fondo: '#15130F', c1: '#6B3D22', c2: '#E8531E', c3: '#FFB07A', c4: '#FFF3E8' },
+    cabecera: 'panel', cine: 'poster', carta: false,
+  },
+  {
+    // Fintech / finanzas: grafito y verde billete, cifras en mono, confianza por precisión
+    clave: 'fintech', nombre: 'Cifra', eyebrow: 'Fintech',
+    fuentes: { display: "'Instrument Sans', system-ui, sans-serif", texto: "'Instrument Sans', system-ui, sans-serif", displayPeso: 700, url: G('family=Instrument+Sans:wght@500;600;700&family=JetBrains+Mono:wght@500') },
+    bg: '#0A0F0D', papel: '#F3F6F4', tinta: '#0E1512', acento: '#22C55E', acento2: '#A3E635',
+    luz: ['#0F3D2E', '#22C55E'], luzPapel: ['#D6F5E3', '#EEF7D9'],
+    cristal: { fondo: '#0A0F0D', c1: '#0F3D2E', c2: '#22C55E', c3: '#A3E635', c4: '#F0FFF4' },
+    cabecera: 'panel', cine: 'dividido', carta: false,
+  },
+  {
+    // Producto de IA: negro absoluto, cian eléctrico, mono para lo técnico; sensación de terminal cara
+    clave: 'ia', nombre: 'Nodo', eyebrow: 'IA',
+    fuentes: { display: "'Inter Tight', system-ui, sans-serif", texto: "'Inter', system-ui, sans-serif", displayPeso: 700, url: G('family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500') },
+    bg: '#050506', papel: '#F4F4F6', tinta: '#0A0A0C', acento: '#22D3EE', acento2: '#A78BFA',
+    luz: ['#0E3A47', '#22D3EE'], luzPapel: ['#CFF7FF', '#E6DDFF'],
+    cristal: { fondo: '#050506', c1: '#0E3A47', c2: '#22D3EE', c3: '#A78BFA', c4: '#EAFBFF' },
+    cabecera: 'centro', cine: 'velocidad', carta: false,
+  },
+  {
+    // Agencia / servicios digitales: editorial, tipografía enorme, blanco y negro con un acento
+    clave: 'agencia', nombre: 'Trazo', eyebrow: 'Agencia',
+    fuentes: { display: "'Unbounded', system-ui, sans-serif", texto: "'Inter', system-ui, sans-serif", displayPeso: 700, url: G('family=Unbounded:wght@500;700&family=Inter:wght@400;500;600') },
+    bg: '#0B0B0B', papel: '#F5F5F2', tinta: '#0B0B0B', acento: '#D9FF3D', acento2: '#0B0B0B',
+    luz: ['#2A2A2A', '#D9FF3D'], luzPapel: ['#EFFFB0', '#E8E8E2'],
+    cristal: { fondo: '#0B0B0B', c1: '#2A2A2A', c2: '#D9FF3D', c3: '#FFFFFF', c4: '#F9FFE0' },
+    cabecera: 'editorial', cine: 'poster', carta: false,
   },
 ]
 
@@ -129,6 +174,11 @@ export function adnDe(sector: string | null | undefined): ADN {
     s.includes('gimnas') || s.includes('entren') ? 'gimnasio' :
     s.includes('taller') || s.includes('mecán') ? 'taller' :
     s.includes('abogad') || s.includes('asesor') || s.includes('inmobil') ? 'despacho' :
-    s.includes('startup') || s.includes('digital') || s.includes('saas') || s.includes('app') || s.includes('online') ? 'startup' : 'comercio'
+    s.includes('app') ? 'app' :
+    s.includes('e-commerce') || s.includes('ecommerce') || s.includes('tienda online') ? 'ecommerce' :
+    s.includes('fintech') || s.includes('finanz') ? 'fintech' :
+    s.includes('producto de ia') || s.includes(' ia') ? 'ia' :
+    s.includes('agencia') || s.includes('servicios digitales') ? 'agencia' :
+    s.includes('startup') || s.includes('digital') || s.includes('saas') || s.includes('software') || s.includes('online') ? 'startup' : 'comercio'
   return ADNS.find(a => a.clave === k) || ADNS[ADNS.length - 1]
 }

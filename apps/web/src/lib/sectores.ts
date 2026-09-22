@@ -192,7 +192,7 @@ export const SECTORES: Sector[] = [
     ],
   },
   {
-    slug: 'startups', adn: 'startup', sectorForm: 'Startup / Negocio digital', digital: true,
+    slug: 'startups', adn: 'startup', sectorForm: 'Startup / SaaS / software', digital: true,
     nombre: 'startups y negocios digitales', singular: 'una startup',
     titulo: 'Landing pages para startups y negocios digitales',
     sub: 'Una landing que explica el producto en cinco segundos, con precios claros y un asistente que responde a los leads a cualquier hora. Lista en 7 días, desde 99 €/mes, 0 € de entrada.',

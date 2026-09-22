@@ -9,7 +9,7 @@ const SOCIAL_LINKS = [
 ]
 
 const anchorLinks = {
-  Producto: [['Packs', '/#elegir'], ['Páginas web', '/webs'], ['Servicios sueltos', '/servicios'], ['Tu web gratis', '/tu-web'], ['FAQ', '/#faq']],
+  Producto: [['Packs', '/#elegir'], ['Páginas web', '/webs'], ['Servicios sueltos', '/servicios'], ['Startups y digitales', '/startups'], ['Tu web gratis', '/tu-web'], ['FAQ', '/#faq']],
 }
 
 const pageLinks = {

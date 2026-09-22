@@ -38,6 +38,8 @@ export type Articulo = {
   desglose?: [string, number][]
   /** Extras que se pueden añadir a este artículo en el checkout */
   extras?: string[]
+  /** 'digital' = packs para startups y negocios digitales (su negocio ES la web: otro precio y otro contenido). Sin valor = negocio local. */
+  segmento?: 'digital'
 }
 
 type Ids = Record<string, { product?: string; mes?: string; anio?: string }>
@@ -47,6 +49,8 @@ const anio = (clave: string, eurMes: number) => ({ eur: eurMes * 10, priceId: ID
 
 /* Piezas que forman los packs (para el desglose "por separado") */
 const P = { WEB_ARRANQUE: 99, WEB_PREMIUM: 149, WEB_CINE: 249, SEO: 99, RESENAS: 79, ASISTENTE: 39, ADS: 199, AEO: 99 }
+/* Piezas de los packs digitales (no se venden sueltas; sirven para el desglose «por separado») */
+const D = { LANDING: 299, ANALITICA: 149, PRUEBA_SOCIAL: 99, CUALIFICADOR: 249, DEMOS: 99, ADS: 399 }
 
 export const CATALOGO: Articulo[] = [
   /* ── Packs (la escalera visible en la web) ── */
@@ -74,6 +78,32 @@ export const CATALOGO: Articulo[] = [
     incluye: ['Todo lo del Pack Pro, con la web Cinematográfica', 'Campañas de Meta y Google Ads gestionadas (inversión publicitaria aparte)'],
     sumaSuelto: P.WEB_CINE + P.SEO + P.RESENAS + P.ASISTENTE + P.ADS, extras: ['AEO'],
     desglose: [['Web Cinematográfica (hosting, cambios y soporte)', P.WEB_CINE], ['SEO local mensual', P.SEO], ['Reseñas 5★ automatizadas', P.RESENAS], ['Asistente de IA en WhatsApp 24/7', P.ASISTENTE], ['Campañas Meta y Google Ads (gestión)', P.ADS]],
+  },
+
+  /* ── Packs para startups y negocios digitales (20/09/2026): su negocio ES la web ── */
+  {
+    clave: 'PACK_LAUNCH', nombre: 'Pack Launch', eur: 399, cobro: 'mes', tipo: 'pack', segmento: 'digital', permanencia: 12,
+    desc: 'Que se entienda y convierta: landing que explica el producto en 5 segundos, analítica y píxeles, prueba social. Iteramos cada semana.',
+    priceId: mes('PACK_LAUNCH'), anual: anio('PACK_LAUNCH', 399),
+    incluye: ['Landing con mensaje, planes y CTA (7 días)', 'Analítica, píxeles y eventos instalados', 'Prueba social: logos, testimonios, cifras', 'Una iteración de conversión cada semana'],
+    sumaSuelto: D.LANDING + D.ANALITICA + D.PRUEBA_SOCIAL, extras: ['AEO'],
+    desglose: [['Landing (hosting, cambios y soporte)', D.LANDING], ['Analítica y píxeles', D.ANALITICA], ['Prueba social y testimonios', D.PRUEBA_SOCIAL]],
+  },
+  {
+    clave: 'PACK_GROWTH', nombre: 'Pack Growth', eur: 699, cobro: 'mes', tipo: 'pack', segmento: 'digital', permanencia: 12,
+    desc: 'Que cada lead se atienda: todo lo del Launch más un asistente que cualifica en la web y en WhatsApp y agenda la demo en tu calendario.',
+    priceId: mes('PACK_GROWTH'), anual: anio('PACK_GROWTH', 699),
+    incluye: ['Todo lo del Launch', 'Asistente en la web y en WhatsApp que cualifica (tamaño, uso, presupuesto)', 'Demos agendadas en tu calendario, con recordatorio', 'Resumen de cada lead en tu CRM o email'],
+    sumaSuelto: D.LANDING + D.ANALITICA + D.PRUEBA_SOCIAL + D.CUALIFICADOR + D.DEMOS, extras: ['AEO'],
+    desglose: [['Landing (hosting, cambios y soporte)', D.LANDING], ['Analítica y píxeles', D.ANALITICA], ['Prueba social y testimonios', D.PRUEBA_SOCIAL], ['Asistente cualificador web + WhatsApp', D.CUALIFICADOR], ['Agenda de demos', D.DEMOS]],
+  },
+  {
+    clave: 'PACK_SCALE', nombre: 'Pack Scale', eur: 999, cobro: 'mes', tipo: 'pack', segmento: 'digital', permanencia: 12,
+    desc: 'Que lleguen leads cada semana: todo lo del Growth más campañas en Meta, Google y LinkedIn gestionadas, con coste por lead en el informe.',
+    priceId: mes('PACK_SCALE'), anual: anio('PACK_SCALE', 999),
+    incluye: ['Todo lo del Growth', 'Campañas en Meta, Google y LinkedIn (inversión aparte)', 'Creatividades y landings de campaña', 'Informe semanal: leads, coste por lead, qué cambiamos'],
+    sumaSuelto: D.LANDING + D.ANALITICA + D.PRUEBA_SOCIAL + D.CUALIFICADOR + D.DEMOS + D.ADS, extras: ['AEO'],
+    desglose: [['Landing (hosting, cambios y soporte)', D.LANDING], ['Analítica y píxeles', D.ANALITICA], ['Prueba social y testimonios', D.PRUEBA_SOCIAL], ['Asistente cualificador web + WhatsApp', D.CUALIFICADOR], ['Agenda de demos', D.DEMOS], ['Campañas Meta, Google y LinkedIn (gestión)', D.ADS]],
   },
 
   /* ── Webs solas (para quien de verdad solo quiere web) ── */
@@ -139,7 +169,8 @@ export const CATALOGO: Articulo[] = [
 ]
 
 export const porClave = (clave: string) => CATALOGO.find((a) => a.clave === clave)
-export const PACKS = CATALOGO.filter((a) => a.tipo === 'pack')
+export const PACKS = CATALOGO.filter((a) => a.tipo === 'pack' && !a.segmento)          // negocios locales
+export const PACKS_DIGITAL = CATALOGO.filter((a) => a.tipo === 'pack' && a.segmento === 'digital')
 export const WEBS = CATALOGO.filter((a) => a.tipo === 'web')
 export const SERVICIOS = CATALOGO.filter((a) => a.tipo === 'servicio')
 /** true mientras el precio no exista todavía en Stripe (falta ejecutar el script) */
@@ -151,6 +182,7 @@ export const LUZ_PRODUCTO: Record<string, string> = {
   WEB_ARRANQUE: 'velo', WEB_PREMIUM: 'aura', WEB_CINE: 'eclipse', CINE_UPGRADE: 'espectro',
   CAPTACION: 'cometa', CAPTACION_PRO: 'doble',
   ASISTENTE_IA: 'orbe', SEO_LOCAL: 'marea', RESENAS: 'latido', ADS: 'llama', AEO: 'espectro',
+  PACK_LAUNCH: 'velo', PACK_GROWTH: 'cometa', PACK_SCALE: 'nebulosa',
 }
 export const luzDe = (clave: string) => LUZ_PRODUCTO[clave] || 'faro'
 

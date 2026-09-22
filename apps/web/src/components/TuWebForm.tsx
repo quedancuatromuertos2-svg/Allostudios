@@ -17,7 +17,12 @@ const SECTORES = [
   'Veterinario',
   'Óptica',
   'Tienda / Comercio',
-  'Startup / Negocio digital',
+  'Startup / SaaS / software',
+  'App móvil',
+  'E-commerce / tienda online',
+  'Fintech / finanzas',
+  'Producto de IA',
+  'Agencia / servicios digitales',
   'Autónomo / Otro',
 ]
 

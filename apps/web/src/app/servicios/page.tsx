@@ -4,6 +4,7 @@ import ServicesCatalogSection from '@/components/ServicesCatalogSection'
 import Complementos from '@/components/home2/Complementos'
 import SectoresSection from '@/components/SectoresSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
+import ContactFormSection from '@/components/ContactFormSection'
 import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
@@ -28,6 +29,7 @@ export default function Servicios() {
         <Complementos />
         <SectoresSection />
         <HowItWorksSection />
+        <ContactFormSection />
         <CTASection />
       </main>
       <Footer />

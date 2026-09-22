@@ -11,6 +11,7 @@ export const LINKS: NavLink[] = [
   { label: 'Packs', href: '#elegir' },
   { label: 'Páginas Web', href: '/webs', page: true },
   { label: 'Servicios', href: '/servicios', page: true },
+  { label: 'Startups', href: '/startups', page: true },
   { label: 'Contratar', href: '/contratar', page: true, highlight: true },
   { label: 'Comerciales', href: '/afiliados', page: true },
 ]
