@@ -46,7 +46,8 @@ export default function SubsectoresDigital() {
                 <div className="rounded-[calc(1.6rem-0.375rem)] overflow-hidden" style={{ background: a.bg }}>
                   <div className="relative h-[168px] p-5 flex flex-col justify-end overflow-hidden">
                     <div className="absolute inset-0" style={{ background: `radial-gradient(70% 60% at 25% 20%, ${a.luz[0]}cc, transparent 70%), radial-gradient(50% 50% at 85% 80%, ${a.acento}66, transparent 70%)` }} />
-                    <div className="relative text-[9.5px] uppercase tracking-[0.2em] mb-2" style={{ color: `${a.acento2}` }}>{a.eyebrow} · ADN «{a.nombre}»</div>
+                    {/* el epígrafe va en blanco: algunos acento2 son casi negros (e-commerce, agencia) y no se leían */}
+                    <div className="relative text-[9.5px] uppercase tracking-[0.2em] mb-2 text-white/70">{a.eyebrow} · ADN «{a.nombre}»</div>
                     <div className="relative text-[26px] leading-[1.02] tracking-[-0.03em]" style={{ fontFamily: a.fuentes.display, fontWeight: a.fuentes.displayPeso, color: '#fff' }}>
                       {s.claim}<span style={{ color: a.acento }}>.</span>
                     </div>
