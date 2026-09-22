@@ -57,13 +57,14 @@ if (!dry) {
 
 // ── Archivar el modelo antiguo: todo producto activo que no sea de este catálogo ──
 if (!dry && process.argv.includes('--archivar')) {
-  const vivas = new Set(PRODUCTOS.map((x) => x.clave))
+  // Se compara por ID de producto, no por clave: los productos viejos llevan la misma clave que los
+  // nuevos (ADS, SEO_LOCAL, las webs de pago único…) y con el filtro por clave se salvaban del archivo.
   const nuevos = new Set(Object.values(out).map((v) => v.product))
   let n = 0
   const lista = await stripe.products.list({ active: true, limit: 100 })
   for (const prod of lista.data) {
     const clave = prod.metadata?.clave || ''
-    if (nuevos.has(prod.id) || vivas.has(clave)) continue
+    if (nuevos.has(prod.id)) continue
     await stripe.products.update(prod.id, { active: false })
     console.log('archivado:', prod.name, clave ? '(' + clave + ')' : '')
     n++
