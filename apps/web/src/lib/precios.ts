@@ -137,6 +137,13 @@ export const CATALOGO: Articulo[] = [
     priceId: mes('ASISTENTE_IA'),
   },
   {
+    // Para webs que NO hemos hecho nosotros: las cuidamos y aplicamos los cambios. Requiere acceso
+    // al gestor o al hosting; si no lo hay, se le entrega el documento de cambios y esto no se vende.
+    clave: 'WEB_CUIDADO', nombre: 'Cuidamos tu web', eur: 79, cobro: 'mes', tipo: 'servicio',
+    desc: 'La web que ya tienes, en nuestras manos: cambios ilimitados en 3 días, velocidad, copias de seguridad, correcciones técnicas y aviso de cookies. Sin permanencia.',
+    priceId: mes('WEB_CUIDADO'),
+  },
+  {
     clave: 'SEO_LOCAL', nombre: 'SEO local', eur: P.SEO, cobro: 'mes', tipo: 'servicio',
     desc: 'Ficha de Google, palabras clave y trabajo mensual para que te encuentren en tu zona y sigas arriba.',
     priceId: mes('SEO_LOCAL'),

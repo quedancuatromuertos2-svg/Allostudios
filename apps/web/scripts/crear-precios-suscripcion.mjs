@@ -30,6 +30,7 @@ const PRODUCTOS = [
   { clave: 'PACK_SCALE',       nombre: 'Pack Scale',               mes: 999, desc: 'Pack Growth + campañas en Meta, Google y LinkedIn gestionadas (inversión aparte) con informe semanal. 12 meses, 0 € de entrada.' },
   // Servicios sueltos, sin permanencia (solo cuota mensual)
   { clave: 'ASISTENTE_IA',     nombre: 'Asistente de IA en WhatsApp', mes: 149, desc: 'Responde tu WhatsApp 24/7 con tus precios y horarios, deja la cita en tu Google Calendar y te avisa cuando hace falta una persona. Sin permanencia.', soloMes: true },
+  { clave: 'WEB_CUIDADO',      nombre: 'Cuidamos tu web',          mes: 79,  desc: 'Mantenimiento de una web existente: cambios ilimitados en 3 días, velocidad, copias, correcciones técnicas y cookies. Sin permanencia.', soloMes: true },
   { clave: 'SEO_LOCAL',        nombre: 'SEO local',                mes: 99,  desc: 'Ficha de Google trabajada cada mes, palabras clave y contenido para salir en tu zona. Sin permanencia.', soloMes: true },
   { clave: 'RESENAS',          nombre: 'Reseñas 5★ en Google',      mes: 79,  desc: 'Sistema para pedir reseñas a cada cliente contento, automatizado, y respuesta a todas. Sin permanencia.', soloMes: true },
   { clave: 'ADS',              nombre: 'Campañas Meta y Google Ads', mes: 199, desc: 'Creamos y optimizamos tus anuncios cada mes con informe. La inversión publicitaria va aparte. Sin permanencia.', soloMes: true },
