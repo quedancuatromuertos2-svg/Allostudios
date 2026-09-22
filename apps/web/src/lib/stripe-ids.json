@@ -1,1 +1,84 @@
-{}
+{
+  "PACK_ESTANDAR": {
+    "product": "prod_VJAHhMXAz62y8P",
+    "mes": "price_1UIXxPAtD7Uqmi3U8UNiWmmJ",
+    "anio": "price_1UIXxPAtD7Uqmi3U42JRLGip"
+  },
+  "PACK_PRO": {
+    "product": "prod_VJAIhKL3ywotR5",
+    "mes": "price_1UIXxQAtD7Uqmi3UBOAwipnj",
+    "anio": "price_1UIXxQAtD7Uqmi3UKCm0zOxX"
+  },
+  "PACK_MAX": {
+    "product": "prod_VJAIV383dxLVHb",
+    "mes": "price_1UIXxRAtD7Uqmi3UPX8PSz06",
+    "anio": "price_1UIXxRAtD7Uqmi3UTWsOmUGg"
+  },
+  "WEB_ARRANQUE": {
+    "product": "prod_VJAI2xVZXtXfiv",
+    "mes": "price_1UIXxRAtD7Uqmi3ULM4wC3RH",
+    "anio": "price_1UIXxSAtD7Uqmi3UdyVKwnJk"
+  },
+  "WEB_PREMIUM": {
+    "product": "prod_VJAIG40EmTYK5K",
+    "mes": "price_1UIXxSAtD7Uqmi3UAllHD8vL",
+    "anio": "price_1UIXxTAtD7Uqmi3UQbd6Amaq"
+  },
+  "WEB_CINE": {
+    "product": "prod_VJAI0C3XkeMmGc",
+    "mes": "price_1UIXxTAtD7Uqmi3U18w13KkE",
+    "anio": "price_1UIXxTAtD7Uqmi3UVcFxANIm"
+  },
+  "CINE_UPGRADE": {
+    "product": "prod_VJAIQ1i4LU2EZj",
+    "mes": "price_1UIXxUAtD7Uqmi3UFaSrsGzl",
+    "anio": "price_1UIXxUAtD7Uqmi3Uu5PqCJF9"
+  },
+  "AEO": {
+    "product": "prod_VJAIMlKpyP4pfP",
+    "mes": "price_1UIXxVAtD7Uqmi3Ue7dAVS1m"
+  },
+  "PACK_LAUNCH": {
+    "product": "prod_VJAIbmkye4629D",
+    "mes": "price_1UIXxVAtD7Uqmi3U4q713rva",
+    "anio": "price_1UIXxVAtD7Uqmi3UeJKuv8Nx"
+  },
+  "PACK_GROWTH": {
+    "product": "prod_VJAIunW0uUDI7N",
+    "mes": "price_1UIXxWAtD7Uqmi3UgTMVAwOf",
+    "anio": "price_1UIXxWAtD7Uqmi3UnNBVCNph"
+  },
+  "PACK_SCALE": {
+    "product": "prod_VJAIKvIfpWBZ6P",
+    "mes": "price_1UIXxXAtD7Uqmi3UnxKoyKXb",
+    "anio": "price_1UIXxXAtD7Uqmi3UCzeVpxWF"
+  },
+  "ASISTENTE_IA": {
+    "product": "prod_VJAI5qSxI49eW1",
+    "mes": "price_1UIXxYAtD7Uqmi3US7ZqHbti"
+  },
+  "WEB_CUIDADO": {
+    "product": "prod_VJAI44ZHKmDTTa",
+    "mes": "price_1UIXxYAtD7Uqmi3UXlR4QQHl"
+  },
+  "SEO_LOCAL": {
+    "product": "prod_VJAI5g8zZZEOfk",
+    "mes": "price_1UIXxZAtD7Uqmi3UvFClFiiX"
+  },
+  "RESENAS": {
+    "product": "prod_VJAIwzyP2kbZxf",
+    "mes": "price_1UIXxZAtD7Uqmi3URkQv7cAs"
+  },
+  "ADS": {
+    "product": "prod_VJAIzXwTbNIo12",
+    "mes": "price_1UIXxaAtD7Uqmi3UmLXg2S3n"
+  },
+  "CAPTACION": {
+    "product": "prod_VJAIeUgRLABl4Q",
+    "mes": "price_1UIXxaAtD7Uqmi3UraYfgyvz"
+  },
+  "CAPTACION_PRO": {
+    "product": "prod_VJAItH7HSKqBVX",
+    "mes": "price_1UIXxbAtD7Uqmi3UcnLHu5pb"
+  }
+}
