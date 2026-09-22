@@ -48,4 +48,25 @@ for (const p of PRODUCTOS) {
   out[p.clave] = { product: prod.id, mes: mes.id, ...(anio ? { anio: anio.id } : {}) }
   console.log(p.clave, '→', prod.id, '| mes', mes.id, anio ? '| año ' + anio.id : '| solo mensual')
 }
-if (!dry) console.log('\nJSON:\n' + JSON.stringify(out, null, 2))
+// ── Guardar los ids: SIN esto la web no puede cobrar (era el fallo: se creaban los precios en
+//    Stripe y no se escribía el fichero, así que precios.ts se quedaba con PENDIENTE_*) ──────────
+if (!dry) {
+  writeFileSync(SALIDA, JSON.stringify(out, null, 2) + '\n')
+  console.log('\nIds guardados en src/lib/stripe-ids.json (' + Object.keys(out).length + ' productos)')
+}
+
+// ── Archivar el modelo antiguo: todo producto activo que no sea de este catálogo ──
+if (!dry && process.argv.includes('--archivar')) {
+  const vivas = new Set(PRODUCTOS.map((x) => x.clave))
+  const nuevos = new Set(Object.values(out).map((v) => v.product))
+  let n = 0
+  const lista = await stripe.products.list({ active: true, limit: 100 })
+  for (const prod of lista.data) {
+    const clave = prod.metadata?.clave || ''
+    if (nuevos.has(prod.id) || vivas.has(clave)) continue
+    await stripe.products.update(prod.id, { active: false })
+    console.log('archivado:', prod.name, clave ? '(' + clave + ')' : '')
+    n++
+  }
+  console.log('Productos antiguos archivados:', n)
+}
