@@ -13,6 +13,13 @@ const anchorLinks = {
 }
 
 const pageLinks = {
+  // Enlazadas desde aquí a propósito: una página que no enlaza nadie es huérfana para Google
+  // y no la rastrea. Estas tres existen para búsquedas concretas (ver 13-PLAN-DE-CONTENIDO).
+  Guías: [
+    ['Diseño web en Valencia', '/diseno-web-valencia'],
+    ['Reseñas en Google', '/resenas-google-my-business'],
+    ['Google My Business', '/google-my-business-espana'],
+  ],
   Legal: [['Privacidad', '/privacidad'], ['Términos', '/terminos'], ['Contrato', '/contrato'], ['Cookies', '/cookies']],
   'Trabaja con nosotros': [['Programa de comerciales', '/afiliados']],
 }
