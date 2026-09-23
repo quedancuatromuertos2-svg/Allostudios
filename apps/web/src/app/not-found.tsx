@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import AlloDino from '@/components/AlloDino'
 
 export const metadata: Metadata = {
   title: 'Página no encontrada',
@@ -26,6 +27,7 @@ export default function NotFound() {
       <Navigation />
       <main className="relative z-10 px-6 pt-36 pb-section">
         <div className="max-w-2xl mx-auto text-center">
+          <AlloDino expresion="triste" parte="cuerpo" className="w-32 h-32 mx-auto mb-6 text-ink/75" />
           <span className="eyebrow block mb-4">Error 404</span>
           <h1 className="font-display text-headline font-semibold text-ink text-balance">
             Esta página no existe.

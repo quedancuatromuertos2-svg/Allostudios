@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import AlloDino from '@/components/AlloDino'
 
 export const metadata: Metadata = {
   title: 'Gracias por tu pedido',
@@ -14,11 +15,16 @@ export default function GraciasPage() {
       <Navigation />
       <main className="relative z-10 min-h-[70dvh] flex items-center justify-center px-6 pt-36 pb-section">
         <div className="max-w-lg w-full text-center">
-          <span className="inline-flex w-14 h-14 rounded-full bg-accent-light text-accent items-center justify-center mb-6">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m5 12 5 5L20 7" />
-            </svg>
-          </span>
+          {/* allo lo celebra; el «pago recibido» lo dice el titular, así que la marca de
+              verificación pasa a ser una insignia pequeña sobre la mascota. */}
+          <div className="relative w-32 h-32 mx-auto mb-6">
+            <AlloDino expresion="contento" parte="cuerpo" className="w-full h-full text-ink/85" />
+            <span className="absolute -right-1 bottom-1 inline-flex w-9 h-9 rounded-full bg-accent-light text-accent items-center justify-center ring-4 ring-canvas">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+            </span>
+          </div>
           <h1 className="font-display text-headline font-semibold text-ink text-balance">
             Pago recibido. Ya estamos con ello.
           </h1>
