@@ -12,6 +12,9 @@ create table if not exists asistentes (
   meta_phone_number_id text,                       -- «Phone number ID»
   meta_token    text,                              -- token permanente del sistema (System User)
   verify_token  text not null,                     -- lo que se pega en «Verify token» del webhook
+  -- Instagram (mismos webhooks de Meta; el token puede ser el mismo que meta_token)
+  ig_user_id    text,                              -- id de la cuenta profesional de Instagram
+  ig_token      text,
   clave_admin   text not null,                     -- clave para el enlace de conectar Google Calendar
   -- Cómo es el negocio (texto libre, lo lee el modelo tal cual)
   conocimiento  text not null,                     -- servicios y precios, horario, dirección, cómo llegar, FAQs

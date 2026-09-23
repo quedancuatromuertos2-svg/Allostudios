@@ -15,6 +15,7 @@ import { ahoraMadrid, etiqueta, fechaMadrid, huecos, reservar, type Horario } fr
 export type Asistente = {
   id: string; slug: string; nombre: string; activo: boolean; canal: 'meta' | 'twilio'
   meta_phone_number_id: string | null; meta_token: string | null; verify_token: string; clave_admin: string
+  ig_user_id: string | null; ig_token: string | null   // Instagram: id de la cuenta profesional y su token
   conocimiento: string; tono: string | null; reglas: string | null
   citas: boolean; duracion_min: number; horario: Horario; google_tokens: { access_token: string; refresh_token?: string; expiry_date?: number } | null
   aviso_email: string | null; aviso_whatsapp: string | null
