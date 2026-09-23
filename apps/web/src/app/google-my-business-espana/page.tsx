@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import GuiaSeo, { Seccion, Pasos, Aviso } from '@/components/GuiaSeo'
+import GuiaSeo, { Seccion, Pasos, Aviso, TrabajoMensual } from '@/components/GuiaSeo'
 
 export const metadata: Metadata = {
   title: 'Google My Business en España: cómo darse de alta en 2026',
@@ -168,6 +168,25 @@ export default function Page() {
             </li>
           ))}
         </ul>
+      </Seccion>
+
+      <Seccion titulo="La parte que nadie cuenta: esto no se acaba">
+        <p>
+          Crear la ficha es un rato. Mantenerla arriba es lo que cuesta, porque Google premia la
+          actividad y la competencia de al lado también está publicando. Estas son las horas reales
+          de tener una ficha viva:
+        </p>
+        <TrabajoMensual
+          tareas={[
+            { que: 'Publicar una novedad', cada: 'semana', min: '15 min × 4' },
+            { que: 'Subir fotos nuevas del trabajo', cada: 'mes', min: '30 min' },
+            { que: 'Responder reseñas y preguntas', cada: 'semana', min: '15 min × 4' },
+            { que: 'Revisar horarios, festivos y servicios', cada: 'mes', min: '20 min' },
+            { que: 'Mirar el rendimiento y corregir', cada: 'mes', min: '30 min' },
+          ]}
+          total="≈ 3 h 20 min"
+          nota="Tres horas al mes, todos los meses, durante años. Es perfectamente asumible si te gusta esto. Lo que casi nunca pasa es que un dueño de negocio lo sostenga en temporada alta, y ahí es donde la ficha se apaga y se cae del mapa sin que nadie se dé cuenta."
+        />
       </Seccion>
 
       <Seccion titulo="Qué esperar de forma realista">

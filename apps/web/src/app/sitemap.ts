@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Guías de SEO: una página por búsqueda ganable (dificultad baja y volumen real)
     { url: `${base}/resenas-google-my-business`, lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
     { url: `${base}/google-my-business-espana`, lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${base}/diseno-web-valencia`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/contrato`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${base}/contratar`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${base}/afiliados`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },

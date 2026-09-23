@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import GuiaSeo, { Seccion, Pasos, Aviso } from '@/components/GuiaSeo'
+import GuiaSeo, { Seccion, Pasos, Aviso, TrabajoMensual } from '@/components/GuiaSeo'
 
 export const metadata: Metadata = {
   title: 'Reseñas en Google My Business: cómo conseguirlas (guía 2026)',
@@ -165,6 +165,24 @@ export default function Page() {
           También conviene evitar las ráfagas: veinte reseñas en dos días desde la misma wifi
           activan el filtro antispam y desaparecen solas. Mejor un goteo constante.
         </p>
+      </Seccion>
+
+      <Seccion titulo="Cuánto trabajo es esto al mes">
+        <p>
+          Todo lo de arriba se puede hacer solo, y mucha gente lo hace. Conviene saber a qué te
+          comprometes: no es una tarde, es una rutina. Estas son las horas reales de un negocio que
+          atiende a unos cuarenta clientes al mes.
+        </p>
+        <TrabajoMensual
+          tareas={[
+            { que: 'Pedir la reseña a cada cliente, el mismo día', cada: 'cliente', min: '2 min × 40' },
+            { que: 'Responder todas las reseñas nuevas', cada: 'semana', min: '15 min × 4' },
+            { que: 'Revisar si el filtro ha tumbado alguna', cada: 'mes', min: '15 min' },
+            { que: 'Denunciar y contestar las falsas', cada: 'cuando toca', min: '20 min' },
+          ]}
+          total="≈ 2 h 15 min"
+          nota="No es mucho tiempo. El problema nunca es el tiempo: es que hay que acordarse el día que vas con prisa, y ese es justo el día en que el cliente estaba contento. Los negocios que consiguen reseñas de verdad son los que lo tienen automatizado, no los que se lo proponen."
+        />
       </Seccion>
 
       <Seccion titulo="Cómo automatizar la petición">
