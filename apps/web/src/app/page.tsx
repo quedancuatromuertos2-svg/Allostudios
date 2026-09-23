@@ -14,6 +14,7 @@ import CintaPacks from '@/components/home2/CintaPacks'
 import PruebaMercado from '@/components/home2/PruebaMercado'
 import CapituloPack from '@/components/home2/CapituloPack'
 import ComparaPacks from '@/components/home2/ComparaPacks'
+import Testimonios from '@/components/home2/Testimonios'
 import Complementos from '@/components/home2/Complementos'
 import ElegirPack from '@/components/home2/ElegirPack'
 import { VisualInforme } from '@/components/home2/Visuales'
@@ -163,6 +164,7 @@ export default function Home() {
           url="/contratar/pack_max"
         />
 
+        <Testimonios />
         <ComparaPacks />
         <Complementos />
         <DemoGeneratorSection />

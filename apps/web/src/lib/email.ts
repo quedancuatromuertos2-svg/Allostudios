@@ -182,3 +182,25 @@ export async function sendAvisoAsistente(to: string, d: { negocio: string; titul
 </body></html>`
   await send(to, `[${d.negocio}] ${d.titulo}`, html)
 }
+
+/* Pedir reseña al cliente. `momento`: 'entrega' (día 7) o 'informe' (día 30). */
+export async function sendPedirResena(to: string, d: { negocio: string; producto: string; enlace: string; momento: 'entrega' | 'informe' }) {
+  const entrega = d.momento === 'entrega'
+  const titulo = entrega ? '¿Cómo ha ido la puesta en marcha?' : 'Un mes contigo'
+  const cuerpo = entrega
+    ? `Ya está todo en marcha. Si te ha gustado cómo ha ido, ¿nos dejas una reseña en Google? Son 30 segundos y a un negocio pequeño como el nuestro le cambia la vida.`
+    : `Hoy hace un mes que empezamos y ya tienes el primer informe. Si lo que ves te convence, ¿nos dejas una reseña en Google contando qué te hemos hecho? Lo que más ayuda es lo concreto.`
+  const html = `
+<!DOCTYPE html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FAFAF9;margin:0;padding:32px 20px;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;border:1px solid #E8E8E4;overflow:hidden;">
+    <div style="background:#16161a;padding:22px 30px;"><h1 style="color:#fff;margin:0;font-size:17px;font-weight:700;">${titulo}</h1></div>
+    <div style="padding:26px 30px;color:#1a1a1a;font-size:15px;line-height:1.6;">
+      <p style="margin:0 0 16px;">Hola${d.negocio ? ', ' + d.negocio : ''}:</p>
+      <p style="margin:0 0 20px;">${cuerpo}</p>
+      <a href="${d.enlace}" style="display:inline-block;background:#5B5BD6;color:#fff;text-decoration:none;font-weight:600;padding:13px 22px;border-radius:999px;">Dejar la reseña (30 s)</a>
+      <p style="color:#666;font-size:13px;margin:22px 0 0;">Y si algo no te ha gustado, contéstame a este email y lo arreglamos antes de nada. — Ángel, AlloStudios</p>
+    </div>
+  </div>
+</body></html>`
+  await send(to, entrega ? `${d.negocio}: ¿nos dejas una reseña?` : `${d.negocio}: un mes juntos`, html)
+}
